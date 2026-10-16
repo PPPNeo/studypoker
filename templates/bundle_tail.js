@@ -782,14 +782,16 @@ var characterManager = window.characterManager = {
     if (dKakao) {
       if (u.kakao_name) {
         dKakao.innerText = `💬 카톡: ${u.kakao_name}`;
-        dKakao.style.display = 'inline-flex';
+        dKakao.title = `카카오톡 단톡방 닉네임: ${u.kakao_name} (클릭하여 수정)`;
       } else {
-        dKakao.innerText = `💬 카톡: 미연동`;
+        dKakao.innerText = `💬 카톡: 미등록`;
+        dKakao.title = `카카오톡 단톡방 닉네임을 등록하세요 (클릭)`;
       }
     }
 
     const styleInfo = PLAYSTYLES[u.playstyle] || PLAYSTYLES.TAG;
-    if (dSt) dSt.innerText = styleInfo.title;
+    const styleEmoji = (styleInfo.title || '').split(' ')[0] || '⚡';
+    if (dSt) dSt.innerText = `${styleEmoji} ${styleInfo.tag || 'TAG'} 스타일`;
     if (dTr) dTr.innerText = lvlInfo.title;
 
     // 🦉 PLO 3부작 완독 특별 칭호 표시
@@ -809,7 +811,8 @@ var characterManager = window.characterManager = {
     const dRank = document.getElementById('dash-char-rank');
     if (dRank && window.rankingManager && rankingManager.getUserRank) {
       const rInfo = rankingManager.getUserRank();
-      dRank.innerHTML = `🏆 랭킹: <strong>#${rInfo.rank}위</strong> <span style="font-size: 0.72rem; opacity: 0.85;">(${rInfo.total}명)</span>`;
+      dRank.innerHTML = `🏆 랭킹: #${rInfo.rank}위`;
+      dRank.title = `전체 플레이어 ${rInfo.total}명 중 실시간 #${rInfo.rank}위 (클릭하여 랭킹보드 이동)`;
     }
 
     if (dBio) dBio.innerText = `"${styleInfo.bio}"`;

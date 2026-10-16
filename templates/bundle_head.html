@@ -1708,10 +1708,10 @@ body.theme-light .korean-summary-box ul li {
   background: var(--bg-card);
   border: 1.5px solid var(--border-color);
   border-radius: var(--radius-lg);
-  padding: 1.75rem 2rem;
+  padding: 1.6rem 2rem;
   display: flex;
-  align-items: center;
-  gap: 1.75rem;
+  flex-direction: column;
+  gap: 1.15rem;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
   position: relative;
   overflow: hidden;
@@ -1728,6 +1728,37 @@ body.theme-light .korean-summary-box ul li {
   background: linear-gradient(90deg, #3b82f6, #10b981, #f59e0b, #ec4899);
 }
 
+/* Top Row: Identity on Left, Avatar on Top-Right */
+.char-profile-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.char-identity-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.char-name-heading-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.char-badges-flow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
 .char-avatar-wrapper {
   position: relative;
   cursor: pointer;
@@ -1738,17 +1769,21 @@ body.theme-light .korean-summary-box ul li {
   transform: scale(1.06);
 }
 .char-avatar-display {
-  width: 86px;
-  height: 86px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(16, 185, 129, 0.2));
   border: 3px solid #3b82f6;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3.2rem;
-  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+  font-size: 2.8rem;
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.25);
   user-select: none;
+  transition: all 0.2s ease;
+}
+.char-avatar-wrapper:hover .char-avatar-display {
+  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
 }
 .char-avatar-edit-badge {
   position: absolute;
@@ -1762,25 +1797,14 @@ body.theme-light .korean-summary-box ul li {
   border-radius: 12px;
   border: 1.5px solid var(--bg-card);
   white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
-.char-main-info {
-  flex: 1;
-  min-width: 0;
-}
-.char-header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-bottom: 0.5rem;
-}
-.char-name-group {
+.char-action-buttons-row {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
   flex-wrap: wrap;
+  gap: 0.55rem;
 }
 .char-name-title {
   font-size: 1.65rem;
@@ -2212,10 +2236,18 @@ body.theme-light .my-lvl-tag {
 }
 
 .char-bio-text {
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   color: var(--text-muted);
-  margin-bottom: 1.15rem;
   line-height: 1.5;
+  margin: 0;
+  padding: 0.5rem 0.9rem;
+  background: rgba(0, 0, 0, 0.04);
+  border-left: 3px solid #3b82f6;
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+}
+body:not(.theme-light) .char-bio-text {
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .char-level-progress-box {
@@ -3611,79 +3643,83 @@ body.authenticated #auth-gate-screen {
         <!-- RPG Character Persona & Growth Dashboard -->
         <div class="character-dashboard" id="character-dashboard-card">
           <div class="char-hero-card">
-            <div class="char-avatar-wrapper" onclick="characterManager.openModal()" title="캐릭터 아바타 변경/커스텀">
-              <div class="char-avatar-display" id="dash-char-avatar">🦈</div>
-              <span class="char-avatar-edit-badge">✏️ 커스텀</span>
-            </div>
-            <div class="char-main-info">
-              <div class="char-header-row">
-                <div class="char-name-group">
-                  <!-- Row 1: Nickname, Equipped Title & Kakao Tag -->
-                  <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                    <h2 class="char-name-title char-name-clickable" id="dash-char-name" onclick="titleManager.openModal()" title="내 칭호 도감 열기 (클릭)"></h2>
-                    <span id="dash-equipped-title" class="char-title-pill" onclick="titleManager.openModal()" title="대표 칭호 변경하기 (클릭)">
-                      <span id="dash-equipped-title-text">🎖️ 칭호 도감</span>
-                    </span>
-                    <span class="char-kakao-tag" id="dash-kakao-tag">💬 단톡방 닉네임: 미등록</span>
-                  </div>
-                  <!-- Row 2: Level, Special Title & Ranking on the SAME line! -->
-                  <div style="display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; margin-top: 4px;">
-                    <span class="char-tier-badge" id="dash-char-tier">Lv.1 동네 피쉬 🐟</span>
-                    <span id="dash-special-title" class="special-title-badge" style="display: none;" onclick="titleManager.openModal()" title="4장 오마하(PLO) 3부작 완독자 전용 특별 칭호 (클릭하여 칭호 도감 열기)">🦉 오마하의 현인</span>
-                    <span class="char-rank-badge" id="dash-char-rank" onclick="app.navigate('ranking')" title="전체 랭킹보드 바로가기">🏆 랭킹: #1위</span>
-                  </div>
-                  <!-- Row 3: Playstyle Tag -->
-                  <div style="display: flex; align-items: center; gap: 0.4rem; margin-top: 4px;">
-                    <span class="char-style-tag" id="dash-char-style">⚡ TAG 스타일</span>
-                  </div>
+            
+            <!-- Top Row: Left Identity (Name + Badges Flow) & Right Avatar -->
+            <div class="char-profile-top-row">
+              <div class="char-identity-col">
+                <div class="char-name-heading-row">
+                  <h2 class="char-name-title char-name-clickable" id="dash-char-name" onclick="titleManager.openModal()" title="내 칭호 도감 열기 (클릭)"></h2>
                 </div>
-                <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-                  <!-- Button 1: Purple (Quest) -->
-                  <button class="btn-character-quest" onclick="questManager.openModal()" title="레벨업 퀘스트 및 6구간 전직 현황 확인">
-                    <span>📜</span> 퀘스트 정보
-                  </button>
-                  <!-- Button 2: Royal Blue (Guidebook) -->
-                  <button class="btn-character-guide" onclick="guidebookManager.openModal()" title="레벨 및 6구간 전직 시스템 공식 가이드북">
-                    <span>📖</span> 가이드북
-                  </button>
-                  <!-- Button 3: Emerald Green (Stats) -->
-                  <button class="btn-character-stats" id="btn-toggle-stats" onclick="characterManager.toggleStats()" title="4대 핵심 능력치 접기/펼치기">
-                    <span>📊</span> 4대 능력치 <span id="stats-toggle-arrow">▼</span>
-                  </button>
-                  <!-- Button 4: Vibrant Rose (AI Coach) -->
-                  <button class="btn-character-coach" onclick="aiCoach.open()" title="GTO 핸드 분석 & 포커 전략 AI 코치와 대화">
-                    <span>🤖</span> AI 코치 대화
-                  </button>
-                </div>
-              </div>
-              <p class="char-bio-text" id="dash-char-bio">
-                "엄선된 프리미엄 핸드로 강력하게 주도권을 잡는 정석적인 승리 공식"
-              </p>
-              
-              <!-- XP Bar with Level progress -->
-              <div class="char-level-progress-box">
-                <div class="char-xp-stats">
-                  <span class="char-xp-current" id="dash-xp-text">0 / 600 XP</span>
-                  <span class="char-xp-remaining" id="dash-xp-needed">다음 승급까지 600 XP 남음</span>
-                </div>
-                <div class="char-progress-track">
-                  <div class="char-progress-fill" id="dash-xp-fill" style="width: 0%;"></div>
+                <!-- Clean, Unified Badges Flow -->
+                <div class="char-badges-flow">
+                  <!-- 1. 대표 칭호 뱃지 -->
+                  <span id="dash-equipped-title" class="char-title-pill" onclick="titleManager.openModal()" title="대표 칭호 변경하기 (클릭)">
+                    <span id="dash-equipped-title-text">🎖️ 칭호 도감</span>
+                  </span>
+                  <!-- 2. 레벨 & 티어 뱃지 -->
+                  <span class="char-tier-badge" id="dash-char-tier" onclick="guidebookManager.openModal()" title="레벨 및 6구간 전직 가이드북 (클릭)">Lv.1 동네 피쉬 🐟</span>
+                  <!-- 3. 실시간 랭킹 뱃지 -->
+                  <span class="char-rank-badge" id="dash-char-rank" onclick="app.navigate('ranking')" title="전체 랭킹보드 바로가기 (클릭)">🏆 랭킹: #1위</span>
+                  <!-- 4. 플레이스타일 뱃지 -->
+                  <span class="char-style-tag" id="dash-char-style" onclick="characterManager.openModal()" title="플레이 스타일 변경 (클릭)">⚡ TAG 스타일</span>
+                  <!-- 5. 카카오톡 단톡방 닉네임 뱃지 -->
+                  <span class="char-kakao-tag" id="dash-kakao-tag" onclick="characterManager.openModal()" title="단톡방 닉네임 설정/확인 (클릭)">💬 카톡: 미등록</span>
+                  <!-- 6. 특별 칭호 뱃지 (오마하 완독 등 필요시 표시) -->
+                  <span id="dash-special-title" class="special-title-badge" style="display: none;" onclick="titleManager.openModal()" title="4장 오마하(PLO) 3부작 완독자 전용 특별 칭호 (클릭)">🦉 오마하의 현인</span>
                 </div>
               </div>
 
-              <!-- Promotion Exam Alert Banner (Shown dynamically when promotion condition met) -->
-              <div id="promotion-alert-banner" style="display: none; margin-top: 0.85rem; background: linear-gradient(90deg, rgba(245, 158, 11, 0.2), rgba(234, 88, 12, 0.25)); border: 1.5px solid #f59e0b; border-radius: 10px; padding: 0.85rem 1.1rem; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap;">
-                <div style="display: flex; align-items: center; gap: 0.65rem;">
-                  <span style="font-size: 1.6rem; animation: pulseGlow 1.5s infinite ease-in-out;">⚡</span>
-                  <div>
-                    <div id="promo-banner-title" style="font-size: 0.95rem; font-weight: 800; color: #fbbf24;">1차 전직 심사 시험 자격 획득!</div>
-                    <div id="promo-banner-desc" style="font-size: 0.8rem; color: var(--text-main);">심사 테스트(5문항)를 통과하면 전직 칭호와 대량의 특전 보너스를 획득합니다!</div>
-                  </div>
-                </div>
-                <button onclick="promotionManager.openExamModal()" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; border: none; padding: 0.55rem 1.2rem; border-radius: 8px; font-weight: 800; font-size: 0.85rem; cursor: pointer; white-space: nowrap; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);">
-                  📝 심사 시험 응시하기 ➔
-                </button>
+              <!-- Top-Right Character Avatar -->
+              <div class="char-avatar-wrapper" onclick="characterManager.openModal()" title="캐릭터 아바타 변경/커스텀 (클릭)">
+                <div class="char-avatar-display" id="dash-char-avatar">🦈</div>
+                <span class="char-avatar-edit-badge">✏️ 커스텀</span>
               </div>
+            </div>
+
+            <!-- Bio Quote Text -->
+            <p class="char-bio-text" id="dash-char-bio">
+              "엄선된 프리미엄 핸드로 강력하게 주도권을 잡는 정석적인 승리 공식"
+            </p>
+
+            <!-- Action Buttons Row -->
+            <div class="char-action-buttons-row">
+              <button class="btn-character-quest" onclick="questManager.openModal()" title="레벨업 퀘스트 및 6구간 전직 현황 확인">
+                <span>📜</span> 퀘스트 정보
+              </button>
+              <button class="btn-character-guide" onclick="guidebookManager.openModal()" title="레벨 및 6구간 전직 시스템 공식 가이드북">
+                <span>📖</span> 가이드북
+              </button>
+              <button class="btn-character-stats" id="btn-toggle-stats" onclick="characterManager.toggleStats()" title="4대 핵심 능력치 접기/펼치기">
+                <span>📊</span> 4대 능력치 <span id="stats-toggle-arrow">▼</span>
+              </button>
+              <button class="btn-character-coach" onclick="aiCoach.open()" title="GTO 핸드 분석 & 포커 전략 AI 코치와 대화">
+                <span>🤖</span> AI 코치 대화
+              </button>
+            </div>
+
+            <!-- XP Bar with Level progress -->
+            <div class="char-level-progress-box">
+              <div class="char-xp-stats">
+                <span class="char-xp-current" id="dash-xp-text">0 / 600 XP</span>
+                <span class="char-xp-remaining" id="dash-xp-needed">다음 승급까지 600 XP 남음</span>
+              </div>
+              <div class="char-progress-track">
+                <div class="char-progress-fill" id="dash-xp-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- Promotion Exam Alert Banner (Shown dynamically when promotion condition met) -->
+            <div id="promotion-alert-banner" style="display: none; margin-top: 0.25rem; background: linear-gradient(90deg, rgba(245, 158, 11, 0.2), rgba(234, 88, 12, 0.25)); border: 1.5px solid #f59e0b; border-radius: 10px; padding: 0.85rem 1.1rem; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap;">
+              <div style="display: flex; align-items: center; gap: 0.65rem;">
+                <span style="font-size: 1.6rem; animation: pulseGlow 1.5s infinite ease-in-out;">⚡</span>
+                <div>
+                  <div id="promo-banner-title" style="font-size: 0.95rem; font-weight: 800; color: #fbbf24;">1차 전직 심사 시험 자격 획득!</div>
+                  <div id="promo-banner-desc" style="font-size: 0.8rem; color: var(--text-main);">심사 테스트(5문항)를 통과하면 전직 칭호와 대량의 특전 보너스를 획득합니다!</div>
+                </div>
+              </div>
+              <button onclick="promotionManager.openExamModal()" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; border: none; padding: 0.55rem 1.2rem; border-radius: 8px; font-weight: 800; font-size: 0.85rem; cursor: pointer; white-space: nowrap; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);">
+                📝 심사 시험 응시하기 ➔
+              </button>
             </div>
           </div>
 
