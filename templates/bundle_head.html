@@ -1766,28 +1766,31 @@ body.theme-light .korean-summary-box ul li {
   flex-wrap: wrap;
 }
 
-.char-style-title-row {
-  display: flex;
+.char-title-pill {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.25));
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  color: #fbbf24;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  flex-wrap: nowrap;
-  width: 100%;
-}
-.char-style-title-row .char-style-tag {
-  flex-shrink: 0;
-}
-.char-style-title-row .char-title-pill {
-  flex-shrink: 1;
-  min-width: 0;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  gap: 0.25rem;
+  transition: all 0.2s ease;
   white-space: nowrap;
+  word-break: keep-all;
 }
-.char-style-title-row #dash-equipped-title-text {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.char-title-pill:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.35);
+  filter: brightness(1.1);
+}
+body.theme-light .char-title-pill {
+  background: #fef3c7 !important;
+  color: #b45309 !important;
+  border-color: #f59e0b !important;
 }
 
 .char-mini-badges-container {
@@ -4023,6 +4026,7 @@ body.authenticated #auth-gate-screen {
               <div class="char-identity-col">
                 <div class="char-name-heading-row">
                   <h2 class="char-name-title char-name-clickable" id="dash-char-name" onclick="titleManager.openModal()" title="내 칭호 도감 열기 (클릭)"></h2>
+                  <span class="char-kakao-tag" id="dash-kakao-tag" onclick="characterManager.openModal()" title="단톡방 닉네임 설정/확인 (클릭)">💬 카톡: 미등록</span>
                 </div>
                 <!-- Clean, Unified Badges Flow -->
                 <div class="char-badges-flow">
@@ -4031,16 +4035,18 @@ body.authenticated #auth-gate-screen {
                     <span class="char-tier-badge" id="dash-char-tier" onclick="guidebookManager.openModal()" title="레벨 및 6구간 전직 가이드북 (클릭)">Lv.1 동네 피쉬 🐟</span>
                     <span class="char-rank-badge" id="dash-char-rank" onclick="app.navigate('ranking')" title="전체 랭킹보드 바로가기 (클릭)">🏆 실시간 랭킹: #1위</span>
                   </div>
-                  <!-- Row 2: Playstyle & Equipped Title side-by-side -->
-                  <div class="char-badge-row char-style-title-row">
+                  <!-- Row 2: Playstyle -->
+                  <div class="char-badge-row">
                     <span class="char-style-tag" id="dash-char-style" onclick="characterManager.openModal()" title="플레이 스타일 변경 (클릭)">⚡ TAG 스타일</span>
+                  </div>
+                  <!-- Row 3: Equipped Representative Title (내 스타일 아래에 배치하여 글자 짤림 방지) -->
+                  <div class="char-badge-row">
                     <span id="dash-equipped-title" class="char-title-pill" onclick="titleManager.openModal()" title="대표 칭호 변경하기 (클릭)">
                       <span id="dash-equipped-title-text">🎖️ 대표칭호: 초보 탐험가</span>
                     </span>
                   </div>
-                  <!-- Row 3: Kakao Tag & My Title Badges -->
+                  <!-- Row 4: My Title Badges -->
                   <div class="char-badge-row">
-                    <span class="char-kakao-tag" id="dash-kakao-tag" onclick="characterManager.openModal()" title="단톡방 닉네임 설정/확인 (클릭)">💬 카톡: 미등록</span>
                     <div id="dash-unlocked-title-badges" class="char-mini-badges-container" title="내 보유 칭호 뱃지 모음 (클릭 시 대표 칭호로 즉시 변경)"></div>
                     <span id="dash-special-title" class="special-title-badge" style="display: none;" onclick="titleManager.openModal()" title="4장 오마하(PLO) 3부작 완독자 전용 특별 칭호 (클릭)">🦉 오마하의 현인</span>
                   </div>
