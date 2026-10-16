@@ -3601,10 +3601,13 @@ const syncManager = {
             </button>
           </div>
 
-          <div style="margin-top: 1.25rem; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 0.85rem 1rem; font-size: 0.82rem; color: var(--text-dim); text-align: left; line-height: 1.5;">
-            💡 <strong>사용 방법:</strong><br>
-            1. 스마트폰의 기본 카메라 앱을 열어 화면의 QR 코드를 비춥니다.<br>
-            2. 노란색으로 뜨는 주소(studypoker)를 탭하면 스마트폰 브라우저에서 현재 레벨(Lv.${lvl.level})과 모든 완독 기록이 자동으로 연동됩니다!
+          <div style="margin-top: 1.25rem; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem 1.15rem; font-size: 0.83rem; color: var(--text-dim); text-align: left; line-height: 1.6;">
+            <div style="font-weight: 800; color: #34d399; margin-bottom: 0.35rem; font-size: 0.88rem;">💡 양방향 기기 이동 가이드:</div>
+            <strong>🖥️ PC ➔ 📱 휴대폰으로 갈 때:</strong><br>
+            • 휴대폰 카메라로 화면의 QR 코드를 비추고 링크를 탭하면 즉시 스마트폰에 연동됩니다.<br><br>
+            <strong>📱 휴대폰 ➔ 🖥️ PC로 갈 때 (초간편 2가지 방법):</strong><br>
+            • <strong>방법 1 (카카오톡 링크 전송 - 추천 ⭐)</strong>: 위의 <strong>[🔗 원클릭 연동 링크 복사하기]</strong> 버튼을 눌러 카카오톡 '나와의 채팅'에 보낸 뒤, <u>PC 카톡에서 링크를 클릭</u>하기만 하면 0.1초 만에 PC에 내 캐릭터가 자동 복원됩니다!<br>
+            • <strong>방법 2 (클라우드 저장/불러오기)</strong>: 상단의 <strong>[☁️ 클라우드]</strong> 탭에서 [클라우드에 저장]을 누른 후, PC에서 [클라우드에서 불러오기]를 누르면 끝!
           </div>
         </div>
       `;
