@@ -2396,6 +2396,70 @@ body.theme-light .filter-pill.filter-pill-plo:hover {
   border-color: #6d28d9 !important;
 }
 
+/* 📖 정독 여부 & 누적 학습 시간 배지 스타일 */
+.read-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 2.5px 8.5px;
+  border-radius: 12px;
+  font-size: 0.74rem;
+  font-weight: 800;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+  transition: all 0.2s ease;
+}
+
+.read-status-pill.done {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.read-status-pill.reading {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.4);
+}
+
+.read-status-pill.unread {
+  background: rgba(100, 116, 139, 0.12);
+  color: #94a3b8;
+  border: 1px solid rgba(100, 116, 139, 0.25);
+}
+
+body.theme-light .read-status-pill.done {
+  background: #ecfdf5 !important;
+  color: #047857 !important;
+  border: 1.5px solid #a7f3d0 !important;
+}
+
+body.theme-light .read-status-pill.reading {
+  background: #eff6ff !important;
+  color: #1d4ed8 !important;
+  border: 1.5px solid #bfdbfe !important;
+}
+
+body.theme-light .read-status-pill.unread {
+  background: #f1f5f9 !important;
+  color: #64748b !important;
+  border: 1.5px solid #cbd5e1 !important;
+}
+
+.article-card.read-completed {
+  border-color: rgba(16, 185, 129, 0.4) !important;
+}
+
+.article-card.read-completed:hover {
+  border-color: #10b981 !important;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2) !important;
+}
+
+body.theme-light .article-card.read-completed {
+  border-color: #6ee7b7 !important;
+  background: #fbfdfc !important;
+}
+
 /* 퀘스트 모달 라이트모드 고대비 규칙 */
 .quest-rule-notice {
   background: rgba(59, 130, 246, 0.08);
@@ -3382,6 +3446,7 @@ body.authenticated #auth-gate-screen {
             </div>
             <h1 class="reader-title-ko" id="reader-title-ko">아티클 제목</h1>
             <p class="reader-title-en" id="reader-title-en">Original English Title</p>
+            <div id="reader-status-banner" style="display: flex; align-items: center; gap: 0.6rem; margin-top: 0.65rem; margin-bottom: 0.35rem; flex-wrap: wrap;"></div>
           </div>
 
           <div style="margin-bottom: 1rem;">

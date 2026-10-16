@@ -89,7 +89,8 @@ const storage = {
         completed_quizzes: [],
         explored_ranges: [],
         promotions_passed: [],
-        ai_queries_count: 0
+        ai_queries_count: 0,
+        article_read_times: {}
       };
       this.save(resetState);
       setTimeout(() => {
@@ -113,6 +114,7 @@ const storage = {
         if (!parsed.explored_ranges) parsed.explored_ranges = [];
         if (!parsed.promotions_passed) parsed.promotions_passed = [];
         if (parsed.ai_queries_count === undefined) parsed.ai_queries_count = 0;
+        if (!parsed.article_read_times) parsed.article_read_times = {};
         return parsed;
       } catch(e) {}
     }
@@ -133,7 +135,8 @@ const storage = {
       completed_quizzes: [],
       explored_ranges: [],
       promotions_passed: [],
-      ai_queries_count: 0
+      ai_queries_count: 0,
+      article_read_times: {}
     };
   },
   save(state) {
@@ -284,6 +287,20 @@ function getTierColor(pt) {
   return pt.color || '#94a3b8';
 }
 
+// 아티클 학습 누적 시간 포맷팅 헬퍼
+function formatReadTime(seconds) {
+  if (!seconds || seconds <= 0) return '0초';
+  if (seconds < 60) return `${seconds}초`;
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  if (m < 60) {
+    return s > 0 ? `${m}분 ${s}초` : `${m}분`;
+  }
+  const h = Math.floor(m / 60);
+  const remM = m % 60;
+  return remM > 0 ? `${h}시간 ${remM}분` : `${h}시간`;
+}
+
 const PLAYSTYLES = {
   TAG: { title: "⚡ TAG (타이트 어그레시브)", tag: "TAG", bio: "엄선된 프리미엄 핸드로 강력하게 주도권을 잡는 정석적인 승리 공식" },
   LAG: { title: "🔥 LAG (루즈 어그레시브)", tag: "LAG", bio: "넓은 레인지와 포스트플랍 공격성으로 상대에게 끊임없는 압박 부여" },
@@ -396,7 +413,8 @@ var characterManager = window.characterManager = {
       },
       completed_articles: [],
       completed_quizzes: [],
-      explored_ranges: []
+      explored_ranges: [],
+      article_read_times: {}
     };
     storage.save(app.userState);
 
@@ -734,10 +752,17 @@ var app = window.app = {
       authManager.showGate('login');
       return;
     }
-    if (viewId !== 'reader' && window.reader && reader.readTimer) {
-      clearInterval(reader.readTimer);
-      reader.readTimer = null;
-      reader.secondsRemaining = 45;
+    if (viewId !== 'reader' && window.reader) {
+      if (reader.readTimer) {
+        clearInterval(reader.readTimer);
+        reader.readTimer = null;
+        reader.secondsRemaining = 45;
+      }
+      if (reader.cumTimer) {
+        clearInterval(reader.cumTimer);
+        reader.cumTimer = null;
+        storage.save(this.userState);
+      }
     }
 
     this.currentView = viewId;
@@ -1161,6 +1186,7 @@ const reader = {
   displayLimit: 24,
   unlockedOnly: false,
   readTimer: null,
+  cumTimer: null,
   secondsRemaining: 45,
 
   isPloArticle(a) {
@@ -1390,9 +1416,17 @@ const reader = {
     container.innerHTML = ploBannerHtml + slice.map(a => {
       const isCompleted = app.userState.completed_articles.includes(a.id);
       const isLocked = (a.required_level || 1) > userLvl;
+      const readSeconds = (app.userState.article_read_times && app.userState.article_read_times[a.id]) || 0;
+      const formattedTime = formatReadTime(readSeconds);
+
+      const statusBadge = isCompleted 
+        ? `<span class="read-status-pill done">✅ 정독 완료 (${formattedTime} 학습)</span>`
+        : (readSeconds > 0 
+            ? `<span class="read-status-pill reading">⏳ 학습 중 (${formattedTime} 열람)</span>` 
+            : `<span class="read-status-pill unread">📖 미완독 (0초)</span>`);
 
       return `
-        <div class="article-card ${isLocked ? 'locked' : ''}" onclick="reader.openArticle('${a.id}')" title="${isLocked ? `🔒 Lv.${a.required_level} 달성 시 열람 가능 (클릭하여 조건 확인)` : ''}">
+        <div class="article-card ${isLocked ? 'locked' : ''} ${isCompleted ? 'read-completed' : ''}" onclick="reader.openArticle('${a.id}')" title="${isLocked ? `🔒 Lv.${a.required_level} 달성 시 열람 가능 (클릭하여 조건 확인)` : ''}">
           <div>
             <div class="article-card-header">
               ${isLocked ? `
@@ -1403,7 +1437,10 @@ const reader = {
               <span style="font-size: 0.75rem; background: var(--bg-surface); padding: 2px 7px; border-radius: 4px; color: var(--text-muted); font-weight: 600;">${a.category}</span>
               <span class="read-time" style="margin-left: auto;">⏱️ ${a.read_time}</span>
             </div>
-            <h3 style="${isLocked ? 'color: var(--text-muted);' : ''}">${a.title_ko}</h3>
+            <div style="margin-top: 0.4rem; margin-bottom: 0.35rem;">
+              ${statusBadge}
+            </div>
+            <h3 style="${isLocked ? 'color: var(--text-muted);' : ''}">${isCompleted ? '<span style="color: #10b981; margin-right: 4px; font-weight: 800;">✓</span>' : ''}${a.title_ko}</h3>
             <p class="subtitle-en">${a.title_en}</p>
           </div>
           
@@ -1489,6 +1526,37 @@ const reader = {
     }
   },
 
+  updateReaderStatusBanner() {
+    const banner = document.getElementById('reader-status-banner');
+    if (!banner || !this.currentArticle) return;
+    const isCompleted = app.userState.completed_articles.includes(this.currentArticle.id);
+    const readSeconds = (app.userState.article_read_times && app.userState.article_read_times[this.currentArticle.id]) || 0;
+    const timeText = formatReadTime(readSeconds);
+
+    if (isCompleted) {
+      banner.innerHTML = `
+        <span class="read-status-pill done" style="font-size: 0.85rem; padding: 4px 12px;">✅ 정독 완료</span>
+        <span style="font-size: 0.85rem; color: var(--text-muted); display: inline-flex; align-items: center; gap: 4px;">
+          ⏱️ 누적 학습 시간: <strong style="color: var(--text-main); font-weight: 700;">${timeText}</strong>
+        </span>
+      `;
+    } else if (readSeconds > 0) {
+      banner.innerHTML = `
+        <span class="read-status-pill reading" style="font-size: 0.85rem; padding: 4px 12px;">⏳ 학습 진행 중</span>
+        <span style="font-size: 0.85rem; color: var(--text-muted); display: inline-flex; align-items: center; gap: 4px;">
+          ⏱️ 누적 학습 시간: <strong style="color: var(--text-main); font-weight: 700;">${timeText}</strong> (35초 정독 시 완독 가능)
+        </span>
+      `;
+    } else {
+      banner.innerHTML = `
+        <span class="read-status-pill unread" style="font-size: 0.85rem; padding: 4px 12px;">📖 미완독 아티클</span>
+        <span style="font-size: 0.85rem; color: var(--text-muted); display: inline-flex; align-items: center; gap: 4px;">
+          ⏱️ 정독을 시작하면 학습 시간이 누적됩니다.
+        </span>
+      `;
+    }
+  },
+
   openArticle(articleId) {
     const data = this.articles.find(a => a.id === articleId || a.slug === articleId);
     if (!data) return;
@@ -1524,6 +1592,28 @@ const reader = {
       clearInterval(this.readTimer);
       this.readTimer = null;
     }
+    if (this.cumTimer) {
+      clearInterval(this.cumTimer);
+      this.cumTimer = null;
+    }
+
+    if (!app.userState.article_read_times) {
+      app.userState.article_read_times = {};
+    }
+
+    this.updateReaderStatusBanner();
+
+    this.cumTimer = setInterval(() => {
+      if (document.hidden || document.visibilityState !== 'visible' || app.currentView !== 'reader' || !this.currentArticle) {
+        return;
+      }
+      const curId = this.currentArticle.id;
+      app.userState.article_read_times[curId] = (app.userState.article_read_times[curId] || 0) + 1;
+      this.updateReaderStatusBanner();
+      if (app.userState.article_read_times[curId] % 10 === 0) {
+        storage.save(app.userState);
+      }
+    }, 1000);
 
     this.hasScrolledBottom = false;
 
@@ -1813,9 +1903,11 @@ const reader = {
       app.addXP(50, 'article');
       characterManager.showToast('📖 아티클 정독 완료! (+50 XP 획득)');
       this.checkPloTitleUnlock();
+      storage.save(app.userState);
     }
     
     this.updateCompletionUI(true, 0);
+    this.updateReaderStatusBanner();
 
     this.renderArticleCards();
   },
@@ -2452,6 +2544,13 @@ var roadmap = window.roadmap = {
           ${reqArticles.map((a, idx) => {
             const isCompleted = (userState.completed_articles || []).includes(a.id || a.slug);
             const title = a.title_ko || a.title || a.id;
+            const readSeconds = (userState.article_read_times && userState.article_read_times[a.id || a.slug]) || 0;
+            const formattedTime = formatReadTime(readSeconds);
+            const statusPill = isCompleted
+              ? `<span class="read-status-pill done">✅ 정독 완료 (${formattedTime})</span>`
+              : (readSeconds > 0
+                  ? `<span class="read-status-pill reading">⏳ 학습 중 (${formattedTime})</span>`
+                  : `<span class="read-status-pill unread">📖 미완독</span>`);
             return `
               <div class="node-item ${isCompleted ? 'completed' : ''}" onclick="reader.openArticle('${a.id || a.slug}')" style="${!isCompleted && idx === 0 ? 'border: 1.5px solid #3b82f6; background: rgba(59, 130, 246, 0.05);' : ''}">
                 <div style="display: flex; align-items: center; gap: 0.65rem; min-width: 0; flex: 1;">
@@ -2459,6 +2558,7 @@ var roadmap = window.roadmap = {
                   <div style="min-width: 0; flex: 1;">
                     <div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap;">
                       <div style="font-weight: 700; font-size: 0.92rem; color: var(--text-main); word-break: keep-all; line-height: 1.35;">${title}</div>
+                      ${statusPill}
                       ${!isCompleted && idx === 0 ? '<span style="font-size: 0.65rem; background: #3b82f6; color: #fff; padding: 1px 6px; border-radius: 10px; font-weight: 800; white-space: nowrap; flex-shrink: 0;">추천 다음 스팟</span>' : ''}
                     </div>
                     <span style="font-size: 0.72rem; color: var(--text-dim); word-break: keep-all;">${a.category || '필수 GTO 이론'}</span>
@@ -2586,6 +2686,13 @@ var roadmap = window.roadmap = {
               const isCompleted = userState.completed_articles.includes(n.article_id);
               const foundArt = (window.DB && DB.articles) ? DB.articles.find(a => a.id === n.article_id || a.slug === n.article_id) : null;
               const nodeTitle = (foundArt && (foundArt.title_ko || foundArt.title)) || n.title;
+              const readSeconds = (userState.article_read_times && userState.article_read_times[n.article_id]) || 0;
+              const formattedTime = formatReadTime(readSeconds);
+              const statusPill = isCompleted
+                ? `<span class="read-status-pill done">✅ 정독 완료 (${formattedTime})</span>`
+                : (readSeconds > 0
+                    ? `<span class="read-status-pill reading">⏳ 학습 중 (${formattedTime})</span>`
+                    : `<span class="read-status-pill unread">📖 미완독</span>`);
               return `
                 <div class="node-item ${isCompleted ? 'completed' : ''}" onclick="reader.openArticle('${n.article_id}')">
                   <div style="display: flex; align-items: center; gap: 0.65rem; min-width: 0; flex: 1;">
@@ -2593,6 +2700,7 @@ var roadmap = window.roadmap = {
                     <div style="min-width: 0; flex: 1;">
                       <div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap;">
                         <div style="font-weight: 700; font-size: 0.92rem; color: var(--text-main); word-break: keep-all; line-height: 1.35;">${nodeTitle}</div>
+                        ${statusPill}
                         <span style="font-size: 0.65rem; background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); padding: 1px 6px; border-radius: 10px; font-weight: 700; white-space: nowrap; flex-shrink: 0;">커리어 핵심</span>
                       </div>
                       <span style="font-size: 0.72rem; color: var(--text-dim); word-break: keep-all;">${n.category}</span>
@@ -3199,15 +3307,23 @@ var questManager = window.questManager = {
             ${reqArticles.map(a => {
               const isDone = (u.completed_articles || []).includes(a.id || a.slug);
               const title = a.title_ko || a.title || a.title_en || a.id;
+              const readSeconds = (u.article_read_times && u.article_read_times[a.id || a.slug]) || 0;
+              const formattedTime = formatReadTime(readSeconds);
+              const statusPill = isDone
+                ? `<span class="read-status-pill done">✅ 정독 완료 (${formattedTime})</span>`
+                : (readSeconds > 0
+                    ? `<span class="read-status-pill reading">⏳ 학습 중 (${formattedTime})</span>`
+                    : `<span class="read-status-pill unread">📖 미완독</span>`);
               return `
                 <div style="background: ${isDone ? 'rgba(16, 185, 129, 0.06)' : 'var(--quest-item-bg)'}; border: 1px solid ${isDone ? 'rgba(16, 185, 129, 0.35)' : 'var(--border-color)'}; border-radius: 10px; padding: 0.75rem 0.9rem; display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
                   <div style="flex: 1; min-width: 220px;">
-                    <div style="display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.25rem;">
+                    <div style="display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.35rem; flex-wrap: wrap;">
                       <span style="font-size: 0.95rem;">${isDone ? '✅' : '⏳'}</span>
                       <span style="font-size: 0.72rem; color: var(--text-dim); background: rgba(59, 130, 246, 0.12); padding: 1px 6px; border-radius: 6px;">${a.category || '이론'}</span>
                       <span style="font-size: 0.72rem; color: var(--accent-gold); font-weight: 700;">+50 XP</span>
+                      ${statusPill}
                     </div>
-                    <div style="font-size: 0.92rem; font-weight: 700; color: var(--text-main); line-height: 1.4;">${title}</div>
+                    <div style="font-size: 0.92rem; font-weight: 700; color: var(--text-main); line-height: 1.4; word-break: keep-all;">${title}</div>
                   </div>
                   <div>
                     ${isDone ? `
@@ -5116,6 +5232,14 @@ const settingsManager = window.settingsManager = {
 
 window.addEventListener('DOMContentLoaded', () => {
   app.init();
+});
+
+window.addEventListener('beforeunload', () => {
+  if (window.reader && reader.cumTimer) {
+    clearInterval(reader.cumTimer);
+    reader.cumTimer = null;
+    if (window.app && app.userState) storage.save(app.userState);
+  }
 });
   </script>
 </body>
