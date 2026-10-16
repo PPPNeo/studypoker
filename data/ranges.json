@@ -170,7 +170,9 @@
           "action": "Raise 2.5bb",
           "freq": 60
         }
-      }
+      },
+      "required_level": 2,
+      "required_level_title": "Lv.2 홀덤펍 로컬 레귤러"
     },
     {
       "id": "hj_open",
@@ -394,7 +396,9 @@
           "action": "Raise 2.5bb",
           "freq": 50
         }
-      }
+      },
+      "required_level": 2,
+      "required_level_title": "Lv.2 홀덤펍 로컬 레귤러"
     },
     {
       "id": "co_open",
@@ -714,7 +718,9 @@
           "action": "Raise 2.5bb",
           "freq": 80
         }
-      }
+      },
+      "required_level": 2,
+      "required_level_title": "Lv.2 홀덤펍 로컬 레귤러"
     },
     {
       "id": "btn_open",
@@ -1154,7 +1160,9 @@
           "action": "Raise 2.5bb",
           "freq": 50
         }
-      }
+      },
+      "required_level": 1,
+      "required_level_title": "Lv.1 동네 피쉬 탈출기"
     },
     {
       "id": "sb_open",
@@ -1614,7 +1622,9 @@
           "action": "Raise 2.5bb",
           "freq": 40
         }
-      }
+      },
+      "required_level": 1,
+      "required_level_title": "Lv.1 동네 피쉬 탈출기"
     },
     {
       "id": "bb_vs_btn",
@@ -1891,7 +1901,9 @@
           "action": "3-Bet",
           "freq": 80
         }
-      }
+      },
+      "required_level": 3,
+      "required_level_title": "Lv.3 마이크로 그라인더"
     },
     {
       "id": "bb_vs_co",
@@ -2100,7 +2112,9 @@
           "action": "3-Bet",
           "freq": 90
         }
-      }
+      },
+      "required_level": 3,
+      "required_level_title": "Lv.3 마이크로 그라인더"
     },
     {
       "id": "sb_vs_btn",
@@ -2248,7 +2262,9 @@
           "action": "3-Bet",
           "freq": 80
         }
-      }
+      },
+      "required_level": 4,
+      "required_level_title": "Lv.4 온라인 세미프로"
     },
     {
       "id": "btn_vs_co",
@@ -2365,7 +2381,9 @@
           "action": "3-Bet",
           "freq": 100
         }
-      }
+      },
+      "required_level": 4,
+      "required_level_title": "Lv.4 온라인 세미프로"
     },
     {
       "id": "btn_vs_sb_3bet",
@@ -2470,7 +2488,9 @@
           "action": "4-Bet / Shove",
           "freq": 100
         }
-      }
+      },
+      "required_level": 5,
+      "required_level_title": "Lv.5 하이롤러 토너 크러셔"
     },
     {
       "id": "push_btn_15bb",
@@ -2718,7 +2738,9 @@
           "action": "4-Bet / Shove",
           "freq": 80
         }
-      }
+      },
+      "required_level": 6,
+      "required_level_title": "Lv.6 WSOP 챔피언"
     },
     {
       "id": "push_sb_15bb",
@@ -3006,7 +3028,9 @@
           "action": "4-Bet / Shove",
           "freq": 80
         }
-      }
+      },
+      "required_level": 6,
+      "required_level_title": "Lv.6 WSOP 챔피언"
     },
     {
       "id": "call_bb_vs_btn_15bb",
@@ -3146,7 +3170,9 @@
           "action": "Call",
           "freq": 80
         }
-      }
+      },
+      "required_level": 6,
+      "required_level_title": "Lv.6 WSOP 챔피언"
     }
   ]
 }

@@ -2207,6 +2207,136 @@ body.theme-light .char-input {
   color: #0f172a;
 }
 
+
+/* ==========================================================================
+   Progressive Level Gating & Lock Styles
+   ========================================================================== */
+
+/* Locked Article Card */
+.article-card.locked {
+  position: relative;
+  border-color: rgba(245, 158, 11, 0.35);
+  background: var(--bg-card);
+  transition: all 0.2s ease;
+}
+.article-card.locked:hover {
+  border-color: #f59e0b;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(245, 158, 11, 0.15);
+}
+.article-card.locked::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #f59e0b, #ef4444);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+.badge-lock {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: rgba(245, 158, 11, 0.18);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+body.theme-light .badge-lock {
+  background: #fef3c7;
+  color: #b45309;
+  border-color: #fde68a;
+}
+body.theme-light .article-card.locked {
+  border-color: #cbd5e1;
+}
+
+/* Quiz Lock Shield */
+.quiz-locked-shield {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  background: var(--bg-surface);
+  border: 1.5px dashed rgba(245, 158, 11, 0.5);
+  border-radius: 12px;
+  margin: 1rem 0;
+}
+.quiz-locked-shield h3 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #fbbf24;
+  margin-bottom: 0.5rem;
+}
+.quiz-locked-shield p {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  max-width: 500px;
+  line-height: 1.55;
+  margin-bottom: 1.25rem;
+}
+
+/* Matrix Lock Shield */
+.matrix-locked-shield {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 1.5rem;
+  background: var(--bg-surface);
+  border: 2px dashed rgba(245, 158, 11, 0.5);
+  border-radius: 14px;
+  margin: 0.5rem 0;
+}
+.matrix-locked-shield h3 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #fbbf24;
+  margin-bottom: 0.5rem;
+}
+.matrix-locked-shield p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  max-width: 480px;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+/* Level Lock Detail Box in Modal */
+.lock-detail-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.lock-tier-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px dashed var(--border-color);
+  padding-bottom: 0.75rem;
+}
+.lock-tip-quote {
+  font-size: 0.88rem;
+  color: var(--text-main);
+  background: var(--bg-card);
+  padding: 0.85rem 1rem;
+  border-radius: 8px;
+  border-left: 3.5px solid #f59e0b;
+  line-height: 1.55;
+}
+
 </style>
 </head>
 <body class="theme-light">
@@ -2480,18 +2610,25 @@ body.theme-light .char-input {
         </div>
       </div>
 
-      <!-- Level Filter Bar -->
-      <div class="filter-bar" style="margin-bottom: 1.5rem; justify-content: space-between;">
+      <!-- Level Filter Bar (6 Progressive RPG Tiers) -->
+      <div class="filter-bar" style="margin-bottom: 1.5rem; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
         <div class="filter-pills" id="article-level-filters">
           <span style="font-size: 0.85rem; color: var(--text-muted); align-self: center; margin-right: 0.4rem; font-weight: 600;">난이도:</span>
           <button class="filter-pill active" data-lvl="all" onclick="reader.filterLevel('all')">전체 난이도 (369)</button>
-          <button class="filter-pill" data-lvl="Level 1" onclick="reader.filterLevel('Level 1')">Lv.1 입문 (21)</button>
-          <button class="filter-pill" data-lvl="Level 2" onclick="reader.filterLevel('Level 2')">Lv.2 초급 (248)</button>
-          <button class="filter-pill" data-lvl="Level 3" onclick="reader.filterLevel('Level 3')">Lv.3 중급 (68)</button>
-          <button class="filter-pill" data-lvl="Level 4" onclick="reader.filterLevel('Level 4')">Lv.4 고급 (32)</button>
+          <button class="filter-pill" data-lvl="Level 1" onclick="reader.filterLevel('Level 1')">Lv.1 입문 (33)</button>
+          <button class="filter-pill" data-lvl="Level 2" onclick="reader.filterLevel('Level 2')">Lv.2 초급 (201)</button>
+          <button class="filter-pill" data-lvl="Level 3" onclick="reader.filterLevel('Level 3')">Lv.3 중급 (47)</button>
+          <button class="filter-pill" data-lvl="Level 4" onclick="reader.filterLevel('Level 4')">Lv.4 고급 (65)</button>
+          <button class="filter-pill" data-lvl="Level 5" onclick="reader.filterLevel('Level 5')">Lv.5 심화 (15)</button>
+          <button class="filter-pill" data-lvl="Level 6" onclick="reader.filterLevel('Level 6')">Lv.6 마스터 (8)</button>
         </div>
-        <div class="article-count-label" id="article-count-label" style="color: var(--text-dim); font-size: 0.9rem;">
-          총 369편
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <button class="filter-pill" id="filter-unlocked-btn" onclick="reader.toggleUnlockedOnly()" style="border: 1.5px solid #3b82f6; font-weight: 700; white-space: nowrap;">
+            <span id="unlocked-only-icon">🔓</span> <span id="unlocked-only-text">내 레벨 해금 글만 보기</span>
+          </button>
+          <div class="article-count-label" id="article-count-label" style="color: var(--text-dim); font-size: 0.9rem; white-space: nowrap;">
+            총 369편
+          </div>
         </div>
       </div>
 
@@ -2569,16 +2706,26 @@ body.theme-light .char-input {
     <!-- 3. Spot Quiz / Trainer View -->
     <section id="view-trainer" class="view-section">
       <div class="trainer-container">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 1rem;">
           <div>
-            <h2 style="font-size: 1.6rem; font-weight: 800;">🎯 GTO 스팟 트레이너</h2>
-            <p style="color: var(--text-muted); font-size: 0.95rem;">실전 스팟에서 GTO 솔루션의 의사결정을 훈련하고 해설을 확인하세요.</p>
+            <h2 style="font-size: 1.6rem; font-weight: 800;">🎯 GTO 스팟 트레이너 (25스팟)</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">실전 스팟에서 GTO 솔루션의 의사결정을 훈련하고 해설을 확인하세요. (레벨별 순차 해금)</p>
           </div>
           <div style="display: flex; gap: 0.5rem;" id="quiz-nav-controls">
             <button class="btn-secondary" onclick="trainer.prevQuiz()">◀ 이전</button>
             <span id="quiz-counter" style="padding: 0.6rem 1rem; background: var(--bg-card); border-radius: 8px; font-weight: 700;">1 / 25</span>
             <button class="btn-secondary" onclick="trainer.nextQuiz()">다음 ▶</button>
           </div>
+        </div>
+
+        <!-- Quiz Level Jump Selector -->
+        <div style="display: flex; gap: 0.35rem; margin-bottom: 1.25rem; flex-wrap: wrap;" id="quiz-level-filter-chips">
+          <button class="filter-pill active" data-qlvl="1" onclick="trainer.jumpToLevel(1)">Lv.1 입문 (1~5)</button>
+          <button class="filter-pill" data-qlvl="2" onclick="trainer.jumpToLevel(2)">Lv.2 초급 (6~10)</button>
+          <button class="filter-pill" data-qlvl="3" onclick="trainer.jumpToLevel(3)">Lv.3 중급 (11~15)</button>
+          <button class="filter-pill" data-qlvl="4" onclick="trainer.jumpToLevel(4)">Lv.4 고급 (16~19)</button>
+          <button class="filter-pill" data-qlvl="5" onclick="trainer.jumpToLevel(5)">Lv.5 심화 (20~22)</button>
+          <button class="filter-pill" data-qlvl="6" onclick="trainer.jumpToLevel(6)">Lv.6 마스터 (23~25)</button>
         </div>
 
         <div class="poker-table-felt">
@@ -2870,6 +3017,32 @@ body.theme-light .char-input {
         <button class="btn-secondary" onclick="characterManager.closeModal()">취소</button>
         <button class="btn-primary" style="padding: 0.65rem 1.8rem; font-weight: 800;" onclick="characterManager.saveCharacter()">
           ✨ 캐릭터 저장 및 육성 시작
+        </button>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- Level Lock Informational Modal -->
+  <div class="ai-modal-overlay" id="level-lock-modal-overlay" style="display: none;" onclick="if(event.target === this) characterManager.closeLevelLockModal()">
+    <div class="char-create-modal" style="max-width: 540px;">
+      <div class="char-modal-header" style="background: rgba(245, 158, 11, 0.1); border-bottom-color: rgba(245, 158, 11, 0.3);">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <span style="font-size: 1.6rem;">🔒</span>
+          <div>
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: #fbbf24; margin: 0;">레벨 제한 콘텐츠 안내</h3>
+            <span style="font-size: 0.78rem; color: var(--text-dim);">단계별 포커 실력 향상 & 커리큘럼 잠금</span>
+          </div>
+        </div>
+        <button onclick="characterManager.closeLevelLockModal()" style="background: none; border: none; color: #94a3b8; font-size: 1.3rem; cursor: pointer;">✕</button>
+      </div>
+      <div class="char-modal-body" style="padding: 1.5rem;">
+        <div id="lock-modal-content"></div>
+      </div>
+      <div class="char-modal-footer">
+        <button class="btn-secondary" onclick="characterManager.closeLevelLockModal()">닫기</button>
+        <button class="btn-primary" id="lock-modal-action-btn" onclick="characterManager.handleLockAction()">
+          🔓 해금된 기초 아티클 보기
         </button>
       </div>
     </div>

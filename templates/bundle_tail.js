@@ -164,6 +164,68 @@ const characterManager = {
     });
   },
 
+  
+  showLevelLockModal(item) {
+    const u = app.userState;
+    const userLvl = app.getLevelInfo(u.xp).level;
+    const reqLvl = item.required_level || 1;
+    const reqInfo = LEVEL_TIERS[reqLvl - 1] || LEVEL_TIERS[0];
+    const userLvlInfo = app.getLevelInfo(u.xp);
+    const xpNeeded = Math.max(0, reqInfo.minXp - u.xp);
+
+    const contentEl = document.getElementById('lock-modal-content');
+    if (!contentEl) return;
+
+    contentEl.innerHTML = `
+      <div class="lock-detail-box">
+        <div>
+          <span style="font-size: 0.8rem; color: #f59e0b; font-weight: 800; display: block; margin-bottom: 2px;">
+            🔒 [${reqInfo.title}] 이상 열람 가능
+          </span>
+          <h4 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin-bottom: 4px;">
+            ${item.title_ko || item.name || item.title || '고급 전략 콘텐츠'}
+          </h4>
+          <span style="font-size: 0.78rem; color: var(--text-dim);">${item.category || item.level || '심화 포커 이론'}</span>
+        </div>
+
+        <div class="lock-tier-row">
+          <div>
+            <span style="font-size: 0.75rem; color: var(--text-dim); display: block;">현재 내 캐릭터</span>
+            <strong style="color: var(--text-main); font-size: 0.92rem;">${userLvlInfo.title} (${u.xp} XP)</strong>
+          </div>
+          <div style="text-align: right;">
+            <span style="font-size: 0.75rem; color: var(--text-dim); display: block;">해금 필요 레벨</span>
+            <strong style="color: #f59e0b; font-size: 0.92rem;">${reqInfo.title} (${reqInfo.minXp} XP)</strong>
+          </div>
+        </div>
+
+        <div style="background: rgba(245, 158, 11, 0.1); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.82rem; color: #f59e0b; font-weight: 700;">
+          ⚡ 앞으로 <strong>${xpNeeded} XP</strong>를 더 획득하면 즉시 해금됩니다!
+        </div>
+
+        <div class="lock-tip-quote">
+          💡 <strong>프로 코치의 조언:</strong><br>
+          기대값(EV), 팟 오즈, 에퀴티 실현 같은 기초 원리가 체화되지 않은 상태에서 턴/리버 오버벳이나 4벳 같은 고급 과정을 먼저 공부하면 실전에서 심각한 릭(Leak)이 발생합니다. 현재 해금된 기초 아티클과 스팟 퀴즈를 먼저 마스터하세요!
+        </div>
+      </div>
+    `;
+
+    const modal = document.getElementById('level-lock-modal-overlay');
+    if (modal) modal.style.display = 'flex';
+    if (window.app && app.playAudioEffect) app.playAudioEffect('wrong');
+  },
+
+  closeLevelLockModal() {
+    const modal = document.getElementById('level-lock-modal-overlay');
+    if (modal) modal.style.display = 'none';
+  },
+
+  handleLockAction() {
+    this.closeLevelLockModal();
+    reader.toggleUnlockedOnly(true);
+    app.navigate('articles');
+  },
+
   saveCharacter() {
     const nameInput = document.getElementById('char-name-input');
     const newName = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : '포커신동';
@@ -358,6 +420,16 @@ const app = {
 
     characterManager.renderHeader();
     characterManager.renderDashboard();
+    if (window.reader && reader.updateFilterPillsUI) {
+      reader.updateFilterPillsUI();
+      reader.renderArticleCards();
+    }
+    if (window.trainer && trainer.updateLevelChips) {
+      trainer.updateLevelChips();
+    }
+    if (window.roadmap && roadmap.load) {
+      roadmap.load();
+    }
     storage.save(this.userState);
   },
 
@@ -459,6 +531,7 @@ const reader = {
   activeLevel: 'all',
   searchQuery: '',
   displayLimit: 24,
+  unlockedOnly: false,
 
   loadArticles() {
     this.updateFilterPillsUI();
@@ -541,12 +614,15 @@ const reader = {
       }
     });
 
-    // 3. Dynamically update Level pill counts based on active category
-    const levelLabels = {
-      'Level 1': 'Lv.1 입문',
-      'Level 2': 'Lv.2 초급',
-      'Level 3': 'Lv.3 중급',
-      'Level 4': 'Lv.4 고급'
+    // 3. Dynamically update Level pill counts and Lock badges based on active category & user level
+    const userLvl = app.getLevelInfo(app.userState.xp).level;
+    const levelMeta = {
+      'Level 1': { title: 'Lv.1 입문', req: 1 },
+      'Level 2': { title: 'Lv.2 초급', req: 2 },
+      'Level 3': { title: 'Lv.3 중급', req: 3 },
+      'Level 4': { title: 'Lv.4 고급', req: 4 },
+      'Level 5': { title: 'Lv.5 심화', req: 5 },
+      'Level 6': { title: 'Lv.6 마스터', req: 6 }
     };
 
     document.querySelectorAll('#article-level-filters .filter-pill').forEach(pill => {
@@ -555,11 +631,13 @@ const reader = {
         const cnt = this.articles.filter(a => this.activeCategory === 'all' || a.category === this.activeCategory).length;
         pill.innerText = `전체 난이도 (${cnt})`;
         pill.style.opacity = '1';
-      } else {
+      } else if (levelMeta[l]) {
+        const meta = levelMeta[l];
+        const isLocked = meta.req > userLvl;
         const cnt = this.articles.filter(a => 
           (this.activeCategory === 'all' || a.category === this.activeCategory) && a.level.startsWith(l)
         ).length;
-        pill.innerText = `${levelLabels[l] || l} (${cnt})`;
+        pill.innerText = `${isLocked ? '🔒 ' : '🔓 '}${meta.title} (${cnt})`;
         pill.style.opacity = (cnt === 0) ? '0.45' : '1';
       }
     });
@@ -573,9 +651,11 @@ const reader = {
 
   renderArticleCards() {
     const container = document.getElementById('articles-grid-container');
+    const userLvl = app.getLevelInfo(app.userState.xp).level;
     const filtered = this.articles.filter(a => {
       if (this.activeCategory !== 'all' && a.category !== this.activeCategory) return false;
       if (this.activeLevel !== 'all' && !a.level.startsWith(this.activeLevel)) return false;
+      if (this.unlockedOnly && (a.required_level || 1) > userLvl) return false;
       if (this.searchQuery) {
         const pool = `${a.title_ko} ${a.title_en} ${a.category} ${a.level} ${a.slug}`.toLowerCase();
         if (!pool.includes(this.searchQuery)) return false;
@@ -606,15 +686,21 @@ const reader = {
 
     container.innerHTML = slice.map(a => {
       const isCompleted = app.userState.completed_articles.includes(a.id);
+      const isLocked = (a.required_level || 1) > userLvl;
+
       return `
-        <div class="article-card" onclick="reader.openArticle('${a.id}')">
+        <div class="article-card ${isLocked ? 'locked' : ''}" onclick="reader.openArticle('${a.id}')" title="${isLocked ? `🔒 Lv.${a.required_level} 달성 시 열람 가능 (클릭하여 조건 확인)` : ''}">
           <div>
             <div class="article-card-header">
-              <span class="badge-level">${a.level}</span>
+              ${isLocked ? `
+                <span class="badge-lock">🔒 Lv.${a.required_level} 해금 필요</span>
+              ` : `
+                <span class="badge-level">${a.level}</span>
+              `}
               <span style="font-size: 0.75rem; background: var(--bg-surface); padding: 2px 7px; border-radius: 4px; color: var(--text-muted); font-weight: 600;">${a.category}</span>
               <span class="read-time" style="margin-left: auto;">⏱️ ${a.read_time}</span>
             </div>
-            <h3>${a.title_ko}</h3>
+            <h3 style="${isLocked ? 'color: var(--text-muted);' : ''}">${a.title_ko}</h3>
             <p class="subtitle-en">${a.title_en}</p>
           </div>
           
@@ -622,7 +708,13 @@ const reader = {
             <div class="author-info">✍️ ${a.author}</div>
             <div style="display: flex; gap: 0.6rem; align-items: center;">
               ${a.original_url ? `<a href="${a.original_url}" target="_blank" onclick="event.stopPropagation()" class="btn-original-link" style="padding: 2px 6px; font-size: 0.75rem;" title="GTO Wizard 공식 원문 열기">🌐 원문 ↗</a>` : ''}
-              ${isCompleted ? `<span class="completed-check" title="학습 완료">✓</span>` : `<span style="font-size: 0.8rem; color: #3b82f6; font-weight: 700;">학습하기 →</span>`}
+              ${isLocked ? `
+                <span style="font-size: 0.8rem; color: #f59e0b; font-weight: 800;">🔒 잠김</span>
+              ` : isCompleted ? `
+                <span class="completed-check" title="학습 완료">✓</span>
+              ` : `
+                <span style="font-size: 0.8rem; color: #3b82f6; font-weight: 700;">학습하기 →</span>
+              `}
             </div>
           </div>
         </div>
@@ -641,9 +733,18 @@ const reader = {
   },
 
   openArticle(articleId) {
-    app.playAudioEffect('click');
     const data = this.articles.find(a => a.id === articleId || a.slug === articleId);
     if (!data) return;
+
+    const userLvl = app.getLevelInfo(app.userState.xp).level;
+    const isLocked = (data.required_level || 1) > userLvl;
+
+    if (isLocked) {
+      characterManager.showLevelLockModal(data);
+      return;
+    }
+
+    app.playAudioEffect('click');
     this.currentArticle = data;
 
     document.getElementById('reader-title-ko').innerText = data.title_ko;
@@ -855,12 +956,51 @@ const trainer = {
     this.renderCurrentQuiz();
   },
 
+  jumpToLevel(lvl) {
+    const idx = this.quizzes.findIndex(q => (q.required_level || 1) === lvl);
+    if (idx !== -1) {
+      this.currentIndex = idx;
+      this.renderCurrentQuiz();
+      app.playAudioEffect('click');
+    }
+  },
+
+  jumpToFirstUnlocked() {
+    this.currentIndex = 0;
+    this.renderCurrentQuiz();
+    app.playAudioEffect('click');
+  },
+
+  updateLevelChips() {
+    const userLvl = app.getLevelInfo(app.userState.xp).level;
+    const curQ = this.quizzes[this.currentIndex];
+    const curLvl = curQ ? (curQ.required_level || 1) : 1;
+
+    document.querySelectorAll('#quiz-level-filter-chips .filter-pill').forEach(btn => {
+      const lvl = parseInt(btn.dataset.qlvl, 10);
+      const isLocked = lvl > userLvl;
+      const isActive = (lvl === curLvl);
+
+      if (isActive) btn.classList.add('active');
+      else btn.classList.remove('active');
+
+      const labels = { 1: 'Lv.1 입문', 2: 'Lv.2 초급', 3: 'Lv.3 중급', 4: 'Lv.4 고급', 5: 'Lv.5 심화', 6: 'Lv.6 마스터' };
+      btn.innerText = `${isLocked ? '🔒 ' : '🔓 '}${labels[lvl] || `Lv.${lvl}`}`;
+    });
+  },
+
   renderCurrentQuiz() {
     if (!this.quizzes.length) return;
     const q = this.quizzes[this.currentIndex];
     this.isAnswered = false;
 
-    document.getElementById('quiz-counter').innerText = `${this.currentIndex + 1} / ${this.quizzes.length}`;
+    const userLvlInfo = app.getLevelInfo(app.userState.xp);
+    const userLvl = userLvlInfo.level;
+    const isLocked = (q.required_level || 1) > userLvl;
+
+    this.updateLevelChips();
+
+    document.getElementById('quiz-counter').innerText = `${this.currentIndex + 1} / ${this.quizzes.length} [${q.level || `Lv.${q.required_level}`}]`;
     document.getElementById('trainer-pot-display').innerText = q.pot;
 
     const boardEl = document.getElementById('trainer-board-cards');
@@ -877,18 +1017,37 @@ const trainer = {
       `HERO (${q.hero_position}) • Effective Stack: ${q.effective_stack}`;
 
     document.getElementById('trainer-situation-desc').innerText = q.situation;
-    document.getElementById('trainer-question-text').innerText = q.question;
 
     const feedbackBox = document.getElementById('trainer-feedback-box');
     feedbackBox.style.display = 'none';
 
+    const questionEl = document.getElementById('trainer-question-text');
     const optGrid = document.getElementById('trainer-options-grid');
-    optGrid.innerHTML = q.options.map((opt, i) => `
-      <button class="quiz-opt-btn" id="quiz-btn-${i}" onclick="trainer.selectOption(${i})">
-        <span>${opt.label}</span>
-        <span style="font-size: 0.85rem; color: var(--text-dim); font-weight: 500;">선택</span>
-      </button>
-    `).join('');
+
+    if (isLocked) {
+      questionEl.innerHTML = `<span style="color: #f59e0b; font-weight: 800;">🔒 [${q.level}] 달성 시 도전 가능한 고급 스팟입니다.</span>`;
+      optGrid.innerHTML = `
+        <div class="quiz-locked-shield" style="grid-column: 1 / -1;">
+          <div style="font-size: 2.8rem; margin-bottom: 0.5rem;">🔒</div>
+          <h3>${q.level} 이상 도전 가능</h3>
+          <p>
+            현재 회원님의 레벨은 <strong>${userLvlInfo.title}</strong>입니다.<br>
+            기초 레벨 퀴즈와 아티클을 먼저 마스터하여 XP를 획득하고 승급하세요!
+          </p>
+          <button class="btn-primary" onclick="trainer.jumpToFirstUnlocked()">
+            🔓 해금된 퀴즈 풀기 (1번으로 이동)
+          </button>
+        </div>
+      `;
+    } else {
+      questionEl.innerText = q.question;
+      optGrid.innerHTML = q.options.map((opt, i) => `
+        <button class="quiz-opt-btn" id="quiz-btn-${i}" onclick="trainer.selectOption(${i})">
+          <span>${opt.label}</span>
+          <span style="font-size: 0.85rem; color: var(--text-dim); font-weight: 500;">선택</span>
+        </button>
+      `).join('');
+    }
   },
 
   createCardHtml(cardStr) {
@@ -998,6 +1157,10 @@ const matrix = {
       }
     }
 
+    const userLvlInfo = app.getLevelInfo(app.userState.xp);
+    const userLvl = userLvlInfo.level;
+    const isLocked = (preset.required_level || 1) > userLvl;
+
     this.currentPreset = preset;
 
     // Sync select dropdown
@@ -1006,18 +1169,60 @@ const matrix = {
       selectEl.value = presetId;
     }
 
-    // Sync quick-chips active state
+    // Sync quick-chips active state and lock indicators
     document.querySelectorAll('#matrix-quick-chips button').forEach(btn => {
+      const pid = btn.dataset.pid;
+      const targetP = this.rangesData.presets.find(p => p.id === pid);
+      const pReqLvl = targetP ? (targetP.required_level || 1) : 1;
+      const pLocked = pReqLvl > userLvl;
+
       if (btn.dataset.pid === presetId) {
         btn.classList.add('active');
       } else {
         btn.classList.remove('active');
       }
+
+      // Add lock icon if locked
+      if (pLocked && !btn.innerText.startsWith('🔒')) {
+        btn.innerText = `🔒 ${btn.innerText.replace('🔒 ', '')}`;
+      } else if (!pLocked && btn.innerText.startsWith('🔒')) {
+        btn.innerText = btn.innerText.replace('🔒 ', '');
+      }
     });
 
-    document.getElementById('matrix-preset-desc').innerText = preset.description;
-
+    const descEl = document.getElementById('matrix-preset-desc');
+    const gridEl = document.getElementById('poker-matrix-grid');
     const legendEl = document.getElementById('matrix-legend-container');
+    const hoverEl = document.getElementById('matrix-hover-inspector');
+
+    if (isLocked) {
+      descEl.innerHTML = `<span style="color: #f59e0b; font-weight: 800;">🔒 [Lv.${preset.required_level} ${preset.required_level_title}] 달성 시 열람 가능한 고급 솔버 레인지입니다.</span>`;
+      
+      gridEl.innerHTML = `
+        <div class="matrix-locked-shield">
+          <div style="font-size: 3.5rem; margin-bottom: 0.5rem;">🔒</div>
+          <h3>${preset.required_level_title} 전용 GTO 솔루션</h3>
+          <p>
+            현재 회원님의 레벨은 <strong>${userLvlInfo.title}</strong>입니다.<br>
+            기초 오픈 레인지를 먼저 실전에 체화하고 레벨업하여 3-Bet 및 15BB 셔브 솔루션을 해금하세요!
+          </p>
+          <button class="btn-primary" onclick="matrix.loadPreset('btn_open')">
+            🔓 기본 해금 레인지 (BTN 오픈) 보기
+          </button>
+        </div>
+      `;
+
+      legendEl.innerHTML = `<div style="color: var(--text-dim); font-size: 0.85rem; padding: 0.5rem;">🔒 레벨 달성 후 범례가 해금됩니다.</div>`;
+      if (hoverEl) {
+        hoverEl.innerHTML = `<div style="color: var(--text-dim); text-align: center; padding: 2rem 0;">🔒 레벨 해금 후 핸드 인스펙터가 작동합니다.</div>`;
+      }
+      document.getElementById('matrix-stats-combos').innerText = '잠김 (Lv.' + preset.required_level + ' 필요)';
+      document.getElementById('matrix-stats-bar').innerHTML = '';
+      return;
+    }
+
+    descEl.innerText = preset.description;
+
     legendEl.innerHTML = preset.legend.map(l => `
       <div class="legend-item">
         <div class="legend-color-box" style="background: ${l.color};"></div>
