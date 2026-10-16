@@ -3904,7 +3904,11 @@ authManager = window.authManager = {
 
       const result = await res.json();
       if (!result || result.success === false) {
-        this.showStatus('gate-login-status', result.error || '일치하는 계정을 찾을 수 없습니다.', true);
+        let errMsg = result.error || '일치하는 계정을 찾을 수 없습니다.';
+        if (errMsg.includes('일치하지') || errMsg.includes('비밀번호')) {
+          errMsg = '비밀번호가 일치하지 않습니다. 다시 확인해주세요.';
+        }
+        this.showStatus('gate-login-status', errMsg, true);
         if (submitBtn) {
           submitBtn.disabled = false;
           submitBtn.innerText = '🔑 로그인하고 게임 시작하기';
@@ -4281,11 +4285,16 @@ authManager = window.authManager = {
   showStatus(elementId, message, isError = false) {
     const el = document.getElementById(elementId);
     if (!el) return;
+    let cleanMsg = String(message || '');
+    cleanMsg = cleanMsg.replace(/\(숫자\s*6자리\)/g, '').replace(/숫자\s*6자리/g, '').trim();
+    if (cleanMsg.includes('일치하지') && cleanMsg.includes('비밀번호')) {
+      cleanMsg = '비밀번호가 일치하지 않습니다. 다시 확인해주세요.';
+    }
     el.style.display = 'block';
     el.style.background = isError ? 'rgba(239, 68, 68, 0.15)' : 'rgba(16, 185, 129, 0.15)';
     el.style.color = isError ? '#fca5a5' : '#6ee7b7';
     el.style.border = isError ? '1px solid rgba(239, 68, 68, 0.3)' : '1px solid rgba(16, 185, 129, 0.3)';
-    el.innerText = message;
+    el.innerText = cleanMsg;
   },
 
   handleSignOut() {
