@@ -1,0 +1,122 @@
+{
+  "levels": [
+    {
+      "level": 1,
+      "title": "Level 1: 포커 수학과 기초 원리",
+      "subtitle": "Fundamentals & Preflop Mathematics",
+      "badge": "🐣 피쉬 탈출",
+      "description": "EV의 개념부터 에퀴티 실현(EQR), 포지션의 이점까지 탄탄한 기초 공사를 다집니다.",
+      "required_xp": 0,
+      "nodes": [
+        {
+          "id": "node-1-1",
+          "article_id": "what-is-expected-value-in-poker",
+          "title": "기대값(EV)의 정석: 포커는 수학 게임이다",
+          "xp": 100,
+          "category": "수학 기초",
+          "status": "unlocked"
+        },
+        {
+          "id": "node-1-2",
+          "article_id": "equity-realization",
+          "title": "에퀴티 실현(EQR): 50% 승률의 치명적인 함정",
+          "xp": 120,
+          "category": "레인지 수학",
+          "status": "unlocked"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Level 2: 플랍 메커니즘과 주도권",
+      "subtitle": "Flop Mechanics & C-Bet Mastery",
+      "badge": "⚔️ 펍 레귤러",
+      "description": "C-bet을 언제, 왜, 얼마의 크기로 해야 하는지 보드 텍스처와 프로텍션의 진실을 배웁니다.",
+      "required_xp": 200,
+      "nodes": [
+        {
+          "id": "node-2-1",
+          "article_id": "the-right-way-to-think-about-protection",
+          "title": "프로텍션 벳의 오해와 진실: 상대를 폴드시킨다는 것",
+          "xp": 150,
+          "category": "플랍 전략",
+          "status": "locked"
+        },
+        {
+          "id": "node-2-2",
+          "article_id": "c-betting-ip-in-3-bet-pots",
+          "title": "3벳 팟 IP C-bet 가이드: 1/3벳과 첵백의 기준",
+          "xp": 180,
+          "category": "3벳 팟",
+          "status": "locked"
+        }
+      ]
+    },
+    {
+      "level": 3,
+      "title": "Level 3: 턴/리버 팟 지오메트리와 블로커",
+      "subtitle": "Turn & River Geometry & Blockers",
+      "badge": "🔥 온라인 그라인더",
+      "description": "블로커/언블로커를 활용한 예술적인 블러프 선정과 기하학적 팟 사이징을 체화합니다.",
+      "required_xp": 500,
+      "nodes": [
+        {
+          "id": "node-3-1",
+          "article_id": "understanding-blockers-in-poker",
+          "title": "블로커(Blockers) 완벽 마스터: 최상의 블러프와 콜",
+          "xp": 200,
+          "category": "고급 이론",
+          "status": "locked"
+        }
+      ]
+    },
+    {
+      "level": 4,
+      "title": "Level 4: 솔버 익스플로잇 & 토너먼트 ICM",
+      "subtitle": "Solver Exploits & Tournament ICM",
+      "badge": "👑 GTO 마스터",
+      "description": "노드락을 통한 상대 릭(Leak) 착취와 토너먼트 머니인을 지배하는 ICM 전략을 마스터합니다.",
+      "required_xp": 800,
+      "nodes": [
+        {
+          "id": "node-4-1",
+          "article_id": "icm-basics",
+          "title": "토너먼트의 심장, ICM 기초와 리스크 프리미엄",
+          "xp": 250,
+          "category": "토너먼트",
+          "status": "locked"
+        }
+      ]
+    }
+  ],
+  "achievements": [
+    {
+      "id": "first_read",
+      "title": "첫 페이지를 넘기다",
+      "desc": "첫 번째 GTO 아티클 완독",
+      "icon": "📖",
+      "unlocked": true
+    },
+    {
+      "id": "quiz_ace",
+      "title": "솔버적 뇌지컬",
+      "desc": "스팟 퀴즈 정답률 100% 달성 (연속 3문제)",
+      "icon": "🎯",
+      "unlocked": false
+    },
+    {
+      "id": "streak_3",
+      "title": "3일 연속 그라인딩",
+      "desc": "3일 연속 학습 스트릭 유지",
+      "icon": "🔥",
+      "unlocked": true
+    },
+    {
+      "id": "blocker_guru",
+      "title": "상대의 패를 읽는 자",
+      "desc": "블로커 관련 퀴즈 모두 정답",
+      "icon": "🔮",
+      "unlocked": false
+    }
+  ]
+}

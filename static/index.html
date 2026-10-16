@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GTO Playbook KR | 포커 이론 인터랙티브 학습 플랫폼</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header>
+    <div class="header-container">
+      <div class="brand" onclick="app.navigate('articles')">
+        <div class="brand-icon">♠</div>
+        <div>
+          <span class="brand-title">GTO Playbook</span>
+          <span class="brand-badge">KR</span>
+        </div>
+      </div>
+
+      <nav class="main-nav">
+        <button class="nav-btn active" data-target="articles" onclick="app.navigate('articles')">
+          <span>📚</span> 아티클 학습
+        </button>
+        <button class="nav-btn" data-target="trainer" onclick="app.navigate('trainer')">
+          <span>🎯</span> 스팟 퀴즈
+        </button>
+        <button class="nav-btn" data-target="matrix" onclick="app.navigate('matrix')">
+          <span>📊</span> 레인지 매트릭스
+        </button>
+        <button class="nav-btn" data-target="roadmap" onclick="app.navigate('roadmap')">
+          <span>🗺️</span> 로드맵
+        </button>
+        <button class="nav-btn" data-target="glossary" onclick="app.navigate('glossary')">
+          <span>📖</span> 용어 사전
+        </button>
+      </nav>
+
+      <div class="user-bar">
+        <div class="streak-pill">
+          <span>🔥</span> <span id="user-streak">3</span>일 연속
+        </div>
+        
+        <div class="xp-container">
+          <div class="xp-header">
+            <span id="user-level-badge">Lv.1 피쉬 탈출</span>
+            <span id="user-xp-text">120 / 200 XP</span>
+          </div>
+          <div class="xp-bar">
+            <div class="xp-progress" id="user-xp-bar" style="width: 60%;"></div>
+          </div>
+        </div>
+
+        <button class="ai-coach-btn" onclick="aiCoach.open()">
+          <span>🤖</span> AI 코치
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main>
+
+    <!-- 1. Articles Hub View -->
+    <section id="view-articles" class="view-section active">
+      <div class="hero-banner">
+        <div class="hero-content">
+          <h1>GTO Wizard 핵심 이론, 이제 한국어로 플레이하며 배운다</h1>
+          <p>세계 최정상 포커 솔버 이론을 3분 요약 카드, 인터랙티브 용어 사전, 실전 핸드 퀴즈로 가장 쉽고 빠르게 체화하세요.</p>
+        </div>
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="app.navigate('trainer')">🎯 바로 스팟 퀴즈 풀기</button>
+          <button class="btn-secondary" onclick="app.navigate('roadmap')">🗺️ 학습 로드맵 보기</button>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <div class="filter-pills" id="article-category-filters">
+          <button class="filter-pill active" onclick="reader.filterCategory('all')">전체 보기</button>
+          <button class="filter-pill" onclick="reader.filterCategory('수학/기초')">수학/기초</button>
+          <button class="filter-pill" onclick="reader.filterCategory('플랍 전략')">플랍 전략</button>
+          <button class="filter-pill" onclick="reader.filterCategory('3벳 팟')">3벳 팟</button>
+          <button class="filter-pill" onclick="reader.filterCategory('고급 이론')">고급 이론</button>
+          <button class="filter-pill" onclick="reader.filterCategory('토너먼트')">토너먼트</button>
+        </div>
+        <div class="article-count-label" id="article-count-label" style="color: var(--text-dim); font-size: 0.9rem;">
+          총 6편의 프리미엄 가이드
+        </div>
+      </div>
+
+      <div class="articles-grid" id="articles-grid-container">
+        <!-- Loaded dynamically via reader.js -->
+      </div>
+    </section>
+
+    <!-- 2. Smart Reader View -->
+    <section id="view-reader" class="view-section">
+      <div style="margin-bottom: 1.5rem;">
+        <button class="btn-secondary" onclick="app.navigate('articles')">← 아티클 목록으로 돌아가기</button>
+      </div>
+
+      <div class="reader-container">
+        <!-- Sidebar Navigation -->
+        <aside class="reader-sidebar">
+          <h4>📖 목차 (Index)</h4>
+          <ul id="reader-toc-list">
+            <!-- Populated dynamically -->
+          </ul>
+          
+          <div style="margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--border-color);">
+            <h4>💡 인터랙티브 기능</h4>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+              파란색 밑줄 단어(<span class="gto-term" style="font-size: 0.75rem;">용어</span>)에 마우스를 올리거나 터치하면 쉬운 비유와 공식 팝업이 뜹니다.
+            </p>
+            <button class="btn-primary" id="btn-complete-article" style="width: 100%; font-size: 0.85rem;" onclick="reader.markCompleted()">
+              ✓ 완독 완료 (+50 XP)
+            </button>
+          </div>
+        </aside>
+
+        <!-- Article Card Body -->
+        <article class="reader-content-card">
+          <div class="reader-header">
+            <div class="reader-header-meta">
+              <span class="badge-level" id="reader-level">Level 1</span>
+              <span class="read-time" id="reader-time">⏱️ 5분 소요</span>
+              <span class="read-time" id="reader-author" style="margin-left: auto;">✍️ GTO Wizard Team</span>
+            </div>
+            <h1 class="reader-title-ko" id="reader-title-ko">아티클 제목</h1>
+            <p class="reader-title-en" id="reader-title-en">Original English Title</p>
+          </div>
+
+          <!-- 3-Point TL;DR Summary Cards -->
+          <div style="margin-bottom: 1rem;">
+            <h3 style="font-size: 1.1rem; color: #fbbf24; display: flex; align-items: center; gap: 0.4rem;">
+              <span>⚡</span> 3분 핵심 요약 (Key Takeaways)
+            </h3>
+          </div>
+          <div class="tldr-grid" id="reader-tldr-grid">
+            <!-- Dynamic cards -->
+          </div>
+
+          <!-- Main Article HTML Body -->
+          <div class="article-body" id="reader-body">
+            <!-- Dynamic content -->
+          </div>
+
+          <!-- Embedded Quiz in Article -->
+          <div id="reader-quiz-container" style="margin-top: 3rem; padding-top: 2rem; border-top: 2px dashed var(--border-color);">
+            <!-- Populated if article has a connected quiz -->
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 3. Spot Quiz / Trainer View -->
+    <section id="view-trainer" class="view-section">
+      <div class="trainer-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <div>
+            <h2 style="font-size: 1.6rem; font-weight: 800;">🎯 GTO 스팟 트레이너</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">실전 스팟에서 GTO 솔루션의 의사결정을 훈련하고 해설을 확인하세요.</p>
+          </div>
+          <div style="display: flex; gap: 0.5rem;" id="quiz-nav-controls">
+            <button class="btn-secondary" onclick="trainer.prevQuiz()">◀ 이전</button>
+            <span id="quiz-counter" style="padding: 0.6rem 1rem; background: var(--bg-card); border-radius: 8px; font-weight: 700;">1 / 5</span>
+            <button class="btn-secondary" onclick="trainer.nextQuiz()">다음 ▶</button>
+          </div>
+        </div>
+
+        <!-- Realistic Poker Table Felt Graphic -->
+        <div class="poker-table-felt">
+          <!-- Table Pot -->
+          <div class="table-pot-info">
+            <span>🪙 POT:</span> <span id="trainer-pot-display">16.5 BB</span>
+          </div>
+
+          <!-- Community Cards (Flop, Turn, River) -->
+          <div class="board-cards-container" id="trainer-board-cards">
+            <!-- Rendered by JS -->
+          </div>
+
+          <!-- Hero Seat & Hand Cards -->
+          <div class="hero-area">
+            <div class="hero-hand-cards" id="trainer-hero-cards">
+              <!-- Rendered by JS -->
+            </div>
+            <div class="hero-label" id="trainer-hero-label">
+              HERO (BTN) • Effective: 92.5 BB
+            </div>
+          </div>
+        </div>
+
+        <!-- Action / Question Area -->
+        <div class="quiz-box">
+          <div class="quiz-situation" id="trainer-situation-desc">
+            상황 설명이 여기에 표시됩니다.
+          </div>
+          <div class="quiz-question" id="trainer-question-text">
+            당신의 최적 액션은 무엇인가요?
+          </div>
+
+          <div class="quiz-options-grid" id="trainer-options-grid">
+            <!-- Rendered by JS -->
+          </div>
+
+          <!-- Feedback & Concept Box (Reveals after answer) -->
+          <div class="quiz-feedback-box" id="trainer-feedback-box">
+            <div class="feedback-status" id="feedback-status-title">
+              ✅ 정답입니다! (+50 XP)
+            </div>
+            <div class="feedback-concept" id="feedback-concept-tag">
+              레인지 어드밴티지 & 스몰 C-bet
+            </div>
+            <div class="feedback-text" id="feedback-explanation-text">
+              해설 본문
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 13x13 Range Matrix View -->
+    <section id="view-matrix" class="view-section">
+      <div style="margin-bottom: 1.5rem;">
+        <h2 style="font-size: 1.6rem; font-weight: 800;">📊 13x13 GTO 레인지 매트릭스</h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">프리플랍 169개 핸드 콤보의 GTO 솔루션 빈도를 인터랙티브하게 탐색하세요.</p>
+      </div>
+
+      <div class="matrix-container">
+        <div class="matrix-grid-wrapper">
+          <div class="matrix-header">
+            <div>
+              <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 4px;">프리셋 선택</label>
+              <select id="matrix-preset-select" onchange="matrix.loadPreset(this.value)" style="background: var(--bg-surface); color: white; border: 1px solid var(--border-color); padding: 0.5rem 1rem; border-radius: 8px; font-weight: 700; outline: none;">
+                <option value="btn_open">버튼(BTN) 2.5bb 오픈 레이스</option>
+                <option value="bb_vs_btn">BB 디펜드 vs BTN 2.5bb 오픈</option>
+              </select>
+            </div>
+            <div id="matrix-preset-desc" style="font-size: 0.85rem; color: var(--text-dim); max-width: 350px; text-align: right;">
+              버튼 오픈 레인지 (약 43.5% 빈도)
+            </div>
+          </div>
+
+          <!-- 13x13 Grid -->
+          <div class="poker-matrix" id="poker-matrix-grid">
+            <!-- 169 cells generated dynamically by matrix.js -->
+          </div>
+        </div>
+
+        <!-- Sidebar Inspector -->
+        <div class="matrix-sidebar">
+          <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 1rem;">🔍 핸드 인스펙터</h3>
+          <div id="matrix-hover-inspector" style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 10px; padding: 1.25rem; min-height: 140px;">
+            <div style="font-size: 1.3rem; font-weight: 900; color: #ffffff;" id="inspect-hand-name">AKs</div>
+            <div style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.75rem;" id="inspect-combos">조합 수: 4 combos (수티드)</div>
+            <div style="font-size: 1rem; font-weight: 700;" id="inspect-action-desc">
+              <span style="color: #ef4444;">Raise 2.5bb (100%)</span>
+            </div>
+          </div>
+
+          <h4 style="margin: 1.5rem 0 0.5rem; font-size: 0.95rem; color: var(--text-muted);">범례 (Legend)</h4>
+          <div class="matrix-legend" id="matrix-legend-container">
+            <!-- Dynamic legend -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Roadmap & Skill Tree View -->
+    <section id="view-roadmap" class="view-section">
+      <div class="roadmap-container">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+          <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem;">🗺️ GTO 마스터 스킬 트리</h2>
+          <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">
+            피쉬에서 시작하여 GTO 마스터까지! 아티클을 정독하고 퀴즈를 맞혀 XP를 획득하고 다음 단계 스킬을 해금하세요.
+          </p>
+        </div>
+
+        <div id="roadmap-levels-container">
+          <!-- Dynamically populated by roadmap.js -->
+        </div>
+
+        <!-- Achievements -->
+        <div style="margin-top: 3rem;">
+          <h3 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 1.25rem;">🏆 달성 뱃지 컬렉션</h3>
+          <div class="feature-grid" id="roadmap-achievements-container">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Glossary View -->
+    <section id="view-glossary" class="view-section">
+      <div style="margin-bottom: 1.5rem;">
+        <h2 style="font-size: 1.6rem; font-weight: 800;">📖 GTO 포커 용어 사전</h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">헷갈리는 포커 전문 용어를 쉬운 비유와 실전 팁으로 검색해 보세요.</p>
+      </div>
+
+      <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+        <input type="text" id="glossary-search-input" placeholder="용어 검색 (예: EV, 블로커, MDF, EQR...)" 
+          style="flex: 1; min-width: 280px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.75rem 1rem; color: white; outline: none; font-size: 0.95rem;"
+          oninput="glossary.filterTerms(this.value)">
+      </div>
+
+      <div class="articles-grid" id="glossary-grid-container">
+        <!-- Rendered by glossary.js -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Interactive Term Hover Popover Element -->
+  <div id="term-popover">
+    <div class="popover-header">
+      <span class="popover-category" id="pop-category">수학/기초</span>
+      <button onclick="termPopover.hide()" style="background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 1rem;">✕</button>
+    </div>
+    <div class="popover-title" id="pop-title">EV (Expected Value)</div>
+    <div class="popover-desc" id="pop-desc">용어 설명</div>
+    <div class="popover-analogy" id="pop-analogy">💡 쉬운 비유</div>
+    <div class="popover-tip" id="pop-tip">⚡ 프로 팁</div>
+  </div>
+
+  <!-- AI Poker Coach Modal -->
+  <div class="ai-modal-overlay" id="ai-modal-overlay" onclick="if(event.target === this) aiCoach.close()">
+    <div class="ai-modal">
+      <div class="ai-modal-header">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-size: 1.3rem;">🤖</span>
+          <div>
+            <h3 style="font-size: 1.05rem; font-weight: 800; color: white;">AI 포커 코치</h3>
+            <span style="font-size: 0.75rem; color: #34d399;">● GTO Wizard 온라인 튜터</span>
+          </div>
+        </div>
+        <button onclick="aiCoach.close()" style="background: none; border: none; color: #94a3b8; font-size: 1.2rem; cursor: pointer;">✕</button>
+      </div>
+
+      <div class="ai-messages-area" id="ai-messages-area">
+        <div class="ai-msg coach">
+          안녕하세요! GTO Wizard 기반 <strong>AI 포커 코치</strong>입니다. 🃏
+          
+          아티클을 읽다 이해되지 않는 스팟이나 용어, 실전에서의 딜레마를 무엇이든 질문해 주세요!
+        </div>
+      </div>
+
+      <div class="ai-suggestions-bar">
+        <button class="ai-suggest-chip" onclick="aiCoach.sendPreset('A72r 보드에서 왜 1/3 작은 벳을 많이 하나요?')">A72r 작은 C-bet 이유</button>
+        <button class="ai-suggest-chip" onclick="aiCoach.sendPreset('블로커와 언블로커의 차이를 쉽게 알려줘')">블로커 vs 언블로커</button>
+        <button class="ai-suggest-chip" onclick="aiCoach.sendPreset('MDF 개념과 공식 쉽게 설명해줘')">MDF 공식이란?</button>
+        <button class="ai-suggest-chip" onclick="aiCoach.sendPreset('토너먼트 ICM이 캐시게임과 어떻게 다른가요?')">토너먼트 ICM 기초</button>
+      </div>
+
+      <div class="ai-input-area">
+        <input type="text" id="ai-user-input" placeholder="질문을 입력하세요..." onkeydown="if(event.key==='Enter') aiCoach.sendMessage()">
+        <button class="btn-primary" onclick="aiCoach.sendMessage()">전송</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/static/js/app.js"></script>
+  <script src="/static/js/reader.js"></script>
+  <script src="/static/js/trainer.js"></script>
+  <script src="/static/js/matrix.js"></script>
+  <script src="/static/js/roadmap.js"></script>
+  <script src="/static/js/glossary.js"></script>
+  <script src="/static/js/ai_coach.js"></script>
+</body>
+</html>
