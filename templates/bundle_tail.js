@@ -725,10 +725,118 @@ const app = {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   },
 
+
+  // 📚 레벨별 지정 필수 학습 커리큘럼 (아티클 & 퀴즈 순차 지정)
+  getCurriculumForLevel(lvl) {
+    lvl = Math.max(1, Math.min(100, parseInt(lvl, 10) || 1));
+    const allArticles = (window.DB && DB.articles) ? DB.articles : [];
+    const allQuizzes = (window.DB && DB.quizzes) ? DB.quizzes : [];
+
+    // Lv.1 ~ Lv.9: 기초 입문 구간 정밀 큐레이션 트랙
+    const curatedTracks = {
+      1: {
+        articleIds: ['what-is-expected-value-in-poker', 'equity-realization', 'common_poker_sayings_that_ruin_your_winrate'],
+        quizIds: ['quiz-16', 'quiz-17'],
+        title: '포커 기초 수학: 기대값(EV) & 에퀴티 실현의 정석'
+      },
+      2: {
+        articleIds: ['what-are-pot-odds-in-poker', 'the-trouble-with-implied-odds', 'what-is-equity-in-poker'],
+        quizIds: ['quiz-20', 'quiz-7'],
+        title: '팟오즈 & 임플라이드 오즈 계산법 완성'
+      },
+      3: {
+        articleIds: ['understanding_domination_the_hidden_logic_behind_every_bet', 'the_3_biggest_leaks_killing_your_winrate', 'a-beginners-guide-to-poker-combinatorics'],
+        quizIds: ['quiz-22'],
+        title: '도미네이션과 치명적 릭(Leak) 차단'
+      },
+      4: {
+        articleIds: ['mdf-alpha', 'protect-equity-and-prosper', 'visualizing-implied-odds'],
+        quizIds: ['quiz-16', 'quiz-7'],
+        title: '최소 방어 빈도(MDF)와 에퀴티 프로텍션'
+      },
+      5: {
+        articleIds: ['what-is-leverage-in-poker', 'what-is-valor-in-poker', 'the-magic-of-equity-buckets'],
+        quizIds: ['quiz-17', 'quiz-20'],
+        title: '레버리지와 에퀴티 버킷 분류법'
+      },
+      6: {
+        articleIds: ['what-is-gto-in-poker', 'what-does-gto-aim-to-achieve', 'interpreting-equity-distributions'],
+        quizIds: ['quiz-22', 'quiz-16'],
+        title: 'GTO의 진정한 목적과 에퀴티 분포 곡선'
+      },
+      7: {
+        articleIds: ['understanding-which-mistakes-cost-you-the-most-money', 'mathematical-misconceptions-in-poker', 'the-value-of-fold-equity-experiment'],
+        quizIds: ['quiz-7', 'quiz-17'],
+        title: '치명적 수학 실수와 폴드 에퀴티 실험'
+      },
+      8: {
+        articleIds: ['top-5-mistakes-in-spin-gos', 'fixing-a-poker-leak-part-1-spotting-and-correcting-errors', 'fixing-a-poker-leak-part-2-the-mental-game'],
+        quizIds: ['quiz-20', 'quiz-22'],
+        title: '에러 교정과 멘탈 게임 강화'
+      },
+      9: {
+        articleIds: ['how_pros_use_solvers_to_crush_pool_leaks', 'how-to-leverage-gto-wizards-ev-comparison-tool', 'plo-just-changed-forever'],
+        quizIds: ['quiz-16', 'quiz-17'],
+        title: '1차 전직 대비: 솔버 활용 및 필드 공략'
+      }
+    };
+
+    let track = curatedTracks[lvl];
+
+    if (!track) {
+      // Lv.10 이상 구간별 자동 순환 트랙
+      const tierNum = lvl >= 85 ? 6 : lvl >= 65 ? 5 : lvl >= 45 ? 4 : lvl >= 25 ? 3 : 2;
+      const tierArticles = allArticles.filter(a => {
+        if (tierNum === 2) return a.level && a.level.includes('Lv.10~24');
+        if (tierNum === 3) return a.level && a.level.includes('Lv.25~44');
+        if (tierNum === 4) return a.level && a.level.includes('Lv.45~64');
+        if (tierNum === 5) return a.level && a.level.includes('Lv.65~84');
+        if (tierNum === 6) return a.level && a.level.includes('Lv.85~100');
+        return true;
+      });
+      const tierQuizzes = allQuizzes.filter(q => (q.tier_num || 1) === tierNum);
+
+      const aPool = tierArticles.length ? tierArticles : allArticles;
+      const qPool = tierQuizzes.length ? tierQuizzes : allQuizzes;
+
+      const artStart = ((lvl - 10) * 2) % Math.max(1, aPool.length - 2);
+      const qStart = (lvl - 10) % qPool.length;
+
+      const artSlice = aPool.slice(artStart, artStart + 3);
+      const qSlice = [qPool[qStart], qPool[(qStart + 1) % qPool.length]].filter(Boolean);
+
+      track = {
+        articleIds: artSlice.map(a => a.id || a.slug),
+        quizIds: qSlice.map(q => q.id),
+        title: `Lv.${lvl} 실전 고급 이론과 스팟 분석`
+      };
+    }
+
+    // 메타데이터 보강
+    const requiredArticles = track.articleIds.map(id => {
+      const found = allArticles.find(a => a.id === id || a.slug === id);
+      return found || { id: id, slug: id, title_ko: id, category: '이론 학습', read_time: '5분' };
+    });
+
+    const requiredQuizzes = track.quizIds.map(qid => {
+      const found = allQuizzes.find(q => q.id === qid);
+      return found || { id: qid, title: qid, category: '실전 스팟', situation: '의사결정' };
+    });
+
+    return {
+      level: lvl,
+      title: track.title,
+      requiredArticles: requiredArticles,
+      requiredQuizzes: requiredQuizzes
+    };
+  },
+
   getLevelInfo(xp) {
     const passed = (this.userState && this.userState.promotions_passed) || [];
-    
-    // 1~100 레벨 계산
+    const completedArts = (this.userState && this.userState.completed_articles) || [];
+    const completedQs = (this.userState && this.userState.completed_quizzes) || [];
+
+    // 1~100 레벨 계산 (순수 XP 기준)
     let rawLevel = 1;
     for (let l = 1; l <= 100; l++) {
       if (xp >= getLevelThreshold(l)) {
@@ -738,10 +846,27 @@ const app = {
       }
     }
 
-    // 6구간 전직 게이트웨이 체크 (Lv.10, Lv.25, Lv.45, Lv.65, Lv.85, Lv.100)
-    let effectiveLevel = rawLevel;
-    let needsExam = null;
+    // 🔒 지정 필수 미션(아티클/퀴즈) 순차 클리어 검증 (미완료 시 레벨업 캡)
+    let effectiveLevel = 1;
+    let missionBlocked = false;
+    let blockedReason = null;
 
+    for (let l = 1; l < rawLevel; l++) {
+      const curMissions = this.getCurriculumForLevel(l);
+      const artsDone = curMissions.requiredArticles.every(a => completedArts.includes(a.id || a.slug));
+      const qsDone = curMissions.requiredQuizzes.every(q => completedQs.includes(q.id));
+
+      if (!artsDone || !qsDone) {
+        effectiveLevel = l;
+        missionBlocked = true;
+        blockedReason = `Lv.${l} 필수 지정 미션 미완료`;
+        break;
+      }
+      effectiveLevel = l + 1;
+    }
+
+    // 6구간 전직 게이트웨이 체크 (Lv.10, Lv.25, Lv.45, Lv.65, Lv.85, Lv.100)
+    let needsExam = null;
     const gateways = [
       { tier: 1, reqLevel: 10 },
       { tier: 2, reqLevel: 25 },
@@ -752,7 +877,7 @@ const app = {
     ];
 
     for (const g of gateways) {
-      if (rawLevel >= g.reqLevel && !passed.includes(g.tier)) {
+      if (effectiveLevel >= g.reqLevel && !passed.includes(g.tier)) {
         effectiveLevel = g.reqLevel;
         needsExam = g.tier;
         break;
@@ -788,7 +913,9 @@ const app = {
       progressPct: progressPct,
       remainingXp: (effectiveLevel >= 100) ? 0 : Math.max(0, nextLvlXp - xp),
       needsExam: needsExam,
-      passedPromotions: passed
+      passedPromotions: passed,
+      missionBlocked: missionBlocked,
+      blockedReason: blockedReason
     };
   },
 
@@ -1496,6 +1623,19 @@ const trainer = {
       this.renderCurrentQuiz();
       app.playAudioEffect('click');
     }
+  },
+
+  openQuizById(quizId) {
+    if (window.authManager && !authManager.isLoggedIn()) {
+      authManager.showGate('login');
+      return;
+    }
+    const idx = this.quizzes.findIndex(q => q.id === quizId);
+    if (idx !== -1) {
+      this.currentIndex = idx;
+    }
+    app.navigate('trainer');
+    this.renderCurrentQuiz();
   },
 
   jumpToFirstUnlocked() {
@@ -2457,21 +2597,18 @@ const questManager = {
     const nextLvl = Math.min(100, curLvl + 1);
     const curXp = u.xp;
 
-    // 요구 실적 가이드
-    const targetArticles = Math.min(150, Math.max(3, Math.ceil(curLvl * 1.5)));
-    const targetQuizzes = Math.min(25, Math.max(3, Math.ceil(curLvl * 0.35)));
+    // 지정 필수 미션 트랙 조회
+    const missions = app.getCurriculumForLevel(curLvl);
+    const reqArticles = missions.requiredArticles;
+    const reqQuizzes = missions.requiredQuizzes;
+
+    const completedArtsCount = reqArticles.filter(a => (u.completed_articles || []).includes(a.id || a.slug)).length;
+    const completedQsCount = reqQuizzes.filter(q => (u.completed_quizzes || []).includes(q.id)).length;
+    const allMissionsComplete = (completedArtsCount === reqArticles.length) && (completedQsCount === reqQuizzes.length);
+
     const targetRanges = Math.min(15, Math.max(2, Math.ceil(curLvl * 0.2)));
-    const targetAi = 1;
-
-    const completedArticlesCount = (u.completed_articles || []).length;
-    const completedQuizzesCount = (u.completed_quizzes || []).length;
     const exploredRangesCount = (u.explored_ranges || []).length;
-    const aiQueriesCount = u.ai_queries_count || 0;
-
-    const artPct = Math.min(100, Math.round((completedArticlesCount / targetArticles) * 100));
-    const quizPct = Math.min(100, Math.round((completedQuizzesCount / targetQuizzes) * 100));
     const rangePct = Math.min(100, Math.round((exploredRangesCount / targetRanges) * 100));
-    const aiPct = Math.min(100, Math.round((aiQueriesCount / targetAi) * 100));
 
     const needsExam = lvlInfo.needsExam;
 
@@ -2527,91 +2664,127 @@ const questManager = {
 
       <!-- Quest Requirements Section -->
       <div style="margin-bottom: 1.75rem;">
-        <h4 style="font-size: 1.05rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.85rem; display: flex; align-items: center; gap: 0.4rem;">
-          <span>🎯</span> Lv.${curLvl} ➔ Lv.${nextLvl} 레벨업 미션 진행도
-        </h4>
-
-        <!-- Quest 1: Articles -->
-        <div class="quest-card ${completedArticlesCount >= targetArticles ? 'completed' : ''}">
-          <div class="quest-info-group">
-            <div class="quest-title-row">
-              <span>📖 GTO 아티클 정독</span>
-              <span style="font-size: 0.78rem; color: ${completedArticlesCount >= targetArticles ? '#34d399' : 'var(--text-dim)'};">
-                ${completedArticlesCount} / ${targetArticles}편 (${artPct}%)
-              </span>
-            </div>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">
-              스크롤 끝까지 완독 + 35초 정독 타이머 완료 시 1회 인정 (+50 XP)
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.85rem;">
+          <div>
+            <h4 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin: 0 0 0.25rem; display: flex; align-items: center; gap: 0.4rem;">
+              <span>🎯</span> Lv.${curLvl} ➔ Lv.${nextLvl} 레벨업 필수 지정 미션
+            </h4>
+            <p style="font-size: 0.82rem; color: #60a5fa; margin: 0; font-weight: 700;">
+              ✨ ${missions.title}
             </p>
-            <div class="quest-progress-track">
-              <div class="quest-progress-fill" style="width: ${artPct}%;"></div>
-            </div>
           </div>
-          <button onclick="questManager.closeModal(); app.navigate('articles')" class="btn-secondary" style="padding: 0.45rem 0.85rem; font-size: 0.8rem; font-weight: 700; white-space: nowrap;">
-            도서관 이동 ➔
-          </button>
+          <div>
+            ${allMissionsComplete ? `
+              <span style="background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); padding: 4px 12px; border-radius: 14px; font-size: 0.82rem; font-weight: 800;">
+                🎉 필수 미션 모두 완료!
+              </span>
+            ` : `
+              <span style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); padding: 4px 12px; border-radius: 14px; font-size: 0.82rem; font-weight: 800;">
+                ⏳ 미션 진행 중 (${completedArtsCount}/${reqArticles.length} 아티클, ${completedQsCount}/${reqQuizzes.length} 퀴즈)
+              </span>
+            `}
+          </div>
         </div>
 
-        <!-- Quest 2: Spot Quizzes -->
-        <div class="quest-card ${completedQuizzesCount >= targetQuizzes ? 'completed' : ''}">
-          <div class="quest-info-group">
-            <div class="quest-title-row">
-              <span>🎯 실전 스팟 퀴즈 정답</span>
-              <span style="font-size: 0.78rem; color: ${completedQuizzesCount >= targetQuizzes ? '#34d399' : 'var(--text-dim)'};">
-                ${completedQuizzesCount} / ${targetQuizzes}개 (${quizPct}%)
-              </span>
-            </div>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">
-              다양한 스트리트 의사결정 퀴즈 정답 맞히기 (+50 XP)
-            </p>
-            <div class="quest-progress-track">
-              <div class="quest-progress-fill" style="width: ${quizPct}%;"></div>
-            </div>
-          </div>
-          <button onclick="questManager.closeModal(); app.navigate('trainer')" class="btn-secondary" style="padding: 0.45rem 0.85rem; font-size: 0.8rem; font-weight: 700; white-space: nowrap;">
-            퀴즈 풀기 ➔
-          </button>
+        <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 10px; padding: 0.75rem 1rem; margin-bottom: 1.15rem; font-size: 0.82rem; color: #93c5fd; line-height: 1.5;">
+          💡 <strong>순차 레벨업 규칙</strong>: 레벨업을 위해서는 경험치(XP)뿐만 아니라, 현재 레벨에 <strong>지정된 필수 아티클과 스팟 퀴즈를 모두 완료</strong>해야 다음 레벨로 승급합니다.
         </div>
 
-        <!-- Quest 3: Matrix Range Exploration -->
-        <div class="quest-card ${exploredRangesCount >= targetRanges ? 'completed' : ''}">
-          <div class="quest-info-group">
-            <div class="quest-title-row">
-              <span>📊 13x13 매트릭스 레인지 탐색</span>
-              <span style="font-size: 0.78rem; color: ${exploredRangesCount >= targetRanges ? '#34d399' : 'var(--text-dim)'};">
-                ${exploredRangesCount} / ${targetRanges}개 (${rangePct}%)
-              </span>
+        <!-- Mission 1: Specific Required Articles -->
+        <div style="background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 14px; padding: 1.15rem; margin-bottom: 1.15rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.65rem;">
+            <div style="display: flex; align-items: center; gap: 0.45rem;">
+              <span style="font-size: 1.3rem;">📖</span>
+              <strong style="font-size: 0.96rem; color: var(--text-main);">지정 필수 GTO 아티클</strong>
             </div>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">
-              포지션별 프리플랍/3벳 레인지 프리셋 인스펙션 (+20 XP)
-            </p>
-            <div class="quest-progress-track">
-              <div class="quest-progress-fill" style="width: ${rangePct}%;"></div>
+            <span style="font-size: 0.82rem; font-weight: 800; color: ${completedArtsCount === reqArticles.length ? '#34d399' : '#fbbf24'};">
+              ${completedArtsCount} / ${reqArticles.length} 완독
+            </span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+            ${reqArticles.map(a => {
+              const isDone = (u.completed_articles || []).includes(a.id || a.slug);
+              return `
+                <div style="background: ${isDone ? 'rgba(16, 185, 129, 0.06)' : 'rgba(0,0,0,0.12)'}; border: 1px solid ${isDone ? 'rgba(16, 185, 129, 0.35)' : 'var(--border-color)'}; border-radius: 10px; padding: 0.75rem 0.9rem; display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                  <div style="flex: 1; min-width: 220px;">
+                    <div style="display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.25rem;">
+                      <span style="font-size: 0.95rem;">${isDone ? '✅' : '⏳'}</span>
+                      <span style="font-size: 0.72rem; color: var(--text-dim); background: rgba(59, 130, 246, 0.12); padding: 1px 6px; border-radius: 6px;">${a.category || '이론'}</span>
+                      <span style="font-size: 0.72rem; color: #fbbf24; font-weight: 700;">+50 XP</span>
+                    </div>
+                    <div style="font-size: 0.92rem; font-weight: 700; color: var(--text-main); line-height: 1.4;">${a.title_ko || a.title}</div>
+                  </div>
+                  <div>
+                    ${isDone ? `
+                      <button onclick="questManager.closeModal(); reader.openArticle('${a.id || a.slug}')" class="btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; font-weight: 700;">
+                        다시 읽기
+                      </button>
+                    ` : `
+                      <button onclick="questManager.closeModal(); reader.openArticle('${a.id || a.slug}')" class="btn-primary" style="padding: 0.45rem 1rem; font-size: 0.82rem; font-weight: 800; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);">
+                        📖 지금 읽기 ➔
+                      </button>
+                    `}
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+
+        <!-- Mission 2: Specific Required Spot Quizzes -->
+        <div style="background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 14px; padding: 1.15rem; margin-bottom: 1.15rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.65rem;">
+            <div style="display: flex; align-items: center; gap: 0.45rem;">
+              <span style="font-size: 1.3rem;">🎯</span>
+              <strong style="font-size: 0.96rem; color: var(--text-main);">지정 필수 실전 스팟 퀴즈</strong>
+            </div>
+            <span style="font-size: 0.82rem; font-weight: 800; color: ${completedQsCount === reqQuizzes.length ? '#34d399' : '#fbbf24'};">
+              ${completedQsCount} / ${reqQuizzes.length} 정답
+            </span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+            ${reqQuizzes.map(q => {
+              const isDone = (u.completed_quizzes || []).includes(q.id);
+              return `
+                <div style="background: ${isDone ? 'rgba(16, 185, 129, 0.06)' : 'rgba(0,0,0,0.12)'}; border: 1px solid ${isDone ? 'rgba(16, 185, 129, 0.35)' : 'var(--border-color)'}; border-radius: 10px; padding: 0.75rem 0.9rem; display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                  <div style="flex: 1; min-width: 220px;">
+                    <div style="display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.25rem;">
+                      <span style="font-size: 0.95rem;">${isDone ? '✅' : '⏳'}</span>
+                      <span style="font-size: 0.72rem; color: var(--text-dim); background: rgba(245, 158, 11, 0.12); padding: 1px 6px; border-radius: 6px;">${q.street || 'Preflop'} • ${q.category || '스팟'}</span>
+                      <span style="font-size: 0.72rem; color: #fbbf24; font-weight: 700;">+50 XP</span>
+                    </div>
+                    <div style="font-size: 0.92rem; font-weight: 700; color: var(--text-main); line-height: 1.4;">${q.title}</div>
+                  </div>
+                  <div>
+                    ${isDone ? `
+                      <button onclick="questManager.closeModal(); trainer.openQuizById('${q.id}')" class="btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; font-weight: 700;">
+                        다시 풀기
+                      </button>
+                    ` : `
+                      <button onclick="questManager.closeModal(); trainer.openQuizById('${q.id}')" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; padding: 0.45rem 1rem; font-size: 0.82rem; font-weight: 800; border-radius: 8px; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);">
+                        🎯 퀴즈 풀기 ➔
+                      </button>
+                    `}
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+
+        <!-- Mission 3: Matrix Exploration -->
+        <div style="background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 14px; padding: 1rem 1.15rem; display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 1.3rem;">📊</span>
+            <div>
+              <strong style="font-size: 0.92rem; color: var(--text-main); display: block;">13x13 매트릭스 레인지 탐색</strong>
+              <span style="font-size: 0.78rem; color: var(--text-dim);">포지션별 프리플랍/3벳 레인지 프리셋 인스펙션 (+20 XP)</span>
             </div>
           </div>
-          <button onclick="questManager.closeModal(); app.navigate('matrix')" class="btn-secondary" style="padding: 0.45rem 0.85rem; font-size: 0.8rem; font-weight: 700; white-space: nowrap;">
+          <button onclick="questManager.closeModal(); app.navigate('matrix')" class="btn-secondary" style="padding: 0.4rem 0.85rem; font-size: 0.8rem; font-weight: 700; white-space: nowrap;">
             매트릭스 보기 ➔
-          </button>
-        </div>
-
-        <!-- Quest 4: AI Coach Question -->
-        <div class="quest-card ${aiQueriesCount >= targetAi ? 'completed' : ''}">
-          <div class="quest-info-group">
-            <div class="quest-title-row">
-              <span>🤖 AI 포커 코치 전략 질의</span>
-              <span style="font-size: 0.78rem; color: ${aiQueriesCount >= targetAi ? '#34d399' : 'var(--text-dim)'};">
-                ${aiQueriesCount} / ${targetAi}회 (${aiPct}%)
-              </span>
-            </div>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">
-              궁금한 포커 핸드나 GTO 개념 질문하기
-            </p>
-            <div class="quest-progress-track">
-              <div class="quest-progress-fill" style="width: ${aiPct}%;"></div>
-            </div>
-          </div>
-          <button onclick="questManager.closeModal(); aiCoach.open()" class="btn-secondary" style="padding: 0.45rem 0.85rem; font-size: 0.8rem; font-weight: 700; white-space: nowrap;">
-            코치 질문 ➔
           </button>
         </div>
       </div>
