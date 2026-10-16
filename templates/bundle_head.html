@@ -2848,20 +2848,27 @@ body.authenticated #auth-gate-screen {
             <div class="char-main-info">
               <div class="char-header-row">
                 <div class="char-name-group">
-                  <h2 class="char-name-title" id="dash-char-name"></h2>
-                  <span class="char-kakao-tag" id="dash-kakao-tag" style="background: rgba(250, 204, 21, 0.12); color: #fbbf24; border: 1px solid rgba(250, 204, 21, 0.35); padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.25rem;">💬 단톡방 닉네임: 미등록</span>
-                  <span class="char-style-tag" id="dash-char-style">⚡ TAG 스타일</span>
-                  <span class="char-tier-badge" id="dash-char-tier">[입문] 동네 피쉬 (Lv.1~9) 🐟</span>
-                  <span class="char-rank-badge" id="dash-char-rank" onclick="app.navigate('ranking')" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.25)); border: 1.5px solid #f59e0b; color: #fbbf24; padding: 3px 10px; border-radius: 12px; font-size: 0.78rem; font-weight: 800; display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer; transition: all 0.2s ease;" title="전체 실시간 랭킹보드 바로가기">🏆 실시간 랭킹: #1위</span>
+                  <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                    <h2 class="char-name-title" id="dash-char-name"></h2>
+                    <span class="char-kakao-tag" id="dash-kakao-tag" style="background: rgba(250, 204, 21, 0.12); color: #fbbf24; border: 1px solid rgba(250, 204, 21, 0.35); padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.25rem;">💬 단톡방 닉네임: 미등록</span>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; margin-top: 4px;">
+                    <span class="char-rank-badge" id="dash-char-rank" onclick="app.navigate('ranking')" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(217, 119, 6, 0.3)); border: 1.5px solid #f59e0b; color: #fbbf24; padding: 3px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 800; display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 6px rgba(245, 158, 11, 0.2);" title="전체 실시간 랭킹보드 바로가기">🏆 실시간 랭킹: #1위</span>
+                    <span class="char-style-tag" id="dash-char-style">⚡ TAG 스타일</span>
+                    <span class="char-tier-badge" id="dash-char-tier">[입문] 동네 피쉬 (Lv.1~9) 🐟</span>
+                  </div>
                 </div>
                 <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-                  <button class="btn-character-quest" onclick="questManager.openModal()" title="레벨업 퀘스트 및 6구간 전직 현황 확인" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.25)); border: 1.5px solid #f59e0b; color: #fbbf24; padding: 0.45rem 0.9rem; border-radius: 8px; font-size: 0.82rem; font-weight: 800; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 0.35rem;">
+                  <!-- Button 1: Gold / Amber (Quest) -->
+                  <button class="btn-character-quest" onclick="questManager.openModal()" title="레벨업 퀘스트 및 6구간 전직 현황 확인" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(217, 119, 6, 0.32)); border: 1.5px solid #f59e0b; color: #fbbf24; padding: 0.5rem 0.95rem; border-radius: 8px; font-size: 0.82rem; font-weight: 800; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 0.35rem; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.25);">
                     <span>📜</span> 퀘스트 정보
                   </button>
-                  <button class="btn-character-guide" onclick="guidebookManager.openModal()" title="레벨 및 6구간 전직 시스템 공식 가이드북" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.25)); border: 1.5px solid #3b82f6; color: #60a5fa; padding: 0.45rem 0.9rem; border-radius: 8px; font-size: 0.82rem; font-weight: 800; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 0.35rem;">
+                  <!-- Button 2: Royal Blue (Guidebook) -->
+                  <button class="btn-character-guide" onclick="guidebookManager.openModal()" title="레벨 및 6구간 전직 시스템 공식 가이드북" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(37, 99, 235, 0.32)); border: 1.5px solid #3b82f6; color: #93c5fd; padding: 0.5rem 0.95rem; border-radius: 8px; font-size: 0.82rem; font-weight: 800; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 0.35rem; box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);">
                     <span>📖</span> 가이드북
                   </button>
-                  <button class="btn-character-stats" id="btn-toggle-stats" onclick="characterManager.toggleStats()" title="4대 핵심 능력치 접기/펼치기">
+                  <!-- Button 3: Emerald Mint Green (Stats) -->
+                  <button class="btn-character-stats" id="btn-toggle-stats" onclick="characterManager.toggleStats()" title="4대 핵심 능력치 접기/펼치기" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(5, 150, 105, 0.32)); border: 1.5px solid #10b981; color: #6ee7b7; padding: 0.5rem 0.95rem; border-radius: 8px; font-size: 0.82rem; font-weight: 800; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 0.35rem; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);">
                     <span>📊</span> 4대 능력치 <span id="stats-toggle-arrow">▼</span>
                   </button>
                 </div>

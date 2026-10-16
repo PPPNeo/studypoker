@@ -2275,6 +2275,26 @@ const matrix = {
 
 var roadmap = window.roadmap = {
   data: DB.roadmap,
+  activeQuestCollapsed: false,
+  careerRoadmapCollapsed: false,
+
+  toggleActiveQuest() {
+    this.activeQuestCollapsed = !this.activeQuestCollapsed;
+    const body = document.getElementById('active-quest-body');
+    const arrow = document.getElementById('active-quest-arrow');
+    if (body) body.style.display = this.activeQuestCollapsed ? 'none' : 'block';
+    if (arrow) arrow.innerText = this.activeQuestCollapsed ? '▼ 펼치기' : '▲ 접기';
+    if (window.app && app.playAudioEffect) app.playAudioEffect('click');
+  },
+
+  toggleCareerRoadmap() {
+    this.careerRoadmapCollapsed = !this.careerRoadmapCollapsed;
+    const body = document.getElementById('career-roadmap-body');
+    const arrow = document.getElementById('career-roadmap-arrow');
+    if (body) body.style.display = this.careerRoadmapCollapsed ? 'none' : 'block';
+    if (arrow) arrow.innerText = this.careerRoadmapCollapsed ? '▼ 로드맵 펼치기' : '▲ 로드맵 접기';
+    if (window.app && app.playAudioEffect) app.playAudioEffect('click');
+  },
 
   load() {
     const rm = this.data;
@@ -2306,10 +2326,17 @@ var roadmap = window.roadmap = {
               ✨ ${missions.title}
             </p>
           </div>
-          <span class="level-badge" style="background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff;">
-            Lv.${curLvl}
-          </span>
+          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+            <button id="btn-toggle-active-quest" onclick="roadmap.toggleActiveQuest()" class="btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.78rem; font-weight: 800; border-radius: 8px; display: inline-flex; align-items: center; gap: 0.3rem; background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.4); color: #93c5fd; cursor: pointer;">
+              <span id="active-quest-arrow">${this.activeQuestCollapsed ? '▼ 펼치기' : '▲ 접기'}</span>
+            </button>
+            <span class="level-badge" style="background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff;">
+              Lv.${curLvl}
+            </span>
+          </div>
         </div>
+
+        <div id="active-quest-body" style="${this.activeQuestCollapsed ? 'display: none;' : ''}">
 
         <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.5;">
           추천 학습 로드맵의 마스터 스킬 트리는 <strong>현재 레벨업 퀘스트와 100% 실시간 연동</strong>됩니다. 아래 노드를 차례대로 완료하여 다음 레벨로 승급하세요!
@@ -2386,108 +2413,119 @@ var roadmap = window.roadmap = {
           </button>
         </div>
       </div>
-    `;
+    </div>
+  `;
 
-    // 2. 전체 6구간 전직 마스터 로드맵
-    const careerHtml = rm.levels.map((lvl, lvlIdx) => {
-      const isLocked = (userState.xp < lvl.required_xp);
-      const tierLvlKey = `Level ${lvlIdx + 1}`;
-      const tierArticles = (window.DB && DB.articles) ? DB.articles.filter(a => a.level && a.level.startsWith(tierLvlKey)) : [];
-      const tierTotalCount = tierArticles.length;
-      const tierCompletedCount = tierArticles.filter(a => (userState.completed_articles || []).includes(a.id || a.slug)).length;
-      const tierProgressPct = tierTotalCount > 0 ? Math.round((tierCompletedCount / tierTotalCount) * 100) : 0;
+  // 2. 전체 6구간 전직 마스터 로드맵
+  const careerHtml = rm.levels.map((lvl, lvlIdx) => {
+    const isLocked = (userState.xp < lvl.required_xp);
+    const tierLvlKey = `Level ${lvlIdx + 1}`;
+    const tierArticles = (window.DB && DB.articles) ? DB.articles.filter(a => a.level && a.level.startsWith(tierLvlKey)) : [];
+    const tierTotalCount = tierArticles.length;
+    const tierCompletedCount = tierArticles.filter(a => (userState.completed_articles || []).includes(a.id || a.slug)).length;
+    const tierProgressPct = tierTotalCount > 0 ? Math.round((tierCompletedCount / tierTotalCount) * 100) : 0;
 
-      const tierReqDescs = [
-        "Lv.1~9 기초 수료 시 1차 전직 심사 시험(5문항) 응시 가능",
-        "Lv.10~24 도달 시 2차 전직 심사 시험(5문항) 응시 가능",
-        "Lv.25~44 도달 시 3차 전직 심사 시험(5문항) 응시 가능",
-        "Lv.45~64 도달 시 4차 전직 심사 시험(5문항) 응시 가능",
-        "Lv.65~84 도달 시 5차 전직 최종 챔피언 심사 응시 가능",
-        "최고 영예: WSOP 하이롤러 챔피언 마스터 레벨"
-      ];
-      const tierReqDesc = tierReqDescs[lvlIdx] || "전직 심사 시험 통과 필요";
+    const tierReqDescs = [
+      "Lv.1~9 기초 수료 시 1차 전직 심사 시험(5문항) 응시 가능",
+      "Lv.10~24 도달 시 2차 전직 심사 시험(5문항) 응시 가능",
+      "Lv.25~44 도달 시 3차 전직 심사 시험(5문항) 응시 가능",
+      "Lv.45~64 도달 시 4차 전직 심사 시험(5문항) 응시 가능",
+      "Lv.65~84 도달 시 5차 전직 최종 챔피언 심사 응시 가능",
+      "최고 영예: WSOP 하이롤러 챔피언 마스터 레벨"
+    ];
+    const tierReqDesc = tierReqDescs[lvlIdx] || "전직 심사 시험 통과 필요";
 
-      return `
-        <div class="roadmap-level-card ${isLocked ? 'locked' : ''}" style="margin-bottom: 2rem;">
-          <div class="level-badge-header">
-            <div>
-              <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin: 0;">${lvl.title}</h3>
-                <span style="font-size: 0.72rem; padding: 2px 8px; border-radius: 10px; font-weight: 800; ${isLocked ? 'background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3);' : 'background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3);'}">
-                  ${isLocked ? '🔒 잠금됨' : '🔓 해금됨'}
-                </span>
-              </div>
-              <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 4px;">${lvl.subtitle}</p>
+    return `
+      <div class="roadmap-level-card ${isLocked ? 'locked' : ''}" style="margin-bottom: 2rem;">
+        <div class="level-badge-header">
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+              <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin: 0;">${lvl.title}</h3>
+              <span style="font-size: 0.72rem; padding: 2px 8px; border-radius: 10px; font-weight: 800; ${isLocked ? 'background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3);' : 'background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3);'}">
+                ${isLocked ? '🔒 잠금됨' : '🔓 해금됨'}
+              </span>
             </div>
-            <span class="level-badge">${lvl.badge}</span>
+            <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 4px;">${lvl.subtitle}</p>
           </div>
+          <span class="level-badge">${lvl.badge}</span>
+        </div>
 
-          <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 0.75rem;">
-            ${lvl.description}
-          </p>
+        <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+          ${lvl.description}
+        </p>
 
-          <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 10px; padding: 0.75rem 1rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
-            <div style="font-size: 0.82rem; color: var(--text-main);">
-              <span style="color: #fbbf24; font-weight: 700;">🎖️ 전직 요건:</span> ${tierReqDesc}
-            </div>
-            <div style="font-size: 0.82rem; color: #60a5fa; font-weight: 700;">
-              티어 정복도: ${tierCompletedCount}/${tierTotalCount}편 (${tierProgressPct}%)
-            </div>
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 10px; padding: 0.75rem 1rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+          <div style="font-size: 0.82rem; color: var(--text-main);">
+            <span style="color: #fbbf24; font-weight: 700;">🎖️ 전직 요건:</span> ${tierReqDesc}
           </div>
+          <div style="font-size: 0.82rem; color: #60a5fa; font-weight: 700;">
+            티어 정복도: ${tierCompletedCount}/${tierTotalCount}편 (${tierProgressPct}%)
+          </div>
+        </div>
 
-          ${isLocked ? `
-            <div style="background: rgba(0,0,0,0.2); padding: 0.75rem; border-radius: 8px; font-size: 0.85rem; color: #f59e0b; font-weight: 700;">
-              🔒 해금 조건: ${lvl.required_xp.toLocaleString()} XP 달성 필요 (현재: ${userState.xp.toLocaleString()} XP)
-            </div>
-          ` : `
-            <div class="nodes-list">
-              ${lvl.nodes.map((n, idx) => {
-                const isCompleted = userState.completed_articles.includes(n.article_id);
-                const foundArt = (window.DB && DB.articles) ? DB.articles.find(a => a.id === n.article_id || a.slug === n.article_id) : null;
-                const nodeTitle = (foundArt && (foundArt.title_ko || foundArt.title)) || n.title;
-                return `
-                  <div class="node-item ${isCompleted ? 'completed' : ''}" onclick="reader.openArticle('${n.article_id}')">
-                    <div style="display: flex; align-items: center; gap: 0.75rem;">
-                      <span style="font-size: 1.2rem;">${isCompleted ? '✅' : '📖'}</span>
-                      <div>
-                        <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
-                          <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">${nodeTitle}</div>
-                          <span style="font-size: 0.68rem; background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); padding: 1px 6px; border-radius: 10px; font-weight: 700;">커리어 핵심</span>
-                        </div>
-                        <span style="font-size: 0.75rem; color: var(--text-dim);">${n.category}</span>
+        ${isLocked ? `
+          <div style="background: rgba(0,0,0,0.2); padding: 0.75rem; border-radius: 8px; font-size: 0.85rem; color: #f59e0b; font-weight: 700;">
+            🔒 해금 조건: ${lvl.required_xp.toLocaleString()} XP 달성 필요 (현재: ${userState.xp.toLocaleString()} XP)
+          </div>
+        ` : `
+          <div class="nodes-list">
+            ${lvl.nodes.map((n, idx) => {
+              const isCompleted = userState.completed_articles.includes(n.article_id);
+              const foundArt = (window.DB && DB.articles) ? DB.articles.find(a => a.id === n.article_id || a.slug === n.article_id) : null;
+              const nodeTitle = (foundArt && (foundArt.title_ko || foundArt.title)) || n.title;
+              return `
+                <div class="node-item ${isCompleted ? 'completed' : ''}" onclick="reader.openArticle('${n.article_id}')">
+                  <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <span style="font-size: 1.2rem;">${isCompleted ? '✅' : '📖'}</span>
+                    <div>
+                      <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+                        <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">${nodeTitle}</div>
+                        <span style="font-size: 0.68rem; background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); padding: 1px 6px; border-radius: 10px; font-weight: 700;">커리어 핵심</span>
                       </div>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 0.75rem;">
-                      <span style="font-size: 0.8rem; color: #fbbf24; font-weight: 700;">+${n.xp} XP</span>
-                      <button class="btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
-                        ${isCompleted ? '✓ 완독 (다시읽기)' : '📖 아티클 열람'}
-                      </button>
+                      <span style="font-size: 0.75rem; color: var(--text-dim);">${n.category}</span>
                     </div>
                   </div>
-                `;
-              }).join('')}
-            </div>
+                  <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <span style="font-size: 0.8rem; color: #fbbf24; font-weight: 700;">+${n.xp} XP</span>
+                    <button class="btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
+                      ${isCompleted ? '✓ 완독 (다시읽기)' : '📖 아티클 열람'}
+                    </button>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
 
-            <div style="margin-top: 1rem; text-align: center;">
-              <button onclick="reader.filterLevel('${tierLvlKey}'); app.navigate('articles');" class="btn-secondary" style="font-size: 0.82rem; font-weight: 700; padding: 0.45rem 1.2rem; border-color: rgba(59, 130, 246, 0.4); color: #60a5fa; background: rgba(59, 130, 246, 0.08); border-radius: 8px;">
-                📚 [${lvl.badge}] 티어 도서관 아티클 전체보기 (${tierTotalCount}편) ➔
-              </button>
-            </div>
-          `}
-        </div>
-      `;
-    }).join('');
-
-    levelsContainer.innerHTML = curMissionsHtml + `
-      <div style="margin: 2.5rem 0 1.25rem;">
-        <h3 style="font-size: 1.3rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem;">
-          <span>⚔️</span> 전체 6구간 마스터 전직 커리어 로드맵
-        </h3>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0.25rem 0 0;">
-          레벨업과 전직 심사 시험을 통과할수록 상위 커리어 티어가 차례대로 열립니다.
-        </p>
+          <div style="margin-top: 1rem; text-align: center;">
+            <button onclick="reader.filterLevel('${tierLvlKey}'); app.navigate('articles');" class="btn-secondary" style="font-size: 0.82rem; font-weight: 700; padding: 0.45rem 1.2rem; border-color: rgba(59, 130, 246, 0.4); color: #60a5fa; background: rgba(59, 130, 246, 0.08); border-radius: 8px;">
+              📚 [${lvl.badge}] 티어 도서관 아티클 전체보기 (${tierTotalCount}편) ➔
+            </button>
+          </div>
+        `}
       </div>
-    ` + careerHtml;
+    `;
+  }).join('');
+
+  levelsContainer.innerHTML = curMissionsHtml + `
+    <div style="margin: 2.5rem 0 1.25rem;">
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.6rem;">
+        <div>
+          <h3 style="font-size: 1.3rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+            <span>⚔️</span> 전체 6구간 마스터 전직 커리어 로드맵
+          </h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0.25rem 0 0;">
+            레벨업과 전직 심사 시험을 통과할수록 상위 커리어 티어가 차례대로 열립니다.
+          </p>
+        </div>
+        <button id="btn-toggle-career-roadmap" onclick="roadmap.toggleCareerRoadmap()" class="btn-secondary" style="padding: 0.4rem 0.85rem; font-size: 0.8rem; font-weight: 800; border-radius: 8px; display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border-color); color: var(--text-main); cursor: pointer;">
+          <span id="career-roadmap-arrow">${this.careerRoadmapCollapsed ? '▼ 로드맵 펼치기' : '▲ 로드맵 접기'}</span>
+        </button>
+      </div>
+    </div>
+    <div id="career-roadmap-body" style="${this.careerRoadmapCollapsed ? 'display: none;' : ''}">
+      ${careerHtml}
+    </div>
+  `;
 
     const dynamicAchievements = [
       {
