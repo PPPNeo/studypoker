@@ -118,6 +118,9 @@ const storage = {
   },
   save(state) {
     localStorage.setItem('studypoker_user', JSON.stringify(state));
+    if (window.authManager && authManager.isLoggedIn && authManager.isLoggedIn()) {
+      authManager.syncToCloud();
+    }
   }
 };
 
@@ -530,6 +533,22 @@ const characterManager = {
 
     if (dAv) dAv.innerText = u.avatar || '🦈';
     if (dNm) dNm.innerText = u.name || '포커신동';
+
+    const dKakao = document.getElementById('dash-kakao-tag');
+    if (dKakao) {
+      if (u.kakao_name) {
+        dKakao.innerText = `💬 카톡: ${u.kakao_name}`;
+        dKakao.style.display = 'inline-flex';
+      } else {
+        dKakao.innerText = `💬 카톡: 미연동`;
+      }
+    }
+
+    const dAuthBtn = document.getElementById('dash-auth-btn');
+    if (dAuthBtn && window.authManager) {
+      const isAuth = authManager.isLoggedIn();
+      dAuthBtn.innerHTML = isAuth ? '<span>⚙️</span> 내 계정' : '<span>👤</span> 회원가입/로그인';
+    }
     
     const styleInfo = PLAYSTYLES[u.playstyle] || PLAYSTYLES.TAG;
     if (dSt) dSt.innerText = styleInfo.title;
@@ -629,11 +648,15 @@ const app = {
 
     themeManager.init();
     characterManager.init();
+    if (window.authManager) authManager.init();
     this.updateUserBar();
     roadmap.load();
     reader.loadArticles();
     matrix.init();
     glossary.load();
+    if (window.rankingManager && rankingManager.fetchCloudPlayers) {
+      rankingManager.fetchCloudPlayers();
+    }
 
     const hash = window.location.hash.replace('#', '');
     if (hash && ['articles', 'trainer', 'matrix', 'roadmap', 'glossary', 'ranking'].includes(hash)) {
@@ -685,7 +708,8 @@ const app = {
     } else if (viewId === 'glossary') {
       glossary.load();
     } else if (viewId === 'ranking') {
-      if (window.rankingManager && rankingManager.render) {
+      if (window.rankingManager) {
+        if (rankingManager.fetchCloudPlayers) rankingManager.fetchCloudPlayers();
         rankingManager.render();
       }
     }
@@ -2829,6 +2853,26 @@ const promotionManager = {
 // ==========================================
 const rankingManager = {
   currentFilter: 'all', // 'all', 'top10', 'near'
+  cloudPlayers: [],
+
+  async fetchCloudPlayers() {
+    try {
+      if (!window.SUPABASE_CONFIG) return;
+      const res = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/poker_users?select=id,game_nickname,kakao_nickname,avatar,playstyle,level,xp,completed_articles,completed_quizzes,promotions_passed&order=level.desc,xp.desc&limit=100`, {
+        headers: {
+          'apikey': SUPABASE_CONFIG.key,
+          'Authorization': 'Bearer ' + SUPABASE_CONFIG.key
+        }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        this.cloudPlayers = data || [];
+        this.render();
+      }
+    } catch (e) {
+      console.warn("Failed to fetch cloud ranking players:", e);
+    }
+  },
 
   // 실존 포커 전설 및 가상 랭커 데이터 (내 계정과 함께 실시간 경쟁)
   rivals: [
@@ -2870,11 +2914,16 @@ const rankingManager = {
   getAllPlayers() {
     const u = app.userState;
     const lvlInfo = app.getLevelInfo(u.xp);
+    const auth = (window.authManager && authManager.isLoggedIn()) ? authManager.getAuthUser() : null;
+    const isMeAuth = !!auth;
+    const myKakao = (auth && auth.kakao_nickname) ? auth.kakao_nickname : (u.kakao_name || '');
 
     // 내 캐릭터 객체 생성 (실시간 반영)
     const me = {
       isMe: true,
       name: u.name || "포커신동",
+      kakao_nickname: myKakao,
+      isCertified: isMeAuth,
       avatar: u.avatar || "🦈",
       style: u.playstyle || "TAG",
       level: lvlInfo.level,
@@ -2886,19 +2935,58 @@ const rankingManager = {
       badgeClass: lvlInfo.tier.badgeClass
     };
 
-    // 라이벌 봇들과 합치기
-    const list = this.rivals.map(r => {
-      const tierObj = PROMOTION_TIERS[r.tierNum] || PROMOTION_TIERS[0];
-      return {
-        ...r,
-        isMe: false,
-        tierBadge: tierObj.badge,
-        badgeClass: tierObj.badgeClass,
-        quizzes: Math.floor(r.articles * 0.4)
-      };
-    });
+    // 실시간 클라우드 회원 목록 변환
+    const cloudMembers = (this.cloudPlayers || [])
+      .filter(p => {
+        if (auth && p.id === auth.id) return false;
+        if (p.game_nickname === me.name) return false;
+        return true;
+      })
+      .map(p => {
+        let tNum = 0;
+        const pLevel = p.level || 1;
+        for (let i = PROMOTION_TIERS.length - 1; i >= 0; i--) {
+          if (pLevel >= PROMOTION_TIERS[i].minLevel) {
+            tNum = i;
+            break;
+          }
+        }
+        const tierObj = PROMOTION_TIERS[tNum] || PROMOTION_TIERS[0];
+        return {
+          isMe: false,
+          name: p.game_nickname,
+          kakao_nickname: p.kakao_nickname || '',
+          isCertified: true,
+          avatar: p.avatar || '🦈',
+          style: p.playstyle || 'TAG',
+          level: pLevel,
+          xp: p.xp || 0,
+          articles: Array.isArray(p.completed_articles) ? p.completed_articles.length : 0,
+          quizzes: Array.isArray(p.completed_quizzes) ? p.completed_quizzes.length : 0,
+          tierNum: tNum,
+          tierBadge: tierObj.badge,
+          badgeClass: tierObj.badgeClass
+        };
+      });
 
-    list.push(me);
+    // 라이벌 봇들 (이름 중복 방지)
+    const takenNames = new Set([me.name, ...cloudMembers.map(c => c.name)]);
+    const botList = this.rivals
+      .filter(r => !takenNames.has(r.name))
+      .map(r => {
+        const tierObj = PROMOTION_TIERS[r.tierNum] || PROMOTION_TIERS[0];
+        return {
+          ...r,
+          isMe: false,
+          kakao_nickname: '',
+          isCertified: false,
+          tierBadge: tierObj.badge,
+          badgeClass: tierObj.badgeClass,
+          quizzes: Math.floor(r.articles * 0.4)
+        };
+      });
+
+    const list = [me, ...cloudMembers, ...botList];
 
     // 🏆 핵심 정렬 로직:
     // 1순위: 레벨이 높은 순 (level DESC)
@@ -2943,8 +3031,11 @@ const rankingManager = {
                 상위 ${topPct}%
               </span>
             </div>
-            <div style="font-size: 0.95rem; color: var(--text-main); margin-top: 0.25rem;">
-              <strong>${me.name}</strong> • <span class="rank-badge ${me.badgeClass}">${me.tierBadge}</span> • <span style="color: #60a5fa; font-weight: 700;">Lv.${me.level}</span>
+            <div style="font-size: 0.95rem; color: var(--text-main); margin-top: 0.25rem; display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+              <strong>${me.name}</strong>
+              ${me.kakao_nickname ? `<span style="font-size: 0.75rem; color: #f59e0b; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 4px; padding: 1px 6px; font-weight: 700;">💬 카톡: ${me.kakao_nickname}</span>` : ''}
+              ${me.isCertified ? `<span style="font-size: 0.68rem; background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); padding: 1px 5px; border-radius: 4px; font-weight: 800;">⭐ 인증회원</span>` : ''}
+              • <span class="rank-badge ${me.badgeClass}">${me.tierBadge}</span> • <span style="color: #60a5fa; font-weight: 700;">Lv.${me.level}</span>
             </div>
           </div>
         </div>
@@ -2986,9 +3077,12 @@ const rankingManager = {
             <div style="font-size: 1.1rem; font-weight: 800; color: ${isGold ? '#fbbf24' : 'var(--text-main)'}; margin-bottom: 0.2rem;">
               ${medal}
             </div>
-            <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.25rem;">
-              ${p.name} ${p.isMe ? '<span style="color: #3b82f6; font-size: 0.75rem;">(나)</span>' : ''}
+            <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; gap: 0.3rem; flex-wrap: wrap;">
+              <span>${p.name}</span>
+              ${p.isMe ? '<span style="color: #3b82f6; font-size: 0.75rem;">(나)</span>' : ''}
+              ${p.isCertified ? '<span style="color: #34d399; font-size: 0.72rem;" title="클라우드 정회원">⭐</span>' : ''}
             </div>
+            ${p.kakao_nickname ? `<div style="font-size: 0.72rem; color: #f59e0b; margin-bottom: 0.35rem; font-weight: 600;">💬 ${p.kakao_nickname}</div>` : ''}
             <span class="rank-badge ${p.badgeClass}" style="margin-bottom: 0.5rem;">${p.tierBadge}</span>
             <div style="font-size: 0.85rem; font-weight: 800; color: #60a5fa;">
               Lv.${p.level} • ${p.xp.toLocaleString()} XP
@@ -3025,8 +3119,10 @@ const rankingManager = {
               <div style="display: flex; align-items: center; gap: 0.65rem;">
                 <span style="font-size: 1.5rem;">${p.avatar}</span>
                 <div>
-                  <div style="display: flex; align-items: center; gap: 0.4rem;">
+                  <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
                     <strong style="color: var(--text-main); font-size: 0.95rem;">${p.name}</strong>
+                    ${p.kakao_nickname ? `<span style="font-size: 0.72rem; color: #f59e0b; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 4px; padding: 1px 5px; font-weight: 600;">💬 카톡: ${p.kakao_nickname}</span>` : ''}
+                    ${p.isCertified ? `<span style="font-size: 0.68rem; background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); padding: 1px 5px; border-radius: 4px; font-weight: 800;">⭐ 인증회원</span>` : ''}
                     ${p.isMe ? '<span style="background: #3b82f6; color: #fff; font-size: 0.68rem; font-weight: 800; padding: 1px 5px; border-radius: 4px;">나</span>' : ''}
                   </div>
                   <span style="font-size: 0.75rem; color: var(--text-dim);">${p.style} 스타일</span>
@@ -3643,36 +3739,60 @@ const syncManager = {
         </div>
       `;
     } else if (this.currentTab === 'cloud') {
+      const isAuth = window.authManager && authManager.isLoggedIn();
+      const authUser = isAuth ? authManager.getAuthUser() : null;
+
       contentHtml = `
         <div style="padding: 0.5rem 0;">
           <h4 style="font-size: 1.05rem; font-weight: 800; color: #fbbf24; margin-bottom: 0.4rem;">
-            ☁️ 클라우드 간편 동기화 (닉네임 + PIN 4자리)
+            ☁️ 스터디포커 공식 클라우드 계정 (모바일 ↔ PC 실시간 자동 연동)
           </h4>
           <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0 0 1.25rem;">
-            기억하기 쉬운 닉네임과 4자리 비밀번호(PIN)를 설정해 두면 언제 어디서든 클라우드에서 바로 불러올 수 있습니다.
+            게임 닉네임, 카카오톡 단톡방 닉네임, 이메일, 6자리 PIN으로 가입하면 모바일과 PC 어디서 접속하든 캐릭터 데이터가 실시간 자동 저장 및 동기화됩니다.
           </p>
 
           <div style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 12px; padding: 1.25rem;">
-            <div style="margin-bottom: 1rem;">
-              <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.4rem;">내 닉네임</label>
-              <input type="text" id="sync-cloud-nick" value="${u.name || '포커신동'}" style="width: 100%; padding: 0.65rem 0.85rem; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.9rem; box-sizing: border-box;">
-            </div>
+            ${isAuth && authUser ? `
+              <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 10px; padding: 1rem; margin-bottom: 1.25rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+                  <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #34d399; box-shadow: 0 0 8px #34d399;"></span>
+                  <strong style="color: #34d399; font-size: 0.95rem;">클라우드 계정 연동 완료</strong>
+                </div>
+                <div style="font-size: 0.88rem; color: var(--text-main); margin-bottom: 0.25rem;">
+                  현재 로그인된 계정: <strong>${authUser.game_nickname}</strong> ${authUser.kakao_nickname ? `(카톡: ${authUser.kakao_nickname})` : ''}
+                </div>
+                <div style="font-size: 0.78rem; color: var(--text-muted);">
+                  스마트폰이나 다른 PC에서도 동일한 계정으로 로그인하시면 모든 공부 기록이 자동으로 이어집니다.
+                </div>
+              </div>
 
-            <div style="margin-bottom: 1.25rem;">
-              <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.4rem;">4자리 PIN 비밀번호</label>
-              <input type="password" id="sync-cloud-pin" maxlength="8" placeholder="예: 1234" style="width: 100%; padding: 0.65rem 0.85rem; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.9rem; box-sizing: border-box;">
-            </div>
+              <div style="display: flex; gap: 0.75rem;">
+                <button onclick="syncManager.closeModal(); authManager.openModal('profile');" class="btn-primary" style="flex: 1; padding: 0.75rem; font-size: 0.9rem; font-weight: 800; border-radius: 8px;">
+                  ⚙️ 내 계정 관리 & 즉시 백업
+                </button>
+              </div>
+            ` : `
+              <div style="margin-bottom: 1.25rem;">
+                <p style="font-size: 0.88rem; color: var(--text-main); line-height: 1.5; margin: 0 0 0.75rem;">
+                  아직 계정을 등록하지 않으셨습니다. 지금 30초 회원가입을 하시면 현재 기기의 모든 레벨과 완독 아티클이 클라우드에 영구 백업됩니다.
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.8rem; color: #94a3b8;">
+                  <div>• <strong>게임 닉네임</strong>: 게임 내 캐릭터명 & 랭킹보드 표시</div>
+                  <div>• <strong>카톡방 닉네임</strong>: 카톡 오픈채팅방 랭킹 연동</div>
+                  <div>• <strong>이메일</strong>: 비밀번호 분실 시 재설정</div>
+                  <div>• <strong>비밀번호 6자리</strong>: 모바일/PC 어디서든 간편 로그인 PIN</div>
+                </div>
+              </div>
 
-            <div style="display: flex; gap: 0.75rem;">
-              <button onclick="syncManager.saveToCloud()" class="btn-primary" style="flex: 1; padding: 0.75rem; font-size: 0.9rem; font-weight: 800; border-radius: 8px;">
-                ☁️ 클라우드에 저장
-              </button>
-              <button onclick="syncManager.loadFromCloud()" class="btn-secondary" style="flex: 1; padding: 0.75rem; font-size: 0.9rem; font-weight: 800; border-radius: 8px; border-color: #3b82f6; color: #60a5fa;">
-                📥 클라우드에서 불러오기
-              </button>
-            </div>
-
-            <div id="sync-cloud-status" style="margin-top: 1rem; font-size: 0.85rem; text-align: center;"></div>
+              <div style="display: flex; gap: 0.75rem;">
+                <button onclick="syncManager.closeModal(); authManager.openModal('signup');" class="btn-primary" style="flex: 1; padding: 0.75rem; font-size: 0.9rem; font-weight: 800; border-radius: 8px; background: linear-gradient(135deg, #10b981, #059669);">
+                  ✨ 30초 회원가입 시작하기
+                </button>
+                <button onclick="syncManager.closeModal(); authManager.openModal('login');" class="btn-secondary" style="flex: 1; padding: 0.75rem; font-size: 0.9rem; font-weight: 800; border-radius: 8px; border-color: #3b82f6; color: #60a5fa;">
+                  🔑 기존 계정 로그인
+                </button>
+              </div>
+            `}
           </div>
         </div>
       `;
@@ -3719,6 +3839,862 @@ const syncManager = {
         ${contentHtml}
       </div>
     `;
+  }
+};
+
+// ==========================================
+// 🔐 Supabase Cloud Authentication & Multi-Device Sync Manager
+// ==========================================
+const SUPABASE_CONFIG = {
+  url: 'https://fjlxlvozbrtigsmlbury.supabase.co',
+  key: 'sb_publishable_Wd1XDhi2nWMYib7M_2tS0A_Fxt-FtO_'
+};
+
+const authManager = {
+  currentMode: 'login', // 'login', 'signup', 'forgot', 'profile'
+  _syncDebounceTimer: null,
+  _isSyncing: false,
+
+  init() {
+    this.renderAuthButton();
+    if (this.isLoggedIn()) {
+      this.syncFromCloudSilently();
+    }
+  },
+
+  isLoggedIn() {
+    try {
+      const s = localStorage.getItem('studypoker_auth');
+      if (!s) return false;
+      const parsed = JSON.parse(s);
+      return !!(parsed && parsed.id && parsed.game_nickname);
+    } catch (e) {
+      return false;
+    }
+  },
+
+  getAuthUser() {
+    try {
+      const s = localStorage.getItem('studypoker_auth');
+      return s ? JSON.parse(s) : null;
+    } catch (e) {
+      return null;
+    }
+  },
+
+  openModal(mode = 'login') {
+    if (this.isLoggedIn() && mode === 'login') {
+      mode = 'profile';
+    }
+    this.currentMode = mode;
+    this.render();
+    const overlay = document.getElementById('auth-modal-overlay');
+    if (overlay) overlay.style.display = 'flex';
+    if (window.app && app.playAudioEffect) app.playAudioEffect('click');
+  },
+
+  closeModal() {
+    const overlay = document.getElementById('auth-modal-overlay');
+    if (overlay) overlay.style.display = 'none';
+  },
+
+  switchMode(mode) {
+    this.currentMode = mode;
+    this.render();
+    if (window.app && app.playAudioEffect) app.playAudioEffect('click');
+  },
+
+  renderAuthButton() {
+    const container = document.getElementById('header-auth-container');
+    const isAuth = this.isLoggedIn();
+    const auth = this.getAuthUser();
+
+    if (container) {
+      if (isAuth && auth) {
+        container.innerHTML = `
+          <button class="header-action-btn" onclick="authManager.openModal('profile')" title="내 계정 정보 및 클라우드 동기화" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.3)); border: 1.5px solid #10b981; color: #34d399; padding: 0.45rem 0.85rem; border-radius: 20px; font-weight: 800; cursor: pointer; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 0.45rem; transition: all 0.2s ease;">
+            <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #34d399; box-shadow: 0 0 6px #34d399;"></span>
+            <span>${this.escapeHtml(auth.game_nickname)}</span>
+          </button>
+        `;
+      } else {
+        container.innerHTML = `
+          <button class="header-action-btn" onclick="authManager.openModal('login')" title="클라우드 회원가입 및 로그인" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.3)); border: 1.5px solid #f59e0b; color: #fbbf24; padding: 0.45rem 0.85rem; border-radius: 20px; font-weight: 800; cursor: pointer; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 0.4rem; transition: all 0.2s ease;">
+            <span>👤</span> 로그인 / 회원가입
+          </button>
+        `;
+      }
+    }
+
+    // 캐릭터 대시보드 내 계정 연동 버튼 및 태그 갱신
+    const dAuthBtn = document.getElementById('dash-auth-btn');
+    if (dAuthBtn) {
+      dAuthBtn.innerHTML = isAuth ? '<span>⚙️</span> 내 계정 관리' : '<span>👤</span> 회원가입 / 로그인';
+    }
+    const dKakao = document.getElementById('dash-kakao-tag');
+    if (dKakao) {
+      if (isAuth && auth && auth.kakao_nickname) {
+        dKakao.innerText = `💬 카톡: ${auth.kakao_nickname}`;
+        dKakao.style.display = 'inline-flex';
+      } else if (app.userState.kakao_name) {
+        dKakao.innerText = `💬 카톡: ${app.userState.kakao_name}`;
+        dKakao.style.display = 'inline-flex';
+      } else {
+        dKakao.innerText = `💬 카톡: 미연동`;
+      }
+    }
+  },
+
+  escapeHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/[&<>"']/g, m => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[m]));
+  },
+
+  render() {
+    const titleEl = document.getElementById('auth-modal-title');
+    const descEl = document.getElementById('auth-modal-desc');
+    const iconEl = document.getElementById('auth-modal-icon');
+    const bodyEl = document.getElementById('auth-modal-body');
+
+    if (!bodyEl) return;
+
+    if (this.currentMode === 'login') {
+      if (titleEl) titleEl.innerText = '스터디포커 간편 로그인';
+      if (descEl) descEl.innerText = '가입하신 게임 닉네임 또는 이메일과 6자리 PIN으로 로그인하세요.';
+      if (iconEl) iconEl.innerText = '🔑';
+
+      bodyEl.innerHTML = `
+        <div style="padding: 0.25rem 0;">
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+            <button onclick="authManager.switchMode('login')" style="flex: 1; padding: 0.6rem; border-radius: 8px; font-size: 0.9rem; font-weight: 800; background: #3b82f6; color: #fff; border: none; cursor: pointer;">
+              🔑 로그인
+            </button>
+            <button onclick="authManager.switchMode('signup')" style="flex: 1; padding: 0.6rem; border-radius: 8px; font-size: 0.9rem; font-weight: 700; background: var(--bg-card); color: var(--text-muted); border: 1px solid var(--border-color); cursor: pointer;">
+              ✨ 30초 회원가입
+            </button>
+          </div>
+
+          <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 1.25rem; font-size: 0.83rem; color: #93c5fd; line-height: 1.5;">
+            💡 <strong>크로스 디바이스 연동</strong>: 스마트폰과 PC 어디서든 동일한 계정으로 로그인하면 내 캐릭터 레벨, 경험치, 완독 아티클이 자동으로 동기화됩니다.
+          </div>
+
+          <form onsubmit="event.preventDefault(); authManager.handleLoginSubmit();" style="display: flex; flex-direction: column; gap: 1rem;">
+            <div>
+              <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.4rem;">
+                아이디 (게임 닉네임 또는 가입 이메일)
+              </label>
+              <input type="text" id="auth-login-id" required placeholder="예: 포커신동 또는 user@email.com" autocomplete="username" style="width: 100%; padding: 0.75rem 0.9rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.95rem; box-sizing: border-box;">
+            </div>
+
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                <label style="font-size: 0.85rem; font-weight: 700; color: var(--text-main);">
+                  비밀번호 (숫자 6자리 PIN)
+                </label>
+                <a href="javascript:void(0)" onclick="authManager.switchMode('forgot')" style="font-size: 0.78rem; color: #60a5fa; text-decoration: none;">
+                  비밀번호를 잊으셨나요?
+                </a>
+              </div>
+              <input type="password" id="auth-login-pin" required maxlength="6" pattern="[0-9]{6}" inputmode="numeric" placeholder="숫자 6자리 입력 (예: 123456)" autocomplete="current-password" style="width: 100%; padding: 0.75rem 0.9rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.95rem; box-sizing: border-box; letter-spacing: 2px;">
+            </div>
+
+            <div id="auth-login-status" style="display: none; padding: 0.6rem; border-radius: 6px; font-size: 0.83rem; text-align: center;"></div>
+
+            <button type="submit" id="auth-login-submit-btn" class="btn-primary" style="width: 100%; padding: 0.85rem; font-size: 1rem; font-weight: 800; border-radius: 8px; margin-top: 0.5rem;">
+              🔑 로그인하고 동기화 시작하기
+            </button>
+          </form>
+
+          <div style="text-align: center; margin-top: 1.25rem; font-size: 0.85rem; color: var(--text-muted);">
+            아직 회원이 아니신가요? <a href="javascript:void(0)" onclick="authManager.switchMode('signup')" style="color: #fbbf24; font-weight: 700; text-decoration: underline;">간편 회원가입 (30초 소요)</a>
+          </div>
+        </div>
+      `;
+    } else if (this.currentMode === 'signup') {
+      if (titleEl) titleEl.innerText = '스터디포커 정회원 가입';
+      if (descEl) descEl.innerText = '모바일 ↔ PC 실시간 클라우드 동기화 및 단톡방 랭킹 연동을 지원합니다.';
+      if (iconEl) iconEl.innerText = '✨';
+
+      const currentNick = (app.userState && app.userState.name) ? app.userState.name : '';
+      const currentKakao = (app.userState && app.userState.kakao_name) ? app.userState.kakao_name : '';
+
+      bodyEl.innerHTML = `
+        <div style="padding: 0.25rem 0;">
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+            <button onclick="authManager.switchMode('login')" style="flex: 1; padding: 0.6rem; border-radius: 8px; font-size: 0.9rem; font-weight: 700; background: var(--bg-card); color: var(--text-muted); border: 1px solid var(--border-color); cursor: pointer;">
+              🔑 로그인
+            </button>
+            <button onclick="authManager.switchMode('signup')" style="flex: 1; padding: 0.6rem; border-radius: 8px; font-size: 0.9rem; font-weight: 800; background: #3b82f6; color: #fff; border: none; cursor: pointer;">
+              ✨ 30초 회원가입
+            </button>
+          </div>
+
+          <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 1.25rem; font-size: 0.82rem; color: #fbbf24; line-height: 1.5;">
+            ⭐ <strong>정회원 혜택</strong>:
+            <div style="margin-top: 0.3rem; color: var(--text-main); font-size: 0.8rem;">
+              • <strong>모바일 ↔ PC 실시간 동기화</strong>: 폰에서 공부하고 PC에서 바로 이어하기<br>
+              • <strong>단톡방 랭킹 연동</strong>: 카톡 닉네임 표기 & [⭐ 인증회원] 뱃지 수여<br>
+              • 이메일 인증 링크 대기 없이 <strong>즉시 가입 완료</strong>!
+            </div>
+          </div>
+
+          <form onsubmit="event.preventDefault(); authManager.handleSignUpSubmit();" style="display: flex; flex-direction: column; gap: 0.9rem;">
+            <div>
+              <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">
+                1. 게임 닉네임 <span style="color: #ef4444;">*</span> <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: 400;">(캐릭터명 & 로그인 아이디)</span>
+              </label>
+              <input type="text" id="auth-reg-game-nick" required minlength="2" maxlength="16" value="${this.escapeHtml(currentNick)}" placeholder="예: 압구정포커신 (2~16자)" autocomplete="nickname" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box;">
+            </div>
+
+            <div>
+              <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">
+                2. 카카오톡 단톡방 닉네임 <span style="color: #ef4444;">*</span> <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: 400;">(랭킹보드 표시용)</span>
+              </label>
+              <input type="text" id="auth-reg-kakao-nick" required minlength="1" maxlength="20" value="${this.escapeHtml(currentKakao)}" placeholder="예: 홍길동/오픈채팅방닉네임" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box;">
+            </div>
+
+            <div>
+              <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">
+                3. 이메일 주소 <span style="color: #ef4444;">*</span> <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: 400;">(비밀번호 분실 시 재설정용)</span>
+              </label>
+              <input type="email" id="auth-reg-email" required placeholder="예: user@example.com" autocomplete="email" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box;">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+              <div>
+                <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">
+                  4. 비밀번호 <span style="color: #ef4444;">*</span> <span style="font-size: 0.72rem; color: var(--text-dim); font-weight: 400;">(숫자 6자리)</span>
+                </label>
+                <input type="password" id="auth-reg-pin" required maxlength="6" pattern="[0-9]{6}" inputmode="numeric" placeholder="숫자 6자리" autocomplete="new-password" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box; letter-spacing: 2px;">
+              </div>
+              <div>
+                <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">
+                  비밀번호 확인 <span style="color: #ef4444;">*</span>
+                </label>
+                <input type="password" id="auth-reg-pin-confirm" required maxlength="6" pattern="[0-9]{6}" inputmode="numeric" placeholder="숫자 6자리 재입력" autocomplete="new-password" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box; letter-spacing: 2px;">
+              </div>
+            </div>
+
+            <div id="auth-reg-status" style="display: none; padding: 0.6rem; border-radius: 6px; font-size: 0.83rem; text-align: center;"></div>
+
+            <button type="submit" id="auth-reg-submit-btn" class="btn-primary" style="width: 100%; padding: 0.85rem; font-size: 1rem; font-weight: 800; border-radius: 8px; margin-top: 0.5rem; background: linear-gradient(135deg, #10b981, #059669);">
+              ✨ 가입하고 현재 데이터 클라우드 동기화하기
+            </button>
+          </form>
+
+          <div style="text-align: center; margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+            이미 계정이 있으신가요? <a href="javascript:void(0)" onclick="authManager.switchMode('login')" style="color: #60a5fa; font-weight: 700; text-decoration: underline;">로그인하기</a>
+          </div>
+        </div>
+      `;
+    } else if (this.currentMode === 'forgot') {
+      if (titleEl) titleEl.innerText = '비밀번호 재설정';
+      if (descEl) descEl.innerText = '가입한 이메일과 게임 닉네임으로 6자리 PIN 비밀번호를 즉시 재설정합니다.';
+      if (iconEl) iconEl.innerText = '🔍';
+
+      bodyEl.innerHTML = `
+        <div style="padding: 0.25rem 0;">
+          <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 1.25rem; font-size: 0.83rem; color: #93c5fd; line-height: 1.5;">
+            🔍 <strong>비밀번호 재설정</strong>: 가입 시 입력하신 <strong>이메일 주소</strong>와 <strong>게임 닉네임</strong>을 입력하시면, 새 6자리 PIN으로 즉시 변경됩니다.
+          </div>
+
+          <form onsubmit="event.preventDefault(); authManager.handleForgotSubmit();" style="display: flex; flex-direction: column; gap: 0.9rem;">
+            <div>
+              <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">가입 이메일 주소</label>
+              <input type="email" id="auth-forgot-email" required placeholder="예: user@example.com" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box;">
+            </div>
+
+            <div>
+              <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">게임 닉네임</label>
+              <input type="text" id="auth-forgot-nick" required placeholder="가입한 게임 닉네임" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box;">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+              <div>
+                <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">새 비밀번호 (6자리)</label>
+                <input type="password" id="auth-forgot-pin" required maxlength="6" pattern="[0-9]{6}" inputmode="numeric" placeholder="새 숫자 6자리" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box; letter-spacing: 2px;">
+              </div>
+              <div>
+                <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">새 비밀번호 확인</label>
+                <input type="password" id="auth-forgot-pin-confirm" required maxlength="6" pattern="[0-9]{6}" inputmode="numeric" placeholder="6자리 재입력" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box; letter-spacing: 2px;">
+              </div>
+            </div>
+
+            <div id="auth-forgot-status" style="display: none; padding: 0.6rem; border-radius: 6px; font-size: 0.83rem; text-align: center;"></div>
+
+            <button type="submit" id="auth-forgot-submit-btn" class="btn-primary" style="width: 100%; padding: 0.85rem; font-size: 1rem; font-weight: 800; border-radius: 8px; margin-top: 0.5rem;">
+              🔑 새 비밀번호로 변경하기
+            </button>
+          </form>
+
+          <div style="text-align: center; margin-top: 1rem; font-size: 0.85rem;">
+            <a href="javascript:void(0)" onclick="authManager.switchMode('login')" style="color: #60a5fa; font-weight: 700; text-decoration: underline;">
+              ← 로그인 화면으로 돌아가기
+            </a>
+          </div>
+        </div>
+      `;
+    } else if (this.currentMode === 'profile') {
+      const auth = this.getAuthUser();
+      const u = app.userState;
+      const lvlInfo = app.getLevelInfo(u.xp || 0);
+
+      if (titleEl) titleEl.innerText = '내 계정 및 클라우드 동기화 상태';
+      if (descEl) descEl.innerText = '현재 로그인된 계정 정보와 클라우드 실시간 동기화 상태입니다.';
+      if (iconEl) iconEl.innerText = '👤';
+
+      bodyEl.innerHTML = `
+        <div style="padding: 0.25rem 0;">
+          <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(59, 130, 246, 0.15)); border: 1.5px solid rgba(16, 185, 129, 0.4); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.25rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.5rem;">
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <span style="font-size: 2.2rem;">${u.avatar || '🦈'}</span>
+                <div>
+                  <div style="font-size: 1.15rem; font-weight: 800; color: var(--text-main);">
+                    ${this.escapeHtml(auth ? auth.game_nickname : u.name)}
+                  </div>
+                  <div style="font-size: 0.82rem; color: #34d399; font-weight: 700; display: flex; align-items: center; gap: 0.35rem; margin-top: 2px;">
+                    <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #34d399; box-shadow: 0 0 6px #34d399;"></span>
+                    클라우드 정회원 인증됨
+                  </div>
+                </div>
+              </div>
+              <span class="rank-badge ${lvlInfo.tier.badgeClass}">${lvlInfo.tier.badge}</span>
+            </div>
+
+            <div style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 0.85rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; font-size: 0.85rem;">
+              <div>
+                <span style="color: var(--text-muted); display: block; font-size: 0.75rem;">💬 카카오톡 단톡방 닉네임</span>
+                <strong style="color: #f59e0b;">${this.escapeHtml((auth && auth.kakao_nickname) ? auth.kakao_nickname : (u.kakao_name || '미설정'))}</strong>
+              </div>
+              <div>
+                <span style="color: var(--text-muted); display: block; font-size: 0.75rem;">✉️ 등록 이메일</span>
+                <strong style="color: var(--text-main); font-size: 0.8rem;">${this.escapeHtml((auth && auth.email) ? auth.email : '-')}</strong>
+              </div>
+              <div>
+                <span style="color: var(--text-muted); display: block; font-size: 0.75rem;">⭐ 현재 레벨 & 경험치</span>
+                <strong style="color: #60a5fa;">Lv.${lvlInfo.level} (${(u.xp || 0).toLocaleString()} XP)</strong>
+              </div>
+              <div>
+                <span style="color: var(--text-muted); display: block; font-size: 0.75rem;">📖 완독한 아티클</span>
+                <strong style="color: #a78bfa;">${(u.completed_articles || []).length}편</strong>
+              </div>
+            </div>
+          </div>
+
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; margin-bottom: 1.25rem;">
+            <div style="font-weight: 700; color: var(--text-main); font-size: 0.9rem; margin-bottom: 0.35rem;">
+              📱 모바일 ↔ PC 크로스 디바이스 연동 방법
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0; line-height: 1.5;">
+              스마트폰이나 다른 컴퓨터 브라우저에서 <strong>https://studypoker.vercel.app</strong> 접속 후,
+              우측 상단의 <strong>[로그인]</strong> 버튼을 누르고 게임 닉네임(<strong>${this.escapeHtml(auth ? auth.game_nickname : u.name)}</strong>)과 6자리 PIN을 입력하시면 모든 공부 기록이 즉시 동기화됩니다!
+            </p>
+          </div>
+
+          <div id="auth-profile-status" style="display: none; padding: 0.6rem; border-radius: 6px; font-size: 0.83rem; text-align: center; margin-bottom: 0.75rem;"></div>
+
+          <div style="display: flex; gap: 0.75rem;">
+            <button onclick="authManager.forcePushToCloud()" class="btn-primary" style="flex: 1; padding: 0.75rem; font-size: 0.9rem; font-weight: 800; border-radius: 8px;">
+              🔄 지금 즉시 클라우드 백업
+            </button>
+            <button onclick="authManager.handleSignOut()" class="btn-secondary" style="flex: 1; padding: 0.75rem; font-size: 0.9rem; font-weight: 800; border-radius: 8px; border-color: #ef444455; color: #f87171;">
+              🚪 로그아웃 (기기 해제)
+            </button>
+          </div>
+        </div>
+      `;
+    }
+  },
+
+  showStatus(elementId, message, isError = false) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+    el.style.display = 'block';
+    el.style.background = isError ? 'rgba(239, 68, 68, 0.15)' : 'rgba(16, 185, 129, 0.15)';
+    el.style.color = isError ? '#fca5a5' : '#6ee7b7';
+    el.style.border = isError ? '1px solid rgba(239, 68, 68, 0.3)' : '1px solid rgba(16, 185, 129, 0.3)';
+    el.innerText = message;
+  },
+
+  async handleLoginSubmit() {
+    const loginId = (document.getElementById('auth-login-id')?.value || '').trim();
+    const pin = (document.getElementById('auth-login-pin')?.value || '').trim();
+    const submitBtn = document.getElementById('auth-login-submit-btn');
+
+    if (!loginId) {
+      this.showStatus('auth-login-status', '아이디(게임 닉네임 또는 이메일)를 입력해주세요.', true);
+      return;
+    }
+    if (!pin || pin.length !== 6 || !/^[0-9]{6}$/.test(pin)) {
+      this.showStatus('auth-login-status', '비밀번호는 숫자 6자리여야 합니다.', true);
+      return;
+    }
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerText = '⏳ 로그인 확인 중...';
+    }
+
+    try {
+      const url = `${SUPABASE_CONFIG.url}/rest/v1/poker_users?or=(game_nickname.eq.${encodeURIComponent(loginId)},email.eq.${encodeURIComponent(loginId)})&select=*`;
+      const res = await fetch(url, {
+        headers: {
+          'apikey': SUPABASE_CONFIG.key,
+          'Authorization': 'Bearer ' + SUPABASE_CONFIG.key
+        }
+      });
+
+      if (!res.ok) {
+        throw new Error(`서버 응답 오류 (${res.status})`);
+      }
+
+      const users = await res.json();
+      if (!users || users.length === 0) {
+        this.showStatus('auth-login-status', '일치하는 계정을 찾을 수 없습니다. 아이디를 확인해주세요.', true);
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerText = '🔑 로그인하고 동기화 시작하기';
+        }
+        return;
+      }
+
+      const user = users[0];
+      if (user.pin !== pin) {
+        this.showStatus('auth-login-status', '비밀번호(숫자 6자리)가 일치하지 않습니다.', true);
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerText = '🔑 로그인하고 동기화 시작하기';
+        }
+        return;
+      }
+
+      // 로그인 성공! 세션 저장
+      localStorage.setItem('studypoker_auth', JSON.stringify({
+        id: user.id,
+        game_nickname: user.game_nickname,
+        kakao_nickname: user.kakao_nickname,
+        email: user.email
+      }));
+
+      // 클라우드 데이터와 로컬 데이터 합병 (더 높은 진척도 우선 반영)
+      const u = app.userState;
+      const mergedXp = Math.max(u.xp || 0, user.xp || 0);
+      const mergedArticles = Array.from(new Set([...(u.completed_articles || []), ...(user.completed_articles || [])]));
+      const mergedQuizzes = Array.from(new Set([...(u.completed_quizzes || []), ...(user.completed_quizzes || [])]));
+      const mergedPromotions = Array.from(new Set([...(u.promotions_passed || [0]), ...(user.promotions_passed || [0])]));
+
+      u.name = user.game_nickname;
+      u.kakao_name = user.kakao_nickname;
+      u.avatar = user.avatar || u.avatar || '🦈';
+      u.playstyle = user.playstyle || u.playstyle || 'TAG';
+      u.xp = mergedXp;
+      u.completed_articles = mergedArticles;
+      u.completed_quizzes = mergedQuizzes;
+      u.promotions_passed = mergedPromotions;
+
+      storage.save(u);
+
+      this.renderAuthButton();
+      characterManager.renderDashboard();
+      characterManager.renderHeader();
+      app.updateUserBar();
+      roadmap.load();
+      if (window.rankingManager && rankingManager.fetchCloudPlayers) {
+        rankingManager.fetchCloudPlayers();
+      }
+
+      this.closeModal();
+      characterManager.showToast(`🎉 반갑습니다, ${user.game_nickname}님! 기기 동기화가 완료되었습니다.`);
+      this.syncToCloud(true);
+    } catch (e) {
+      console.error("Login error:", e);
+      this.showStatus('auth-login-status', `로그인 중 오류가 발생했습니다: ${e.message}`, true);
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerText = '🔑 로그인하고 동기화 시작하기';
+      }
+    }
+  },
+
+  async handleSignUpSubmit() {
+    const gameNick = (document.getElementById('auth-reg-game-nick')?.value || '').trim();
+    const kakaoNick = (document.getElementById('auth-reg-kakao-nick')?.value || '').trim();
+    const email = (document.getElementById('auth-reg-email')?.value || '').trim();
+    const pin = (document.getElementById('auth-reg-pin')?.value || '').trim();
+    const pinConfirm = (document.getElementById('auth-reg-pin-confirm')?.value || '').trim();
+    const submitBtn = document.getElementById('auth-reg-submit-btn');
+
+    if (!gameNick || gameNick.length < 2) {
+      this.showStatus('auth-reg-status', '게임 닉네임은 최소 2글자 이상이어야 합니다.', true);
+      return;
+    }
+    if (!kakaoNick || kakaoNick.length < 1) {
+      this.showStatus('auth-reg-status', '카카오톡 단톡방 닉네임을 입력해주세요.', true);
+      return;
+    }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      this.showStatus('auth-reg-status', '올바른 이메일 형식을 입력해주세요.', true);
+      return;
+    }
+    if (!pin || pin.length !== 6 || !/^[0-9]{6}$/.test(pin)) {
+      this.showStatus('auth-reg-status', '비밀번호는 반드시 숫자 6자리여야 합니다.', true);
+      return;
+    }
+    if (pin !== pinConfirm) {
+      this.showStatus('auth-reg-status', '비밀번호와 비밀번호 확인이 일치하지 않습니다.', true);
+      return;
+    }
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerText = '⏳ 중복 확인 및 등록 중...';
+    }
+
+    try {
+      // 닉네임 또는 이메일 중복 확인
+      const checkUrl = `${SUPABASE_CONFIG.url}/rest/v1/poker_users?or=(game_nickname.eq.${encodeURIComponent(gameNick)},email.eq.${encodeURIComponent(email)})&select=id,game_nickname,email`;
+      const checkRes = await fetch(checkUrl, {
+        headers: {
+          'apikey': SUPABASE_CONFIG.key,
+          'Authorization': 'Bearer ' + SUPABASE_CONFIG.key
+        }
+      });
+
+      if (!checkRes.ok) {
+        throw new Error(`중복 확인 실패 (${checkRes.status})`);
+      }
+
+      const existing = await checkRes.json();
+      if (existing && existing.length > 0) {
+        for (const item of existing) {
+          if (item.game_nickname.toLowerCase() === gameNick.toLowerCase()) {
+            this.showStatus('auth-reg-status', '이미 사용 중인 게임 닉네임입니다. 다른 닉네임을 입력해주세요.', true);
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerText = '✨ 가입하고 현재 데이터 클라우드 동기화하기';
+            }
+            return;
+          }
+          if (item.email.toLowerCase() === email.toLowerCase()) {
+            this.showStatus('auth-reg-status', '이미 등록된 이메일 주소입니다. 로그인이나 비밀번호 찾기를 이용해주세요.', true);
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerText = '✨ 가입하고 현재 데이터 클라우드 동기화하기';
+            }
+            return;
+          }
+        }
+      }
+
+      // 등록 진행
+      const u = app.userState;
+      const lvlInfo = app.getLevelInfo(u.xp || 0);
+      const newUserPayload = {
+        game_nickname: gameNick,
+        kakao_nickname: kakaoNick,
+        email: email,
+        pin: pin,
+        level: lvlInfo.level,
+        xp: u.xp || 0,
+        streak: u.streak || 1,
+        avatar: u.avatar || '🦈',
+        playstyle: u.playstyle || 'TAG',
+        completed_articles: u.completed_articles || [],
+        completed_quizzes: u.completed_quizzes || [],
+        promotions_passed: u.promotions_passed || [0],
+        stats: u.stats || {}
+      };
+
+      const insertRes = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/poker_users`, {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_CONFIG.key,
+          'Authorization': 'Bearer ' + SUPABASE_CONFIG.key,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        },
+        body: JSON.stringify(newUserPayload)
+      });
+
+      if (!insertRes.ok) {
+        const errText = await insertRes.text();
+        throw new Error(`회원 등록 실패 (${insertRes.status}): ${errText}`);
+      }
+
+      const createdList = await insertRes.json();
+      const createdUser = (createdList && createdList.length > 0) ? createdList[0] : null;
+
+      if (!createdUser || !createdUser.id) {
+        throw new Error("회원 데이터가 정상적으로 생성되지 않았습니다.");
+      }
+
+      // 로컬 세션 저장
+      localStorage.setItem('studypoker_auth', JSON.stringify({
+        id: createdUser.id,
+        game_nickname: createdUser.game_nickname,
+        kakao_nickname: createdUser.kakao_nickname,
+        email: createdUser.email
+      }));
+
+      u.name = gameNick;
+      u.kakao_name = kakaoNick;
+      storage.save(u);
+
+      this.renderAuthButton();
+      characterManager.renderDashboard();
+      characterManager.renderHeader();
+      app.updateUserBar();
+      if (window.rankingManager && rankingManager.fetchCloudPlayers) {
+        rankingManager.fetchCloudPlayers();
+      }
+
+      this.closeModal();
+      characterManager.showToast(`🎉 ${gameNick}님, 정회원 가입 완료! 모바일/PC 어디서든 실시간 동기화됩니다.`);
+    } catch (e) {
+      console.error("Sign up error:", e);
+      this.showStatus('auth-reg-status', `가입 중 오류 발생: ${e.message}`, true);
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerText = '✨ 가입하고 현재 데이터 클라우드 동기화하기';
+      }
+    }
+  },
+
+  async handleForgotSubmit() {
+    const email = (document.getElementById('auth-forgot-email')?.value || '').trim();
+    const gameNick = (document.getElementById('auth-forgot-nick')?.value || '').trim();
+    const pin = (document.getElementById('auth-forgot-pin')?.value || '').trim();
+    const pinConfirm = (document.getElementById('auth-forgot-pin-confirm')?.value || '').trim();
+    const submitBtn = document.getElementById('auth-forgot-submit-btn');
+
+    if (!email || !gameNick) {
+      this.showStatus('auth-forgot-status', '가입 이메일과 게임 닉네임을 모두 입력해주세요.', true);
+      return;
+    }
+    if (!pin || pin.length !== 6 || !/^[0-9]{6}$/.test(pin)) {
+      this.showStatus('auth-forgot-status', '새 비밀번호는 숫자 6자리여야 합니다.', true);
+      return;
+    }
+    if (pin !== pinConfirm) {
+      this.showStatus('auth-forgot-status', '비밀번호 확인이 일치하지 않습니다.', true);
+      return;
+    }
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerText = '⏳ 회원 정보 확인 중...';
+    }
+
+    try {
+      const url = `${SUPABASE_CONFIG.url}/rest/v1/poker_users?email=eq.${encodeURIComponent(email)}&game_nickname=eq.${encodeURIComponent(gameNick)}&select=id`;
+      const res = await fetch(url, {
+        headers: {
+          'apikey': SUPABASE_CONFIG.key,
+          'Authorization': 'Bearer ' + SUPABASE_CONFIG.key
+        }
+      });
+
+      if (!res.ok) throw new Error("서버 확인 실패");
+
+      const users = await res.json();
+      if (!users || users.length === 0) {
+        this.showStatus('auth-forgot-status', '일치하는 가입 정보를 찾을 수 없습니다. 이메일과 닉네임을 확인해주세요.', true);
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerText = '🔑 새 비밀번호로 변경하기';
+        }
+        return;
+      }
+
+      const targetId = users[0].id;
+      const patchRes = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/poker_users?id=eq.${targetId}`, {
+        method: 'PATCH',
+        headers: {
+          'apikey': SUPABASE_CONFIG.key,
+          'Authorization': 'Bearer ' + SUPABASE_CONFIG.key,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ pin: pin, updated_at: new Date().toISOString() })
+      });
+
+      if (!patchRes.ok) throw new Error("비밀번호 갱신 실패");
+
+      characterManager.showToast("✅ 6자리 비밀번호가 재설정되었습니다! 새 비밀번호로 로그인해주세요.");
+      this.switchMode('login');
+    } catch (e) {
+      console.error("Password reset error:", e);
+      this.showStatus('auth-forgot-status', `재설정 실패: ${e.message}`, true);
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerText = '🔑 새 비밀번호로 변경하기';
+      }
+    }
+  },
+
+  handleSignOut() {
+    if (!confirm("정말 로그아웃 하시겠습니까? 로그아웃 시 이 기기에서의 자동 동기화가 중단됩니다.")) {
+      return;
+    }
+    localStorage.removeItem('studypoker_auth');
+    this.renderAuthButton();
+    characterManager.renderDashboard();
+    this.closeModal();
+    characterManager.showToast("🚪 로그아웃 되었습니다. 게스트 모드로 전환됩니다.");
+    if (window.rankingManager && rankingManager.fetchCloudPlayers) {
+      rankingManager.fetchCloudPlayers();
+    }
+  },
+
+  async syncFromCloudSilently() {
+    const auth = this.getAuthUser();
+    if (!auth || !auth.id) return;
+
+    try {
+      const res = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/poker_users?id=eq.${auth.id}&select=*`, {
+        headers: {
+          'apikey': SUPABASE_CONFIG.key,
+          'Authorization': 'Bearer ' + SUPABASE_CONFIG.key
+        }
+      });
+
+      if (!res.ok) return;
+      const list = await res.json();
+      if (!list || list.length === 0) return;
+
+      const cloud = list[0];
+      const u = app.userState;
+
+      let changed = false;
+      const cloudXp = cloud.xp || 0;
+      if (cloudXp > (u.xp || 0)) {
+        u.xp = cloudXp;
+        changed = true;
+      }
+
+      const mergedArticles = Array.from(new Set([...(u.completed_articles || []), ...(cloud.completed_articles || [])]));
+      if (mergedArticles.length !== (u.completed_articles || []).length) {
+        u.completed_articles = mergedArticles;
+        changed = true;
+      }
+
+      const mergedQuizzes = Array.from(new Set([...(u.completed_quizzes || []), ...(cloud.completed_quizzes || [])]));
+      if (mergedQuizzes.length !== (u.completed_quizzes || []).length) {
+        u.completed_quizzes = mergedQuizzes;
+        changed = true;
+      }
+
+      const mergedPromotions = Array.from(new Set([...(u.promotions_passed || [0]), ...(cloud.promotions_passed || [0])]));
+      if (mergedPromotions.length !== (u.promotions_passed || [0]).length) {
+        u.promotions_passed = mergedPromotions;
+        changed = true;
+      }
+
+      if (cloud.game_nickname && cloud.game_nickname !== u.name) {
+        u.name = cloud.game_nickname;
+        changed = true;
+      }
+      if (cloud.kakao_nickname && cloud.kakao_nickname !== u.kakao_name) {
+        u.kakao_name = cloud.kakao_nickname;
+        changed = true;
+      }
+
+      if (changed) {
+        localStorage.setItem('studypoker_user', JSON.stringify(u));
+        characterManager.renderDashboard();
+        characterManager.renderHeader();
+        app.updateUserBar();
+        roadmap.load();
+        if (window.rankingManager && rankingManager.render) {
+          rankingManager.render();
+        }
+      } else if ((u.xp || 0) > cloudXp) {
+        // 로컬 진행도가 더 높으면 클라우드로 조용히 푸시
+        this.syncToCloud(true);
+      }
+    } catch (e) {
+      console.warn("Silent cloud pull error:", e);
+    }
+  },
+
+  syncToCloud(immediate = false) {
+    if (!this.isLoggedIn()) return;
+    if (this._syncDebounceTimer) clearTimeout(this._syncDebounceTimer);
+
+    const doPush = async () => {
+      try {
+        const auth = this.getAuthUser();
+        if (!auth || !auth.id) return;
+        const u = app.userState;
+        const lvlInfo = app.getLevelInfo(u.xp || 0);
+
+        const payload = {
+          level: lvlInfo.level,
+          xp: u.xp || 0,
+          streak: u.streak || 1,
+          avatar: u.avatar || '🦈',
+          playstyle: u.playstyle || 'TAG',
+          completed_articles: u.completed_articles || [],
+          completed_quizzes: u.completed_quizzes || [],
+          promotions_passed: u.promotions_passed || [0],
+          stats: u.stats || {},
+          updated_at: new Date().toISOString()
+        };
+
+        await fetch(`${SUPABASE_CONFIG.url}/rest/v1/poker_users?id=eq.${auth.id}`, {
+          method: 'PATCH',
+          headers: {
+            'apikey': SUPABASE_CONFIG.key,
+            'Authorization': 'Bearer ' + SUPABASE_CONFIG.key,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+      } catch (e) {
+        console.warn("Cloud sync push error:", e);
+      }
+    };
+
+    if (immediate) {
+      doPush();
+    } else {
+      this._syncDebounceTimer = setTimeout(doPush, 1500);
+    }
+  },
+
+  async forcePushToCloud() {
+    const statusEl = document.getElementById('auth-profile-status');
+    if (statusEl) {
+      statusEl.style.display = 'block';
+      statusEl.style.background = 'rgba(59, 130, 246, 0.15)';
+      statusEl.style.color = '#93c5fd';
+      statusEl.innerText = '⏳ 클라우드에 현재 상태 저장 중...';
+    }
+
+    try {
+      await this.syncToCloud(true);
+      if (statusEl) {
+        statusEl.style.background = 'rgba(16, 185, 129, 0.15)';
+        statusEl.style.color = '#6ee7b7';
+        statusEl.innerText = `✅ 클라우드 동기화 완료! (${new Date().toLocaleTimeString('ko-KR')})`;
+      }
+      characterManager.showToast("☁️ 최신 캐릭터 상태가 클라우드에 백업되었습니다.");
+    } catch (e) {
+      if (statusEl) {
+        statusEl.style.background = 'rgba(239, 68, 68, 0.15)';
+        statusEl.style.color = '#fca5a5';
+        statusEl.innerText = `동기화 실패: ${e.message}`;
+      }
+    }
   }
 };
 
