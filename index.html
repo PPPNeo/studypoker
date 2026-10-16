@@ -1284,6 +1284,11 @@ main {
   color: #000000;
 }
 
+.matrix-cell.action-shove {
+  background: #8b5cf6;
+  color: #ffffff;
+}
+
 .matrix-cell.action-fold {
   background: #1e293b;
   color: #64748b;
@@ -1586,7 +1591,7 @@ body.theme-light .korean-summary-box ul li {
           <span>📚</span> 아티클 도서관 (369)
         </button>
         <button class="nav-btn" data-target="trainer" onclick="app.navigate('trainer')">
-          <span>🎯</span> 스팟 퀴즈
+          <span>🎯</span> 스팟 퀴즈 (25)
         </button>
         <button class="nav-btn" data-target="matrix" onclick="app.navigate('matrix')">
           <span>📊</span> 레인지 매트릭스
@@ -1762,7 +1767,7 @@ body.theme-light .korean-summary-box ul li {
           </div>
           <div style="display: flex; gap: 0.5rem;" id="quiz-nav-controls">
             <button class="btn-secondary" onclick="trainer.prevQuiz()">◀ 이전</button>
-            <span id="quiz-counter" style="padding: 0.6rem 1rem; background: var(--bg-card); border-radius: 8px; font-weight: 700;">1 / 5</span>
+            <span id="quiz-counter" style="padding: 0.6rem 1rem; background: var(--bg-card); border-radius: 8px; font-weight: 700;">1 / 25</span>
             <button class="btn-secondary" onclick="trainer.nextQuiz()">다음 ▶</button>
           </div>
         </div>
@@ -1797,23 +1802,67 @@ body.theme-light .korean-summary-box ul li {
     </section>
 
     <!-- 4. 13x13 Range Matrix View -->
+    <!-- 4. 13x13 Range Matrix View -->
     <section id="view-matrix" class="view-section">
       <div style="margin-bottom: 1.5rem;">
-        <h2 style="font-size: 1.6rem; font-weight: 800;">📊 13x13 GTO 레인지 매트릭스</h2>
-        <p style="color: var(--text-muted); font-size: 0.95rem;">프리플랍 169개 핸드 콤보의 GTO 솔루션 빈도를 인터랙티브하게 탐색하세요.</p>
+        <h2 style="font-size: 1.6rem; font-weight: 800;">📊 13x13 GTO 프리플랍 레인지 매트릭스</h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">6-Max 100BB 오픈, 3-Bet 및 방어, 4-Bet, 15BB 토너먼트 푸시/폴드까지 전 포지션 솔루션을 인터랙티브하게 탐색하세요.</p>
       </div>
 
       <div class="matrix-container">
         <div class="matrix-grid-wrapper">
-          <div class="matrix-header">
-            <div>
-              <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 4px;">프리셋 선택</label>
-              <select id="matrix-preset-select" onchange="matrix.loadPreset(this.value)" style="background: var(--bg-surface); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.5rem 1rem; border-radius: 8px; font-weight: 700; outline: none;">
-                <option value="btn_open">버튼(BTN) 2.5bb 오픈 레이스</option>
-                <option value="bb_vs_btn">BB 디펜드 vs BTN 2.5bb 오픈</option>
-              </select>
+          <div class="matrix-header" style="flex-direction: column; align-items: stretch; gap: 0.85rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+              <div style="flex: 1; min-width: 260px;">
+                <label style="font-size: 0.82rem; color: var(--text-muted); display: block; margin-bottom: 4px; font-weight: 600;">상황별 GTO 솔버 프리셋 선택</label>
+                <select id="matrix-preset-select" onchange="matrix.loadPreset(this.value)" style="width: 100%; background: var(--bg-surface); color: var(--text-main); border: 1.5px solid var(--border-color); padding: 0.65rem 1rem; border-radius: 8px; font-weight: 700; outline: none; font-size: 0.95rem; cursor: pointer;">
+                  <optgroup label="🎯 6-Max 100BB 오픈 레이스">
+                    <option value="utg_open">UTG 오픈 레이스 (15.5%)</option>
+                    <option value="hj_open">HJ 오픈 레이스 (20.0%)</option>
+                    <option value="co_open">CO 오픈 레이스 (27.8%)</option>
+                    <option value="btn_open" selected>BTN 오픈 레이스 (43.5%)</option>
+                    <option value="sb_open">SB 오픈 레이스 (47.5%)</option>
+                  </optgroup>
+                  <optgroup label="⚔️ 3-Bet & 블라인드 디펜스">
+                    <option value="bb_vs_btn">BB 디펜드 vs BTN 2.5bb 오픈</option>
+                    <option value="bb_vs_co">BB 디펜드 vs CO 2.5bb 오픈</option>
+                    <option value="sb_vs_btn">SB vs BTN 오픈 (3-Bet or Fold)</option>
+                    <option value="btn_vs_co">BTN vs CO 오픈 (3-Bet & Flat)</option>
+                  </optgroup>
+                  <optgroup label="🛡️ 4-Bet 및 3-Bet 대응">
+                    <option value="btn_vs_sb_3bet">BTN vs SB 3-Bet 대응 (4-Bet / Call)</option>
+                  </optgroup>
+                  <optgroup label="🏆 15BB 토너먼트 푸시/폴드 (Push/Fold)">
+                    <option value="push_btn_15bb">15BB BTN 올인 셔브 (35.8%)</option>
+                    <option value="push_sb_15bb">15BB SB vs BB 셔브 (42.5%)</option>
+                    <option value="call_bb_vs_btn_15bb">15BB BB vs BTN 셔브 콜 (19.8%)</option>
+                  </optgroup>
+                </select>
+              </div>
             </div>
-            <div id="matrix-preset-desc" style="font-size: 0.85rem; color: var(--text-dim); max-width: 350px; text-align: right;"></div>
+
+            <!-- Quick Position Filter Chips -->
+            <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;" id="matrix-quick-chips">
+              <button class="filter-pill" data-pid="utg_open" onclick="matrix.loadPreset('utg_open')">UTG</button>
+              <button class="filter-pill" data-pid="hj_open" onclick="matrix.loadPreset('hj_open')">HJ</button>
+              <button class="filter-pill" data-pid="co_open" onclick="matrix.loadPreset('co_open')">CO</button>
+              <button class="filter-pill active" data-pid="btn_open" onclick="matrix.loadPreset('btn_open')">BTN</button>
+              <button class="filter-pill" data-pid="sb_open" onclick="matrix.loadPreset('sb_open')">SB</button>
+              <button class="filter-pill" data-pid="bb_vs_btn" onclick="matrix.loadPreset('bb_vs_btn')">BB vs BTN</button>
+              <button class="filter-pill" data-pid="sb_vs_btn" onclick="matrix.loadPreset('sb_vs_btn')">SB 3-Bet</button>
+              <button class="filter-pill" data-pid="push_btn_15bb" onclick="matrix.loadPreset('push_btn_15bb')">15BB 셔브</button>
+            </div>
+
+            <!-- Description & Live Range Stats Bar -->
+            <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.75rem 1rem;">
+              <div id="matrix-preset-desc" style="font-size: 0.88rem; color: var(--text-main); margin-bottom: 0.5rem; line-height: 1.5;"></div>
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; border-top: 1px dashed var(--border-color); padding-top: 0.5rem;">
+                <div style="font-size: 0.85rem; color: var(--text-muted);">
+                  참여 볼륨: <strong id="matrix-stats-combos" style="color: #60a5fa; font-size: 0.95rem;">-</strong>
+                </div>
+                <div id="matrix-stats-bar" style="display: flex; gap: 0.75rem; font-size: 0.8rem; font-weight: 700;"></div>
+              </div>
+            </div>
           </div>
 
           <div class="poker-matrix" id="poker-matrix-grid"></div>
@@ -1821,15 +1870,20 @@ body.theme-light .korean-summary-box ul li {
 
         <div class="matrix-sidebar">
           <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 1rem;">🔍 핸드 인스펙터</h3>
-          <div id="matrix-hover-inspector" style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 10px; padding: 1.25rem; min-height: 140px;">
-            <div style="font-size: 1.3rem; font-weight: 900; color: var(--text-main);" id="inspect-hand-name">AKs</div>
-            <div style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.75rem;" id="inspect-combos">조합 수: 4 combos (수티드)</div>
-            <div style="font-size: 1rem; font-weight: 700;" id="inspect-action-desc">
+          <div id="matrix-hover-inspector" style="background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 12px; padding: 1.25rem; min-height: 200px;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.35rem;">
+              <div style="font-size: 1.7rem; font-weight: 900; color: #ffffff;" id="inspect-hand-name">AKs</div>
+              <div style="font-size: 0.85rem; color: var(--text-dim);" id="inspect-combos">4 combos (수티드)</div>
+            </div>
+            <div style="font-size: 1.15rem; font-weight: 800; margin-bottom: 0.75rem;" id="inspect-action-desc">
               <span style="color: #ef4444;">Raise 2.5bb (100%)</span>
+            </div>
+            <div id="inspect-tip" style="font-size: 0.85rem; color: var(--text-main); line-height: 1.55; padding: 0.75rem; background: var(--bg-card); border-radius: 8px; border-left: 3.5px solid #3b82f6;">
+              💡 프리미엄 너츠 핸드: 100% 빈도로 강력하게 오픈 레이스합니다.
             </div>
           </div>
 
-          <h4 style="margin: 1.5rem 0 0.5rem; font-size: 0.95rem; color: var(--text-muted);">범례 (Legend)</h4>
+          <h4 style="margin: 1.5rem 0 0.5rem; font-size: 0.95rem; color: var(--text-muted); font-weight: 700;">액션 범례 (Legend)</h4>
           <div class="matrix-legend" id="matrix-legend-container"></div>
         </div>
       </div>
@@ -13145,7 +13199,7 @@ const DB = {
   {
     "id": "quiz-1",
     "article_id": "c-betting-ip-in-3-bet-pots",
-    "title": "3벳 팟 플랍 C-bet 사이징: A-हाई 보드",
+    "title": "3벳 팟 플랍 C-bet 사이징: A-하이 보드",
     "category": "플랍 전략",
     "level": "초급",
     "situation": "당신은 BTN에서 CO의 2.5bb 오픈에 7.5bb로 3벳했고, CO가 콜했습니다. (헤즈업)",
@@ -13154,24 +13208,51 @@ const DB = {
     "effective_stack": "92.5 BB",
     "hero_position": "BTN (IP)",
     "villain_position": "CO (OOP)",
-    "hero_hand": ["K♠", "K♦"],
-    "board": ["A♣", "8♦", "3♠"],
+    "hero_hand": [
+      "K♠",
+      "K♦"
+    ],
+    "board": [
+      "A♣",
+      "8♦",
+      "3♠"
+    ],
     "action_history": "Preflop: CO 오픈 2.5bb ➔ BTN 3-bet 7.5bb ➔ CO 콜. Flop: A♣ 8♦ 3♠. CO 체크.",
     "question": "CO의 체크를 받았습니다. BTN인 당신의 GTO 최선의 액션은?",
     "options": [
-      {"label": "체크 백 (Check)", "is_correct": false, "gto_freq": "18%", "ev": "+11.2 BB"},
-      {"label": "작은 벳 (33% 팟 = 5.5 BB)", "is_correct": true, "gto_freq": "74%", "ev": "+12.1 BB"},
-      {"label": "큰 벳 (75% 팟 = 12.4 BB)", "is_correct": false, "gto_freq": "8%", "ev": "+9.8 BB"},
-      {"label": "오버벳 올인 (92.5 BB)", "is_correct": false, "gto_freq": "0%", "ev": "+2.1 BB"}
+      {
+        "label": "체크 백 (Check)",
+        "is_correct": false,
+        "gto_freq": "18%",
+        "ev": "+11.2 BB"
+      },
+      {
+        "label": "작은 벳 (33% 팟 = 5.5 BB)",
+        "is_correct": true,
+        "gto_freq": "74%",
+        "ev": "+12.1 BB"
+      },
+      {
+        "label": "큰 벳 (75% 팟 = 12.4 BB)",
+        "is_correct": false,
+        "gto_freq": "8%",
+        "ev": "+9.8 BB"
+      },
+      {
+        "label": "오버벳 올인 (92.5 BB)",
+        "is_correct": false,
+        "gto_freq": "0%",
+        "ev": "+2.1 BB"
+      }
     ],
     "correct_index": 1,
     "key_concept": "레인지 어드밴티지 & 스몰 C-bet 메커니즘",
-    "explanation": "A♣ 8♦ 3♠ 보드는 프리플랍 3베터(BTN)에게 압도적인 **레인지 우위(Range Advantage)**가 있는 보드입니다. BTN은 AA, AK, AQ을 모두 보유하고 있는 반면, CO는 3벳을 콜만 했기 때문에 AA, AK 비중이 매우 적습니다.\n\n따라서 BTN은 KK뿐 아니라 자신의 전체 레인지 중 80% 이상을 1/3팟의 작은 사이즈로 베팅(C-bet)하여 CO의 수많은 마지널 언더페어(99~JJ)와 플로팅 에퀴티를 싸게 압박해야 합니다. 큰 벳은 상대의 안 좋은 패를 다 폴드시켜 버리므로 역효과가 납니다."
+    "explanation": "A♣ 8♦ 3♠ 보드는 프리플랍 3베터(BTN)에게 압도적인 레인지 우위(Range Advantage)가 있는 보드입니다. BTN은 AA, AK, AQ을 모두 보유하고 있는 반면, CO는 3벳을 콜만 했기 때문에 레인지가 캡(Capped)되어 있습니다. 따라서 BTN은 KK뿐 아니라 자신의 전체 레인지 중 75% 이상을 1/3팟의 작은 사이즈로 베팅(C-bet)하여 CO의 수많은 마지널 언더페어(99~JJ)와 플로팅 에퀴티를 싸게 압박해야 합니다."
   },
   {
     "id": "quiz-2",
     "article_id": "understanding-blockers-in-poker",
-    "title": "리버 블러프 선정: 어떤 카드로 블러프를 쳐야 할까?",
+    "title": "리버 블러프 선정: 완벽한 블로커 활용법",
     "category": "고급 전략",
     "level": "고급",
     "situation": "당신은 CO에서 오픈, BB가 콜. 플랍/턴/리버 모두 배럴을 날리는 상황입니다.",
@@ -13180,18 +13261,42 @@ const DB = {
     "effective_stack": "62 BB",
     "hero_position": "CO",
     "villain_position": "BB",
-    "board": ["Q♠", "J♦", "4♣", "2♠", "8♥"],
-    "hero_hand": ["A♠", "T♦"],
+    "board": [
+      "Q♠",
+      "J♦",
+      "4♣",
+      "2♠",
+      "8♥"
+    ],
+    "hero_hand": [
+      "A♠",
+      "T♦"
+    ],
     "action_history": "CO 오픈 ➔ BB 콜. Flop(Q♠ J♦ 4♣): CO C-bet ➔ BB 콜. Turn(2♠): CO 2nd 배럴 ➔ BB 콜. River(8♥): BB 체크.",
     "question": "미스된 거트샷 드로우입니다. 쇼다운 밸류가 없는 이 핸드로 리버 트리플 배럴 블러프를 쳐야 할까요?",
     "options": [
-      {"label": "체크하고 쇼다운 포기 (Check)", "is_correct": false, "gto_freq": "12%", "ev": "0.0 BB"},
-      {"label": "리버 75% 팟 올인 블러프 (Bet)", "is_correct": true, "gto_freq": "88%", "ev": "+4.8 BB"},
-      {"label": "10% 팟 민베팅 (Blocker Bet)", "is_correct": false, "gto_freq": "0%", "ev": "-1.5 BB"}
+      {
+        "label": "체크하고 쇼다운 포기 (Check)",
+        "is_correct": false,
+        "gto_freq": "12%",
+        "ev": "0.0 BB"
+      },
+      {
+        "label": "리버 75% 팟 올인 블러프 (Bet)",
+        "is_correct": true,
+        "gto_freq": "88%",
+        "ev": "+4.8 BB"
+      },
+      {
+        "label": "10% 팟 민베팅 (Blocker Bet)",
+        "is_correct": false,
+        "gto_freq": "0%",
+        "ev": "-1.5 BB"
+      }
     ],
     "correct_index": 1,
     "key_concept": "스트레이트 블로커(T)와 탑페어 블로커(A)",
-    "explanation": "당신이 쥔 A♠ T♦는 리버 블러프를 치기에 **최상급 블로커 핸드**입니다!\n1) T(텐)을 들고 있어 상대가 가질 수 있는 최강의 핸드 중 하나인 스트레이트(T9, KT)를 강력하게 차단(Block)합니다.\n2) A를 쥐고 있어 상대가 투페어로 발전하거나 콜할 수 있는 AQ/AJ 조합을 차단합니다.\n3) 플러시 드로우가 미스된 스페이드를 1장만 가지고 있어 상대가 플러시 미스 후 폴드할 핸드를 방해하지 않습니다.\n솔버는 이 완벽한 블로커 조합을 88%의 매우 높은 빈도로 올인 블러프에 사용합니다."
+    "explanation": "당신이 쥔 A♠ T♦는 리버 블러프를 치기에 최상급 블로커 핸드입니다! 1) T(텐)을 들고 있어 상대가 가질 수 있는 최강의 핸드인 스트레이트(T9, KT)를 강력하게 차단합니다. 2) A를 쥐고 있어 상대의 상위 콜러블 조합(AQ/AJ)을 차단합니다. 3) 미스된 플러시 드로우 카드는 1장만 들고 있어 상대의 폴드할 찌꺼기 핸드를 언블락합니다."
   },
   {
     "id": "quiz-3",
@@ -13205,23 +13310,45 @@ const DB = {
     "effective_stack": "97 BB",
     "hero_position": "BTN",
     "villain_position": "BB",
-    "hero_hand": ["J♠", "J♥"],
-    "board": ["T♠", "9♦", "4♣"],
+    "hero_hand": [
+      "J♠",
+      "J♥"
+    ],
+    "board": [
+      "T♠",
+      "9♦",
+      "4♣"
+    ],
     "action_history": "Preflop: BTN 오픈 2.5bb ➔ BB 콜. Flop: T♠ 9♦ 4♣. BB 체크.",
     "question": "오버페어를 쥐고 있지만 보드에 스트레이트 드로우가 가득합니다. 당신의 선택은?",
     "options": [
-      {"label": "체크 백하고 턴 카드를 본다 (Pot Control)", "is_correct": false, "gto_freq": "15%", "ev": "+3.9 BB"},
-      {"label": "33% 팟 스몰 벳 (1.8 BB)", "is_correct": false, "gto_freq": "22%", "ev": "+4.1 BB"},
-      {"label": "75% 팟 빅 벳 (4.1 BB)", "is_correct": true, "gto_freq": "63%", "ev": "+4.7 BB"}
+      {
+        "label": "체크 백하고 턴 카드를 본다 (Pot Control)",
+        "is_correct": false,
+        "gto_freq": "15%",
+        "ev": "+3.9 BB"
+      },
+      {
+        "label": "33% 팟 스몰 벳 (1.8 BB)",
+        "is_correct": false,
+        "gto_freq": "22%",
+        "ev": "+4.1 BB"
+      },
+      {
+        "label": "75% 팟 빅 벳 (4.1 BB)",
+        "is_correct": true,
+        "gto_freq": "63%",
+        "ev": "+4.7 BB"
+      }
     ],
     "correct_index": 2,
     "key_concept": "에퀴티 디나이얼(Denial)과 밸류 베팅의 결합",
-    "explanation": "많은 플레이어들이 '프로텍션 벳'을 상대를 폴드시켜서 내 패를 보호하는 것이라고 잘못 알고 있습니다.\n\n진실은: **상대의 거트샷이나 언더페어(88, 77, Q8, K9 등)가 무려 25~35%의 공짜 에퀴티를 얻는 것을 막고(Equity Denial), 그들이 드로우를 들고 따라올 때 큰 대가(Bad Price)를 치르게 하는 것**입니다.\n다이내믹한 보드에서는 작은 벳으로 싼 가격을 주지 말고, 60~75%의 큰 사이징으로 베팅하여 상대의 에퀴티 실현을 방해하는 것이 솔버의 정답입니다."
+    "explanation": "프로텍션 벳의 진정한 목적은 상대를 무작정 폴드시락하는 것이 아니라, 상대의 수많은 거트샷과 언더페어(88, 77, Q8, K9 등)가 무려 25~35%의 공짜 에퀴티를 턴에서 실현하는 것을 막고(Equity Denial), 그들이 드로우를 들고 따라올 때 큰 대가(Bad Price)를 치르게 하는 것입니다."
   },
   {
     "id": "quiz-4",
     "article_id": "equity-realization",
-    "title": "OOP에서의 에퀴티 실현(EQR)과 첵레이스",
+    "title": "OOP에서의 에퀴티 실현(EQR)과 첵-콜",
     "category": "레인지 수학",
     "level": "중급",
     "situation": "당신은 BB에서 BTN의 오픈에 K9 수티드로 콜했습니다.",
@@ -13230,24 +13357,46 @@ const DB = {
     "effective_stack": "97.5 BB",
     "hero_position": "BB (OOP)",
     "villain_position": "BTN (IP)",
-    "hero_hand": ["K♥", "9♥"],
-    "board": ["9♠", "5♦", "2♣"],
+    "hero_hand": [
+      "K♥",
+      "9♥"
+    ],
+    "board": [
+      "9♠",
+      "5♦",
+      "2♣"
+    ],
     "action_history": "Preflop: BTN 오픈 2.5bb ➔ BB 콜. Flop: 9♠ 5♦ 2♣. BB 체크 ➔ BTN 33% 벳(1.8bb).",
     "question": "탑페어 좋은 키커를 맞췄습니다. 아웃포지션(OOP)인 당신의 행동은?",
     "options": [
-      {"label": "폴드 (Fold)", "is_correct": false, "gto_freq": "0%", "ev": "0.0 BB"},
-      {"label": "단순 콜 (Call)", "is_correct": true, "gto_freq": "72%", "ev": "+3.8 BB"},
-      {"label": "첵-레이스 (Check-Raise to 6.5 BB)", "is_correct": false, "gto_freq": "28%", "ev": "+3.6 BB"}
+      {
+        "label": "폴드 (Fold)",
+        "is_correct": false,
+        "gto_freq": "0%",
+        "ev": "0.0 BB"
+      },
+      {
+        "label": "단순 콜 (Call)",
+        "is_correct": true,
+        "gto_freq": "72%",
+        "ev": "+3.8 BB"
+      },
+      {
+        "label": "첵-레이스 (Check-Raise to 6.5 BB)",
+        "is_correct": false,
+        "gto_freq": "28%",
+        "ev": "+3.6 BB"
+      }
     ],
     "correct_index": 1,
     "key_concept": "블러프 캐처 유지 및 쇼다운 밸류 보존",
-    "explanation": "드라이한 9-5-2r 보드에서 BTN은 넓은 레인지로 C-bet을 칩니다. K9s는 탑페어로 매우 훌륭하지만, 여기서 첵레이스를 치면 BTN의 오버페어(TT+)와 세트에게만 두들겨 맞고, 상대의 약한 C-bet 블러프들을 다 쫓아내게 됩니다.\n\n콜을 함으로써 상대의 블러프 레인지를 계속 살려두고, 턴과 리버에서 안정적으로 쇼다운까지 도달하여 에퀴티를 온전히 실현(Equity Realization)하는 것이 가장 +EV입니다."
+    "explanation": "드라이한 9-5-2r 보드에서 BTN은 넓은 레인지로 C-bet을 칩니다. K9s는 탑페어로 매우 훌륭하지만, 여기서 첵레이스를 치면 BTN의 오버페어(TT+)와 세트에게만 두들겨 맞고 상대의 약한 C-bet 블러프들을 다 쫓아내게 됩니다. 콜을 함으로써 상대의 블러프 레인지를 살려두고 쇼다운까지 도달하는 것이 에퀴티 실현(EQR)을 극대화합니다."
   },
   {
     "id": "quiz-5",
     "article_id": "icm-basics",
     "title": "파이널 테이블 버블에서의 ICM 리스크 프리미엄",
-    "category": "토너먼트",
+    "category": "토너먼트/ICM",
     "level": "고급",
     "situation": "토너먼트 파이널 테이블 직전 버블(머니점프 극심). 숏스택 2명이 탈락 직전입니다.",
     "street": "Preflop",
@@ -13255,216 +13404,4076 @@ const DB = {
     "effective_stack": "38 BB",
     "hero_position": "BB (38 BB, 3등 스택)",
     "villain_position": "SB (85 BB, 압도적 칩리더)",
-    "hero_hand": ["A♠", "K♦"],
+    "hero_hand": [
+      "A♠",
+      "K♦"
+    ],
     "board": [],
     "action_history": "모두 폴드 ➔ SB 칩리더가 BB를 향해 38 BB 올인 셔브!",
     "question": "순수 칩 EV로는 AKs는 압도적 콜입니다. 그러나 ICM 상황에서 당신의 선택은?",
     "options": [
-      {"label": "스냅 콜 (Call All-in)", "is_correct": false, "gto_freq": "10%", "ev": "-$180 (ICM 손실)"},
-      {"label": "눈물을 머금고 폴드 (Fold)", "is_correct": true, "gto_freq": "90%", "ev": "$0 (머니점프 보존)"}
+      {
+        "label": "스냅 콜 (Call All-in)",
+        "is_correct": false,
+        "gto_freq": "10%",
+        "ev": "-$180 (ICM 손실)"
+      },
+      {
+        "label": "눈물을 머금고 폴드 (Fold)",
+        "is_correct": true,
+        "gto_freq": "90%",
+        "ev": "$0 (머니점프 보존)"
+      }
     ],
     "correct_index": 1,
     "key_concept": "ICM 자살 방지 & 리스크 프리미엄(Risk Premium)",
-    "explanation": "캐시게임이나 ChipEV 관점에서는 AKs로 SB의 와이드 셔브에 콜하는 것이 무조건 +EV입니다.\n\n하지만 토너먼트 파이널 테이블 버블에서는 상황이 완전히 바뀝니다! 뒤에 5BB, 7BB짜리 숏스택들이 다음 블라인드에 자동 탈락할 위기인데, 3등 스택인 내가 칩리더와 목숨을 건 50:50 플립을 할 이유가 전혀 없습니다.\n여기서 탈락하면 수백~수천 달러의 머니점프 상금을 날리게 되므로, ICM 솔버는 AKs조차 90% 이상 폴드하라고 지시합니다. 이것이 바로 **토너먼트 생존의 미학(ICM)**입니다."
+    "explanation": "뒤에 5BB, 7BB짜리 숏스택들이 다음 블라인드에 자동 탈락할 위기인데, 3등 스택인 내가 칩리더와 목숨을 건 50:50 플립을 할 이유가 전혀 없습니다. 여기서 탈락하면 수백~수천 달러의 머니점프 상금을 날리게 되므로, ICM 솔버는 AKs조차 90% 이상 폴드하라고 지시합니다."
+  },
+  {
+    "id": "quiz-6",
+    "article_id": "monotone-boards",
+    "title": "모노톤 플랍에서의 C-bet: 플러시 완성 보드",
+    "category": "플랍 전략",
+    "level": "중급",
+    "situation": "당신은 BTN에서 오픈했고, BB가 콜했습니다. 플랍에 스페이드 3장이 깔렸습니다.",
+    "street": "Flop",
+    "pot": "5.5 BB",
+    "effective_stack": "97.5 BB",
+    "hero_position": "BTN",
+    "villain_position": "BB",
+    "hero_hand": [
+      "A♠",
+      "Q♦"
+    ],
+    "board": [
+      "K♠",
+      "8♠",
+      "3♠"
+    ],
+    "action_history": "Preflop: BTN 오픈 2.5bb ➔ BB 콜. Flop: K♠ 8♠ 3♠. BB 체크.",
+    "question": "너트 플러시 드로우와 오버카드를 가졌습니다. BTN인 당신의 최적 액션은?",
+    "options": [
+      {
+        "label": "체크 백 (Check behind)",
+        "is_correct": false,
+        "gto_freq": "25%",
+        "ev": "+3.7 BB"
+      },
+      {
+        "label": "작은 벳 (33% 팟 = 1.8 BB)",
+        "is_correct": true,
+        "gto_freq": "70%",
+        "ev": "+4.3 BB"
+      },
+      {
+        "label": "팟 사이즈 베팅 (5.5 BB)",
+        "is_correct": false,
+        "gto_freq": "5%",
+        "ev": "+3.1 BB"
+      }
+    ],
+    "correct_index": 1,
+    "key_concept": "너트 플러시 블로커(A♠)를 활용한 스몰 C-bet",
+    "explanation": "모노톤 보드에서는 대부분의 핸드가 체크백으로 팟을 컨트롤해야 합니다. 그러나 A♠를 쥔 핸드는 상대방이 넛 플러시를 쥐고 있을 확률을 0%로 완벽 차단(Block)하므로, 솔버는 작은 베팅(33%)을 통해 상대의 스페이드 없는 마지널 핸드를 폴드시킵니다."
+  },
+  {
+    "id": "quiz-7",
+    "article_id": "paired-boards",
+    "title": "페어드 보드(Paired Board)에서의 1/4팟 극소형 벳",
+    "category": "플랍 전략",
+    "level": "초급",
+    "situation": "CO vs BB 싱글 레이즈드 팟. 플랍에 잭 페어가 깔렸습니다.",
+    "street": "Flop",
+    "pot": "5.5 BB",
+    "effective_stack": "97.5 BB",
+    "hero_position": "CO",
+    "villain_position": "BB",
+    "hero_hand": [
+      "A♥",
+      "K♠"
+    ],
+    "board": [
+      "J♦",
+      "J♣",
+      "4♠"
+    ],
+    "action_history": "Preflop: CO 오픈 2.5bb ➔ BB 콜. Flop: J♦ J♣ 4♠. BB 체크.",
+    "question": "미스된 AK 하이입니다. 페어드 보드에서 BB의 체크를 상대로 어떻게 해야 할까요?",
+    "options": [
+      {
+        "label": "체크 백 (Check)",
+        "is_correct": false,
+        "gto_freq": "20%",
+        "ev": "+3.4 BB"
+      },
+      {
+        "label": "25% 극소형 벳 (1.4 BB)",
+        "is_correct": true,
+        "gto_freq": "75%",
+        "ev": "+4.1 BB"
+      },
+      {
+        "label": "75% 큰 벳 (4.1 BB)",
+        "is_correct": false,
+        "gto_freq": "5%",
+        "ev": "+2.8 BB"
+      }
+    ],
+    "correct_index": 1,
+    "key_concept": "극단적 레인지 우위와 정적(Static) 보드 텍스처",
+    "explanation": "J-J-4 보드는 매우 정적인(Static) 보드로, 턴에서 보드가 극적으로 바뀔 여지가 적습니다. 프리플랍 레이저는 오버페어(QQ+)를 독점하고 있으므로, 단 20~25%의 극소형 벳으로도 상대의 수많은 Q-high, T-high 에어 핸드들을 즉시 폴드시킬 수 있습니다."
+  },
+  {
+    "id": "quiz-8",
+    "article_id": "check-raising-flops",
+    "title": "BB 방어 후 플랍 첵-레이즈 블러프 핸드 선정",
+    "category": "플랍 전략",
+    "level": "중급",
+    "situation": "당신은 BB에서 BTN의 2.5bb 오픈을 96s로 방어했습니다.",
+    "street": "Flop",
+    "pot": "5.5 BB",
+    "effective_stack": "97.5 BB",
+    "hero_position": "BB (OOP)",
+    "villain_position": "BTN (IP)",
+    "hero_hand": [
+      "9♠",
+      "6♠"
+    ],
+    "board": [
+      "8♠",
+      "7♦",
+      "2♣"
+    ],
+    "action_history": "Preflop: BTN 오픈 2.5bb ➔ BB 콜. Flop: 8♠ 7♦ 2♣. BB 체크 ➔ BTN 33% C-bet(1.8bb).",
+    "question": "양차(OESD) + 백도어 플러시 드로우입니다. 당신의 최선의 액션은?",
+    "options": [
+      {
+        "label": "단순 콜 (Call 1.8 BB)",
+        "is_correct": false,
+        "gto_freq": "32%",
+        "ev": "+2.9 BB"
+      },
+      {
+        "label": "첵-레이스 (Check-Raise to 6.8 BB)",
+        "is_correct": true,
+        "gto_freq": "68%",
+        "ev": "+3.6 BB"
+      },
+      {
+        "label": "폴드 (Fold)",
+        "is_correct": false,
+        "gto_freq": "0%",
+        "ev": "0.0 BB"
+      }
+    ],
+    "correct_index": 1,
+    "key_concept": "리던던시 없는 완벽한 세미 블러프 첵-레이스",
+    "explanation": "8-7-2 보드는 BB에게 스트레이트와 투페어 콤보가 많아 첵-레이스 빈도가 높은 보드입니다. 96s는 8장의 스트레이트 아웃츠와 백도어 플러시 잠재력을 가진 최상급 세미 블러프 핸드로, 레이즈를 통해 BTN의 하이카드들을 폴드시킬 수 있습니다."
+  },
+  {
+    "id": "quiz-9",
+    "article_id": "turn-barreling",
+    "title": "턴 블랭크 카드에서의 2nd 배럴 타이밍",
+    "category": "턴/리버",
+    "level": "중급",
+    "situation": "당신은 BTN에서 QJs로 오픈, 플랍 C-bet 후 BB가 콜. 턴에 블랭크 카드가 떨어졌습니다.",
+    "street": "Turn",
+    "pot": "11.5 BB",
+    "effective_stack": "90 BB",
+    "hero_position": "BTN",
+    "villain_position": "BB",
+    "hero_hand": [
+      "Q♠",
+      "J♠"
+    ],
+    "board": [
+      "K♠",
+      "7♦",
+      "2♣",
+      "4♥"
+    ],
+    "action_history": "Flop: K♠ 7♦ 2♣. BTN 33% 벳 ➔ BB 콜. Turn: 4♥. BB 체크.",
+    "question": "아무것도 맞지 않았지만 거트샷 드로우(T 아웃츠)가 있습니다. 턴 행동은?",
+    "options": [
+      {
+        "label": "체크 백하고 포기 (Check behind)",
+        "is_correct": false,
+        "gto_freq": "22%",
+        "ev": "+1.1 BB"
+      },
+      {
+        "label": "하프 팟 2nd 배럴 (5.8 BB)",
+        "is_correct": false,
+        "gto_freq": "18%",
+        "ev": "+1.8 BB"
+      },
+      {
+        "label": "75% 라지 2nd 배럴 (8.6 BB)",
+        "is_correct": true,
+        "gto_freq": "60%",
+        "ev": "+2.4 BB"
+      }
+    ],
+    "correct_index": 2,
+    "key_concept": "폴라라이즈드 턴 배럴과 거트샷 레버리지",
+    "explanation": "QJs는 에퀴티 리텐션(리버에서 넛 스트레이트로 역전할 잠재력)을 가진 최고의 블러프 배럴 핸드입니다. 75%의 큰 사이징으로 베팅하면 상대의 7x 페어, 4x 페어, 약한 플로팅 핸드들을 턴에서 대거 폴드시킬 수 있습니다."
+  },
+  {
+    "id": "quiz-10",
+    "article_id": "river-overbets",
+    "title": "리버 오버벳(150% Pot) 너츠 밸류 추출",
+    "category": "턴/리버",
+    "level": "고급",
+    "situation": "리버에 K이 떨어지며 넛 스트레이트를 완성했습니다. 상대 레인지는 캡(Capped)되어 있습니다.",
+    "street": "River",
+    "pot": "32 BB",
+    "effective_stack": "68 BB",
+    "hero_position": "BTN",
+    "villain_position": "BB",
+    "hero_hand": [
+      "J♣",
+      "9♣"
+    ],
+    "board": [
+      "T♠",
+      "8♦",
+      "4♣",
+      "2♠",
+      "K♥"
+    ],
+    "action_history": "Flop/Turn 베팅에 BB 연속 체크-콜. River: K♥. BB 체크.",
+    "question": "절대적 넛(Nut) 핸드입니다. 리버 사이징을 어떻게 가져가야 할까요?",
+    "options": [
+      {
+        "label": "하프 팟 벳 (16 BB)",
+        "is_correct": false,
+        "gto_freq": "12%",
+        "ev": "+22.5 BB"
+      },
+      {
+        "label": "75% 팟 벳 (24 BB)",
+        "is_correct": false,
+        "gto_freq": "20%",
+        "ev": "+24.8 BB"
+      },
+      {
+        "label": "150% 오버벳 올인 (48 BB)",
+        "is_correct": true,
+        "gto_freq": "68%",
+        "ev": "+28.2 BB"
+      }
+    ],
+    "correct_index": 2,
+    "key_concept": "넛 어드밴티지 독점과 오버벳 기하급수적 EV",
+    "explanation": "보드에 J9 외에는 더 높은 스트레이트가 없으며, BB는 플랍/턴에 레이즈하지 않아 투페어나 세트 비중이 적습니다. 반면 BTN인 당신은 너츠를 독점하고 있으므로, 상대의 원페어 블러프 캐처들을 상대로 극단적 오버벳(150%)을 쳐서 최대 밸류를 뽑아내는 것이 GTO 최선의 라인입니다."
+  },
+  {
+    "id": "quiz-11",
+    "article_id": "bvb-strategy",
+    "title": "BvB (블라인드 vs 블라인드) SB의 림프-레이즈 전략",
+    "category": "GTO 전략",
+    "level": "중급",
+    "situation": "SB vs BB 헤즈업. SB에서 1bb 림프를 댔더니 BB가 3.5bb로 아이솔레이션 레이즈를 쳤습니다.",
+    "street": "Preflop",
+    "pot": "4.5 BB",
+    "effective_stack": "99 BB",
+    "hero_position": "SB",
+    "villain_position": "BB",
+    "hero_hand": [
+      "A♠",
+      "A♦"
+    ],
+    "board": [],
+    "action_history": "SB 림프 1bb ➔ BB 레이즈 3.5bb.",
+    "question": "AA를 들고 슬로우플레이 중이었습니다. BB의 레이즈에 당신의 반응은?",
+    "options": [
+      {
+        "label": "콜하고 플랍을 본다 (Trap Call)",
+        "is_correct": false,
+        "gto_freq": "24%",
+        "ev": "+4.1 BB"
+      },
+      {
+        "label": "리레이즈 3벳 (11.5 BB)",
+        "is_correct": true,
+        "gto_freq": "76%",
+        "ev": "+5.2 BB"
+      },
+      {
+        "label": "올인 셔브 (99 BB)",
+        "is_correct": false,
+        "gto_freq": "0%",
+        "ev": "+1.9 BB"
+      }
+    ],
+    "correct_index": 1,
+    "key_concept": "림프-레이즈 레인지 프로텍션 & 팟 빌딩",
+    "explanation": "BvB에서 SB 림프 전략은 AA, KK 같은 최상위 프리미엄을 림프 레인지에 반드시 섞어두어야(Limp-Raise) BB의 무자비한 아이솔레이션 공격으로부터 약한 림프 핸드들을 방어할 수 있습니다. 11.5bb 리레이즈가 최적입니다."
+  },
+  {
+    "id": "quiz-12",
+    "article_id": "turn-pot-control",
+    "title": "턴 카드가 페어되었을 때의 첵백 팟 컨트롤",
+    "category": "턴/리버",
+    "level": "중급",
+    "situation": "플랍에 A탑페어를 맞추고 벳했으나, 턴에 A가 한 장 더 떨어졌습니다.",
+    "street": "Turn",
+    "pot": "11.5 BB",
+    "effective_stack": "90 BB",
+    "hero_position": "BTN",
+    "villain_position": "BB",
+    "hero_hand": [
+      "A♦",
+      "T♠"
+    ],
+    "board": [
+      "A♠",
+      "Q♦",
+      "6♣",
+      "A♥"
+    ],
+    "action_history": "Flop: A♠ Q♦ 6♣. BTN 33% 벳 ➔ BB 콜. Turn: A♥. BB 체크.",
+    "question": "트립스를 맞췄습니다. 턴에서 계속 베팅해야 할까요?",
+    "options": [
+      {
+        "label": "체크 백 (Check behind)",
+        "is_correct": true,
+        "gto_freq": "72%",
+        "ev": "+8.9 BB"
+      },
+      {
+        "label": "하프 팟 베팅 (5.8 BB)",
+        "is_correct": false,
+        "gto_freq": "25%",
+        "ev": "+8.3 BB"
+      },
+      {
+        "label": "올인 (90 BB)",
+        "is_correct": false,
+        "gto_freq": "3%",
+        "ev": "+4.1 BB"
+      }
+    ],
+    "correct_index": 0,
+    "key_concept": "보드 락(Lock) 현상과 쇼다운 밸류 보존",
+    "explanation": "A가 한 장 더 떨어지면 상대가 A를 쥐고 있을 확률이 극도로 희박해집니다. 여기서 베팅을 하면 상대는 Qx나 포켓페어를 거의 다 폴드하므로 추가 밸류를 얻기 어렵습니다. 첵백하여 리버에서 상대의 블러프를 유도하거나 씬 밸류를 챙기는 것이 정답입니다."
+  },
+  {
+    "id": "quiz-13",
+    "article_id": "pko-bounty-math",
+    "title": "PKO 바운티 스팟: 숏스택 올인에 콜해야 할까?",
+    "category": "PKO 바운티",
+    "level": "중급",
+    "situation": "PKO 바운티 토너먼트. 10bb 숏스택이 올인했습니다. 당신은 칩으로 커버하고 있습니다.",
+    "street": "Preflop",
+    "pot": "13.5 BB",
+    "effective_stack": "10 BB",
+    "hero_position": "BB (50 BB)",
+    "villain_position": "SB (10 BB 숏스택)",
+    "hero_hand": [
+      "Q♥",
+      "T♥"
+    ],
+    "board": [],
+    "action_history": "SB 10 BB 올인 ➔ BB 차례.",
+    "question": "상대의 목에 걸린 바운티가 상당합니다. 당신의 결정은?",
+    "options": [
+      {
+        "label": "폴드 (Fold)",
+        "is_correct": false,
+        "gto_freq": "15%",
+        "ev": "-0.5 BB"
+      },
+      {
+        "label": "스냅 콜 (Call All-in)",
+        "is_correct": true,
+        "gto_freq": "85%",
+        "ev": "+1.8 BB"
+      }
+    ],
+    "correct_index": 1,
+    "key_concept": "바운티 팩터(Bounty Factor)와 에퀴티 기준 완화",
+    "explanation": "PKO에서는 상대를 탈락시킬 때 얻는 현금 바운티가 칩 가치로 환산되어 팟에 추가됩니다. 이로 인해 필요한 승률(Required Equity)이 평소의 45%에서 35~38% 수준으로 급락하므로, QTs 같은 수티드 브로드웨이는 무조건 스냅 콜 스팟입니다."
+  },
+  {
+    "id": "quiz-14",
+    "article_id": "3-way-pots",
+    "title": "3웨이(3-Way) 팟에서의 넛 플러시 체크 트랩",
+    "category": "솔버 이론",
+    "level": "고급",
+    "situation": "당신은 BTN이고, 플랍에 3명이 들어와 플러시가 플랍되었습니다.",
+    "street": "Flop",
+    "pot": "8.5 BB",
+    "effective_stack": "95 BB",
+    "hero_position": "BTN",
+    "villain_position": "SB & BB",
+    "hero_hand": [
+      "K♠",
+      "Q♠"
+    ],
+    "board": [
+      "A♠",
+      "9♠",
+      "4♠"
+    ],
+    "action_history": "Preflop: BTN 오픈 ➔ SB 콜, BB 콜. Flop: A♠ 9♠ 4♠. SB 체크, BB 체크.",
+    "question": "두 명의 체크를 받았습니다. 2등 플러시를 쥔 당신의 선택은?",
+    "options": [
+      {
+        "label": "체크 백 (Check behind)",
+        "is_correct": true,
+        "gto_freq": "65%",
+        "ev": "+6.4 BB"
+      },
+      {
+        "label": "33% 팟 스몰 벳 (2.8 BB)",
+        "is_correct": false,
+        "gto_freq": "28%",
+        "ev": "+6.1 BB"
+      },
+      {
+        "label": "팟 사이즈 베팅 (8.5 BB)",
+        "is_correct": false,
+        "gto_freq": "7%",
+        "ev": "+5.2 BB"
+      }
+    ],
+    "correct_index": 0,
+    "key_concept": "멀티웨이 방어 빈도 압축 & 트랩 체크",
+    "explanation": "3웨이 팟에서는 두 명의 수비자가 서로의 존재 때문에 폴드 빈도가 급증합니다. 여기서 벳하면 스페이드 없는 핸드는 다 도망가므로, 첵백하여 턴에서 상대방이 원페어나 블러프로 팟에 칩을 넣도록 유도하는 것이 솔버 권장 라인입니다."
+  },
+  {
+    "id": "quiz-15",
+    "article_id": "bluff-catching-mechanics",
+    "title": "리버 블러프 캐칭: 언블로커를 활용한 히어로 콜",
+    "category": "턴/리버",
+    "level": "고급",
+    "situation": "상대가 트리플 배럴 올인을 날렸습니다. 당신은 미들페어를 들고 있습니다.",
+    "street": "River",
+    "pot": "55 BB",
+    "effective_stack": "40 BB (올인 상태)",
+    "hero_position": "BB",
+    "villain_position": "BTN",
+    "board": [
+      "K♦",
+      "T♠",
+      "5♣",
+      "2♦",
+      "8♠"
+    ],
+    "hero_hand": [
+      "T♥",
+      "9♥"
+    ],
+    "action_history": "Flop/Turn/River 모두 BTN이 베팅하고 BB가 콜. River에서 BTN 40bb 올인.",
+    "question": "세컨페어입니다. 미스된 드로우가 많은 보드에서 당신의 결정은?",
+    "options": [
+      {
+        "label": "안전하게 폴드 (Fold)",
+        "is_correct": false,
+        "gto_freq": "28%",
+        "ev": "0.0 BB"
+      },
+      {
+        "label": "히어로 콜 (Hero Call)",
+        "is_correct": true,
+        "gto_freq": "72%",
+        "ev": "+3.4 BB"
+      }
+    ],
+    "correct_index": 1,
+    "key_concept": "미스된 플러시/스트레이트 드로우 언블로커(Unblocker)",
+    "explanation": "당신의 T9h는 상대의 블러프 카드인 다이아몬드(♦)를 한 장도 쥐고 있지 않아 상대가 미스된 플러시 드로우로 올인 블러프를 쳤을 확률을 온전히 열어둡니다(Unblock). 솔버는 이런 순수 언블락 캐처로 높은 빈도의 히어로 콜을 지시합니다."
+  },
+  {
+    "id": "quiz-16",
+    "article_id": "straddle-ante-games",
+    "title": "미시시피 스트래들 게임: 림퍼를 응징하는 아이솔레이션",
+    "category": "캐시/스트래들",
+    "level": "초급",
+    "situation": "스트래들+앤티 게임. 앞에서 2명이 림프했습니다. 당신은 BTN입니다.",
+    "street": "Preflop",
+    "pot": "6.5 BB",
+    "effective_stack": "150 BB",
+    "hero_position": "BTN",
+    "villain_position": "MP & CO 림퍼들",
+    "hero_hand": [
+      "A♠",
+      "J♠"
+    ],
+    "board": [],
+    "action_history": "스트래들 2bb ➔ MP 림프 2bb ➔ CO 림프 2bb ➔ BTN 차례.",
+    "question": "데드 머니가 팟에 가득합니다. 당신의 프리플랍 액션은?",
+    "options": [
+      {
+        "label": "같이 2bb 오버림프 (Overlimp)",
+        "is_correct": false,
+        "gto_freq": "5%",
+        "ev": "+1.8 BB"
+      },
+      {
+        "label": "아이솔레이션 레이즈 (8.5 BB)",
+        "is_correct": true,
+        "gto_freq": "85%",
+        "ev": "+3.9 BB"
+      },
+      {
+        "label": "폴드 (Fold)",
+        "is_correct": false,
+        "gto_freq": "10%",
+        "ev": "0.0 BB"
+      }
+    ],
+    "correct_index": 1,
+    "key_concept": "데드 머니 수확과 포지션 장악",
+    "explanation": "스트래들과 앤티가 깔려 있고 림퍼가 둘이나 있다면 팟에 공짜 칩이 엄청납니다. AJs 같은 강력한 핸드로 오버림프하는 것은 심각한 EV 누수입니다. 기본 오픈(6bb)에 림퍼당 1bb씩 추가한 8.5bb 레이즈로 주도권을 잡아야 합니다."
+  },
+  {
+    "id": "quiz-17",
+    "article_id": "low-connected-boards",
+    "title": "로우 커넥티드 보드에서의 첵-콜 vs 폴드",
+    "category": "플랍 전략",
+    "level": "초급",
+    "situation": "당신은 BB에서 88로 UTG의 오픈을 콜했습니다. 플랍은 6-5-4입니다.",
+    "street": "Flop",
+    "pot": "5.5 BB",
+    "effective_stack": "97.5 BB",
+    "hero_position": "BB",
+    "villain_position": "UTG",
+    "hero_hand": [
+      "8♥",
+      "8♦"
+    ],
+    "board": [
+      "6♠",
+      "5♦",
+      "4♣"
+    ],
+    "action_history": "Preflop: UTG 오픈 2.5bb ➔ BB 콜. Flop: 6♠ 5♦ 4♣. BB 체크 ➔ UTG 33% 벳.",
+    "question": "오버페어와 거트샷 드로우가 있습니다. UTG 벳에 대한 올바른 대응은?",
+    "options": [
+      {
+        "label": "폴드 (Fold)",
+        "is_correct": false,
+        "gto_freq": "0%",
+        "ev": "0.0 BB"
+      },
+      {
+        "label": "단순 콜 (Call 1.8 BB)",
+        "is_correct": true,
+        "gto_freq": "82%",
+        "ev": "+3.7 BB"
+      },
+      {
+        "label": "첵-레이스 (Check-Raise to 6.5 BB)",
+        "is_correct": false,
+        "gto_freq": "18%",
+        "ev": "+3.2 BB"
+      }
+    ],
+    "correct_index": 1,
+    "key_concept": "오버페어 언더 블러프 캐칭",
+    "explanation": "6-5-4 보드는 BB에게 스트레이트와 투페어가 많아 유리하지만, UTG의 33% C-bet에 88로 첵레이스를 치면 UTG의 99+, 셋에 역공을 당합니다. 콜하여 상대의 오버카드 블러프를 유지시키는 것이 정석입니다."
+  },
+  {
+    "id": "quiz-18",
+    "article_id": "4-bet-pots-spr",
+    "title": "4벳 팟에서의 숏 SPR 올인 커밋",
+    "category": "3벳 팟",
+    "level": "중급",
+    "situation": "4벳 팟. 플랍에 팟이 45bb이고 유효 스택은 55bb(SPR 1.2)입니다.",
+    "street": "Flop",
+    "pot": "45 BB",
+    "effective_stack": "55 BB",
+    "hero_position": "SB (4베터)",
+    "villain_position": "BTN (3베터, 콜러)",
+    "hero_hand": [
+      "A♠",
+      "A♣"
+    ],
+    "board": [
+      "Q♠",
+      "7♦",
+      "2♣"
+    ],
+    "action_history": "BTN 3벳 ➔ SB 4벳 22bb ➔ BTN 콜. Flop: Q♠ 7♦ 2♣.",
+    "question": "스택 대비 팟 비율(SPR)이 1.2로 매우 낮습니다. 당신의 플랍 액션은?",
+    "options": [
+      {
+        "label": "체크-트랩 (Check to Trap)",
+        "is_correct": false,
+        "gto_freq": "15%",
+        "ev": "+38.5 BB"
+      },
+      {
+        "label": "33% 스몰 벳 (15 BB)",
+        "is_correct": true,
+        "gto_freq": "75%",
+        "ev": "+41.2 BB"
+      },
+      {
+        "label": "55 BB 올인 (Shove)",
+        "is_correct": false,
+        "gto_freq": "10%",
+        "ev": "+37.1 BB"
+      }
+    ],
+    "correct_index": 1,
+    "key_concept": "낮은 SPR에서의 지오메트릭 벳 사이징",
+    "explanation": "SPR이 1.2인 극단적 숏 SPR 상황에서는 플랍에 15bb(33%)를 베팅하고 턴에 남은 40bb를 올인하는 2스트리트 지오메트릭 사이징이 상대의 AQ, JJ, TT로부터 최대 밸류를 유도합니다."
+  },
+  {
+    "id": "quiz-19",
+    "article_id": "turn-probing",
+    "title": "턴 프로브 벳(Probe Bet): 상대가 플랍을 첵백했을 때",
+    "category": "턴/리버",
+    "level": "중급",
+    "situation": "BTN이 유리한 K-하이 플랍에서 C-bet을 치지 않고 첵백했습니다. 턴 카드가 떨어졌습니다.",
+    "street": "Turn",
+    "pot": "5.5 BB",
+    "effective_stack": "95 BB",
+    "hero_position": "BB",
+    "villain_position": "BTN",
+    "hero_hand": [
+      "8♠",
+      "8♥"
+    ],
+    "board": [
+      "K♠",
+      "9♦",
+      "4♣",
+      "3♥"
+    ],
+    "action_history": "Flop: K♠ 9♦ 4♣. BB 체크 ➔ BTN 첵백. Turn: 3♥. BB 차례.",
+    "question": "BTN의 레인지는 캡되었습니다. 88을 쥔 BB의 올바른 액션은?",
+    "options": [
+      {
+        "label": "다시 체크 (Check)",
+        "is_correct": false,
+        "gto_freq": "28%",
+        "ev": "+2.8 BB"
+      },
+      {
+        "label": "프로브 벳 (Probe Bet 66% = 3.6 BB)",
+        "is_correct": true,
+        "gto_freq": "72%",
+        "ev": "+3.5 BB"
+      }
+    ],
+    "correct_index": 1,
+    "key_concept": "상대의 캡된(Capped) 레인지를 공략하는 프로브 벳",
+    "explanation": "K-하이 보드에서 BTN이 C-bet을 안 하고 첵백했다는 것은 AA, AK, KQ 같은 강력한 핸드가 거의 없다는 뜻입니다. 턴에 66% 프로브 벳을 쳐서 상대의 Q-high, J-high, 언더페어들을 즉시 폴드시켜 주도권을 빼앗아야 합니다."
+  },
+  {
+    "id": "quiz-20",
+    "article_id": "squeeze-play-fundamentals",
+    "title": "스퀴즈(Squeeze) 스팟: 루즈한 오픈과 콜 응징",
+    "category": "3벳 팟",
+    "level": "초급",
+    "situation": "CO가 2.5bb로 오픈하고 BTN이 콜했습니다. 당신은 BB에서 AKs를 받았습니다.",
+    "street": "Preflop",
+    "pot": "6.5 BB",
+    "effective_stack": "100 BB",
+    "hero_position": "BB",
+    "villain_position": "CO & BTN",
+    "hero_hand": [
+      "A♠",
+      "K♠"
+    ],
+    "board": [],
+    "action_history": "CO 오픈 2.5bb ➔ BTN 콜 2.5bb ➔ BB 차례.",
+    "question": "블라인드에서 스퀴즈 찬스입니다. 권장 사이징은?",
+    "options": [
+      {
+        "label": "단순 콜 (Call 1.5 BB)",
+        "is_correct": false,
+        "gto_freq": "5%",
+        "ev": "+2.9 BB"
+      },
+      {
+        "label": "스퀴즈 3벳 (12~13 BB)",
+        "is_correct": true,
+        "gto_freq": "95%",
+        "ev": "+5.8 BB"
+      },
+      {
+        "label": "100 BB 올인 (Shove)",
+        "is_correct": false,
+        "gto_freq": "0%",
+        "ev": "+1.2 BB"
+      }
+    ],
+    "correct_index": 1,
+    "key_concept": "아웃포지션 멀티웨이 스퀴즈 사이징 공식",
+    "explanation": "OOP에서 콜러가 한 명 껴있을 때의 스퀴즈 사이징은 [기본 3벳(4x) + 콜러당 1x] 공식으로 12~13bb가 최적입니다. 팟의 데드 머니(6.5bb)를 즉시 수확하거나 헤즈업 팟을 만들어 압도적 이득을 취할 수 있습니다."
+  },
+  {
+    "id": "quiz-21",
+    "article_id": "thin-value-betting",
+    "title": "리버 씬 밸류 벳(Thin Value Bet): 첵백 vs 작은 벳",
+    "category": "턴/리버",
+    "level": "중급",
+    "situation": "리버까지 체크로 진행되었습니다. 당신은 A하이를 쥐고 있습니다.",
+    "street": "River",
+    "pot": "12 BB",
+    "effective_stack": "85 BB",
+    "hero_position": "BTN",
+    "villain_position": "BB",
+    "hero_hand": [
+      "A♠",
+      "6♠"
+    ],
+    "board": [
+      "A♣",
+      "T♦",
+      "3♠",
+      "7♥",
+      "2♦"
+    ],
+    "action_history": "Flop: 양자 체크. Turn: 양자 체크. River: BB 체크.",
+    "question": "약한 A 탑페어입니다. 쇼다운을 그냥 볼까요, 아니면 베팅할까요?",
+    "options": [
+      {
+        "label": "체크 백 (Check behind for Showdown)",
+        "is_correct": false,
+        "gto_freq": "25%",
+        "ev": "+8.2 BB"
+      },
+      {
+        "label": "씬 밸류 벳 (33% 팟 = 4 BB)",
+        "is_correct": true,
+        "gto_freq": "75%",
+        "ev": "+9.4 BB"
+      }
+    ],
+    "correct_index": 1,
+    "key_concept": "상대 캡된 레인지 상대로 33% 씬 밸류 추출",
+    "explanation": "플랍과 턴에 모두 체크한 BB는 Tx, 7x, 3x 같은 아주 약한 페어로 가득 차 있습니다. 33%의 작은 사이징으로 베팅하면 상대는 오즈 때문에 이런 약한 페어로 울며 겨자 먹기로 콜을 해줍니다. 첵백하는 것보다 벳하는 것이 장기적으로 훨씬 +EV입니다."
+  },
+  {
+    "id": "quiz-22",
+    "article_id": "resteal-shove-math",
+    "title": "토너먼트 15bb 숏스택에서의 리스틸(Resteal) 셔브",
+    "category": "토너먼트/ICM",
+    "level": "초급",
+    "situation": "토너먼트 중반. 당신은 BB에 15bb 스택이 있고, CO가 2.2bb로 오픈했습니다.",
+    "street": "Preflop",
+    "pot": "3.7 BB",
+    "effective_stack": "15 BB",
+    "hero_position": "BB",
+    "villain_position": "CO",
+    "hero_hand": [
+      "A♥",
+      "5♥"
+    ],
+    "board": [],
+    "action_history": "CO 오픈 2.2bb ➔ SB 폴드 ➔ BB 차례.",
+    "question": "A5 수티드입니다. 15bb 스택으로 어떻게 플레이해야 할까요?",
+    "options": [
+      {
+        "label": "단순 콜 (Call 1.2 BB)",
+        "is_correct": false,
+        "gto_freq": "18%",
+        "ev": "+0.4 BB"
+      },
+      {
+        "label": "15 BB 올인 셔브 (All-in Shove)",
+        "is_correct": true,
+        "gto_freq": "82%",
+        "ev": "+1.9 BB"
+      },
+      {
+        "label": "폴드 (Fold)",
+        "is_correct": false,
+        "gto_freq": "0%",
+        "ev": "0.0 BB"
+      }
+    ],
+    "correct_index": 1,
+    "key_concept": "A-블로커와 휠(Wheel) 잠재력을 갖춘 15bb 올인",
+    "explanation": "A5s는 15bb 숏스택 상황에서 가장 완벽한 3벳 올인 셔브 카드입니다. 상대의 AA, AK 콤보를 50% 차단(Blocker)하며, 상대가 콜했을 때도 5-high 스트레이트 역전 잠재력으로 약 35%의 에퀴티를 보장받습니다."
+  },
+  {
+    "id": "quiz-23",
+    "article_id": "dynamic-turn-check-raises",
+    "title": "다이내믹 턴에서의 첵-레이즈 세미 블러프",
+    "category": "턴/리버",
+    "level": "고급",
+    "situation": "플랍 첵콜 후 턴에 텐이 떨어지며 양차 스트레이트 + 플러시 드로우가 완성되었습니다.",
+    "street": "Turn",
+    "pot": "18 BB",
+    "effective_stack": "75 BB",
+    "hero_position": "BB",
+    "villain_position": "BTN",
+    "hero_hand": [
+      "9♠",
+      "7♠"
+    ],
+    "board": [
+      "J♠",
+      "8♦",
+      "3♣",
+      "T♠"
+    ],
+    "action_history": "Flop: J♠ 8♦ 3♣. BTN 33% 벳 ➔ BB 콜. Turn: T♠. BB 체크 ➔ BTN 66% 벳(12bb).",
+    "question": "괴물급 콤보 드로우입니다. 당신의 턴 액션은?",
+    "options": [
+      {
+        "label": "단순 콜 (Call 12 BB)",
+        "is_correct": false,
+        "gto_freq": "30%",
+        "ev": "+5.2 BB"
+      },
+      {
+        "label": "첵-레이스 올인 (Check-Raise to All-in)",
+        "is_correct": true,
+        "gto_freq": "70%",
+        "ev": "+7.1 BB"
+      }
+    ],
+    "correct_index": 1,
+    "key_concept": "거대한 폴드 에퀴티 + 15장의 아웃츠 결합",
+    "explanation": "97s는 턴에서 스트레이트를 이미 완성했을 뿐 아니라, Q와 스페이드가 뜨면 넛 스트레이트/플러시로 발전합니다. 여기서 첵레이스 올인을 날리면 상대의 원페어와 투페어들을 극도로 압박하며, 설령 콜당해도 35% 이상의 승률을 보유합니다."
+  },
+  {
+    "id": "quiz-24",
+    "article_id": "deep-stack-implied-odds",
+    "title": "딥스택(200bb) 셋 오버 셋 방어와 팟 오즈",
+    "category": "캐시/스트래들",
+    "level": "고급",
+    "situation": "200bb 딥스택 캐시게임. 리버에 상대가 150bb 오버벳 올인을 날렸습니다.",
+    "street": "River",
+    "pot": "95 BB",
+    "effective_stack": "150 BB (올인 상태)",
+    "hero_position": "BTN",
+    "villain_position": "BB",
+    "hero_hand": [
+      "7♠",
+      "7♣"
+    ],
+    "board": [
+      "K♠",
+      "7♦",
+      "2♣",
+      "T♠",
+      "3♥"
+    ],
+    "action_history": "플랍/턴 거대한 레이즈 공방 후 River(3♥)에서 BB가 150bb 오버벳 올인 잼!",
+    "question": "미들 세트(77)입니다. 200bb 딥스택에서 상대의 올인에 콜해야 할까요?",
+    "options": [
+      {
+        "label": "콜 (Call All-in)",
+        "is_correct": true,
+        "gto_freq": "80%",
+        "ev": "+14.5 BB"
+      },
+      {
+        "label": "셋 오버 셋(TT/KK) 의심으로 폴드",
+        "is_correct": false,
+        "gto_freq": "20%",
+        "ev": "0.0 BB"
+      }
+    ],
+    "correct_index": 0,
+    "key_concept": "세트의 압도적 밸류와 몬스터 언더 더 베드 증후군 극복",
+    "explanation": "초보자들은 딥스택에서 상대가 크게 치면 무조건 KK나 TT 셋 오버 셋을 들고 있을 것이라 두려워(Monster under the bed)하며 세트를 폴드합니다. 하지만 상대의 레인지에는 투페어(KT)와 수많은 블러프들이 포함되어 있으므로 세트는 반드시 콜해야 하는 GTO 필수 방어선입니다."
+  },
+  {
+    "id": "quiz-25",
+    "article_id": "missed-draw-river-bluff",
+    "title": "리버 미스된 플러시 드로우로 언블락 블러프 시도",
+    "category": "턴/리버",
+    "level": "고급",
+    "situation": "당신은 CO에서 QJ로 플랍 플러시 드로우 C-bet, 턴 배럴. 리버에 플러시가 미스되었습니다.",
+    "street": "River",
+    "pot": "36 BB",
+    "effective_stack": "64 BB",
+    "hero_position": "CO",
+    "villain_position": "BB",
+    "hero_hand": [
+      "Q♠",
+      "J♦"
+    ],
+    "board": [
+      "A♠",
+      "8♦",
+      "2♠",
+      "7♣",
+      "K♦"
+    ],
+    "action_history": "Flop: A♠ 8♦ 2♠. CO 벳 ➔ BB 콜. Turn: 7♣. CO 벳 ➔ BB 콜. River: K♦. BB 체크.",
+    "question": "아무것도 맞지 않았습니다. 리버 트리플 배럴 블러프를 날려야 할까요?",
+    "options": [
+      {
+        "label": "체크하고 쇼다운 포기 (Check)",
+        "is_correct": false,
+        "gto_freq": "15%",
+        "ev": "0.0 BB"
+      },
+      {
+        "label": "70% 팟 트리플 배럴 블러프 (25 BB)",
+        "is_correct": true,
+        "gto_freq": "85%",
+        "ev": "+3.8 BB"
+      }
+    ],
+    "correct_index": 1,
+    "key_concept": "K과 A를 위협하는 블러프 레버리지",
+    "explanation": "리버에 K이 떨어지며 프리플랍 레이저인 CO에게 압도적으로 유리한 카드가 추가되었습니다. QJ는 상대의 8x, 7x 마지널 페어들을 완벽히 폴드시킬 수 있으며, 상대가 콜할 플러시 카드를 블락하지 않고 있으므로 최적의 블러프 핸드입니다."
   }
-]
-,
+],
   ranges: {
   "presets": [
     {
-      "id": "btn_open",
-      "name": "BTN 오픈 레이스 (6-Max 100BB)",
-      "description": "버튼(BTN)에서 표준 2.5bb 오픈 레이스하는 GTO 레인지 (약 43.5% 빈도)",
+      "id": "utg_open",
+      "category": "6-Max 100BB 오픈",
+      "name": "UTG 오픈 레이스 (15.5%)",
+      "description": "언더 더 건(UTG) 6-Max 100BB GTO 오픈 레이스 레인지. 뒤에 5명이 남아있으므로 최상위 15.5% 프리미엄 핸드로만 엄격히 레이즈합니다.",
       "legend": [
-        {"action": "Raise 2.5bb", "color": "#ef4444", "label": "레이스 (오픈)"},
-        {"action": "Fold", "color": "#1e293b", "label": "폴드"}
+        {
+          "action": "Raise 2.5bb",
+          "color": "#ef4444",
+          "label": "레이스 (오픈)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드"
+        }
       ],
       "actions": {
-        "AA": {"action": "Raise 2.5bb", "freq": 100},
-        "KK": {"action": "Raise 2.5bb", "freq": 100},
-        "QQ": {"action": "Raise 2.5bb", "freq": 100},
-        "JJ": {"action": "Raise 2.5bb", "freq": 100},
-        "TT": {"action": "Raise 2.5bb", "freq": 100},
-        "99": {"action": "Raise 2.5bb", "freq": 100},
-        "88": {"action": "Raise 2.5bb", "freq": 100},
-        "77": {"action": "Raise 2.5bb", "freq": 100},
-        "66": {"action": "Raise 2.5bb", "freq": 100},
-        "55": {"action": "Raise 2.5bb", "freq": 100},
-        "44": {"action": "Raise 2.5bb", "freq": 100},
-        "33": {"action": "Raise 2.5bb", "freq": 100},
-        "22": {"action": "Raise 2.5bb", "freq": 85},
-
-        "AKs": {"action": "Raise 2.5bb", "freq": 100},
-        "AQs": {"action": "Raise 2.5bb", "freq": 100},
-        "AJs": {"action": "Raise 2.5bb", "freq": 100},
-        "ATs": {"action": "Raise 2.5bb", "freq": 100},
-        "A9s": {"action": "Raise 2.5bb", "freq": 100},
-        "A8s": {"action": "Raise 2.5bb", "freq": 100},
-        "A7s": {"action": "Raise 2.5bb", "freq": 100},
-        "A6s": {"action": "Raise 2.5bb", "freq": 100},
-        "A5s": {"action": "Raise 2.5bb", "freq": 100},
-        "A4s": {"action": "Raise 2.5bb", "freq": 100},
-        "A3s": {"action": "Raise 2.5bb", "freq": 100},
-        "A2s": {"action": "Raise 2.5bb", "freq": 100},
-
-        "KQs": {"action": "Raise 2.5bb", "freq": 100},
-        "KJs": {"action": "Raise 2.5bb", "freq": 100},
-        "KTs": {"action": "Raise 2.5bb", "freq": 100},
-        "K9s": {"action": "Raise 2.5bb", "freq": 100},
-        "K8s": {"action": "Raise 2.5bb", "freq": 90},
-        "K7s": {"action": "Raise 2.5bb", "freq": 80},
-        "K6s": {"action": "Raise 2.5bb", "freq": 70},
-        "K5s": {"action": "Raise 2.5bb", "freq": 65},
-        "K4s": {"action": "Raise 2.5bb", "freq": 60},
-        "K3s": {"action": "Raise 2.5bb", "freq": 50},
-        "K2s": {"action": "Raise 2.5bb", "freq": 40},
-
-        "QJs": {"action": "Raise 2.5bb", "freq": 100},
-        "QTs": {"action": "Raise 2.5bb", "freq": 100},
-        "Q9s": {"action": "Raise 2.5bb", "freq": 100},
-        "Q8s": {"action": "Raise 2.5bb", "freq": 90},
-        "Q7s": {"action": "Raise 2.5bb", "freq": 60},
-        "Q6s": {"action": "Raise 2.5bb", "freq": 50},
-        "Q5s": {"action": "Raise 2.5bb", "freq": 40},
-        "Q4s": {"action": "Raise 2.5bb", "freq": 30},
-
-        "JTs": {"action": "Raise 2.5bb", "freq": 100},
-        "J9s": {"action": "Raise 2.5bb", "freq": 100},
-        "J8s": {"action": "Raise 2.5bb", "freq": 90},
-        "J7s": {"action": "Raise 2.5bb", "freq": 60},
-        "J6s": {"action": "Raise 2.5bb", "freq": 30},
-
-        "T9s": {"action": "Raise 2.5bb", "freq": 100},
-        "T8s": {"action": "Raise 2.5bb", "freq": 100},
-        "T7s": {"action": "Raise 2.5bb", "freq": 80},
-        "T6s": {"action": "Raise 2.5bb", "freq": 30},
-
-        "98s": {"action": "Raise 2.5bb", "freq": 100},
-        "97s": {"action": "Raise 2.5bb", "freq": 100},
-        "96s": {"action": "Raise 2.5bb", "freq": 70},
-
-        "87s": {"action": "Raise 2.5bb", "freq": 100},
-        "86s": {"action": "Raise 2.5bb", "freq": 90},
-        "85s": {"action": "Raise 2.5bb", "freq": 50},
-
-        "76s": {"action": "Raise 2.5bb", "freq": 100},
-        "75s": {"action": "Raise 2.5bb", "freq": 80},
-        "65s": {"action": "Raise 2.5bb", "freq": 100},
-        "64s": {"action": "Raise 2.5bb", "freq": 70},
-        "54s": {"action": "Raise 2.5bb", "freq": 100},
-        "53s": {"action": "Raise 2.5bb", "freq": 50},
-        "43s": {"action": "Raise 2.5bb", "freq": 70},
-
-        "AKo": {"action": "Raise 2.5bb", "freq": 100},
-        "AQo": {"action": "Raise 2.5bb", "freq": 100},
-        "AJo": {"action": "Raise 2.5bb", "freq": 100},
-        "ATo": {"action": "Raise 2.5bb", "freq": 100},
-        "A9o": {"action": "Raise 2.5bb", "freq": 90},
-        "A8o": {"action": "Raise 2.5bb", "freq": 70},
-        "A7o": {"action": "Raise 2.5bb", "freq": 50},
-        "A6o": {"action": "Raise 2.5bb", "freq": 30},
-        "A5o": {"action": "Raise 2.5bb", "freq": 60},
-        "A4o": {"action": "Raise 2.5bb", "freq": 40},
-
-        "KQo": {"action": "Raise 2.5bb", "freq": 100},
-        "KJo": {"action": "Raise 2.5bb", "freq": 100},
-        "KTo": {"action": "Raise 2.5bb", "freq": 90},
-        "K9o": {"action": "Raise 2.5bb", "freq": 50},
-
-        "QJo": {"action": "Raise 2.5bb", "freq": 100},
-        "QTo": {"action": "Raise 2.5bb", "freq": 80},
-        "Q9o": {"action": "Raise 2.5bb", "freq": 40},
-
-        "JTo": {"action": "Raise 2.5bb", "freq": 90},
-        "J9o": {"action": "Raise 2.5bb", "freq": 40},
-        "T9o": {"action": "Raise 2.5bb", "freq": 70},
-        "98o": {"action": "Raise 2.5bb", "freq": 50}
+        "AA": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KK": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "JJ": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "TT": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "99": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "88": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "77": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "66": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "AKs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AQs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "ATs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A9s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "A5s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A4s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "A3s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "A2s": {
+          "action": "Raise 2.5bb",
+          "freq": 30
+        },
+        "KQs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K9s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "QJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q9s": {
+          "action": "Raise 2.5bb",
+          "freq": 30
+        },
+        "JTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "J9s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "T9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "98s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "87s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "76s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "65s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "54s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "AKo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AQo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AJo": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "ATo": {
+          "action": "Raise 2.5bb",
+          "freq": 30
+        },
+        "KQo": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        }
+      }
+    },
+    {
+      "id": "hj_open",
+      "category": "6-Max 100BB 오픈",
+      "name": "HJ 오픈 레이스 (20.0%)",
+      "description": "하이잭(HJ) 6-Max 100BB GTO 오픈 레인지. UTG보다 레인지를 5% 넓혀 수티드 에이스와 수티드 커넥터 비중을 확대합니다.",
+      "legend": [
+        {
+          "action": "Raise 2.5bb",
+          "color": "#ef4444",
+          "label": "레이스 (오픈)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드"
+        }
+      ],
+      "actions": {
+        "AA": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KK": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "JJ": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "TT": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "99": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "88": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "77": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "66": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AKs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AQs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "ATs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A5s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A4s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A3s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "A2s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "KQs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "JTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "J9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "T9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "98s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "87s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "76s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "65s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "54s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "AKo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AQo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AJo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "ATo": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "KQo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "55": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "44": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "A8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A7s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "A6s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "K8s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "K7s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "Q8s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "J8s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "T8s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "97s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "KJo": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "QJo": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        }
+      }
+    },
+    {
+      "id": "co_open",
+      "category": "6-Max 100BB 오픈",
+      "name": "CO 오픈 레이스 (27.8%)",
+      "description": "컷오프(CO) 6-Max 100BB GTO 오픈 레인지. 모든 포켓페어(22+)와 수티드 브로드웨이, A-x 수티드를 100% 오픈합니다.",
+      "legend": [
+        {
+          "action": "Raise 2.5bb",
+          "color": "#ef4444",
+          "label": "레이스 (오픈)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드"
+        }
+      ],
+      "actions": {
+        "AA": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KK": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "JJ": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "TT": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "99": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "88": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "77": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "66": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AKs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AQs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "ATs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A5s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A4s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A3s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A2s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KQs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "JTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "J9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "T9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "98s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "87s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "76s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "65s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "54s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "AKo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AQo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AJo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "ATo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KQo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "55": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "44": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A7s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A6s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K7s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "J8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "T8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "97s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KJo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QJo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "33": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "22": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K6s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "K5s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "K4s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "K3s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "K2s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "Q7s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "Q6s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "Q5s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "J7s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "J6s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "T7s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "96s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "86s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "75s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "64s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "53s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "43s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "A9o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "A8o": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "KTo": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "QTo": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "JTo": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        }
+      }
+    },
+    {
+      "id": "btn_open",
+      "category": "6-Max 100BB 오픈",
+      "name": "BTN 오픈 레이스 (43.5%)",
+      "description": "버튼(BTN) 6-Max 100BB GTO 오픈 레인지. 포스트플랍 절대적 포지션 우위를 바탕으로 상위 43.5%의 넓은 레인지를 공격적으로 오픈합니다.",
+      "legend": [
+        {
+          "action": "Raise 2.5bb",
+          "color": "#ef4444",
+          "label": "레이스 (오픈)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드"
+        }
+      ],
+      "actions": {
+        "AA": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KK": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "JJ": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "TT": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "99": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "88": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "77": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "66": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AKs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AQs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "ATs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A5s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A4s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A3s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A2s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KQs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "JTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "J9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "T9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "98s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "87s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "76s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "65s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "54s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "AKo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AQo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AJo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "ATo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KQo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "55": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "44": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A7s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A6s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K7s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "J8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "T8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "97s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KJo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QJo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "33": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "22": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K6s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "K5s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K4s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K3s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K2s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q7s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q6s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q5s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "J7s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "J6s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "T7s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "96s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "86s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "75s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "64s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "53s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "43s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "A9o": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A8o": {
+          "action": "Raise 2.5bb",
+          "freq": 90
+        },
+        "KTo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QTo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "JTo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q4s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "Q3s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "Q2s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "J5s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "J4s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "T6s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "T5s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "95s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "85s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "74s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "63s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "52s": {
+          "action": "Raise 2.5bb",
+          "freq": 30
+        },
+        "A7o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "A6o": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "A5o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "A4o": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "A3o": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "A2o": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "K9o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "K8o": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "K7o": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "Q9o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "Q8o": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "J9o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "J8o": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "T9o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "T8o": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "98o": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "87o": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "76o": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        }
+      }
+    },
+    {
+      "id": "sb_open",
+      "category": "6-Max 100BB 오픈",
+      "name": "SB 오픈 레이스 (47.5%)",
+      "description": "스몰 블라인드(SB) BvB(Blind vs Blind) GTO 오픈 레이스(3bb) 레인지. BB 단 한 명을 상대로 폴드 에퀴티를 극대화합니다.",
+      "legend": [
+        {
+          "action": "Raise 3.0bb",
+          "color": "#ef4444",
+          "label": "레이스 (오픈)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드"
+        }
+      ],
+      "actions": {
+        "AA": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KK": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "JJ": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "TT": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "99": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "88": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "77": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "66": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AKs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AQs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "ATs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A5s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A4s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A3s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A2s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KQs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "JTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "J9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "T9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "98s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "87s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "76s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "65s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "54s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "AKo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AQo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AJo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "ATo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KQo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "55": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "44": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A7s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A6s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K7s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "J8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "T8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "97s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KJo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QJo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "33": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "22": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K6s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "K5s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K4s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K3s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K2s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q7s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q6s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q5s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "J7s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "J6s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "T7s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "96s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "86s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "75s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "64s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "53s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "43s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "A9o": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A8o": {
+          "action": "Raise 2.5bb",
+          "freq": 90
+        },
+        "KTo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QTo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "JTo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q4s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "Q3s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "Q2s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "J5s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "J4s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "T6s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "T5s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "95s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "85s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "74s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "63s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "52s": {
+          "action": "Raise 2.5bb",
+          "freq": 30
+        },
+        "A7o": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A6o": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A5o": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A4o": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A3o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "A2o": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "K9o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "K8o": {
+          "action": "Raise 2.5bb",
+          "freq": 90
+        },
+        "K7o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "Q9o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "Q8o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "J9o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "J8o": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "T9o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "T8o": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "98o": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "87o": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "76o": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "K6o": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "K5o": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "Q7o": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "97o": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "86o": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        }
       }
     },
     {
       "id": "bb_vs_btn",
+      "category": "3-Bet & 디펜스",
       "name": "BB 디펜드 vs BTN 2.5bb 오픈",
-      "description": "빅블라인드(BB)에서 버튼 오픈을 상대로 방어(3-Bet 또는 Call)하는 GTO 솔루션",
+      "description": "빅블라인드(BB)에서 버튼 오픈을 상대로 방어(3-Bet 12.5% 또는 Flat Call 38.5%)하는 솔버 솔루션.",
       "legend": [
-        {"action": "3-Bet", "color": "#ef4444", "label": "3-Bet (리레이스)"},
-        {"action": "Call", "color": "#10b981", "label": "콜 (디펜드)"},
-        {"action": "Fold", "color": "#1e293b", "label": "폴드"}
+        {
+          "action": "3-Bet",
+          "color": "#ef4444",
+          "label": "3-Bet (12.5%)"
+        },
+        {
+          "action": "Call",
+          "color": "#10b981",
+          "label": "콜 (38.5%)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드 (49.0%)"
+        }
       ],
       "actions": {
-        "AA": {"action": "3-Bet", "freq": 100},
-        "KK": {"action": "3-Bet", "freq": 100},
-        "QQ": {"action": "3-Bet", "freq": 100},
-        "JJ": {"action": "3-Bet", "freq": 100},
-        "TT": {"action": "3-Bet", "freq": 75},
-        "99": {"action": "Call", "freq": 100},
-        "88": {"action": "Call", "freq": 100},
-        "77": {"action": "Call", "freq": 100},
-        "66": {"action": "Call", "freq": 100},
-        "55": {"action": "Call", "freq": 100},
-        "44": {"action": "Call", "freq": 100},
-        "33": {"action": "Call", "freq": 100},
-        "22": {"action": "Call", "freq": 90},
-
-        "AKs": {"action": "3-Bet", "freq": 100},
-        "AQs": {"action": "3-Bet", "freq": 100},
-        "AJs": {"action": "3-Bet", "freq": 60},
-        "ATs": {"action": "Call", "freq": 100},
-        "A9s": {"action": "Call", "freq": 100},
-        "A8s": {"action": "Call", "freq": 100},
-        "A7s": {"action": "Call", "freq": 100},
-        "A6s": {"action": "Call", "freq": 100},
-        "A5s": {"action": "3-Bet", "freq": 85},
-        "A4s": {"action": "3-Bet", "freq": 75},
-        "A3s": {"action": "3-Bet", "freq": 60},
-        "A2s": {"action": "Call", "freq": 100},
-
-        "KQs": {"action": "3-Bet", "freq": 50},
-        "KJs": {"action": "Call", "freq": 100},
-        "KTs": {"action": "Call", "freq": 100},
-        "K9s": {"action": "Call", "freq": 100},
-        "K8s": {"action": "Call", "freq": 100},
-        "K7s": {"action": "Call", "freq": 90},
-        "K6s": {"action": "Call", "freq": 80},
-        "K5s": {"action": "Call", "freq": 70},
-
-        "QJs": {"action": "Call", "freq": 100},
-        "QTs": {"action": "Call", "freq": 100},
-        "Q9s": {"action": "Call", "freq": 100},
-        "Q8s": {"action": "Call", "freq": 90},
-        "Q7s": {"action": "Call", "freq": 70},
-
-        "JTs": {"action": "Call", "freq": 100},
-        "J9s": {"action": "Call", "freq": 100},
-        "J8s": {"action": "Call", "freq": 90},
-        "J7s": {"action": "Call", "freq": 70},
-
-        "T9s": {"action": "Call", "freq": 100},
-        "T8s": {"action": "Call", "freq": 100},
-        "T7s": {"action": "Call", "freq": 80},
-        "98s": {"action": "Call", "freq": 100},
-        "97s": {"action": "Call", "freq": 90},
-        "87s": {"action": "Call", "freq": 100},
-        "86s": {"action": "Call", "freq": 80},
-        "76s": {"action": "Call", "freq": 100},
-        "65s": {"action": "Call", "freq": 100},
-        "54s": {"action": "Call", "freq": 100},
-
-        "AKo": {"action": "3-Bet", "freq": 100},
-        "AQo": {"action": "3-Bet", "freq": 80},
-        "AJo": {"action": "Call", "freq": 100},
-        "ATo": {"action": "Call", "freq": 100},
-        "A9o": {"action": "Call", "freq": 80},
-        "KQo": {"action": "Call", "freq": 100},
-        "KJo": {"action": "Call", "freq": 100},
-        "KTo": {"action": "Call", "freq": 90},
-        "QJo": {"action": "Call", "freq": 100},
-        "QTo": {"action": "Call", "freq": 80},
-        "JTo": {"action": "Call", "freq": 80}
+        "99": {
+          "action": "Call",
+          "freq": 100
+        },
+        "88": {
+          "action": "Call",
+          "freq": 100
+        },
+        "77": {
+          "action": "Call",
+          "freq": 100
+        },
+        "66": {
+          "action": "Call",
+          "freq": 100
+        },
+        "55": {
+          "action": "Call",
+          "freq": 100
+        },
+        "44": {
+          "action": "Call",
+          "freq": 100
+        },
+        "33": {
+          "action": "Call",
+          "freq": 100
+        },
+        "22": {
+          "action": "Call",
+          "freq": 90
+        },
+        "ATs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "A9s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "A8s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "A7s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "A6s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "A2s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "KJs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "KTs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "K9s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "K8s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "K7s": {
+          "action": "Call",
+          "freq": 90
+        },
+        "K6s": {
+          "action": "Call",
+          "freq": 80
+        },
+        "K5s": {
+          "action": "Call",
+          "freq": 70
+        },
+        "QJs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "QTs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "Q9s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "Q8s": {
+          "action": "Call",
+          "freq": 90
+        },
+        "Q7s": {
+          "action": "Call",
+          "freq": 70
+        },
+        "JTs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "J9s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "J8s": {
+          "action": "Call",
+          "freq": 90
+        },
+        "J7s": {
+          "action": "Call",
+          "freq": 70
+        },
+        "T9s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "T8s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "T7s": {
+          "action": "Call",
+          "freq": 80
+        },
+        "98s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "97s": {
+          "action": "Call",
+          "freq": 90
+        },
+        "87s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "86s": {
+          "action": "Call",
+          "freq": 80
+        },
+        "76s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "65s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "54s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "AJo": {
+          "action": "Call",
+          "freq": 100
+        },
+        "ATo": {
+          "action": "Call",
+          "freq": 100
+        },
+        "A9o": {
+          "action": "Call",
+          "freq": 80
+        },
+        "KQo": {
+          "action": "Call",
+          "freq": 100
+        },
+        "KJo": {
+          "action": "Call",
+          "freq": 100
+        },
+        "KTo": {
+          "action": "Call",
+          "freq": 90
+        },
+        "QJo": {
+          "action": "Call",
+          "freq": 100
+        },
+        "QTo": {
+          "action": "Call",
+          "freq": 80
+        },
+        "JTo": {
+          "action": "Call",
+          "freq": 80
+        },
+        "AA": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "KK": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "JJ": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "TT": {
+          "action": "3-Bet",
+          "freq": 75
+        },
+        "AKs": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "AQs": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "AJs": {
+          "action": "3-Bet",
+          "freq": 60
+        },
+        "A5s": {
+          "action": "3-Bet",
+          "freq": 85
+        },
+        "A4s": {
+          "action": "3-Bet",
+          "freq": 75
+        },
+        "A3s": {
+          "action": "3-Bet",
+          "freq": 60
+        },
+        "KQs": {
+          "action": "3-Bet",
+          "freq": 50
+        },
+        "AKo": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "AQo": {
+          "action": "3-Bet",
+          "freq": 80
+        }
+      }
+    },
+    {
+      "id": "bb_vs_co",
+      "category": "3-Bet & 디펜스",
+      "name": "BB 디펜드 vs CO 2.5bb 오픈",
+      "description": "빅블라인드(BB)에서 컷오프(CO) 오픈을 상대로 방어(3-Bet 10.5% / Call 28.0%)하는 GTO 레인지.",
+      "legend": [
+        {
+          "action": "3-Bet",
+          "color": "#ef4444",
+          "label": "3-Bet (10.5%)"
+        },
+        {
+          "action": "Call",
+          "color": "#10b981",
+          "label": "콜 (28.0%)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드"
+        }
+      ],
+      "actions": {
+        "TT": {
+          "action": "3-Bet",
+          "freq": 60
+        },
+        "99": {
+          "action": "Call",
+          "freq": 100
+        },
+        "88": {
+          "action": "Call",
+          "freq": 100
+        },
+        "77": {
+          "action": "Call",
+          "freq": 100
+        },
+        "66": {
+          "action": "Call",
+          "freq": 100
+        },
+        "55": {
+          "action": "Call",
+          "freq": 100
+        },
+        "44": {
+          "action": "Call",
+          "freq": 80
+        },
+        "33": {
+          "action": "Call",
+          "freq": 60
+        },
+        "ATs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "A9s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "A8s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "A7s": {
+          "action": "Call",
+          "freq": 80
+        },
+        "A6s": {
+          "action": "Call",
+          "freq": 60
+        },
+        "KJs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "KTs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "K9s": {
+          "action": "Call",
+          "freq": 80
+        },
+        "K8s": {
+          "action": "Call",
+          "freq": 60
+        },
+        "QJs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "QTs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "Q9s": {
+          "action": "Call",
+          "freq": 80
+        },
+        "JTs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "J9s": {
+          "action": "Call",
+          "freq": 80
+        },
+        "T9s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "98s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "87s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "76s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "65s": {
+          "action": "Call",
+          "freq": 90
+        },
+        "54s": {
+          "action": "Call",
+          "freq": 80
+        },
+        "AJo": {
+          "action": "Call",
+          "freq": 80
+        },
+        "ATo": {
+          "action": "Call",
+          "freq": 70
+        },
+        "KQo": {
+          "action": "Call",
+          "freq": 90
+        },
+        "KJo": {
+          "action": "Call",
+          "freq": 80
+        },
+        "QJo": {
+          "action": "Call",
+          "freq": 70
+        },
+        "AA": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "KK": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "JJ": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "AKs": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "AQs": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "AJs": {
+          "action": "3-Bet",
+          "freq": 80
+        },
+        "A5s": {
+          "action": "3-Bet",
+          "freq": 90
+        },
+        "A4s": {
+          "action": "3-Bet",
+          "freq": 80
+        },
+        "A3s": {
+          "action": "3-Bet",
+          "freq": 60
+        },
+        "KQs": {
+          "action": "3-Bet",
+          "freq": 70
+        },
+        "AKo": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "AQo": {
+          "action": "3-Bet",
+          "freq": 90
+        }
+      }
+    },
+    {
+      "id": "sb_vs_btn",
+      "category": "3-Bet & 디펜스",
+      "name": "SB vs BTN 오픈 (3-Bet or Fold)",
+      "description": "스몰 블라인드(SB)에서 버튼 오픈에 대응하는 '콜 없는(No Flatting) 3-Bet or Fold' 전략 (14.5% 3-Bet).",
+      "legend": [
+        {
+          "action": "3-Bet 10bb",
+          "color": "#ef4444",
+          "label": "3-Bet (14.5%)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드 (85.5%)"
+        }
+      ],
+      "actions": {
+        "AA": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "KK": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "JJ": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "TT": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "99": {
+          "action": "3-Bet",
+          "freq": 90
+        },
+        "88": {
+          "action": "3-Bet",
+          "freq": 70
+        },
+        "77": {
+          "action": "3-Bet",
+          "freq": 50
+        },
+        "AKs": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "AQs": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "AJs": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "ATs": {
+          "action": "3-Bet",
+          "freq": 90
+        },
+        "A5s": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "A4s": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "A3s": {
+          "action": "3-Bet",
+          "freq": 80
+        },
+        "A2s": {
+          "action": "3-Bet",
+          "freq": 60
+        },
+        "KQs": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "KJs": {
+          "action": "3-Bet",
+          "freq": 90
+        },
+        "KTs": {
+          "action": "3-Bet",
+          "freq": 80
+        },
+        "K9s": {
+          "action": "3-Bet",
+          "freq": 50
+        },
+        "QJs": {
+          "action": "3-Bet",
+          "freq": 90
+        },
+        "QTs": {
+          "action": "3-Bet",
+          "freq": 80
+        },
+        "JTs": {
+          "action": "3-Bet",
+          "freq": 90
+        },
+        "T9s": {
+          "action": "3-Bet",
+          "freq": 80
+        },
+        "98s": {
+          "action": "3-Bet",
+          "freq": 70
+        },
+        "87s": {
+          "action": "3-Bet",
+          "freq": 60
+        },
+        "76s": {
+          "action": "3-Bet",
+          "freq": 50
+        },
+        "AKo": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "AQo": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "AJo": {
+          "action": "3-Bet",
+          "freq": 90
+        },
+        "ATo": {
+          "action": "3-Bet",
+          "freq": 50
+        },
+        "KQo": {
+          "action": "3-Bet",
+          "freq": 80
+        }
+      }
+    },
+    {
+      "id": "btn_vs_co",
+      "category": "3-Bet & 디펜스",
+      "name": "BTN vs CO 오픈 (3-Bet & Flat)",
+      "description": "버튼(BTN)에서 CO 오픈을 상대로 포지션을 점유하며 3-Bet(8.5%) 및 플랫 콜(7.5%)하는 솔루션.",
+      "legend": [
+        {
+          "action": "3-Bet 7.5bb",
+          "color": "#ef4444",
+          "label": "3-Bet (8.5%)"
+        },
+        {
+          "action": "Call",
+          "color": "#10b981",
+          "label": "플랫 콜 (7.5%)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드"
+        }
+      ],
+      "actions": {
+        "TT": {
+          "action": "3-Bet",
+          "freq": 60
+        },
+        "99": {
+          "action": "Call",
+          "freq": 80
+        },
+        "88": {
+          "action": "Call",
+          "freq": 80
+        },
+        "77": {
+          "action": "Call",
+          "freq": 70
+        },
+        "66": {
+          "action": "Call",
+          "freq": 60
+        },
+        "AQs": {
+          "action": "3-Bet",
+          "freq": 60
+        },
+        "AJs": {
+          "action": "Call",
+          "freq": 70
+        },
+        "ATs": {
+          "action": "Call",
+          "freq": 80
+        },
+        "KQs": {
+          "action": "3-Bet",
+          "freq": 40
+        },
+        "KJs": {
+          "action": "Call",
+          "freq": 70
+        },
+        "QJs": {
+          "action": "Call",
+          "freq": 80
+        },
+        "JTs": {
+          "action": "Call",
+          "freq": 80
+        },
+        "T9s": {
+          "action": "Call",
+          "freq": 80
+        },
+        "98s": {
+          "action": "Call",
+          "freq": 70
+        },
+        "AQo": {
+          "action": "3-Bet",
+          "freq": 70
+        },
+        "AA": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "KK": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "JJ": {
+          "action": "3-Bet",
+          "freq": 80
+        },
+        "AKs": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "A5s": {
+          "action": "3-Bet",
+          "freq": 90
+        },
+        "A4s": {
+          "action": "3-Bet",
+          "freq": 80
+        },
+        "AKo": {
+          "action": "3-Bet",
+          "freq": 100
+        }
+      }
+    },
+    {
+      "id": "btn_vs_sb_3bet",
+      "category": "4-Bet & 방어",
+      "name": "BTN vs SB 3-Bet 대응 (4-Bet / Call)",
+      "description": "버튼(BTN) 2.5bb 오픈 후 SB의 10bb 3벳에 대응하는 GTO 4-Bet(2.2x) 및 콜 레인지.",
+      "legend": [
+        {
+          "action": "4-Bet 22bb",
+          "color": "#ef4444",
+          "label": "4-Bet (7.2%)"
+        },
+        {
+          "action": "Call",
+          "color": "#10b981",
+          "label": "콜 (11.5%)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드"
+        }
+      ],
+      "actions": {
+        "JJ": {
+          "action": "4-Bet / Shove",
+          "freq": 40
+        },
+        "TT": {
+          "action": "Call",
+          "freq": 90
+        },
+        "99": {
+          "action": "Call",
+          "freq": 90
+        },
+        "88": {
+          "action": "Call",
+          "freq": 80
+        },
+        "77": {
+          "action": "Call",
+          "freq": 60
+        },
+        "AQs": {
+          "action": "Call",
+          "freq": 80
+        },
+        "AJs": {
+          "action": "Call",
+          "freq": 90
+        },
+        "ATs": {
+          "action": "Call",
+          "freq": 80
+        },
+        "KQs": {
+          "action": "Call",
+          "freq": 90
+        },
+        "KJs": {
+          "action": "Call",
+          "freq": 80
+        },
+        "QJs": {
+          "action": "Call",
+          "freq": 80
+        },
+        "JTs": {
+          "action": "Call",
+          "freq": 70
+        },
+        "AQo": {
+          "action": "Call",
+          "freq": 80
+        },
+        "AA": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KK": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "AKs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A5s": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "A4s": {
+          "action": "4-Bet / Shove",
+          "freq": 70
+        },
+        "AKo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        }
+      }
+    },
+    {
+      "id": "push_btn_15bb",
+      "category": "15BB 토너먼트 푸시/폴드",
+      "name": "15BB BTN 올인 셔브 (35.8%)",
+      "description": "토너먼트 15BB 숏스택에서 버튼(BTN) 올인 셔브(Open Shove) GTO 내쉬 균형 레인지.",
+      "legend": [
+        {
+          "action": "All-in Shove",
+          "color": "#ef4444",
+          "label": "올인 셔브 (35.8%)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드 (64.2%)"
+        }
+      ],
+      "actions": {
+        "AA": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KK": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "JJ": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "TT": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "99": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "88": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "77": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "66": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "55": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "44": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "33": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "22": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "AKs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "AQs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "AJs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "ATs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A9s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A8s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A7s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A6s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A5s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A4s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A3s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A2s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KQs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KJs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KTs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "K9s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "K8s": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "K7s": {
+          "action": "4-Bet / Shove",
+          "freq": 70
+        },
+        "K6s": {
+          "action": "4-Bet / Shove",
+          "freq": 60
+        },
+        "K5s": {
+          "action": "4-Bet / Shove",
+          "freq": 50
+        },
+        "QJs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "QTs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "Q9s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "Q8s": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "JTs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "J9s": {
+          "action": "4-Bet / Shove",
+          "freq": 90
+        },
+        "T9s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "98s": {
+          "action": "4-Bet / Shove",
+          "freq": 90
+        },
+        "87s": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "76s": {
+          "action": "4-Bet / Shove",
+          "freq": 70
+        },
+        "AKo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "AQo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "AJo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "ATo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A9o": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A8o": {
+          "action": "4-Bet / Shove",
+          "freq": 90
+        },
+        "A7o": {
+          "action": "4-Bet / Shove",
+          "freq": 70
+        },
+        "A5o": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "KQo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KJo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KTo": {
+          "action": "4-Bet / Shove",
+          "freq": 90
+        },
+        "QJo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "QTo": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "JTo": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        }
+      }
+    },
+    {
+      "id": "push_sb_15bb",
+      "category": "15BB 토너먼트 푸시/폴드",
+      "name": "15BB SB vs BB 셔브 (42.5%)",
+      "description": "토너먼트 15BB 숏스택에서 SB의 블라인드 대결 올인 셔브(Open Shove) GTO 레인지.",
+      "legend": [
+        {
+          "action": "All-in Shove",
+          "color": "#ef4444",
+          "label": "올인 셔브 (42.5%)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드 (57.5%)"
+        }
+      ],
+      "actions": {
+        "AA": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KK": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "JJ": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "TT": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "99": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "88": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "77": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "66": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "55": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "44": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "33": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "22": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "AKs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "AQs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "AJs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "ATs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A9s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A8s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A7s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A6s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A5s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A4s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A3s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A2s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KQs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KJs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KTs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "K9s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "K8s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "K7s": {
+          "action": "4-Bet / Shove",
+          "freq": 90
+        },
+        "K6s": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "K5s": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "K4s": {
+          "action": "4-Bet / Shove",
+          "freq": 70
+        },
+        "QJs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "QTs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "Q9s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "Q8s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "Q7s": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "JTs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "J9s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "J8s": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "T9s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "T8s": {
+          "action": "4-Bet / Shove",
+          "freq": 90
+        },
+        "98s": {
+          "action": "4-Bet / Shove",
+          "freq": 90
+        },
+        "87s": {
+          "action": "4-Bet / Shove",
+          "freq": 90
+        },
+        "76s": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "AKo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "AQo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "AJo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "ATo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A9o": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A8o": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A7o": {
+          "action": "4-Bet / Shove",
+          "freq": 90
+        },
+        "A6o": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "A5o": {
+          "action": "4-Bet / Shove",
+          "freq": 90
+        },
+        "A4o": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "A3o": {
+          "action": "4-Bet / Shove",
+          "freq": 70
+        },
+        "A2o": {
+          "action": "4-Bet / Shove",
+          "freq": 60
+        },
+        "KQo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KJo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KTo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "K9o": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "QJo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "QTo": {
+          "action": "4-Bet / Shove",
+          "freq": 90
+        },
+        "JTo": {
+          "action": "4-Bet / Shove",
+          "freq": 90
+        },
+        "T9o": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        }
+      }
+    },
+    {
+      "id": "call_bb_vs_btn_15bb",
+      "category": "15BB 토너먼트 푸시/폴드",
+      "name": "15BB BB vs BTN 셔브 콜 (19.8%)",
+      "description": "토너먼트 15BB 스택에서 버튼의 올인 셔브를 상대로 BB가 스택을 걸고 콜(Call All-in)해야 하는 방어선.",
+      "legend": [
+        {
+          "action": "Call All-in",
+          "color": "#10b981",
+          "label": "올인 콜 (19.8%)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드 (80.2%)"
+        }
+      ],
+      "actions": {
+        "AA": {
+          "action": "Call",
+          "freq": 100
+        },
+        "KK": {
+          "action": "Call",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "Call",
+          "freq": 100
+        },
+        "JJ": {
+          "action": "Call",
+          "freq": 100
+        },
+        "TT": {
+          "action": "Call",
+          "freq": 100
+        },
+        "99": {
+          "action": "Call",
+          "freq": 100
+        },
+        "88": {
+          "action": "Call",
+          "freq": 100
+        },
+        "77": {
+          "action": "Call",
+          "freq": 100
+        },
+        "66": {
+          "action": "Call",
+          "freq": 90
+        },
+        "55": {
+          "action": "Call",
+          "freq": 70
+        },
+        "AKs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "AQs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "AJs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "ATs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "A9s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "A8s": {
+          "action": "Call",
+          "freq": 90
+        },
+        "A7s": {
+          "action": "Call",
+          "freq": 80
+        },
+        "A5s": {
+          "action": "Call",
+          "freq": 90
+        },
+        "A4s": {
+          "action": "Call",
+          "freq": 80
+        },
+        "KQs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "KJs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "KTs": {
+          "action": "Call",
+          "freq": 90
+        },
+        "QJs": {
+          "action": "Call",
+          "freq": 90
+        },
+        "AKo": {
+          "action": "Call",
+          "freq": 100
+        },
+        "AQo": {
+          "action": "Call",
+          "freq": 100
+        },
+        "AJo": {
+          "action": "Call",
+          "freq": 100
+        },
+        "ATo": {
+          "action": "Call",
+          "freq": 90
+        },
+        "A9o": {
+          "action": "Call",
+          "freq": 70
+        },
+        "KQo": {
+          "action": "Call",
+          "freq": 90
+        },
+        "KJo": {
+          "action": "Call",
+          "freq": 80
+        }
       }
     }
   ]
-}
-,
+},
   roadmap: {
   "levels": [
     {
@@ -14413,6 +18422,22 @@ const matrix = {
     if (!preset) return;
 
     this.currentPreset = preset;
+
+    // Sync select dropdown
+    const selectEl = document.getElementById('matrix-preset-select');
+    if (selectEl && selectEl.value !== presetId) {
+      selectEl.value = presetId;
+    }
+
+    // Sync quick-chips active state
+    document.querySelectorAll('#matrix-quick-chips button').forEach(btn => {
+      if (btn.dataset.pid === presetId) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
     document.getElementById('matrix-preset-desc').innerText = preset.description;
 
     const legendEl = document.getElementById('matrix-legend-container');
@@ -14423,7 +18448,57 @@ const matrix = {
       </div>
     `).join('');
 
+    this.calculateRangeStats();
     this.renderGrid();
+  },
+
+  calculateRangeStats() {
+    if (!this.currentPreset) return;
+    let totalCombos = 0;
+    const actionCounts = {};
+
+    for (let r = 0; r < 13; r++) {
+      for (let c = 0; c < 13; c++) {
+        let handName = '';
+        let combos = 0;
+        if (r === c) {
+          handName = this.ranks[r] + this.ranks[c];
+          combos = 6;
+        } else if (r < c) {
+          handName = this.ranks[r] + this.ranks[c] + 's';
+          combos = 4;
+        } else {
+          handName = this.ranks[c] + this.ranks[r] + 'o';
+          combos = 12;
+        }
+
+        const data = this.currentPreset.actions[handName];
+        if (data) {
+          const effective = combos * (data.freq / 100);
+          totalCombos += effective;
+          const act = data.action;
+          actionCounts[act] = (actionCounts[act] || 0) + effective;
+        }
+      }
+    }
+
+    const pct = ((totalCombos / 1326) * 100).toFixed(1);
+    const combosEl = document.getElementById('matrix-stats-combos');
+    if (combosEl) {
+      combosEl.innerText = `${Math.round(totalCombos)} 콤보 (${pct}%)`;
+    }
+
+    const barEl = document.getElementById('matrix-stats-bar');
+    if (barEl) {
+      barEl.innerHTML = Object.entries(actionCounts).map(([act, cnt]) => {
+        const actPct = ((cnt / 1326) * 100).toFixed(1);
+        let color = '#ef4444';
+        if (act.toLowerCase().includes('call')) color = '#10b981';
+        else if (act.toLowerCase().includes('3-bet')) color = '#f59e0b';
+        else if (act.toLowerCase().includes('shove') || act.toLowerCase().includes('4-bet')) color = '#8b5cf6';
+        return `<span style="color: ${color};">${act}: ${Math.round(cnt)}개 (${actPct}%)</span>`;
+      }).join(' • ');
+    }
   },
 
   renderGrid() {
@@ -14455,12 +18530,14 @@ const matrix = {
 
         if (actionData) {
           const actionName = actionData.action.toLowerCase();
-          if (actionName.includes('raise')) {
-            actionClass = 'action-raise';
+          if (actionName.includes('shove') || actionName.includes('4-bet')) {
+            actionClass = 'action-shove';
           } else if (actionName.includes('3-bet')) {
             actionClass = 'action-3bet';
           } else if (actionName.includes('call')) {
             actionClass = 'action-call';
+          } else if (actionName.includes('raise')) {
+            actionClass = 'action-raise';
           }
         }
 
@@ -14470,6 +18547,10 @@ const matrix = {
 
         cell.addEventListener('mouseenter', () => {
           this.inspectHand(handName, handType, actionData);
+        });
+        cell.addEventListener('click', () => {
+          this.inspectHand(handName, handType, actionData);
+          app.playAudioEffect('click');
         });
 
         gridEl.appendChild(cell);
@@ -14482,18 +18563,42 @@ const matrix = {
     document.getElementById('inspect-combos').innerText = handType;
 
     const actionDescEl = document.getElementById('inspect-action-desc');
+    const tipEl = document.getElementById('inspect-tip');
+
     if (!actionData) {
       actionDescEl.innerHTML = `<span style="color: #64748b;">Fold (100%)</span>`;
+      if (tipEl) {
+        tipEl.innerHTML = `❌ <strong>GTO 솔버 폴드 권장</strong>: 기대값(EV)이 마이너스이거나 역임플라이드 오즈가 심각하여 깔끔하게 폴드합니다.`;
+      }
     } else {
       let color = '#ef4444';
       if (actionData.action.toLowerCase().includes('call')) color = '#10b981';
       else if (actionData.action.toLowerCase().includes('3-bet')) color = '#f59e0b';
+      else if (actionData.action.toLowerCase().includes('shove') || actionData.action.toLowerCase().includes('4-bet')) color = '#8b5cf6';
 
       actionDescEl.innerHTML = `
         <span style="color: ${color};">
           ${actionData.action} (${actionData.freq}%)
         </span>
       `;
+
+      if (tipEl) {
+        let tipText = `⚡ 솔버 핵심 핸드: 현재 포지션에서 적극적인 참여가 요구되는 핵심 레인지입니다.`;
+        if (['AA', 'KK', 'QQ', 'AKs'].includes(handName)) {
+          tipText = `🔥 <strong>최상위 프리미엄 너츠 핸드</strong>: 100% 빈도로 강력한 밸류 팟 빌딩을 감행합니다.`;
+        } else if (['JJ', 'TT', '99', 'AQs', 'AKo'].includes(handName)) {
+          tipText = `⚔️ <strong>강력한 브로드웨이/하이페어</strong>: 높은 밸류를 바탕으로 3벳 및 오픈의 핵심 축을 담당합니다.`;
+        } else if (['A5s', 'A4s', 'A3s', 'A2s'].includes(handName)) {
+          tipText = `🎯 <strong>A-블로커 + 휠 스트레이트</strong>: 상대의 AA/AK을 차단하며 최고의 3벳/4벳 세미 블러프로 기능합니다.`;
+        } else if (['T9s', '98s', '87s', '76s', '65s', '54s'].includes(handName)) {
+          tipText = `🌊 <strong>최고의 수티드 커넥터</strong>: 높은 에퀴티 실현력(EQR)과 넛 플러시/스트레이트 잠재력으로 멀티웨이 및 플랫에 탁월합니다.`;
+        } else if (['88', '77', '66', '55', '44', '33', '22'].includes(handName)) {
+          tipText = `🧱 <strong>포켓 페어</strong>: 셋 마이닝(Set Mining) 밸류와 상대 블러프를 낚아채는 안정적인 쇼다운 밸류를 가집니다.`;
+        } else if (actionData.action.toLowerCase().includes('call')) {
+          tipText = `🛡️ <strong>플랫 콜 디펜스</strong>: 포지션 혹은 좋은 팟 오즈를 바탕으로 포스트플랍 에퀴티를 실현하는 방어 핸드입니다.`;
+        }
+        tipEl.innerHTML = tipText;
+      }
     }
   }
 };
