@@ -2803,25 +2803,14 @@ body.authenticated #auth-gate-screen {
       </nav>
 
       <div class="user-bar">
-        <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="themeManager.toggle()" title="화면 테마 변경">
-          <span id="theme-icon">🌙</span> <span id="theme-text">다크 모드</span>
-        </button>
-
-        <!-- Clickable Character Persona Header Pill -->
-        <button class="char-header-pill" id="char-header-pill" onclick="characterManager.openModal()" title="내 포커 캐릭터 프로필 및 커스텀">
+        <!-- Clickable Character Persona Header Pill (Profile & All Tools Hub) -->
+        <button class="char-header-pill" id="char-header-pill" onclick="characterManager.openModal()" title="내 포커 캐릭터 프로필 및 설정 메뉴 센터">
           <span class="char-avatar-icon" id="header-char-avatar">🦈</span>
           <div class="char-header-info">
             <span class="char-header-name" id="header-char-name"></span>
             <span class="char-header-tag" id="header-char-style">TAG</span>
           </div>
         </button>
-
-        <!-- Prominent Auth Button (Always front and center!) -->
-        <div id="header-auth-container" style="display: inline-flex; align-items: center; gap: 0.4rem;">
-          <button class="header-action-btn" onclick="authManager.openModal('login')" title="클라우드 회원 계정 로그인 / 회원가입" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(217, 119, 6, 0.35)); border: 1.5px solid #f59e0b; color: #fbbf24; padding: 0.45rem 0.85rem; border-radius: 20px; font-weight: 800; cursor: pointer; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 0.35rem; transition: all 0.2s ease;">
-            <span>👤</span> 로그인 / 회원가입
-          </button>
-        </div>
 
         <div class="streak-pill" title="연속 출석 스트릭">
           <span>🔥</span> <span id="user-streak">1</span>일 연속
@@ -2837,13 +2826,7 @@ body.authenticated #auth-gate-screen {
           </div>
         </div>
 
-        <button class="ai-coach-btn" onclick="aiCoach.open()">
-          <span>🤖</span> AI 코치
-        </button>
-        <button class="header-action-btn" onclick="guidebookManager.openModal()" title="스터디포커 시스템 가이드북" style="background: rgba(59, 130, 246, 0.15); border: 1.5px solid #3b82f6; color: #60a5fa; padding: 0.55rem 0.9rem; border-radius: 20px; font-weight: 700; cursor: pointer; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.4rem; transition: all 0.2s ease;">
-          <span>📖</span> 가이드북
-        </button>
-
+        <div id="header-auth-container" style="display: none;"></div>
       </div>
     </div>
   </header>
@@ -3466,6 +3449,42 @@ body.authenticated #auth-gate-screen {
       </div>
 
       <div class="char-modal-body">
+        <!-- Quick Action & Menu Hub (Theme, AI Coach, Guidebook, Quest, Account) -->
+        <div class="char-form-group" style="background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 12px; padding: 1rem; margin-bottom: 1.25rem;">
+          <label class="char-form-label" style="margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between;">
+            <span>⚙️ 바로가기 메뉴 & 환경설정</span>
+            <span style="font-size: 0.75rem; color: #34d399; font-weight: 700;">🟢 클라우드 정상 연동됨</span>
+          </label>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.5rem;">
+            <button type="button" onclick="themeManager.toggle();" class="btn-secondary" style="padding: 0.6rem 0.5rem; font-size: 0.82rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 0.35rem;">
+              <span id="profile-theme-icon">🌓</span> <span id="profile-theme-text">테마 모드 전환</span>
+            </button>
+            <button type="button" onclick="characterManager.closeModal(); aiCoach.open();" class="btn-secondary" style="padding: 0.6rem 0.5rem; font-size: 0.82rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 0.35rem;">
+              <span>🤖</span> <span>AI 코치 대화</span>
+            </button>
+            <button type="button" onclick="characterManager.closeModal(); guidebookManager.openModal();" class="btn-secondary" style="padding: 0.6rem 0.5rem; font-size: 0.82rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 0.35rem;">
+              <span>📖</span> <span>공식 가이드북</span>
+            </button>
+            <button type="button" onclick="characterManager.closeModal(); questManager.openModal();" class="btn-secondary" style="padding: 0.6rem 0.5rem; font-size: 0.82rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 0.35rem; color: #fbbf24; border-color: rgba(245, 158, 11, 0.4);">
+              <span>📜</span> <span>레벨업 퀘스트</span>
+            </button>
+          </div>
+          
+          <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+            <div style="font-size: 0.8rem; color: var(--text-dim);">
+              💬 단톡방 닉네임: <strong style="color: #f59e0b;" id="profile-kakao-name">미설정</strong>
+            </div>
+            <div style="display: flex; gap: 0.4rem;">
+              <button type="button" onclick="authManager.forcePushToCloud()" class="btn-secondary" style="padding: 0.35rem 0.7rem; font-size: 0.78rem;">
+                🔄 즉시 백업
+              </button>
+              <button type="button" onclick="characterManager.closeModal(); authManager.handleSignOut()" class="btn-secondary" style="padding: 0.35rem 0.7rem; font-size: 0.78rem; color: #f87171; border-color: rgba(239, 68, 68, 0.3);">
+                🚪 로그아웃
+              </button>
+            </div>
+          </div>
+        </div>
+
         <!-- 1. Avatar Picker -->
         <div class="char-form-group">
           <label class="char-form-label">1. 캐릭터 아바타 선택</label>
@@ -4015,7 +4034,7 @@ const DB = {
   {
     "id": "gto-wizard-at-the-2026-world-series-of-poker",
     "slug": "gto-wizard-at-the-2026-world-series-of-poker",
-    "title_ko": "GTO Wizard at the 2026 World Series of Poker (GTO 심층 분석)",
+    "title_ko": "2026 월드 시리즈 오브 포커(WSOP) GTO 전략 리포트",
     "title_en": "GTO Wizard at the 2026 World Series of Poker",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -4111,7 +4130,7 @@ const DB = {
   {
     "id": "cookie-policy",
     "slug": "cookie-policy",
-    "title_ko": "INFORMATION ON THE PROCESSING OF PERSONAL DATA (GTO 심층 분석)",
+    "title_ko": "스터디포커 개인정보 보호 정책 및 이용 가이드",
     "title_en": "INFORMATION ON THE PROCESSING OF PERSONAL DATA",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -4143,7 +4162,7 @@ const DB = {
   {
     "id": "plo-just-changed-forever",
     "slug": "plo-just-changed-forever",
-    "title_ko": "PLO Just Changed Forever (GTO 심층 분석)",
+    "title_ko": "오마하(PLO) 솔버 분석과 게임의 대격변",
     "title_en": "PLO Just Changed Forever",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "수학/기초",
@@ -4175,7 +4194,7 @@ const DB = {
   {
     "id": "how-gto-wizard-solved-plo",
     "slug": "how-gto-wizard-solved-plo",
-    "title_ko": "How GTO Wizard Solved PLO (GTO 심층 분석)",
+    "title_ko": "GTO Wizard가 오마하(PLO)를 완벽히 솔빙한 과정",
     "title_en": "How GTO Wizard Solved PLO",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -4367,7 +4386,7 @@ const DB = {
   {
     "id": "single-size-solutions-are-live-new-pricing-50x-more-solutions",
     "slug": "single-size-solutions-are-live-new-pricing-50x-more-solutions",
-    "title_ko": "Single Size Solutions Are Live. New Pricing. 50x More Solutions. (GTO 심층 분석)",
+    "title_ko": "단일 사이징 솔루션 업데이트 및 50배 확장 솔루션 가이드",
     "title_en": "Single Size Solutions Are Live. New Pricing. 50x More Solutions.",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "캐시/스트래들",
@@ -4559,7 +4578,7 @@ const DB = {
   {
     "id": "the-art-of-value-bluffing-from-the-button",
     "slug": "the-art-of-value-bluffing-from-the-button",
-    "title_ko": "버튼에서의 밸류 블러핑(Value Bluffing) 기술",
+    "title_ko": "버튼에서의 밸류 블러핑(Value 블러핑) 기술",
     "title_en": "The Art of Value Bluffing From the Button",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "턴/리버",
@@ -4783,7 +4802,7 @@ const DB = {
   {
     "id": "poker-concepts-youre-using-wrong-and-how-theyre-hurting-your-winrate",
     "slug": "poker-concepts-youre-using-wrong-and-how-theyre-hurting-your-winrate",
-    "title_ko": "Poker Concepts You’re Using Wrong (and How They’re Hurting Your Winrate) (GTO 심층 분석)",
+    "title_ko": "잘못 사용하고 있는 포커 개념들과 승률 손실 분석",
     "title_en": "Poker Concepts You’re Using Wrong (and How They’re Hurting Your Winrate)",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -4943,7 +4962,7 @@ const DB = {
   {
     "id": "how-icm-reshapes-3-bet-pots-and-why-you-cant-trust-chipev",
     "slug": "how-icm-reshapes-3-bet-pots-and-why-you-cant-trust-chipev",
-    "title_ko": "How ICM Reshapes 3-Bet Pots (and Why You Can’t Trust cEV) (GTO 심층 분석)",
+    "title_ko": "ICM이 3벳 팟을 바꾸는 방식: 칩EV만 믿으면 안 되는 이유",
     "title_en": "How ICM Reshapes 3-Bet Pots (and Why You Can’t Trust cEV)",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -5039,7 +5058,7 @@ const DB = {
   {
     "id": "how-to-use-range-builder-in-gto-wizard-to-improve-your-game",
     "slug": "how-to-use-range-builder-in-gto-wizard-to-improve-your-game",
-    "title_ko": "공략법: Use Range Builder in GTO Wizard To Improve Your Game",
+    "title_ko": "GTO 레인지 빌더로 실전 실력을 향상시키는 공략법",
     "title_en": "How to Use Range Builder in GTO Wizard To Improve Your Game",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -5071,7 +5090,7 @@ const DB = {
   {
     "id": "custom-profiles-go-live-pokerarena-season-5",
     "slug": "custom-profiles-go-live-pokerarena-season-5",
-    "title_ko": "Custom Profiles Go Live + PokerArena Season 5 (GTO 심층 분석)",
+    "title_ko": "커스텀 프로필 업데이트 및 포커아레나 시즌 5 전략",
     "title_en": "Custom Profiles Go Live + PokerArena Season 5",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "익스플로잇",
@@ -5103,7 +5122,7 @@ const DB = {
   {
     "id": "why_youre_bluffing_the_river_wrong_with_bricked_flush_draws_in_cash_games",
     "slug": "why_youre_bluffing_the_river_wrong_with_bricked_flush_draws_in_cash_games",
-    "title_ko": "왜 당신이 Bluffing the River Wrong With Bricked Flush Draws in Cash Games",
+    "title_ko": "캐시게임에서 미스된 플러시 드로우로 리버 블러프할 때 범하는 오류",
     "title_en": "Why You’re Bluffing the River Wrong With Bricked Flush Draws in Cash Games",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "턴/리버",
@@ -5167,7 +5186,7 @@ const DB = {
   {
     "id": "the_art_of_the_flop_overbet_and_why_youre_probably_doing_it_wrong",
     "slug": "the_art_of_the_flop_overbet_and_why_youre_probably_doing_it_wrong",
-    "title_ko": "완벽 가이드: the Flop Overbet (and 왜 당신이 Probably Doing It Wrong)",
+    "title_ko": "플랍 오버벳의 정석: 대다수 플레이어가 실수하는 원인",
     "title_en": "The Art of the Flop Overbet (and Why You’re Probably Doing It Wrong)",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "플랍 전략",
@@ -5327,7 +5346,7 @@ const DB = {
   {
     "id": "common_poker_sayings_that_ruin_your_winrate",
     "slug": "common_poker_sayings_that_ruin_your_winrate",
-    "title_ko": "승률을 망치는 잘못된 포커 격언들",
+    "title_ko": "승률을 망치는 잘못된 포커 격언들과 진실",
     "title_en": "Common Poker Sayings That Ruin Your Winrate",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "GTO 전략",
@@ -5455,7 +5474,7 @@ const DB = {
   {
     "id": "redesigned_analyzer_and_upgraded_gto_reports",
     "slug": "redesigned_analyzer_and_upgraded_gto_reports",
-    "title_ko": "Redesigned Analyzer & Upgraded GTO Reports (GTO 심층 분석)",
+    "title_ko": "리뉴얼된 핸드 분석기와 업그레이드 GTO 리포트 활용법",
     "title_en": "Redesigned Analyzer & Upgraded GTO Reports",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -5551,7 +5570,7 @@ const DB = {
   {
     "id": "poker_growth_in_action_gto_wizards_breakthrough_in_japan",
     "slug": "poker_growth_in_action_gto_wizards_breakthrough_in_japan",
-    "title_ko": "Poker Growth in Action: GTO Wizard’s Breakthrough in Japan (GTO 심층 분석)",
+    "title_ko": "포커 인구 성장 리포트: 일본 시장에서의 GTO 솔버 혁신",
     "title_en": "Poker Growth in Action: GTO Wizard’s Breakthrough in Japan",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "GTO 전략",
@@ -5679,7 +5698,7 @@ const DB = {
   {
     "id": "now_live_3_way_solving_nodelocking_2_0_and_50k_icm_ft_sims",
     "slug": "now_live_3_way_solving_nodelocking_2_0_and_50k_icm_ft_sims",
-    "title_ko": "Now Live: 3-Way Solving, Nodelocking 2.0, and 50k+ ICM FT Sims! (GTO 심층 분석)",
+    "title_ko": "3웨이 솔빙과 노드락 2.0, 5만 개 ICM 파이널 테이블 시뮬레이션",
     "title_en": "Now Live: 3-Way Solving, Nodelocking 2.0, and 50k+ ICM FT Sims!",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -5711,7 +5730,7 @@ const DB = {
   {
     "id": "gto_wizard_ai_3_way_benchmarks",
     "slug": "gto_wizard_ai_3_way_benchmarks",
-    "title_ko": "GTO Wizard AI 3-way Benchmarks (GTO 심층 분석)",
+    "title_ko": "GTO Wizard AI 3웨이 벤치마크 및 연산 정확도",
     "title_en": "GTO Wizard AI 3-way Benchmarks",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "솔버 이론",
@@ -5775,7 +5794,7 @@ const DB = {
   {
     "id": "announcing_frequency_locking_2_0",
     "slug": "announcing_frequency_locking_2_0",
-    "title_ko": "Announcing Frequency Locking 2.0 (GTO 심층 분석)",
+    "title_ko": "빈도 잠금(Frequency Locking) 2.0 공식 가이드",
     "title_en": "Announcing Frequency Locking 2.0",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "GTO 전략",
@@ -5935,7 +5954,7 @@ const DB = {
   {
     "id": "introducing-table-wizard-the-ultimate-table-management-software",
     "slug": "introducing-table-wizard-the-ultimate-table-management-software",
-    "title_ko": "Introducing Table Wizard: The Ultimate Table Management Software (GTO 심층 분석)",
+    "title_ko": "테이블 위저드: 최강의 멀티테이블 매니지먼트 소프트웨어",
     "title_en": "Introducing Table Wizard: The Ultimate Table Management Software",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -5967,7 +5986,7 @@ const DB = {
   {
     "id": "enter_the_poker_arena_a_new_era_of_competitive_poker_has_begun",
     "slug": "enter_the_poker_arena_a_new_era_of_competitive_poker_has_begun",
-    "title_ko": "Enter The PokerArena: A New Era of Competitive Poker Has Begun (GTO 심층 분석)",
+    "title_ko": "포커 아레나 입장: 경쟁적 포커 훈련의 새로운 시대",
     "title_en": "Enter The PokerArena: A New Era of Competitive Poker Has Begun",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -5999,7 +6018,7 @@ const DB = {
   {
     "id": "whats_your_hand_worth_from_thin_value_to_playing_for_stacks",
     "slug": "whats_your_hand_worth_from_thin_value_to_playing_for_stacks",
-    "title_ko": "What’s Your Hand Worth? From Thin Value to Playing for Stacks (GTO 심층 분석)",
+    "title_ko": "내 핸드의 진정한 가치: 씬 밸류부터 올인 쇼다운까지",
     "title_en": "What’s Your Hand Worth? From Thin Value to Playing for Stacks",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -6031,7 +6050,7 @@ const DB = {
   {
     "id": "tournament_pokers_hidden_stakes",
     "slug": "tournament_pokers_hidden_stakes",
-    "title_ko": "Tournament Poker’s Hidden Stakes (GTO 심층 분석)",
+    "title_ko": "토너먼트 포커에 숨겨진 보이지 않는 판돈(Stakes)의 비밀",
     "title_en": "Tournament Poker’s Hidden Stakes",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -6063,7 +6082,7 @@ const DB = {
   {
     "id": "top_gto_wizard_features_the_pros_prioritize",
     "slug": "top_gto_wizard_features_the_pros_prioritize",
-    "title_ko": "Top GTO Wizard Features the Pros Prioritize (and What They Leave Out) (GTO 심층 분석)",
+    "title_ko": "탑 프로들이 가장 먼저 활용하는 핵심 솔버 기능",
     "title_en": "Top GTO Wizard Features the Pros Prioritize (and What They Leave Out)",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -6095,7 +6114,7 @@ const DB = {
   {
     "id": "the_next_era_of_poker_broadcasting_with_gto_wizard_and_ggmillions",
     "slug": "the_next_era_of_poker_broadcasting_with_gto_wizard_and_ggmillions",
-    "title_ko": "The Next Era of Poker Broadcasting With GTO Wizard and GGMillion$ (GTO 심층 분석)",
+    "title_ko": "GTO 솔버와 함께하는 차세대 포커 방송 중계의 미래",
     "title_en": "The Next Era of Poker Broadcasting With GTO Wizard and GGMillion$",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -6127,7 +6146,7 @@ const DB = {
   {
     "id": "introducing_custom_aggregated_reports",
     "slug": "introducing_custom_aggregated_reports",
-    "title_ko": "Introducing Custom Aggregated Reports: A New Era in Poker Analysis (GTO 심층 분석)",
+    "title_ko": "커스텀 집계 리포트: 포커 데이터 분석의 새로운 지평",
     "title_en": "Introducing Custom Aggregated Reports: A New Era in Poker Analysis",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -6159,7 +6178,7 @@ const DB = {
   {
     "id": "introducing_dynamic_sizing_2",
     "slug": "introducing_dynamic_sizing_2",
-    "title_ko": "Introducing Dynamic Sizing 2.0 (GTO 심층 분석)",
+    "title_ko": "다이내믹 사이징 2.0: 상황 맞춤형 벳 사이징",
     "title_en": "Introducing Dynamic Sizing 2.0",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -6191,7 +6210,7 @@ const DB = {
   {
     "id": "supporting_operators_in_protecting_online_poker",
     "slug": "supporting_operators_in_protecting_online_poker",
-    "title_ko": "Supporting Operators in Protecting Online Poker (GTO 심층 분석)",
+    "title_ko": "온라인 포커의 공정성과 게임 무결성 보호 전략",
     "title_en": "Supporting Operators in Protecting Online Poker",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -6223,7 +6242,7 @@ const DB = {
   {
     "id": "how_to_prep_like_a_pro_for_wsop",
     "slug": "how_to_prep_like_a_pro_for_wsop",
-    "title_ko": "공략법: Prep Like a Pro for WSOP",
+    "title_ko": "프로처럼 WSOP 토너먼트를 준비하는 완벽 가이드",
     "title_en": "How to Prep Like a Pro for WSOP",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -6255,7 +6274,7 @@ const DB = {
   {
     "id": "cold-calling-in-straddle-ante-games",
     "slug": "cold-calling-in-straddle-ante-games",
-    "title_ko": "Cold-Calling in Straddle + Ante Games (GTO 심층 분석)",
+    "title_ko": "스트래들+앤티 게임에서의 콜드 콜(Cold-Call) 전략",
     "title_en": "Cold-Calling in Straddle + Ante Games",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "캐시/스트래들",
@@ -6287,7 +6306,7 @@ const DB = {
   {
     "id": "final-table-icm-just-leveled-up",
     "slug": "final-table-icm-just-leveled-up",
-    "title_ko": "Final Table ICM Just Leveled Up 7,000 Sims Added! (GTO 심층 분석)",
+    "title_ko": "파이널 테이블 ICM 솔루션 7,000개 시뮬레이션 추가",
     "title_en": "Final Table ICM Just Leveled Up 7,000 Sims Added!",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -6319,7 +6338,7 @@ const DB = {
   {
     "id": "roundtable_aha_moments_using_solvers",
     "slug": "roundtable_aha_moments_using_solvers",
-    "title_ko": "Roundtable: Aha! Moments in GTO Wizard (GTO 심층 분석)",
+    "title_ko": "솔버를 쓰며 깨달은 '유레카' 순간들: 탑 프로 라운드테이블",
     "title_en": "Roundtable: Aha! Moments in GTO Wizard",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -6351,7 +6370,7 @@ const DB = {
   {
     "id": "poker-the-battle-for-information",
     "slug": "poker-the-battle-for-information",
-    "title_ko": "Poker: The Battle for Information (GTO 심층 분석)",
+    "title_ko": "Poker: The Battle for Information",
     "title_en": "Poker: The Battle for Information",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -6383,7 +6402,7 @@ const DB = {
   {
     "id": "ggmillion_x_gto_wizard_a_new_era_for_poker_broadcasting",
     "slug": "ggmillion_x_gto_wizard_a_new_era_for_poker_broadcasting",
-    "title_ko": "GGMillion$ x GTO Wizard: A New Era for Poker Broadcasting (GTO 심층 분석)",
+    "title_ko": "GGMillion$ x GTO Wizard: A New Era for Poker Broadcasting",
     "title_en": "GGMillion$ x GTO Wizard: A New Era for Poker Broadcasting",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -6415,7 +6434,7 @@ const DB = {
   {
     "id": "how-to-construct-a-squeezing-range",
     "slug": "how-to-construct-a-squeezing-range",
-    "title_ko": "공략법: Construct a Squeezing Range",
+    "title_ko": "공략법: Construct a 스퀴즈 전략 레인지",
     "title_en": "How to Construct a Squeezing Range",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -6447,7 +6466,7 @@ const DB = {
   {
     "id": "opening-from-the-blinds-in-straddle-ante-games",
     "slug": "opening-from-the-blinds-in-straddle-ante-games",
-    "title_ko": "Opening From the Blinds in Straddle + Ante Games (GTO 심층 분석)",
+    "title_ko": "Opening From the Blinds in 스트래들 + 앤티 Games",
     "title_en": "Opening From the Blinds in Straddle + Ante Games",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "캐시/스트래들",
@@ -6479,7 +6498,7 @@ const DB = {
   {
     "id": "introducing-quantal-response-equilibrium-the-next-evolution-of-gto",
     "slug": "introducing-quantal-response-equilibrium-the-next-evolution-of-gto",
-    "title_ko": "Introducing Quantal Response Equilibrium: The Next Evolution of GTO (GTO 심층 분석)",
+    "title_ko": "신규 공개: Quantal Response Equilibrium: The Next Evolution of GTO",
     "title_en": "Introducing Quantal Response Equilibrium: The Next Evolution of GTO",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "수학/기초",
@@ -6511,7 +6530,7 @@ const DB = {
   {
     "id": "when-to-just-shove-post-flop-in-icm-spots",
     "slug": "when-to-just-shove-post-flop-in-icm-spots",
-    "title_ko": "언제 ~해야 하는가: Just Shove Postflop in ICM Spots",
+    "title_ko": "언제 ~해야 하는가: Just Shove 포스트플랍 in ICM Spots",
     "title_en": "When to Just Shove Postflop in ICM Spots",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -6543,7 +6562,7 @@ const DB = {
   {
     "id": "watch-learn-replay-legendary-final-tables",
     "slug": "watch-learn-replay-legendary-final-tables",
-    "title_ko": "Watch & Learn: Replay Legendary Final Tables! (GTO 심층 분석)",
+    "title_ko": "Watch & Learn: Replay Legendary Final Tables!",
     "title_en": "Watch & Learn: Replay Legendary Final Tables!",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -6575,7 +6594,7 @@ const DB = {
   {
     "id": "the-theory-of-bounty-tournaments-part-3-key-calculations",
     "slug": "the-theory-of-bounty-tournaments-part-3-key-calculations",
-    "title_ko": "The Theory of Bounty Tournaments – Part 3: Key Calculations (GTO 심층 분석)",
+    "title_ko": "The Theory of Bounty 토너먼트 – Part 3: Key Calculations",
     "title_en": "The Theory of Bounty Tournaments – Part 3: Key Calculations",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "토너먼트/ICM",
@@ -6607,7 +6626,7 @@ const DB = {
   {
     "id": "the-learning-system-that-separates-the-best-from-the-rest",
     "slug": "the-learning-system-that-separates-the-best-from-the-rest",
-    "title_ko": "The Learning System That Separates the Best From the Rest (GTO 심층 분석)",
+    "title_ko": "The Learning System That Separates the Best From the Rest",
     "title_en": "The Learning System That Separates the Best From the Rest",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -6639,7 +6658,7 @@ const DB = {
   {
     "id": "the-fish-were-right-all-along",
     "slug": "the-fish-were-right-all-along",
-    "title_ko": "The Fish Were Right All Along (GTO 심층 분석)",
+    "title_ko": "The Fish Were Right All Along",
     "title_en": "The Fish Were Right All Along",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -6703,7 +6722,7 @@ const DB = {
   {
     "id": "should-you-ever-bluff-with-a-pair",
     "slug": "should-you-ever-bluff-with-a-pair",
-    "title_ko": "Should You Ever Bluff with a Pair? (GTO 심층 분석)",
+    "title_ko": "Should You Ever 블러프 with a Pair?",
     "title_en": "Should You Ever Bluff with a Pair?",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "턴/리버",
@@ -6735,7 +6754,7 @@ const DB = {
   {
     "id": "major-upgrade-gto-reports-have-arrived-plus-tons-of-new-features",
     "slug": "major-upgrade-gto-reports-have-arrived-plus-tons-of-new-features",
-    "title_ko": "Major Upgrade: GTO Reports Have Arrived – Plus Tons of New Features! (GTO 심층 분석)",
+    "title_ko": "Major Upgrade: GTO Reports Have Arrived – Plus Tons of New Features!",
     "title_en": "Major Upgrade: GTO Reports Have Arrived – Plus Tons of New Features!",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -6767,7 +6786,7 @@ const DB = {
   {
     "id": "icm-strategy-playing-ip-against-the-chip-leader-on-the-final-table",
     "slug": "icm-strategy-playing-ip-against-the-chip-leader-on-the-final-table",
-    "title_ko": "ICM Strategy: Playing IP Against the Chip Leader on the Final Table (GTO 심층 분석)",
+    "title_ko": "ICM Strategy: Playing IP Against the Chip Leader on the 파이널 테이블",
     "title_en": "ICM Strategy: Playing IP Against the Chip Leader on the Final Table",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -6799,7 +6818,7 @@ const DB = {
   {
     "id": "icm-survival-guide-how-to-play-oop-vs-a-covering-stack-at-the-final-table",
     "slug": "icm-survival-guide-how-to-play-oop-vs-a-covering-stack-at-the-final-table",
-    "title_ko": "ICM Survival Guide: 플레이 가이드: OOP vs. a Covering Stack at the Final Table",
+    "title_ko": "ICM Survival Guide: 플레이 가이드: OOP vs. a Covering Stack at the 파이널 테이블",
     "title_en": "ICM Survival Guide: How to Play OOP vs. a Covering Stack at the Final Table",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -6831,7 +6850,7 @@ const DB = {
   {
     "id": "were-at-the-river-our-hand-cant-win-now-what",
     "slug": "were-at-the-river-our-hand-cant-win-now-what",
-    "title_ko": "We’re At The River. Our Hand Can’t Win. Now What? (GTO 심층 분석)",
+    "title_ko": "We’re At The 리버. Our Hand Can’t Win. Now What?",
     "title_en": "We’re At The River. Our Hand Can’t Win. Now What?",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "턴/리버",
@@ -6863,7 +6882,7 @@ const DB = {
   {
     "id": "when-is-bluffing-profitable-the-key-factors-you-need-to-know",
     "slug": "when-is-bluffing-profitable-the-key-factors-you-need-to-know",
-    "title_ko": "When Is Bluffing Profitable? (GTO 심층 분석)",
+    "title_ko": "When Is 블러핑 Profitable?",
     "title_en": "When Is Bluffing Profitable?",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "턴/리버",
@@ -6895,7 +6914,7 @@ const DB = {
   {
     "id": "blockers-unblockers-the-secret-to-picking-great-bluffs",
     "slug": "blockers-unblockers-the-secret-to-picking-great-bluffs",
-    "title_ko": "Blockers & Unblockers: The Secret to Picking Great Bluffs (GTO 심층 분석)",
+    "title_ko": "블로커 & 언블로커: The Secret to Picking Great 블러프",
     "title_en": "Blockers & Unblockers: The Secret to Picking Great Bluffs",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "턴/리버",
@@ -6959,7 +6978,7 @@ const DB = {
   {
     "id": "ai-and-the-future-of-poker",
     "slug": "ai-and-the-future-of-poker",
-    "title_ko": "AI and the Future of Poker (GTO 심층 분석)",
+    "title_ko": "AI and the Future of Poker",
     "title_en": "AI and the Future of Poker",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -7023,7 +7042,7 @@ const DB = {
   {
     "id": "the-art-of-turn-probing-exploiting-checked-flops",
     "slug": "the-art-of-turn-probing-exploiting-checked-flops",
-    "title_ko": "완벽 가이드: Turn Probing: 익스플로잇: Checked Flops",
+    "title_ko": "완벽 가이드: 턴 Probing: 익스플로잇: Checked Flops",
     "title_en": "The Art of Turn Probing: Exploiting Checked Flops",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "턴/리버",
@@ -7055,7 +7074,7 @@ const DB = {
   {
     "id": "how-to-respond-to-large-preflop-raises-in-poker",
     "slug": "how-to-respond-to-large-preflop-raises-in-poker",
-    "title_ko": "공략법: Respond to Large Preflop Raises in Poker",
+    "title_ko": "공략법: Respond to Large 프리플랍 Raises in Poker",
     "title_en": "How to Respond to Large Preflop Raises in Poker",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -7087,7 +7106,7 @@ const DB = {
   {
     "id": "mastering-postflop-icm-avoid-these-common-mistakes",
     "slug": "mastering-postflop-icm-avoid-these-common-mistakes",
-    "title_ko": "마스터하기: Postflop ICM: Avoid These Common Mistakes",
+    "title_ko": "마스터하기: 포스트플랍 ICM: Avoid These Common Mistakes",
     "title_en": "Mastering Postflop ICM: Avoid These Common Mistakes",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -7119,7 +7138,7 @@ const DB = {
   {
     "id": "what-happens-when-playing-chip-ev-and-icm-is-significant",
     "slug": "what-happens-when-playing-chip-ev-and-icm-is-significant",
-    "title_ko": "What Happens When Playing Chip EV and ICM Is Significant (GTO 심층 분석)",
+    "title_ko": "What Happens When Playing Chip EV and ICM Is Significant",
     "title_en": "What Happens When Playing Chip EV and ICM Is Significant",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -7215,7 +7234,7 @@ const DB = {
   {
     "id": "ip-4-betting-in-deep-stacked-cash-games",
     "slug": "ip-4-betting-in-deep-stacked-cash-games",
-    "title_ko": "IP 4-Betting in Deep-Stacked Cash Games (GTO 심층 분석)",
+    "title_ko": "IP 4-Betting in Deep-Stacked 캐시 게임",
     "title_en": "IP 4-Betting in Deep-Stacked Cash Games",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "3벳 팟",
@@ -7247,7 +7266,7 @@ const DB = {
   {
     "id": "oop-4-betting-in-deep-stacked-cash-games",
     "slug": "oop-4-betting-in-deep-stacked-cash-games",
-    "title_ko": "OOP 4-Betting in Deep-Stacked Cash Games (GTO 심층 분석)",
+    "title_ko": "OOP 4-Betting in Deep-Stacked 캐시 게임",
     "title_en": "OOP 4-Betting in Deep-Stacked Cash Games",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "3벳 팟",
@@ -7279,7 +7298,7 @@ const DB = {
   {
     "id": "fixing-a-poker-leak-part-2-the-mental-game",
     "slug": "fixing-a-poker-leak-part-2-the-mental-game",
-    "title_ko": "Fixing a Poker Leak Part 2: The Mental Game (GTO 심층 분석)",
+    "title_ko": "포커 릭(Leak) 교정 2부: 멘탈 게임 강화 전략",
     "title_en": "Fixing a Poker Leak Part 2: The Mental Game",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "익스플로잇",
@@ -7311,7 +7330,7 @@ const DB = {
   {
     "id": "fixing-a-poker-leak-part-1-spotting-and-correcting-errors",
     "slug": "fixing-a-poker-leak-part-1-spotting-and-correcting-errors",
-    "title_ko": "Fixing a Poker Leak Part 1: Spotting and Correcting Errors (GTO 심층 분석)",
+    "title_ko": "포커 릭(Leak) 교정 1부: 오류 발견 및 수정법",
     "title_en": "Fixing a Poker Leak Part 1: Spotting and Correcting Errors",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "익스플로잇",
@@ -7343,7 +7362,7 @@ const DB = {
   {
     "id": "how-significant-is-icm-after-late-registering-a-tournament",
     "slug": "how-significant-is-icm-after-late-registering-a-tournament",
-    "title_ko": "How Significant Is ICM During Late Registration? (GTO 심층 분석)",
+    "title_ko": "How Significant Is ICM During Late Registration?",
     "title_en": "How Significant Is ICM During Late Registration?",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -7375,7 +7394,7 @@ const DB = {
   {
     "id": "the-many-faces-of-balance-in-poker",
     "slug": "the-many-faces-of-balance-in-poker",
-    "title_ko": "The Many Faces of Balance in Poker (GTO 심층 분석)",
+    "title_ko": "The Many Faces of Balance in Poker",
     "title_en": "The Many Faces of Balance in Poker",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -7407,7 +7426,7 @@ const DB = {
   {
     "id": "unwrapping-gto-wizards-hidden-gems-for-2025",
     "slug": "unwrapping-gto-wizards-hidden-gems-for-2025",
-    "title_ko": "Unwrapping GTO Wizard’s Hidden Gems for 2025 (GTO 심층 분석)",
+    "title_ko": "Unwrapping GTO Wizard’s Hidden Gems for 2025",
     "title_en": "Unwrapping GTO Wizard’s Hidden Gems for 2025",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -7439,7 +7458,7 @@ const DB = {
   {
     "id": "the-theory-of-bounty-tournaments-part-2-icm-and-equity-drops",
     "slug": "the-theory-of-bounty-tournaments-part-2-icm-and-equity-drops",
-    "title_ko": "The Theory of Bounty Tournaments – Part 2: ICM and Equity Drops (GTO 심층 분석)",
+    "title_ko": "The Theory of Bounty 토너먼트 – Part 2: ICM and 에퀴티 Drops",
     "title_en": "The Theory of Bounty Tournaments – Part 2: ICM and Equity Drops",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -7471,7 +7490,7 @@ const DB = {
   {
     "id": "kick-off-2025-with-new-cash-and-icm-solutions",
     "slug": "kick-off-2025-with-new-cash-and-icm-solutions",
-    "title_ko": "Kick Off 2025 With New Cash Game and ICM Solutions for MTTs (GTO 심층 분석)",
+    "title_ko": "Kick Off 2025 With New 캐시 게임 and ICM Solutions for MTTs",
     "title_en": "Kick Off 2025 With New Cash Game and ICM Solutions for MTTs",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -7503,7 +7522,7 @@ const DB = {
   {
     "id": "the-theory-of-bounty-tournaments-part-1-prize-pool-fundamentals",
     "slug": "the-theory-of-bounty-tournaments-part-1-prize-pool-fundamentals",
-    "title_ko": "The Theory of Bounty Tournaments – Part 1: Prize Pool Fundamentals (GTO 심층 분석)",
+    "title_ko": "The Theory of Bounty 토너먼트 – Part 1: Prize Pool Fundamentals",
     "title_en": "The Theory of Bounty Tournaments – Part 1: Prize Pool Fundamentals",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "토너먼트/ICM",
@@ -7535,7 +7554,7 @@ const DB = {
   {
     "id": "responding-to-donk-bets-at-final-tables",
     "slug": "responding-to-donk-bets-at-final-tables",
-    "title_ko": "Responding to Donk Bets at Final Tables (GTO 심층 분석)",
+    "title_ko": "Responding to Donk Bets at Final Tables",
     "title_en": "Responding to Donk Bets at Final Tables",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -7567,7 +7586,7 @@ const DB = {
   {
     "id": "donk-betting-as-the-covering-stack-in-mtts",
     "slug": "donk-betting-as-the-covering-stack-in-mtts",
-    "title_ko": "Donk Betting As the Covering Stack in MTTs (GTO 심층 분석)",
+    "title_ko": "Donk Betting As the Covering Stack in MTTs",
     "title_en": "Donk Betting As the Covering Stack in MTTs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -7599,7 +7618,7 @@ const DB = {
   {
     "id": "dominate-the-river-in-3-bet-pots-oop",
     "slug": "dominate-the-river-in-3-bet-pots-oop",
-    "title_ko": "Dominate the River in 3-Bet Pots OOP (GTO 심층 분석)",
+    "title_ko": "Dominate the 리버 in 3벳 Pots OOP",
     "title_en": "Dominate the River in 3-Bet Pots OOP",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "3벳 팟",
@@ -7663,7 +7682,7 @@ const DB = {
   {
     "id": "picking-the-right-semi-bluffs",
     "slug": "picking-the-right-semi-bluffs",
-    "title_ko": "Picking the Right Semi-Bluffs (GTO 심층 분석)",
+    "title_ko": "Picking the Right Semi-블러프",
     "title_en": "Picking the Right Semi-Bluffs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "턴/리버",
@@ -7695,7 +7714,7 @@ const DB = {
   {
     "id": "playing-calls-from-the-button-in-cash-games",
     "slug": "playing-calls-from-the-button-in-cash-games",
-    "title_ko": "Playing Calls From the Button in Cash Games (GTO 심층 분석)",
+    "title_ko": "Playing Calls From the 버튼(BTN) in 캐시 게임",
     "title_en": "Playing Calls From the Button in Cash Games",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "캐시/스트래들",
@@ -7727,7 +7746,7 @@ const DB = {
   {
     "id": "redefining-precision-introducing-hh-analyzer-2-0-and-much-more",
     "slug": "redefining-precision-introducing-hh-analyzer-2-0-and-much-more",
-    "title_ko": "Redefining Precision: Introducing HH Analyzer 2.0 & Much More (GTO 심층 분석)",
+    "title_ko": "Redefining Precision: Introducing HH Analyzer 2.0 & Much More",
     "title_en": "Redefining Precision: Introducing HH Analyzer 2.0 & Much More",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -7759,7 +7778,7 @@ const DB = {
   {
     "id": "bringing-it-all-together-pko-review",
     "slug": "bringing-it-all-together-pko-review",
-    "title_ko": "Bringing It All Together: PKO Review (GTO 심층 분석)",
+    "title_ko": "Bringing It All Together: PKO Review",
     "title_en": "Bringing It All Together: PKO Review",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
     "category": "PKO 바운티",
@@ -7791,7 +7810,7 @@ const DB = {
   {
     "id": "what-factors-impact-ranges-the-most-in-pkos",
     "slug": "what-factors-impact-ranges-the-most-in-pkos",
-    "title_ko": "What Factors Impact Ranges the Most in PKOs? (GTO 심층 분석)",
+    "title_ko": "What Factors Impact 레인지 the Most in PKOs?",
     "title_en": "What Factors Impact Ranges the Most in PKOs?",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
     "category": "PKO 바운티",
@@ -7823,7 +7842,7 @@ const DB = {
   {
     "id": "pko-vs-classic-postflop-play",
     "slug": "pko-vs-classic-postflop-play",
-    "title_ko": "PKO vs Classic: Postflop Play (GTO 심층 분석)",
+    "title_ko": "PKO vs Classic: 포스트플랍 Play",
     "title_en": "PKO vs Classic: Postflop Play",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
     "category": "PKO 바운티",
@@ -7855,7 +7874,7 @@ const DB = {
   {
     "id": "how-do-bounties-impact-our-flop-ranges-when-covering",
     "slug": "how-do-bounties-impact-our-flop-ranges-when-covering",
-    "title_ko": "How Do Bounties Impact Our Flop Ranges When Covering? (GTO 심층 분석)",
+    "title_ko": "How Do Bounties Impact Our 플랍 레인지 When Covering?",
     "title_en": "How Do Bounties Impact Our Flop Ranges When Covering?",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "PKO 바운티",
@@ -7887,7 +7906,7 @@ const DB = {
   {
     "id": "short-stack-stealing-on-the-bubble",
     "slug": "short-stack-stealing-on-the-bubble",
-    "title_ko": "Short Stack Stealing on the Bubble (GTO 심층 분석)",
+    "title_ko": "숏스택 Stealing on the 버블",
     "title_en": "Short Stack Stealing on the Bubble",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -7919,7 +7938,7 @@ const DB = {
   {
     "id": "maximizing-monsters-in-deep-stacked-scenarios",
     "slug": "maximizing-monsters-in-deep-stacked-scenarios",
-    "title_ko": "Maximizing Monsters in Deep-Stacked Scenarios (GTO 심층 분석)",
+    "title_ko": "Maximizing Monsters in Deep-Stacked Scenarios",
     "title_en": "Maximizing Monsters in Deep-Stacked Scenarios",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -7951,7 +7970,7 @@ const DB = {
   {
     "id": "confronting-monsters-under-the-bed",
     "slug": "confronting-monsters-under-the-bed",
-    "title_ko": "Confronting Monsters Under the Bed in Poker (GTO 심층 분석)",
+    "title_ko": "Confronting Monsters Under the Bed in Poker",
     "title_en": "Confronting Monsters Under the Bed in Poker",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -7983,7 +8002,7 @@ const DB = {
   {
     "id": "bullying-the-blinds-with-continuation-bets",
     "slug": "bullying-the-blinds-with-continuation-bets",
-    "title_ko": "Bullying the Blinds With Continuation Bets (GTO 심층 분석)",
+    "title_ko": "Bullying the Blinds With Continuation Bets",
     "title_en": "Bullying the Blinds With Continuation Bets",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -8015,7 +8034,7 @@ const DB = {
   {
     "id": "satellite-guide",
     "slug": "satellite-guide",
-    "title_ko": "A Comprehensive Guide to Playing Satellites (GTO 심층 분석)",
+    "title_ko": "A Comprehensive Guide to Playing Satellites",
     "title_en": "A Comprehensive Guide to Playing Satellites",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -8047,7 +8066,7 @@ const DB = {
   {
     "id": "mystery-bounty-guide",
     "slug": "mystery-bounty-guide",
-    "title_ko": "A Comprehensive Guide to Playing Mystery Bounties (GTO 심층 분석)",
+    "title_ko": "A Comprehensive Guide to Playing Mystery Bounties",
     "title_en": "A Comprehensive Guide to Playing Mystery Bounties",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "PKO 바운티",
@@ -8079,7 +8098,7 @@ const DB = {
   {
     "id": "leading-hands-that-should-check-call",
     "slug": "leading-hands-that-should-check-call",
-    "title_ko": "Leading Hands That Should Check-Call (GTO 심층 분석)",
+    "title_ko": "Leading Hands That Should 체크-콜",
     "title_en": "Leading Hands That Should Check-Call",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -8111,7 +8130,7 @@ const DB = {
   {
     "id": "mastering-turn-play-in-3-bet-pots-oop",
     "slug": "mastering-turn-play-in-3-bet-pots-oop",
-    "title_ko": "마스터하기: Turn Play in 3-Bet Pots OOP",
+    "title_ko": "마스터하기: 턴 Play in 3벳 Pots OOP",
     "title_en": "Mastering Turn Play in 3-Bet Pots OOP",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "3벳 팟",
@@ -8143,7 +8162,7 @@ const DB = {
   {
     "id": "pko-versus-classic-responding-to-3-bets",
     "slug": "pko-versus-classic-responding-to-3-bets",
-    "title_ko": "PKO Versus Classic: Responding to 3-Bets (GTO 심층 분석)",
+    "title_ko": "PKO Versus Classic: Responding to 3벳",
     "title_en": "PKO Versus Classic: Responding to 3-Bets",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
     "category": "PKO 바운티",
@@ -8175,7 +8194,7 @@ const DB = {
   {
     "id": "pko-versus-classic-responding-to-a-preflop-open",
     "slug": "pko-versus-classic-responding-to-a-preflop-open",
-    "title_ko": "PKO Versus Classic: Responding to a Preflop Open (GTO 심층 분석)",
+    "title_ko": "PKO Versus Classic: Responding to a 프리플랍 Open",
     "title_en": "PKO Versus Classic: Responding to a Preflop Open",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
     "category": "PKO 바운티",
@@ -8207,7 +8226,7 @@ const DB = {
   {
     "id": "preflop-range-morphology",
     "slug": "preflop-range-morphology",
-    "title_ko": "Preflop Range Morphology (GTO 심층 분석)",
+    "title_ko": "프리플랍 레인지 Morphology",
     "title_en": "Preflop Range Morphology",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -8239,7 +8258,7 @@ const DB = {
   {
     "id": "the-five-imbalances-of-exploitative-poker",
     "slug": "the-five-imbalances-of-exploitative-poker",
-    "title_ko": "The Five Imbalances of Exploitative Poker (GTO 심층 분석)",
+    "title_ko": "The Five Imbalances of Exploitative Poker",
     "title_en": "The Five Imbalances of Exploitative Poker",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "익스플로잇",
@@ -8271,7 +8290,7 @@ const DB = {
   {
     "id": "pko-versus-classic-preflop-rfi-range-comparisons",
     "slug": "pko-versus-classic-preflop-rfi-range-comparisons",
-    "title_ko": "PKO Versus Classic: Preflop RFI Range Comparisons (GTO 심층 분석)",
+    "title_ko": "PKO Versus Classic: 프리플랍 RFI 레인지 Comparisons",
     "title_en": "PKO Versus Classic: Preflop RFI Range Comparisons",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
     "category": "PKO 바운티",
@@ -8303,7 +8322,7 @@ const DB = {
   {
     "id": "introducing-gto-wizard-play-mode",
     "slug": "introducing-gto-wizard-play-mode",
-    "title_ko": "Introducing GTO Wizard Play Mode: Play Poker, Study Effortlessly (GTO 심층 분석)",
+    "title_ko": "신규 공개: GTO Wizard Play Mode: Play Poker, Study Effortlessly",
     "title_en": "Introducing GTO Wizard Play Mode: Play Poker, Study Effortlessly",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -8335,7 +8354,7 @@ const DB = {
   {
     "id": "why-so-much-an-exploration-of-larger-than-geometric-bet-sizing",
     "slug": "why-so-much-an-exploration-of-larger-than-geometric-bet-sizing",
-    "title_ko": "Why So Much? An Exploration of Larger-Than-Geometric Bet Sizing (GTO 심층 분석)",
+    "title_ko": "Why So Much? An Exploration of Larger-Than-Geometric Bet Sizing",
     "title_en": "Why So Much? An Exploration of Larger-Than-Geometric Bet Sizing",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "플랍 전략",
@@ -8367,7 +8386,7 @@ const DB = {
   {
     "id": "slow-playing",
     "slug": "slow-playing",
-    "title_ko": "Slow-Playing (GTO 심층 분석)",
+    "title_ko": "Slow-Playing",
     "title_en": "Slow-Playing",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -8399,7 +8418,7 @@ const DB = {
   {
     "id": "mdf-vs-icm-rethinking-bluffing-defense-strategies-in-mtts",
     "slug": "mdf-vs-icm-rethinking-bluffing-defense-strategies-in-mtts",
-    "title_ko": "MDF vs ICM: Rethinking Bluffing & Defense Strategies in MTTs (GTO 심층 분석)",
+    "title_ko": "MDF vs ICM: Rethinking 블러핑 & Defense Strategies in MTTs",
     "title_en": "MDF vs ICM: Rethinking Bluffing & Defense Strategies in MTTs",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -8431,7 +8450,7 @@ const DB = {
   {
     "id": "the-magic-of-equity-buckets",
     "slug": "the-magic-of-equity-buckets",
-    "title_ko": "The Magic of Equity Buckets (GTO 심층 분석)",
+    "title_ko": "에퀴티 버킷(Equity Buckets) 분류법의 마법",
     "title_en": "The Magic of Equity Buckets",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "수학/기초",
@@ -8463,7 +8482,7 @@ const DB = {
   {
     "id": "preflop-strategy-in-straddled-pots",
     "slug": "preflop-strategy-in-straddled-pots",
-    "title_ko": "Preflop Strategy in Straddled Pots (GTO 심층 분석)",
+    "title_ko": "프리플랍 Strategy in Straddled Pots",
     "title_en": "Preflop Strategy in Straddled Pots",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "캐시/스트래들",
@@ -8495,7 +8514,7 @@ const DB = {
   {
     "id": "5-levels-of-trainer-mastery-for-mtts",
     "slug": "5-levels-of-trainer-mastery-for-mtts",
-    "title_ko": "The 5 Levels of Trainer Mastery for MTTs (GTO 심층 분석)",
+    "title_ko": "The 5 Levels of Trainer Mastery for MTTs",
     "title_en": "The 5 Levels of Trainer Mastery for MTTs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -8527,7 +8546,7 @@ const DB = {
   {
     "id": "4-bet-pots-oop-as-the-preflop-caller",
     "slug": "4-bet-pots-oop-as-the-preflop-caller",
-    "title_ko": "4-Bet Pots OOP as the Preflop Caller (GTO 심층 분석)",
+    "title_ko": "4벳 Pots OOP as the 프리플랍 Caller",
     "title_en": "4-Bet Pots OOP as the Preflop Caller",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "3벳 팟",
@@ -8559,7 +8578,7 @@ const DB = {
   {
     "id": "bounty-models-explained-solving-knockout-tournaments",
     "slug": "bounty-models-explained-solving-knockout-tournaments",
-    "title_ko": "Bounty Models Explained: Solving Knockout Tournaments (GTO 심층 분석)",
+    "title_ko": "Bounty Models Explained: 솔빙 Knockout 토너먼트",
     "title_en": "Bounty Models Explained: Solving Knockout Tournaments",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -8591,7 +8610,7 @@ const DB = {
   {
     "id": "revolutionizing-mtts-the-ultimate-icm-solver-upgrade",
     "slug": "revolutionizing-mtts-the-ultimate-icm-solver-upgrade",
-    "title_ko": "Revolutionizing MTTs: The Ultimate ICM Solver Upgrade (GTO 심층 분석)",
+    "title_ko": "Revolutionizing MTTs: The Ultimate ICM 솔버 Upgrade",
     "title_en": "Revolutionizing MTTs: The Ultimate ICM Solver Upgrade",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -8623,7 +8642,7 @@ const DB = {
   {
     "id": "theoretical-breakthroughs-in-icm",
     "slug": "theoretical-breakthroughs-in-icm",
-    "title_ko": "Theoretical Breakthroughs in ICM (GTO 심층 분석)",
+    "title_ko": "Theoretical Breakthroughs in ICM",
     "title_en": "Theoretical Breakthroughs in ICM",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -8655,7 +8674,7 @@ const DB = {
   {
     "id": "the-limitations-of-nash-equilibrium-in-icm-spots",
     "slug": "the-limitations-of-nash-equilibrium-in-icm-spots",
-    "title_ko": "The Limitations of Nash Equilibrium in ICM Spots (GTO 심층 분석)",
+    "title_ko": "The Limitations of Nash Equilibrium in ICM Spots",
     "title_en": "The Limitations of Nash Equilibrium in ICM Spots",
     "level": "[5차 전직/최종] 하이롤러 & 챔피언 (Lv.85~100)",
     "category": "토너먼트/ICM",
@@ -8687,7 +8706,7 @@ const DB = {
   {
     "id": "rake-rakeback-explained-optimize-your-poker-earnings",
     "slug": "rake-rakeback-explained-optimize-your-poker-earnings",
-    "title_ko": "Rake & Rakeback Explained: Optimize Your Poker Earnings (GTO 심층 분석)",
+    "title_ko": "Rake & Rakeback Explained: Optimize Your Poker Earnings",
     "title_en": "Rake & Rakeback Explained: Optimize Your Poker Earnings",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "캐시/스트래들",
@@ -8719,7 +8738,7 @@ const DB = {
   {
     "id": "from-gutshots-to-airballs-choosing-your-bluffs",
     "slug": "from-gutshots-to-airballs-choosing-your-bluffs",
-    "title_ko": "From Gutshots to Airballs: Choosing Your Bluffs (GTO 심층 분석)",
+    "title_ko": "From Gutshots to Airballs: Choosing Your 블러프",
     "title_en": "From Gutshots to Airballs: Choosing Your Bluffs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "턴/리버",
@@ -8751,7 +8770,7 @@ const DB = {
   {
     "id": "crush-3-bet-pots-oop-in-cash-games",
     "slug": "crush-3-bet-pots-oop-in-cash-games",
-    "title_ko": "Crush 3-Bet Pots OOP in Cash Games (GTO 심층 분석)",
+    "title_ko": "Crush 3벳 Pots OOP in 캐시 게임",
     "title_en": "Crush 3-Bet Pots OOP in Cash Games",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "3벳 팟",
@@ -8783,7 +8802,7 @@ const DB = {
   {
     "id": "the-math-of-multistreet-bluffs",
     "slug": "the-math-of-multistreet-bluffs",
-    "title_ko": "The Math of Multi-Street Bluffs (GTO 심층 분석)",
+    "title_ko": "The Math of Multi-Street 블러프",
     "title_en": "The Math of Multi-Street Bluffs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "턴/리버",
@@ -8815,7 +8834,7 @@ const DB = {
   {
     "id": "the-mechanics-of-c-bet-sizing",
     "slug": "the-mechanics-of-c-bet-sizing",
-    "title_ko": "The Mechanics of C-Bet Sizing (GTO 심층 분석)",
+    "title_ko": "The Mechanics of C-bet Sizing",
     "title_en": "The Mechanics of C-Bet Sizing",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "플랍 전략",
@@ -8847,7 +8866,7 @@ const DB = {
   {
     "id": "poker-insurance-reducing-variance-or-wasting-money",
     "slug": "poker-insurance-reducing-variance-or-wasting-money",
-    "title_ko": "Poker Insurance: Reducing Variance or Wasting Money? (GTO 심층 분석)",
+    "title_ko": "Poker Insurance: Reducing 분산(베리언스) or Wasting Money?",
     "title_en": "Poker Insurance: Reducing Variance or Wasting Money?",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -8879,7 +8898,7 @@ const DB = {
   {
     "id": "money-bubble-vs-final-table-bubble",
     "slug": "money-bubble-vs-final-table-bubble",
-    "title_ko": "Money Bubble vs Final Table Bubble (GTO 심층 분석)",
+    "title_ko": "Money 버블 vs 파이널 테이블 버블",
     "title_en": "Money Bubble vs Final Table Bubble",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -8911,7 +8930,7 @@ const DB = {
   {
     "id": "facing-3-bets-from-covering-stacks-at-the-final-table",
     "slug": "facing-3-bets-from-covering-stacks-at-the-final-table",
-    "title_ko": "Facing 3-Bets From Covering Stacks at the Final Table (GTO 심층 분석)",
+    "title_ko": "Facing 3벳 From Covering Stacks at the 파이널 테이블",
     "title_en": "Facing 3-Bets From Covering Stacks at the Final Table",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "토너먼트/ICM",
@@ -8943,7 +8962,7 @@ const DB = {
   {
     "id": "poker-staking-essentials",
     "slug": "poker-staking-essentials",
-    "title_ko": "Poker Staking Essentials (GTO 심층 분석)",
+    "title_ko": "Poker Staking Essentials",
     "title_en": "Poker Staking Essentials",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -8975,7 +8994,7 @@ const DB = {
   {
     "id": "a-poker-players-guide-to-conquering-cognitive-biases-part-2",
     "slug": "a-poker-players-guide-to-conquering-cognitive-biases-part-2",
-    "title_ko": "A Poker Player’s Guide to Conquering Cognitive Biases – Part 2 (GTO 심층 분석)",
+    "title_ko": "A Poker Player’s Guide to Conquering Cognitive Biases – Part 2",
     "title_en": "A Poker Player’s Guide to Conquering Cognitive Biases – Part 2",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "익스플로잇",
@@ -9007,7 +9026,7 @@ const DB = {
   {
     "id": "live-cash-solutions-and-4000-new-scenarios-for-cash-mtt-formats",
     "slug": "live-cash-solutions-and-4000-new-scenarios-for-cash-mtt-formats",
-    "title_ko": "Live Cash Solutions and 4,000 New Scenarios for Cash & MTT Formats (GTO 심층 분석)",
+    "title_ko": "Live Cash Solutions and 4,000 New Scenarios for Cash & MTT Formats",
     "title_en": "Live Cash Solutions and 4,000 New Scenarios for Cash & MTT Formats",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -9039,7 +9058,7 @@ const DB = {
   {
     "id": "the-5-levels-of-trainer-mastery",
     "slug": "the-5-levels-of-trainer-mastery",
-    "title_ko": "The 5 Levels of Trainer Mastery for Cash Games (GTO 심층 분석)",
+    "title_ko": "The 5 Levels of Trainer Mastery for 캐시 게임",
     "title_en": "The 5 Levels of Trainer Mastery for Cash Games",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "캐시/스트래들",
@@ -9071,7 +9090,7 @@ const DB = {
   {
     "id": "how-to-review-icm-preflop-ranges",
     "slug": "how-to-review-icm-preflop-ranges",
-    "title_ko": "공략법: Review ICM Preflop Ranges",
+    "title_ko": "공략법: Review ICM 프리플랍 레인지",
     "title_en": "How to Review ICM Preflop Ranges",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -9103,7 +9122,7 @@ const DB = {
   {
     "id": "calling-down-the-over-bluffed-lines-in-lower-limits",
     "slug": "calling-down-the-over-bluffed-lines-in-lower-limits",
-    "title_ko": "Calling Down Over-Bluffed Lines in Lower Limits (GTO 심층 분석)",
+    "title_ko": "Calling Down Over-Bluffed Lines in Lower Limits",
     "title_en": "Calling Down Over-Bluffed Lines in Lower Limits",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "턴/리버",
@@ -9135,7 +9154,7 @@ const DB = {
   {
     "id": "a-poker-players-guide-to-conquering-cognitive-biases-part-1",
     "slug": "a-poker-players-guide-to-conquering-cognitive-biases-part-1",
-    "title_ko": "A Poker Player’s Guide to Conquering Cognitive Biases – Part 1 (GTO 심층 분석)",
+    "title_ko": "A Poker Player’s Guide to Conquering Cognitive Biases – Part 1",
     "title_en": "A Poker Player’s Guide to Conquering Cognitive Biases – Part 1",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "익스플로잇",
@@ -9199,7 +9218,7 @@ const DB = {
   {
     "id": "using-80-20-rule-in-poker",
     "slug": "using-80-20-rule-in-poker",
-    "title_ko": "Using the 80/20 Rule in Poker (GTO 심층 분석)",
+    "title_ko": "Using the 80/20 Rule in Poker",
     "title_en": "Using the 80/20 Rule in Poker",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -9231,7 +9250,7 @@ const DB = {
   {
     "id": "attacking-aggressive-opponents-when-they-check-back-flop",
     "slug": "attacking-aggressive-opponents-when-they-check-back-flop",
-    "title_ko": "Attacking Aggressive Opponents When They Check Back Flop (GTO 심층 분석)",
+    "title_ko": "Attacking Aggressive Opponents When They Check Back 플랍",
     "title_en": "Attacking Aggressive Opponents When They Check Back Flop",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "플랍 전략",
@@ -9263,7 +9282,7 @@ const DB = {
   {
     "id": "buying-the-showdown",
     "slug": "buying-the-showdown",
-    "title_ko": "Buying the Showdown (GTO 심층 분석)",
+    "title_ko": "Buying the Showdown",
     "title_en": "Buying the Showdown",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -9295,7 +9314,7 @@ const DB = {
   {
     "id": "barreling-as-ip-cold-caller",
     "slug": "barreling-as-ip-cold-caller",
-    "title_ko": "Barreling as IP Cold Caller (GTO 심층 분석)",
+    "title_ko": "Barreling as IP Cold Caller",
     "title_en": "Barreling as IP Cold Caller",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "턴/리버",
@@ -9327,7 +9346,7 @@ const DB = {
   {
     "id": "how-confirmation-bias-impacts-poker-study",
     "slug": "how-confirmation-bias-impacts-poker-study",
-    "title_ko": "How Confirmation Bias Impacts Poker Study (GTO 심층 분석)",
+    "title_ko": "How Confirmation Bias Impacts Poker Study",
     "title_en": "How Confirmation Bias Impacts Poker Study",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -9359,7 +9378,7 @@ const DB = {
   {
     "id": "a-champions-guide-to-knockout-poker-formats",
     "slug": "a-champions-guide-to-knockout-poker-formats",
-    "title_ko": "A Champion’s Guide to Knockout Poker Formats (GTO 심층 분석)",
+    "title_ko": "A Champion’s Guide to Knockout Poker Formats",
     "title_en": "A Champion’s Guide to Knockout Poker Formats",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "PKO 바운티",
@@ -9391,7 +9410,7 @@ const DB = {
   {
     "id": "pushing-equity-with-small-bets",
     "slug": "pushing-equity-with-small-bets",
-    "title_ko": "Pushing Equity With Small Bets (GTO 심층 분석)",
+    "title_ko": "Pushing 에퀴티 With Small Bets",
     "title_en": "Pushing Equity With Small Bets",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -9423,7 +9442,7 @@ const DB = {
   {
     "id": "turn-check-raise-heuristics",
     "slug": "turn-check-raise-heuristics",
-    "title_ko": "Turn Check-Raise Heuristics (GTO 심층 분석)",
+    "title_ko": "턴 체크-레이즈 Heuristics",
     "title_en": "Turn Check-Raise Heuristics",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "턴/리버",
@@ -9455,7 +9474,7 @@ const DB = {
   {
     "id": "aggregate-flop-strategy-sb-c-betting-in-srp",
     "slug": "aggregate-flop-strategy-sb-c-betting-in-srp",
-    "title_ko": "Aggregate Flop Strategy: SB C-Betting in SRP (GTO 심층 분석)",
+    "title_ko": "Aggregate 플랍 Strategy: SB C-bet 전략 in SRP",
     "title_en": "Aggregate Flop Strategy: SB C-Betting in SRP",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "플랍 전략",
@@ -9487,7 +9506,7 @@ const DB = {
   {
     "id": "the-power-of-the-hypergeometric-bet",
     "slug": "the-power-of-the-hypergeometric-bet",
-    "title_ko": "The Power of the Hypergeometric Bet (GTO 심층 분석)",
+    "title_ko": "The Power of the Hypergeometric Bet",
     "title_en": "The Power of the Hypergeometric Bet",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "플랍 전략",
@@ -9519,7 +9538,7 @@ const DB = {
   {
     "id": "the-limits-of-nodelocking",
     "slug": "the-limits-of-nodelocking",
-    "title_ko": "The Limits of Nodelocking (GTO 심층 분석)",
+    "title_ko": "The Limits of Nodelocking",
     "title_en": "The Limits of Nodelocking",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "익스플로잇",
@@ -9551,7 +9570,7 @@ const DB = {
   {
     "id": "limp-called-pot-as-bb",
     "slug": "limp-called-pot-as-bb",
-    "title_ko": "Limp-Called Pot as BB (GTO 심층 분석)",
+    "title_ko": "Limp-Called Pot as BB",
     "title_en": "Limp-Called Pot as BB",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -9583,7 +9602,7 @@ const DB = {
   {
     "id": "why-not-shove",
     "slug": "why-not-shove",
-    "title_ko": "Why Not Shove? (GTO 심층 분석)",
+    "title_ko": "Why Not Shove?",
     "title_en": "Why Not Shove?",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -9615,7 +9634,7 @@ const DB = {
   {
     "id": "what-we-can-learn-from-outlier-hands",
     "slug": "what-we-can-learn-from-outlier-hands",
-    "title_ko": "What We Can Learn From Outlier Hands (GTO 심층 분석)",
+    "title_ko": "What We Can Learn From Outlier Hands",
     "title_en": "What We Can Learn From Outlier Hands",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -9647,7 +9666,7 @@ const DB = {
   {
     "id": "building-exploits-from-showdown",
     "slug": "building-exploits-from-showdown",
-    "title_ko": "Building Exploits From Showdown (GTO 심층 분석)",
+    "title_ko": "Building Exploits From Showdown",
     "title_en": "Building Exploits From Showdown",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "익스플로잇",
@@ -9679,7 +9698,7 @@ const DB = {
   {
     "id": "pioneering-poker-ai-research",
     "slug": "pioneering-poker-ai-research",
-    "title_ko": "Pioneering Poker AI Research (GTO 심층 분석)",
+    "title_ko": "Pioneering Poker AI Research",
     "title_en": "Pioneering Poker AI Research",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -9743,7 +9762,7 @@ const DB = {
   {
     "id": "crack-the-shell-of-nut-draw-strategy",
     "slug": "crack-the-shell-of-nut-draw-strategy",
-    "title_ko": "Crack the Shell of Nut Draw Strategy (GTO 심층 분석)",
+    "title_ko": "Crack the Shell of Nut Draw Strategy",
     "title_en": "Crack the Shell of Nut Draw Strategy",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -9775,7 +9794,7 @@ const DB = {
   {
     "id": "preflop-raise-sizing-examining-2-key-factors",
     "slug": "preflop-raise-sizing-examining-2-key-factors",
-    "title_ko": "Preflop Raise Sizing: Examining 2 Key Factors (GTO 심층 분석)",
+    "title_ko": "프리플랍 Raise Sizing: Examining 2 Key Factors",
     "title_en": "Preflop Raise Sizing: Examining 2 Key Factors",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -9839,7 +9858,7 @@ const DB = {
   {
     "id": "top-5-mistakes-in-spin-gos",
     "slug": "top-5-mistakes-in-spin-gos",
-    "title_ko": "Top 5 Mistakes in Spin & Gos (GTO 심층 분석)",
+    "title_ko": "스핀앤고(Spin & Go)에서 자주 하는 5가지 실수",
     "title_en": "Top 5 Mistakes in Spin & Gos",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "토너먼트/ICM",
@@ -9871,7 +9890,7 @@ const DB = {
   {
     "id": "an-introduction-to-spin-gos",
     "slug": "an-introduction-to-spin-gos",
-    "title_ko": "An Introduction to Spin & Gos (GTO 심층 분석)",
+    "title_ko": "An Introduction to Spin & Gos",
     "title_en": "An Introduction to Spin & Gos",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -9903,7 +9922,7 @@ const DB = {
   {
     "id": "relationships-and-poker",
     "slug": "relationships-and-poker",
-    "title_ko": "Relationships and Poker (GTO 심층 분석)",
+    "title_ko": "Relationships and Poker",
     "title_en": "Relationships and Poker",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -9935,7 +9954,7 @@ const DB = {
   {
     "id": "do-multiple-sizes-matter",
     "slug": "do-multiple-sizes-matter",
-    "title_ko": "Do Multiple Sizes Matter? (GTO 심층 분석)",
+    "title_ko": "Do Multiple Sizes Matter?",
     "title_en": "Do Multiple Sizes Matter?",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -9967,7 +9986,7 @@ const DB = {
   {
     "id": "the-science-of-learning-applied-to-gto-wizard",
     "slug": "the-science-of-learning-applied-to-gto-wizard",
-    "title_ko": "The Science of Learning Applied to GTO Wizard (GTO 심층 분석)",
+    "title_ko": "The Science of Learning Applied to GTO Wizard",
     "title_en": "The Science of Learning Applied to GTO Wizard",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -10031,7 +10050,7 @@ const DB = {
   {
     "id": "your-daily-dose-of-gto-is-here",
     "slug": "your-daily-dose-of-gto-is-here",
-    "title_ko": "Your Daily Dose of GTO is Here! (GTO 심층 분석)",
+    "title_ko": "Your Daily Dose of GTO is Here!",
     "title_en": "Your Daily Dose of GTO is Here!",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -10063,7 +10082,7 @@ const DB = {
   {
     "id": "the-turn-probe-bet",
     "slug": "the-turn-probe-bet",
-    "title_ko": "The Turn Probe Bet (GTO 심층 분석)",
+    "title_ko": "The 턴 Probe Bet",
     "title_en": "The Turn Probe Bet",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "턴/리버",
@@ -10095,7 +10114,7 @@ const DB = {
   {
     "id": "when-to-encourage-multiway-pots-in-pkos",
     "slug": "when-to-encourage-multiway-pots-in-pkos",
-    "title_ko": "언제 ~해야 하는가: Encourage Multiway Pots in PKOs",
+    "title_ko": "언제 ~해야 하는가: Encourage 멀티웨이 Pots in PKOs",
     "title_en": "When to Encourage Multiway Pots in PKOs",
     "level": "[5차 전직/최종] 하이롤러 & 챔피언 (Lv.85~100)",
     "category": "PKO 바운티",
@@ -10127,7 +10146,7 @@ const DB = {
   {
     "id": "protect-equity-and-prosper",
     "slug": "protect-equity-and-prosper",
-    "title_ko": "Protect Equity and Prosper (GTO 심층 분석)",
+    "title_ko": "에퀴티 프로텍션(Protection)과 밸류 극대화 전략",
     "title_en": "Protect Equity and Prosper",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "수학/기초",
@@ -10159,7 +10178,7 @@ const DB = {
   {
     "id": "do-solvers-have-targets",
     "slug": "do-solvers-have-targets",
-    "title_ko": "Do Solvers Have Targets? (GTO 심층 분석)",
+    "title_ko": "Do 솔버 Have Targets?",
     "title_en": "Do Solvers Have Targets?",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -10191,7 +10210,7 @@ const DB = {
   {
     "id": "disciplining-big-blind-in-limped-pots",
     "slug": "disciplining-big-blind-in-limped-pots",
-    "title_ko": "Disciplining Big Blind in Limped Pots (GTO 심층 분석)",
+    "title_ko": "Disciplining 빅 블라인드(BB) in Limped Pots",
     "title_en": "Disciplining Big Blind in Limped Pots",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -10223,7 +10242,7 @@ const DB = {
   {
     "id": "id-rather-be-drawing",
     "slug": "id-rather-be-drawing",
-    "title_ko": "I’d Rather Be Drawing (GTO 심층 분석)",
+    "title_ko": "I’d Rather Be Drawing",
     "title_en": "I’d Rather Be Drawing",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -10255,7 +10274,7 @@ const DB = {
   {
     "id": "curious-case-of-open-limping-buttons",
     "slug": "curious-case-of-open-limping-buttons",
-    "title_ko": "The Curious Case of Open-Limping Buttons (GTO 심층 분석)",
+    "title_ko": "The Curious Case of Open-Limping Buttons",
     "title_en": "The Curious Case of Open-Limping Buttons",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -10287,7 +10306,7 @@ const DB = {
   {
     "id": "cleaning-out-sticky-ip-callers",
     "slug": "cleaning-out-sticky-ip-callers",
-    "title_ko": "Cleaning Out Sticky IP Callers (GTO 심층 분석)",
+    "title_ko": "Cleaning Out Sticky IP Callers",
     "title_en": "Cleaning Out Sticky IP Callers",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -10319,7 +10338,7 @@ const DB = {
   {
     "id": "defending-against-tiny-three-bets",
     "slug": "defending-against-tiny-three-bets",
-    "title_ko": "Defending Against Tiny 3-Bets (GTO 심층 분석)",
+    "title_ko": "Defending Against Tiny 3벳",
     "title_en": "Defending Against Tiny 3-Bets",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "3벳 팟",
@@ -10351,7 +10370,7 @@ const DB = {
   {
     "id": "heads-up-exploiting-sbs-preflop-mistakes",
     "slug": "heads-up-exploiting-sbs-preflop-mistakes",
-    "title_ko": "Heads up! 익스플로잇: SB's Preflop Mistakes",
+    "title_ko": "헤즈업! 익스플로잇: SB's 프리플랍 Mistakes",
     "title_en": "Heads up! Exploiting SB’s Preflop Mistakes",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "익스플로잇",
@@ -10383,7 +10402,7 @@ const DB = {
   {
     "id": "c-betting-as-the-oop-preflop-raiser",
     "slug": "c-betting-as-the-oop-preflop-raiser",
-    "title_ko": "C-Betting As the OOP Preflop Raiser (GTO 심층 분석)",
+    "title_ko": "C-bet 전략 As the OOP 프리플랍 Raiser",
     "title_en": "C-Betting As the OOP Preflop Raiser",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "플랍 전략",
@@ -10415,7 +10434,7 @@ const DB = {
   {
     "id": "overchoice-making-sense-of-multiple-sizings",
     "slug": "overchoice-making-sense-of-multiple-sizings",
-    "title_ko": "Overchoice: Making Sense of Multiple Sizings (GTO 심층 분석)",
+    "title_ko": "Overchoice: Making Sense of Multiple Sizings",
     "title_en": "Overchoice: Making Sense of Multiple Sizings",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -10447,7 +10466,7 @@ const DB = {
   {
     "id": "river-refinements-when-your-opponent-wont-check-raise",
     "slug": "river-refinements-when-your-opponent-wont-check-raise",
-    "title_ko": "River Refinements: When Your Opponent Won’t Check-Raise (GTO 심층 분석)",
+    "title_ko": "리버 Refinements: When Your Opponent Won’t 체크-레이즈",
     "title_en": "River Refinements: When Your Opponent Won’t Check-Raise",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "턴/리버",
@@ -10479,7 +10498,7 @@ const DB = {
   {
     "id": "gto-wizard-2023-wrapup",
     "slug": "gto-wizard-2023-wrapup",
-    "title_ko": "GTO Wizard 2023 Wrapup (GTO 심층 분석)",
+    "title_ko": "GTO Wizard 2023 Wrapup",
     "title_en": "GTO Wizard 2023 Wrapup",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -10511,7 +10530,7 @@ const DB = {
   {
     "id": "turn-barreling-in-3-bet-pots",
     "slug": "turn-barreling-in-3-bet-pots",
-    "title_ko": "Turn Barreling in 3-Bet Pots (GTO 심층 분석)",
+    "title_ko": "턴 Barreling in 3벳 Pots",
     "title_en": "Turn Barreling in 3-Bet Pots",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "3벳 팟",
@@ -10543,7 +10562,7 @@ const DB = {
   {
     "id": "the-right-way-to-think-about-protection",
     "slug": "the-right-way-to-think-about-protection",
-    "title_ko": "The Right Way To Think About Protection (GTO 심층 분석)",
+    "title_ko": "The Right Way To Think About Protection",
     "title_en": "The Right Way To Think About Protection",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -10575,7 +10594,7 @@ const DB = {
   {
     "id": "the-importance-of-board-coverage",
     "slug": "the-importance-of-board-coverage",
-    "title_ko": "The Importance of Board Coverage (GTO 심층 분석)",
+    "title_ko": "The Importance of Board Coverage",
     "title_en": "The Importance of Board Coverage",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -10607,7 +10626,7 @@ const DB = {
   {
     "id": "how-to-adjust-when-villain-has-no-bluffs",
     "slug": "how-to-adjust-when-villain-has-no-bluffs",
-    "title_ko": "공략법: Adjust When Villain Has No Bluffs",
+    "title_ko": "공략법: Adjust When Villain Has No 블러프",
     "title_en": "How to Adjust When Villain Has No Bluffs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "턴/리버",
@@ -10639,7 +10658,7 @@ const DB = {
   {
     "id": "adjusting-on-later-streets-after-exploiting-flop",
     "slug": "adjusting-on-later-streets-after-exploiting-flop",
-    "title_ko": "Adjusting on Later Streets After 익스플로잇: Flop",
+    "title_ko": "Adjusting on Later Streets After 익스플로잇: 플랍",
     "title_en": "Adjusting on Later Streets After Exploiting Flop",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "플랍 전략",
@@ -10671,7 +10690,7 @@ const DB = {
   {
     "id": "customizable-raked-solutions-with-gto-wizard-ai",
     "slug": "customizable-raked-solutions-with-gto-wizard-ai",
-    "title_ko": "Customizable Raked Solutions With GTO Wizard AI (GTO 심층 분석)",
+    "title_ko": "Customizable Raked Solutions With GTO Wizard AI",
     "title_en": "Customizable Raked Solutions With GTO Wizard AI",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "캐시/스트래들",
@@ -10703,7 +10722,7 @@ const DB = {
   {
     "id": "c-betting-ip-vs-passive-poker-players",
     "slug": "c-betting-ip-vs-passive-poker-players",
-    "title_ko": "C-Betting IP vs Passive Poker Players (GTO 심층 분석)",
+    "title_ko": "C-bet 전략 IP vs Passive Poker Players",
     "title_en": "C-Betting IP vs Passive Poker Players",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "플랍 전략",
@@ -10735,7 +10754,7 @@ const DB = {
   {
     "id": "c-betting-against-icm-preflop-ranges",
     "slug": "c-betting-against-icm-preflop-ranges",
-    "title_ko": "C-Betting Against ICM Preflop Ranges (GTO 심층 분석)",
+    "title_ko": "C-bet 전략 Against ICM 프리플랍 레인지",
     "title_en": "C-Betting Against ICM Preflop Ranges",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -10767,7 +10786,7 @@ const DB = {
   {
     "id": "the-art-of-bluff-catching-2",
     "slug": "the-art-of-bluff-catching-2",
-    "title_ko": "완벽 가이드: Bluff Catching",
+    "title_ko": "완벽 가이드: 블러프 Catching",
     "title_en": "The Art of Bluff Catching",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "턴/리버",
@@ -10799,7 +10818,7 @@ const DB = {
   {
     "id": "exploiting-excessive-c-betting-by-ip",
     "slug": "exploiting-excessive-c-betting-by-ip",
-    "title_ko": "익스플로잇: Excessive C-Betting by IP",
+    "title_ko": "익스플로잇: Excessive C-bet 전략 by IP",
     "title_en": "Exploiting Excessive C-Betting by IP",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "플랍 전략",
@@ -10831,7 +10850,7 @@ const DB = {
   {
     "id": "is-limping-pimping",
     "slug": "is-limping-pimping",
-    "title_ko": "Is Limping Pimping? (GTO 심층 분석)",
+    "title_ko": "Is Limping Pimping?",
     "title_en": "Is Limping Pimping?",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -10863,7 +10882,7 @@ const DB = {
   {
     "id": "exploiting-excessive-c-betting-by-oop",
     "slug": "exploiting-excessive-c-betting-by-oop",
-    "title_ko": "익스플로잇: Excessive C-Betting by OOP",
+    "title_ko": "익스플로잇: Excessive C-bet 전략 by OOP",
     "title_en": "Exploiting Excessive C-Betting by OOP",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "플랍 전략",
@@ -10895,7 +10914,7 @@ const DB = {
   {
     "id": "preflop-button-mastery-in-pkos",
     "slug": "preflop-button-mastery-in-pkos",
-    "title_ko": "Preflop Button Mastery in PKOs (GTO 심층 분석)",
+    "title_ko": "프리플랍 버튼(BTN) Mastery in PKOs",
     "title_en": "Preflop Button Mastery in PKOs",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
     "category": "PKO 바운티",
@@ -10927,7 +10946,7 @@ const DB = {
   {
     "id": "the-worst-turn-card",
     "slug": "the-worst-turn-card",
-    "title_ko": "The Worst Turn Card (GTO 심층 분석)",
+    "title_ko": "The Worst 턴 Card",
     "title_en": "The Worst Turn Card",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "턴/리버",
@@ -10959,7 +10978,7 @@ const DB = {
   {
     "id": "navigating-range-disadvantage-as-the-3-bettor",
     "slug": "navigating-range-disadvantage-as-the-3-bettor",
-    "title_ko": "Navigating Range Disadvantage as the 3-Bettor (GTO 심층 분석)",
+    "title_ko": "Navigating 레인지 Disadvantage as the 3-Bettor",
     "title_en": "Navigating Range Disadvantage as the 3-Bettor",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "3벳 팟",
@@ -10991,7 +11010,7 @@ const DB = {
   {
     "id": "mastering-three-bet-pots-in-position-in-mtts",
     "slug": "mastering-three-bet-pots-in-position-in-mtts",
-    "title_ko": "마스터하기: 3-Bet Pots In Position in MTTs",
+    "title_ko": "마스터하기: 3벳 Pots 인포지션(IP) in MTTs",
     "title_en": "Mastering 3-Bet Pots In Position in MTTs",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "토너먼트/ICM",
@@ -11023,7 +11042,7 @@ const DB = {
   {
     "id": "mastering-three-bet-pots-out-of-position-in-mtts",
     "slug": "mastering-three-bet-pots-out-of-position-in-mtts",
-    "title_ko": "마스터하기: 3-Bet Pots 아웃포지션(OOP) in MTTs",
+    "title_ko": "마스터하기: 3벳 Pots 아웃포지션(OOP) in MTTs",
     "title_en": "Mastering 3-Bet Pots Out of Position in MTTs",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "토너먼트/ICM",
@@ -11055,7 +11074,7 @@ const DB = {
   {
     "id": "the-greatest-final-table-in-triton-history",
     "slug": "the-greatest-final-table-in-triton-history",
-    "title_ko": "The Greatest Final Table in Triton History (GTO 심층 분석)",
+    "title_ko": "The Greatest 파이널 테이블 in Triton History",
     "title_en": "The Greatest Final Table in Triton History",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -11087,7 +11106,7 @@ const DB = {
   {
     "id": "mastering-thin-value-bets-in-checked-down-pots",
     "slug": "mastering-thin-value-bets-in-checked-down-pots",
-    "title_ko": "마스터하기: Thin Value Bets in Checked-Down Pots",
+    "title_ko": "마스터하기: Thin 밸류 벳 in Checked-Down Pots",
     "title_en": "Mastering Thin Value Bets in Checked-Down Pots",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -11119,7 +11138,7 @@ const DB = {
   {
     "id": "introducing-gto-wizard-ai-heads-up-preflop-solver",
     "slug": "introducing-gto-wizard-ai-heads-up-preflop-solver",
-    "title_ko": "Introducing GTO Wizard AI Heads Up Preflop Solver (GTO 심층 분석)",
+    "title_ko": "신규 공개: GTO Wizard AI 헤즈업 프리플랍 솔버",
     "title_en": "Introducing GTO Wizard AI Heads Up Preflop Solver",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -11151,7 +11170,7 @@ const DB = {
   {
     "id": "maximizing-value-on-monotone-flops",
     "slug": "maximizing-value-on-monotone-flops",
-    "title_ko": "Maximizing Value on Monotone Flops (GTO 심층 분석)",
+    "title_ko": "Maximizing Value on Monotone Flops",
     "title_en": "Maximizing Value on Monotone Flops",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "플랍 전략",
@@ -11183,7 +11202,7 @@ const DB = {
   {
     "id": "how-to-defend-against-turn-donk-bets",
     "slug": "how-to-defend-against-turn-donk-bets",
-    "title_ko": "공략법: Defend Against Turn Donk Bets",
+    "title_ko": "공략법: Defend Against 턴 Donk Bets",
     "title_en": "How to Defend Against Turn Donk Bets",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "턴/리버",
@@ -11215,7 +11234,7 @@ const DB = {
   {
     "id": "how-and-why-you-should-use-turn-donk-bets",
     "slug": "how-and-why-you-should-use-turn-donk-bets",
-    "title_ko": "How and Why You Should Use Turn Donk Bets (GTO 심층 분석)",
+    "title_ko": "How and Why You Should Use 턴 Donk Bets",
     "title_en": "How and Why You Should Use Turn Donk Bets",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "턴/리버",
@@ -11247,7 +11266,7 @@ const DB = {
   {
     "id": "how-stack-sizes-change-your-range",
     "slug": "how-stack-sizes-change-your-range",
-    "title_ko": "How Stack Sizes Change Your Range (GTO 심층 분석)",
+    "title_ko": "How Stack Sizes Change Your 레인지",
     "title_en": "How Stack Sizes Change Your Range",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -11279,7 +11298,7 @@ const DB = {
   {
     "id": "introducing-nodelocking",
     "slug": "introducing-nodelocking",
-    "title_ko": "Introducing Nodelocking (GTO 심층 분석)",
+    "title_ko": "신규 공개: Nodelocking",
     "title_en": "Introducing Nodelocking",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "익스플로잇",
@@ -11311,7 +11330,7 @@ const DB = {
   {
     "id": "how-to-leverage-gto-wizards-ev-comparison-tool",
     "slug": "how-to-leverage-gto-wizards-ev-comparison-tool",
-    "title_ko": "공략법: Leverage GTO Wizard's EV Comparison Tool",
+    "title_ko": "GTO Wizard의 EV 비교 도구 200% 활용법",
     "title_en": "How to Leverage GTO Wizard’s EV Comparison Tool",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "수학/기초",
@@ -11343,7 +11362,7 @@ const DB = {
   {
     "id": "should-you-ever-cold-call-a-3-bet",
     "slug": "should-you-ever-cold-call-a-3-bet",
-    "title_ko": "Should You Ever Cold Call a 3-Bet? (GTO 심층 분석)",
+    "title_ko": "Should You Ever Cold Call a 3벳?",
     "title_en": "Should You Ever Cold Call a 3-Bet?",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "3벳 팟",
@@ -11375,7 +11394,7 @@ const DB = {
   {
     "id": "when-icm-breaks-down",
     "slug": "when-icm-breaks-down",
-    "title_ko": "When ICM Breaks Down (GTO 심층 분석)",
+    "title_ko": "When ICM Breaks Down",
     "title_en": "When ICM Breaks Down",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -11407,7 +11426,7 @@ const DB = {
   {
     "id": "when-is-it-correct-to-fold-aa-preflop",
     "slug": "when-is-it-correct-to-fold-aa-preflop",
-    "title_ko": "When Is It Correct To Fold AA Preflop? (GTO 심층 분석)",
+    "title_ko": "When Is It Correct To Fold AA 프리플랍?",
     "title_en": "When Is It Correct To Fold AA Preflop?",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -11439,7 +11458,7 @@ const DB = {
   {
     "id": "oop-c-betting-vs-loose-cold-callers",
     "slug": "oop-c-betting-vs-loose-cold-callers",
-    "title_ko": "OOP C-Betting vs Loose Cold-Callers (GTO 심층 분석)",
+    "title_ko": "OOP C-bet 전략 vs Loose Cold-Callers",
     "title_en": "OOP C-Betting vs Loose Cold-Callers",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "플랍 전략",
@@ -11471,7 +11490,7 @@ const DB = {
   {
     "id": "towards-a-safer-poker-ecosystem",
     "slug": "towards-a-safer-poker-ecosystem",
-    "title_ko": "Towards a Safer Poker Ecosystem (GTO 심층 분석)",
+    "title_ko": "Towards a Safer Poker Ecosystem",
     "title_en": "Towards a Safer Poker Ecosystem",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -11503,7 +11522,7 @@ const DB = {
   {
     "id": "short-stacked-play-in-mtts",
     "slug": "short-stacked-play-in-mtts",
-    "title_ko": "Short-Stacked Play in MTTs (GTO 심층 분석)",
+    "title_ko": "Short-Stacked Play in MTTs",
     "title_en": "Short-Stacked Play in MTTs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -11535,7 +11554,7 @@ const DB = {
   {
     "id": "when-to-ladder-in-tournaments",
     "slug": "when-to-ladder-in-tournaments",
-    "title_ko": "언제 ~해야 하는가: Ladder in Tournaments",
+    "title_ko": "언제 ~해야 하는가: Ladder in 토너먼트",
     "title_en": "When to Ladder in Tournaments",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -11567,7 +11586,7 @@ const DB = {
   {
     "id": "how-payout-structures-impact-icm",
     "slug": "how-payout-structures-impact-icm",
-    "title_ko": "How Payout Structures Impact ICM (GTO 심층 분석)",
+    "title_ko": "How Payout Structures Impact ICM",
     "title_en": "How Payout Structures Impact ICM",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -11599,7 +11618,7 @@ const DB = {
   {
     "id": "c-betting-ip-in-3-bet-pots",
     "slug": "c-betting-ip-in-3-bet-pots",
-    "title_ko": "C-Betting IP in 3-Bet Pots (GTO 심층 분석)",
+    "title_ko": "C-bet 전략 IP in 3벳 Pots",
     "title_en": "C-Betting IP in 3-Bet Pots",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "3벳 팟",
@@ -11631,7 +11650,7 @@ const DB = {
   {
     "id": "c-betting-oop-in-3-bet-pots",
     "slug": "c-betting-oop-in-3-bet-pots",
-    "title_ko": "C-Betting OOP in 3-Bet Pots (GTO 심층 분석)",
+    "title_ko": "C-bet 전략 OOP in 3벳 Pots",
     "title_en": "C-Betting OOP in 3-Bet Pots",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "3벳 팟",
@@ -11663,7 +11682,7 @@ const DB = {
   {
     "id": "dynamic-sizing-a-gto-breakthrough",
     "slug": "dynamic-sizing-a-gto-breakthrough",
-    "title_ko": "Dynamic Sizing: A GTO Breakthrough (GTO 심층 분석)",
+    "title_ko": "Dynamic Sizing: A GTO Breakthrough",
     "title_en": "Dynamic Sizing: A GTO Breakthrough",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -11695,7 +11714,7 @@ const DB = {
   {
     "id": "dynamic-sizing-benchmarks",
     "slug": "dynamic-sizing-benchmarks",
-    "title_ko": "Dynamic Sizing Benchmarks (GTO 심층 분석)",
+    "title_ko": "Dynamic Sizing Benchmarks",
     "title_en": "Dynamic Sizing Benchmarks",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "GTO 전략",
@@ -11727,7 +11746,7 @@ const DB = {
   {
     "id": "understanding-the-impact-of-field-size-on-icm-in-poker",
     "slug": "understanding-the-impact-of-field-size-on-icm-in-poker",
-    "title_ko": "Understanding the Impact Of Field Size on ICM in Poker (GTO 심층 분석)",
+    "title_ko": "Understanding the Impact Of Field Size on ICM in Poker",
     "title_en": "Understanding the Impact Of Field Size on ICM in Poker",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -11759,7 +11778,7 @@ const DB = {
   {
     "id": "defending-vs-bb-check-raise-on-paired-flops",
     "slug": "defending-vs-bb-check-raise-on-paired-flops",
-    "title_ko": "Defending vs BB Check-Raise on Paired Flops (GTO 심층 분석)",
+    "title_ko": "Defending vs BB 체크-레이즈 on Paired Flops",
     "title_en": "Defending vs BB Check-Raise on Paired Flops",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "솔버 이론",
@@ -11855,7 +11874,7 @@ const DB = {
   {
     "id": "where-to-get-your-hand-histories",
     "slug": "where-to-get-your-hand-histories",
-    "title_ko": "Where to Get Your Hand Histories (GTO 심층 분석)",
+    "title_ko": "Where to Get Your Hand Histories",
     "title_en": "Where to Get Your Hand Histories",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -11887,7 +11906,7 @@ const DB = {
   {
     "id": "attacking-paired-flops-from-the-bb",
     "slug": "attacking-paired-flops-from-the-bb",
-    "title_ko": "Attacking Paired Flops From the BB (GTO 심층 분석)",
+    "title_ko": "Attacking Paired Flops From the BB",
     "title_en": "Attacking Paired Flops From the BB",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -11919,7 +11938,7 @@ const DB = {
   {
     "id": "kk-vs-qq-vs-jj-at-wsop-main-event",
     "slug": "kk-vs-qq-vs-jj-at-wsop-main-event",
-    "title_ko": "KK vs QQ vs JJ at WSOP Main Event (GTO 심층 분석)",
+    "title_ko": "KK vs QQ vs JJ at WSOP Main Event",
     "title_en": "KK vs QQ vs JJ at WSOP Main Event",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -11951,7 +11970,7 @@ const DB = {
   {
     "id": "responding-to-bb-squeezes",
     "slug": "responding-to-bb-squeezes",
-    "title_ko": "Responding to BB Squeezes (GTO 심층 분석)",
+    "title_ko": "Responding to BB Squeezes",
     "title_en": "Responding to BB Squeezes",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "3벳 팟",
@@ -12015,7 +12034,7 @@ const DB = {
   {
     "id": "gto-wizard-ai-explained",
     "slug": "gto-wizard-ai-explained",
-    "title_ko": "GTO Wizard AI Explained (GTO 심층 분석)",
+    "title_ko": "GTO Wizard AI Explained",
     "title_en": "GTO Wizard AI Explained",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -12047,7 +12066,7 @@ const DB = {
   {
     "id": "introducing-gto-wizard-ai",
     "slug": "introducing-gto-wizard-ai",
-    "title_ko": "Introducing GTO Wizard AI (GTO 심층 분석)",
+    "title_ko": "신규 공개: GTO Wizard AI",
     "title_en": "Introducing GTO Wizard AI",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -12079,7 +12098,7 @@ const DB = {
   {
     "id": "gto-wizard-ai-benchmarks",
     "slug": "gto-wizard-ai-benchmarks",
-    "title_ko": "GTO Wizard AI Benchmarks (GTO 심층 분석)",
+    "title_ko": "GTO Wizard AI Benchmarks",
     "title_en": "GTO Wizard AI Benchmarks",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "솔버 이론",
@@ -12111,7 +12130,7 @@ const DB = {
   {
     "id": "table-management-in-pkos",
     "slug": "table-management-in-pkos",
-    "title_ko": "Table Management in PKOs (GTO 심층 분석)",
+    "title_ko": "Table Management in PKOs",
     "title_en": "Table Management in PKOs",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
     "category": "PKO 바운티",
@@ -12143,7 +12162,7 @@ const DB = {
   {
     "id": "overcalling-from-the-bb",
     "slug": "overcalling-from-the-bb",
-    "title_ko": "Overcalling From the BB (GTO 심층 분석)",
+    "title_ko": "Overcalling From the BB",
     "title_en": "Overcalling From the BB",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -12175,7 +12194,7 @@ const DB = {
   {
     "id": "understanding-which-mistakes-cost-you-the-most-money",
     "slug": "understanding-which-mistakes-cost-you-the-most-money",
-    "title_ko": "Understanding Which Mistakes Cost You the Most Money (GTO 심층 분석)",
+    "title_ko": "가장 큰 돈을 잃게 만드는 치명적 실수 분석",
     "title_en": "Understanding Which Mistakes Cost You the Most Money",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "토너먼트/ICM",
@@ -12207,7 +12226,7 @@ const DB = {
   {
     "id": "overbetting-the-flop-in-cash-games",
     "slug": "overbetting-the-flop-in-cash-games",
-    "title_ko": "Overbetting the Flop in Cash Games (GTO 심층 분석)",
+    "title_ko": "오버벳 전략 the 플랍 in 캐시 게임",
     "title_en": "Overbetting the Flop in Cash Games",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "플랍 전략",
@@ -12239,7 +12258,7 @@ const DB = {
   {
     "id": "using-new-skills-at-the-poker-table",
     "slug": "using-new-skills-at-the-poker-table",
-    "title_ko": "Using New Skills at the Poker Table (GTO 심층 분석)",
+    "title_ko": "Using New Skills at the Poker Table",
     "title_en": "Using New Skills at the Poker Table",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -12271,7 +12290,7 @@ const DB = {
   {
     "id": "flatting-ace-x-hands-shortstacked",
     "slug": "flatting-ace-x-hands-shortstacked",
-    "title_ko": "Flatting Ace-X Hands Short Stacked (GTO 심층 분석)",
+    "title_ko": "Flatting Ace-X Hands Short Stacked",
     "title_en": "Flatting Ace-X Hands Short Stacked",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -12303,7 +12322,7 @@ const DB = {
   {
     "id": "playing-limped-pots-as-the-bb-in-mtts",
     "slug": "playing-limped-pots-as-the-bb-in-mtts",
-    "title_ko": "Playing Limped Pots as the BB in MTTs (GTO 심층 분석)",
+    "title_ko": "Playing Limped Pots as the BB in MTTs",
     "title_en": "Playing Limped Pots as the BB in MTTs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -12335,7 +12354,7 @@ const DB = {
   {
     "id": "the-absurd-game-theory-of-chopped-boards",
     "slug": "the-absurd-game-theory-of-chopped-boards",
-    "title_ko": "The Absurd Game Theory of Chopped Boards (GTO 심층 분석)",
+    "title_ko": "The Absurd Game Theory of Chopped Boards",
     "title_en": "The Absurd Game Theory of Chopped Boards",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -12367,7 +12386,7 @@ const DB = {
   {
     "id": "playing-limped-pots-as-sb-in-mtts",
     "slug": "playing-limped-pots-as-sb-in-mtts",
-    "title_ko": "Playing Limped Pots as the SB in MTTs (GTO 심층 분석)",
+    "title_ko": "Playing Limped Pots as the SB in MTTs",
     "title_en": "Playing Limped Pots as the SB in MTTs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -12399,7 +12418,7 @@ const DB = {
   {
     "id": "simplified-solutions-and-a-new-interface",
     "slug": "simplified-solutions-and-a-new-interface",
-    "title_ko": "Simplified Solutions and a New Interface! (GTO 심층 분석)",
+    "title_ko": "Simplified Solutions and a New Interface!",
     "title_en": "Simplified Solutions and a New Interface!",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -12463,7 +12482,7 @@ const DB = {
   {
     "id": "is-donk-betting-for-donkeys",
     "slug": "is-donk-betting-for-donkeys",
-    "title_ko": "Is Donk Betting for Donkeys? (GTO 심층 분석)",
+    "title_ko": "Is Donk Betting for Donkeys?",
     "title_en": "Is Donk Betting for Donkeys?",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -12495,7 +12514,7 @@ const DB = {
   {
     "id": "delayed-c-betting",
     "slug": "delayed-c-betting",
-    "title_ko": "Delayed C-Betting (GTO 심층 분석)",
+    "title_ko": "Delayed C-bet 전략",
     "title_en": "Delayed C-Betting",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "플랍 전략",
@@ -12527,7 +12546,7 @@ const DB = {
   {
     "id": "probe-betting",
     "slug": "probe-betting",
-    "title_ko": "Probe Betting (GTO 심층 분석)",
+    "title_ko": "Probe Betting",
     "title_en": "Probe Betting",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -12559,7 +12578,7 @@ const DB = {
   {
     "id": "icm-and-blind-battles-the-big-blind",
     "slug": "icm-and-blind-battles-the-big-blind",
-    "title_ko": "ICM and Blind Battles: The Big Blind (GTO 심층 분석)",
+    "title_ko": "ICM and Blind Battles: The 빅 블라인드(BB)",
     "title_en": "ICM and Blind Battles: The Big Blind",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -12591,7 +12610,7 @@ const DB = {
   {
     "id": "icm-and-blind-battles-the-small-blind",
     "slug": "icm-and-blind-battles-the-small-blind",
-    "title_ko": "ICM and Blind Battles: The Small Blind (GTO 심층 분석)",
+    "title_ko": "ICM and Blind Battles: The 스몰 블라인드(SB)",
     "title_en": "ICM and Blind Battles: The Small Blind",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -12623,7 +12642,7 @@ const DB = {
   {
     "id": "the-initial-bettors-advantage",
     "slug": "the-initial-bettors-advantage",
-    "title_ko": "The Initial Bettor’s Advantage (GTO 심층 분석)",
+    "title_ko": "The Initial Bettor’s Advantage",
     "title_en": "The Initial Bettor’s Advantage",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "익스플로잇",
@@ -12687,7 +12706,7 @@ const DB = {
   {
     "id": "flop-heuristics-ip-c-betting-in-cash-games",
     "slug": "flop-heuristics-ip-c-betting-in-cash-games",
-    "title_ko": "Flop Heuristics: IP C-Betting in Cash Games (GTO 심층 분석)",
+    "title_ko": "플랍 Heuristics: IP C-bet 전략 in 캐시 게임",
     "title_en": "Flop Heuristics: IP C-Betting in Cash Games",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "플랍 전략",
@@ -12719,7 +12738,7 @@ const DB = {
   {
     "id": "how-icm-impacts-restealing-from-the-blinds",
     "slug": "how-icm-impacts-restealing-from-the-blinds",
-    "title_ko": "How ICM Impacts Restealing From the Blinds (GTO 심층 분석)",
+    "title_ko": "How ICM Impacts Restealing From the Blinds",
     "title_en": "How ICM Impacts Restealing From the Blinds",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -12751,7 +12770,7 @@ const DB = {
   {
     "id": "the-icm-benefits-of-late-registration-in-poker-tournaments",
     "slug": "the-icm-benefits-of-late-registration-in-poker-tournaments",
-    "title_ko": "The ICM Benefits of Late Registration in Poker Tournaments (GTO 심층 분석)",
+    "title_ko": "The ICM Benefits of Late Registration in Poker 토너먼트",
     "title_en": "The ICM Benefits of Late Registration in Poker Tournaments",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -12783,7 +12802,7 @@ const DB = {
   {
     "id": "flop-heuristics-oop-c-betting-in-mtts",
     "slug": "flop-heuristics-oop-c-betting-in-mtts",
-    "title_ko": "Flop Heuristics:  OOP C-Betting in MTTs (GTO 심층 분석)",
+    "title_ko": "플랍 Heuristics:  OOP C-bet 전략 in MTTs",
     "title_en": "Flop Heuristics:  OOP C-Betting in MTTs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -12815,7 +12834,7 @@ const DB = {
   {
     "id": "counterintuitive-calls",
     "slug": "counterintuitive-calls",
-    "title_ko": "Counterintuitive Calls (GTO 심층 분석)",
+    "title_ko": "Counterintuitive Calls",
     "title_en": "Counterintuitive Calls",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -12847,7 +12866,7 @@ const DB = {
   {
     "id": "how-to-negotiate-final-table-deals",
     "slug": "how-to-negotiate-final-table-deals",
-    "title_ko": "공략법: Negotiate Final Table Deals",
+    "title_ko": "공략법: Negotiate 파이널 테이블 Deals",
     "title_en": "How to Negotiate Final Table Deals",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -12879,7 +12898,7 @@ const DB = {
   {
     "id": "how-does-icm-impact-pko-strategy",
     "slug": "how-does-icm-impact-pko-strategy",
-    "title_ko": "How Does ICM Impact PKO Strategy? (GTO 심층 분석)",
+    "title_ko": "How Does ICM Impact PKO Strategy?",
     "title_en": "How Does ICM Impact PKO Strategy?",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
     "category": "토너먼트/ICM",
@@ -12911,7 +12930,7 @@ const DB = {
   {
     "id": "understanding-blockers-in-poker",
     "slug": "understanding-blockers-in-poker",
-    "title_ko": "Understanding Blockers in Poker (GTO 심층 분석)",
+    "title_ko": "Understanding 블로커 in Poker",
     "title_en": "Understanding Blockers in Poker",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "턴/리버",
@@ -12943,7 +12962,7 @@ const DB = {
   {
     "id": "flop-heuristics-ip-cold-caller-in-mtts",
     "slug": "flop-heuristics-ip-cold-caller-in-mtts",
-    "title_ko": "Flop Heuristics: IP Cold Caller in MTTs (GTO 심층 분석)",
+    "title_ko": "플랍 Heuristics: IP Cold Caller in MTTs",
     "title_en": "Flop Heuristics: IP Cold Caller in MTTs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -12975,7 +12994,7 @@ const DB = {
   {
     "id": "flop-heuristics-ip-c-betting-in-mtts",
     "slug": "flop-heuristics-ip-c-betting-in-mtts",
-    "title_ko": "Flop Heuristics: IP C-Betting in MTTs (GTO 심층 분석)",
+    "title_ko": "플랍 Heuristics: IP C-bet 전략 in MTTs",
     "title_en": "Flop Heuristics: IP C-Betting in MTTs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -13007,7 +13026,7 @@ const DB = {
   {
     "id": "flop-heuristics-for-defending-the-blinds-in-mtts",
     "slug": "flop-heuristics-for-defending-the-blinds-in-mtts",
-    "title_ko": "Flop Heuristics for Defending the Blinds in MTTs (GTO 심층 분석)",
+    "title_ko": "플랍 Heuristics for Defending the Blinds in MTTs",
     "title_en": "Flop Heuristics for Defending the Blinds in MTTs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -13039,7 +13058,7 @@ const DB = {
   {
     "id": "multiway-strategy-in-progressive-knockout-tournaments",
     "slug": "multiway-strategy-in-progressive-knockout-tournaments",
-    "title_ko": "Multiway strategy in Progressive Knockout Tournaments (GTO 심층 분석)",
+    "title_ko": "멀티웨이 strategy in Progressive Knockout 토너먼트",
     "title_en": "Multiway strategy in Progressive Knockout Tournaments",
     "level": "[5차 전직/최종] 하이롤러 & 챔피언 (Lv.85~100)",
     "category": "토너먼트/ICM",
@@ -13103,7 +13122,7 @@ const DB = {
   {
     "id": "new-spins-solutions-study-plans-and-ev-comparison",
     "slug": "new-spins-solutions-study-plans-and-ev-comparison",
-    "title_ko": "New Spins Solutions, Study Plans & EV Comparison (GTO 심층 분석)",
+    "title_ko": "New Spins Solutions, Study Plans & EV Comparison",
     "title_en": "New Spins Solutions, Study Plans & EV Comparison",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -13135,7 +13154,7 @@ const DB = {
   {
     "id": "principles-of-river-play",
     "slug": "principles-of-river-play",
-    "title_ko": "Principles of River Play (GTO 심층 분석)",
+    "title_ko": "Principles of 리버 Play",
     "title_en": "Principles of River Play",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "턴/리버",
@@ -13167,7 +13186,7 @@ const DB = {
   {
     "id": "exploitative-dynamics",
     "slug": "exploitative-dynamics",
-    "title_ko": "Exploitative Dynamics (GTO 심층 분석)",
+    "title_ko": "Exploitative Dynamics",
     "title_en": "Exploitative Dynamics",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "익스플로잇",
@@ -13199,7 +13218,7 @@ const DB = {
   {
     "id": "how-icm-impacts-postflop-strategy",
     "slug": "how-icm-impacts-postflop-strategy",
-    "title_ko": "How ICM Impacts Postflop Strategy (GTO 심층 분석)",
+    "title_ko": "How ICM Impacts 포스트플랍 Strategy",
     "title_en": "How ICM Impacts Postflop Strategy",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -13231,7 +13250,7 @@ const DB = {
   {
     "id": "10-tips-multiway-pots-in-poker",
     "slug": "10-tips-multiway-pots-in-poker",
-    "title_ko": "10 Tips for Multiway Pots in Poker (GTO 심층 분석)",
+    "title_ko": "10 Tips for 멀티웨이 Pots in Poker",
     "title_en": "10 Tips for Multiway Pots in Poker",
     "level": "[5차 전직/최종] 하이롤러 & 챔피언 (Lv.85~100)",
     "category": "토너먼트/ICM",
@@ -13263,7 +13282,7 @@ const DB = {
   {
     "id": "what-is-the-bubble-factor-in-poker-tournaments",
     "slug": "what-is-the-bubble-factor-in-poker-tournaments",
-    "title_ko": "이해하기: the Bubble Factor in Poker Tournaments?",
+    "title_ko": "이해하기: the 버블 Factor in Poker 토너먼트?",
     "title_en": "What Is the Bubble Factor in Poker Tournaments?",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -13295,7 +13314,7 @@ const DB = {
   {
     "id": "the-theory-of-progressive-knockout-tournaments",
     "slug": "the-theory-of-progressive-knockout-tournaments",
-    "title_ko": "The Theory of Progressive Knockout Tournaments (GTO 심층 분석)",
+    "title_ko": "The Theory of Progressive Knockout 토너먼트",
     "title_en": "The Theory of Progressive Knockout Tournaments",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "토너먼트/ICM",
@@ -13327,7 +13346,7 @@ const DB = {
   {
     "id": "how-to-analyze-turn-textures-in-poker",
     "slug": "how-to-analyze-turn-textures-in-poker",
-    "title_ko": "공략법: Analyze Turn Textures in Poker",
+    "title_ko": "공략법: Analyze 턴 Textures in Poker",
     "title_en": "How to Analyze Turn Textures in Poker",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "플랍 전략",
@@ -13359,7 +13378,7 @@ const DB = {
   {
     "id": "principles-of-turn-strategy",
     "slug": "principles-of-turn-strategy",
-    "title_ko": "Principles of Turn Strategy (GTO 심층 분석)",
+    "title_ko": "Principles of 턴 Strategy",
     "title_en": "Principles of Turn Strategy",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "턴/리버",
@@ -13391,7 +13410,7 @@ const DB = {
   {
     "id": "poker-strategies-tournaments-vs-cash-games",
     "slug": "poker-strategies-tournaments-vs-cash-games",
-    "title_ko": "Poker Strategies: Tournaments vs. Cash Games (GTO 심층 분석)",
+    "title_ko": "Poker Strategies: 토너먼트 vs. 캐시 게임",
     "title_en": "Poker Strategies: Tournaments vs. Cash Games",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -13423,7 +13442,7 @@ const DB = {
   {
     "id": "how-solvers-work",
     "slug": "how-solvers-work",
-    "title_ko": "How Solvers Work (GTO 심층 분석)",
+    "title_ko": "How 솔버 Work",
     "title_en": "How Solvers Work",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -13455,7 +13474,7 @@ const DB = {
   {
     "id": "the-most-powerful-play-in-poker",
     "slug": "the-most-powerful-play-in-poker",
-    "title_ko": "The Most Powerful Play in Poker (GTO 심층 분석)",
+    "title_ko": "The Most Powerful Play in Poker",
     "title_en": "The Most Powerful Play in Poker",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -13487,7 +13506,7 @@ const DB = {
   {
     "id": "pko-solutions-and-new-dashboard",
     "slug": "pko-solutions-and-new-dashboard",
-    "title_ko": "PKO Solutions & New Dashboard (GTO 심층 분석)",
+    "title_ko": "PKO Solutions & New Dashboard",
     "title_en": "PKO Solutions & New Dashboard",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
     "category": "PKO 바운티",
@@ -13519,7 +13538,7 @@ const DB = {
   {
     "id": "when-does-icm-become-significant-in-mtts",
     "slug": "when-does-icm-become-significant-in-mtts",
-    "title_ko": "When does ICM become significant in MTTs? (GTO 심층 분석)",
+    "title_ko": "When does ICM become significant in MTTs?",
     "title_en": "When does ICM become significant in MTTs?",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -13583,7 +13602,7 @@ const DB = {
   {
     "id": "principles-of-gto",
     "slug": "principles-of-gto",
-    "title_ko": "Principles of GTO (GTO 심층 분석)",
+    "title_ko": "Principles of GTO",
     "title_en": "Principles of GTO",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -13615,7 +13634,7 @@ const DB = {
   {
     "id": "interpreting-equity-distributions",
     "slug": "interpreting-equity-distributions",
-    "title_ko": "Interpreting Equity Distributions (GTO 심층 분석)",
+    "title_ko": "에퀴티 분포 곡선(Distribution) 완벽 해석법",
     "title_en": "Interpreting Equity Distributions",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "수학/기초",
@@ -13647,7 +13666,7 @@ const DB = {
   {
     "id": "what-is-leverage-in-poker",
     "slug": "what-is-leverage-in-poker",
-    "title_ko": "이해하기: Leverage in Poker?",
+    "title_ko": "포커에서의 레버리지(Leverage) 원리와 스택 압박",
     "title_en": "What Is Leverage in Poker?",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "수학/기초",
@@ -13679,7 +13698,7 @@ const DB = {
   {
     "id": "reasons-for-value-betting-in-poker",
     "slug": "reasons-for-value-betting-in-poker",
-    "title_ko": "Reasons for Value Betting in Poker (GTO 심층 분석)",
+    "title_ko": "Reasons for Value Betting in Poker",
     "title_en": "Reasons for Value Betting in Poker",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -13711,7 +13730,7 @@ const DB = {
   {
     "id": "the-science-of-poker-performance",
     "slug": "the-science-of-poker-performance",
-    "title_ko": "The Science of Poker Performance (GTO 심층 분석)",
+    "title_ko": "The Science of Poker Performance",
     "title_en": "The Science of Poker Performance",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -13743,7 +13762,7 @@ const DB = {
   {
     "id": "what-is-valor-in-poker",
     "slug": "what-is-valor-in-poker",
-    "title_ko": "이해하기: Valor in Poker?",
+    "title_ko": "포커에서의 밸러(Valor)와 쇼다운 가치의 상관관계",
     "title_en": "What Is Valor in Poker?",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "토너먼트/ICM",
@@ -13775,7 +13794,7 @@ const DB = {
   {
     "id": "drill-management-and-new-blocker-scores",
     "slug": "drill-management-and-new-blocker-scores",
-    "title_ko": "New Blocker Scores & Drill Management and ICM Solutions (GTO 심층 분석)",
+    "title_ko": "New 블로커 Scores & Drill Management and ICM Solutions",
     "title_en": "New Blocker Scores & Drill Management and ICM Solutions",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -13807,7 +13826,7 @@ const DB = {
   {
     "id": "pot-geometry",
     "slug": "pot-geometry",
-    "title_ko": "Pot Geometry (GTO 심층 분석)",
+    "title_ko": "Pot Geometry",
     "title_en": "Pot Geometry",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -13839,7 +13858,7 @@ const DB = {
   {
     "id": "a-beginners-guide-to-poker-combinatorics",
     "slug": "a-beginners-guide-to-poker-combinatorics",
-    "title_ko": "A Beginner’s Guide to Poker Combinatorics (GTO 심층 분석)",
+    "title_ko": "초보자를 위한 포커 콤비나토리얼(콤보 계산법) 입문",
     "title_en": "A Beginner’s Guide to Poker Combinatorics",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "GTO 전략",
@@ -13871,7 +13890,7 @@ const DB = {
   {
     "id": "stack-to-pot-ratio",
     "slug": "stack-to-pot-ratio",
-    "title_ko": "Stack-to-Pot Ratio (GTO 심층 분석)",
+    "title_ko": "Stack-to-Pot Ratio",
     "title_en": "Stack-to-Pot Ratio",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -13903,7 +13922,7 @@ const DB = {
   {
     "id": "equity-realization",
     "slug": "equity-realization",
-    "title_ko": "에퀴티 실현(EQR)",
+    "title_ko": "에퀴티 실현(EQR): 50% 승률의 치명적인 함정",
     "title_en": "Equity Realization",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "수학/기초",
@@ -13967,7 +13986,7 @@ const DB = {
   {
     "id": "thousands-of-new-solutions-and-interface-updates",
     "slug": "thousands-of-new-solutions-and-interface-updates",
-    "title_ko": "Thousands of New Solutions & Interface Updates (GTO 심층 분석)",
+    "title_ko": "Thousands of New Solutions & Interface Updates",
     "title_en": "Thousands of New Solutions & Interface Updates",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "업데이트/소식",
@@ -13999,7 +14018,7 @@ const DB = {
   {
     "id": "analyzed-hands",
     "slug": "analyzed-hands",
-    "title_ko": "Analyzed Hands (GTO 심층 분석)",
+    "title_ko": "Analyzed Hands",
     "title_en": "Analyzed Hands",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -14063,7 +14082,7 @@ const DB = {
   {
     "id": "upload-hands",
     "slug": "upload-hands",
-    "title_ko": "Upload Hands (GTO 심층 분석)",
+    "title_ko": "Upload Hands",
     "title_en": "Upload Hands",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -14095,7 +14114,7 @@ const DB = {
   {
     "id": "analyze-mode",
     "slug": "analyze-mode",
-    "title_ko": "Analyze Mode (GTO 심층 분석)",
+    "title_ko": "Analyze Mode",
     "title_en": "Analyze Mode",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -14127,7 +14146,7 @@ const DB = {
   {
     "id": "the-three-laws-of-indifference",
     "slug": "the-three-laws-of-indifference",
-    "title_ko": "The Three Laws of Indifference (GTO 심층 분석)",
+    "title_ko": "The Three Laws of Indifference",
     "title_en": "The Three Laws of Indifference",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -14159,7 +14178,7 @@ const DB = {
   {
     "id": "variance-and-bankroll-management",
     "slug": "variance-and-bankroll-management",
-    "title_ko": "Variance and Bankroll Management (GTO 심층 분석)",
+    "title_ko": "분산(베리언스) and 뱅크롤 관리",
     "title_en": "Variance and Bankroll Management",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -14223,7 +14242,7 @@ const DB = {
   {
     "id": "poker-subsets-and-abstractions",
     "slug": "poker-subsets-and-abstractions",
-    "title_ko": "Poker Subsets and Abstractions (GTO 심층 분석)",
+    "title_ko": "Poker Subsets and Abstractions",
     "title_en": "Poker Subsets and Abstractions",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -14255,7 +14274,7 @@ const DB = {
   {
     "id": "gto-wizard-themes-winners",
     "slug": "gto-wizard-themes-winners",
-    "title_ko": "GTO Wizard Themes Competition Winners (GTO 심층 분석)",
+    "title_ko": "GTO Wizard Themes Competition Winners",
     "title_en": "GTO Wizard Themes Competition Winners",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -14287,7 +14306,7 @@ const DB = {
   {
     "id": "train-like-a-pro",
     "slug": "train-like-a-pro",
-    "title_ko": "Train Like a Pro (GTO 심층 분석)",
+    "title_ko": "Train Like a Pro",
     "title_en": "Train Like a Pro",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -14319,7 +14338,7 @@ const DB = {
   {
     "id": "multitabling-new-solutions",
     "slug": "multitabling-new-solutions",
-    "title_ko": "Multi-Tabling & New solutions (GTO 심층 분석)",
+    "title_ko": "Multi-Tabling & New solutions",
     "title_en": "Multi-Tabling & New solutions",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -14351,7 +14370,7 @@ const DB = {
   {
     "id": "mathematical-misconceptions-in-poker",
     "slug": "mathematical-misconceptions-in-poker",
-    "title_ko": "Mathematical Misconceptions in Poker (GTO 심층 분석)",
+    "title_ko": "포커 플레이어들이 흔히 범하는 수학적 오해",
     "title_en": "Mathematical Misconceptions in Poker",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "수학/기초",
@@ -14415,7 +14434,7 @@ const DB = {
   {
     "id": "the-value-of-fold-equity-experiment",
     "slug": "the-value-of-fold-equity-experiment",
-    "title_ko": "The Value of Fold Equity – Experiment (GTO 심층 분석)",
+    "title_ko": "폴드 에퀴티(Fold Equity)의 실제 가치 실험",
     "title_en": "The Value of Fold Equity – Experiment",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "수학/기초",
@@ -14447,7 +14466,7 @@ const DB = {
   {
     "id": "mdf-alpha",
     "slug": "mdf-alpha",
-    "title_ko": "MDF & Alpha (GTO 심층 분석)",
+    "title_ko": "MDF(최소 방어 빈도)와 Alpha: 방어와 공격의 수학적 균형선",
     "title_en": "MDF & Alpha",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "수학/기초",
@@ -14479,7 +14498,7 @@ const DB = {
   {
     "id": "what-are-pot-odds-in-poker",
     "slug": "what-are-pot-odds-in-poker",
-    "title_ko": "What Are Pot Odds in Poker? (GTO 심층 분석)",
+    "title_ko": "팟 오즈(Pot Odds) 계산법과 콜 기준 완벽 정리",
     "title_en": "What Are Pot Odds in Poker?",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "토너먼트/ICM",
@@ -14511,7 +14530,7 @@ const DB = {
   {
     "id": "does-your-range-affect-your-strategy",
     "slug": "does-your-range-affect-your-strategy",
-    "title_ko": "Does Your Range Affect Your Strategy? (GTO 심층 분석)",
+    "title_ko": "Does Your 레인지 Affect Your Strategy?",
     "title_en": "Does Your Range Affect Your Strategy?",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -14543,7 +14562,7 @@ const DB = {
   {
     "id": "visualizing-implied-odds",
     "slug": "visualizing-implied-odds",
-    "title_ko": "Visualizing Implied Odds (GTO 심층 분석)",
+    "title_ko": "임플라이드 오즈 시각화: 잠재적 배당률 계산법",
     "title_en": "Visualizing Implied Odds",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "수학/기초",
@@ -14575,7 +14594,7 @@ const DB = {
   {
     "id": "icm-basics",
     "slug": "icm-basics",
-    "title_ko": "ICM Basics (GTO 심층 분석)",
+    "title_ko": "ICM Basics",
     "title_en": "ICM Basics",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -14607,7 +14626,7 @@ const DB = {
   {
     "id": "what-is-equity-in-poker",
     "slug": "what-is-equity-in-poker",
-    "title_ko": "이해하기: Equity in Poker?",
+    "title_ko": "에퀴티(Equity)란 무엇인가: 핸드 승률의 진실",
     "title_en": "What Is Equity in Poker?",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "수학/기초",
@@ -14639,7 +14658,7 @@ const DB = {
   {
     "id": "icm-mtt-9max-cash-solutions-great-improvements",
     "slug": "icm-mtt-9max-cash-solutions-great-improvements",
-    "title_ko": "ICM MTT, 9Max Cash Solutions & Great Improvements (GTO 심층 분석)",
+    "title_ko": "ICM MTT, 9Max Cash Solutions & Great Improvements",
     "title_en": "ICM MTT, 9Max Cash Solutions & Great Improvements",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -14671,7 +14690,7 @@ const DB = {
   {
     "id": "range-morphology",
     "slug": "range-morphology",
-    "title_ko": "Range Morphology (GTO 심층 분석)",
+    "title_ko": "레인지 Morphology",
     "title_en": "Range Morphology",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -14703,7 +14722,7 @@ const DB = {
   {
     "id": "what-is-expected-value-in-poker",
     "slug": "what-is-expected-value-in-poker",
-    "title_ko": "이해하기: 기대값(EV) in Poker?",
+    "title_ko": "기대값(EV)의 정석: 포커는 수학 게임이다",
     "title_en": "What Is Expected Value in Poker?",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "GTO 전략",
@@ -14735,7 +14754,7 @@ const DB = {
   {
     "id": "why-doesnt-my-solution-match-gto-wizard",
     "slug": "why-doesnt-my-solution-match-gto-wizard",
-    "title_ko": "Why Doesn’t My Solution Match GTO Wizard? (GTO 심층 분석)",
+    "title_ko": "Why Doesn’t My Solution Match GTO Wizard?",
     "title_en": "Why Doesn’t My Solution Match GTO Wizard?",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -14767,7 +14786,7 @@ const DB = {
   {
     "id": "understanding-nash-distance",
     "slug": "understanding-nash-distance",
-    "title_ko": "Understanding Nash Distance (GTO 심층 분석)",
+    "title_ko": "Understanding Nash Distance",
     "title_en": "Understanding Nash Distance",
     "level": "[5차 전직/최종] 하이롤러 & 챔피언 (Lv.85~100)",
     "category": "솔버 이론",
@@ -14799,7 +14818,7 @@ const DB = {
   {
     "id": "combinatorics-poker-puzzle",
     "slug": "combinatorics-poker-puzzle",
-    "title_ko": "Combinatorics Poker Puzzle (GTO 심층 분석)",
+    "title_ko": "Combinatorics Poker Puzzle",
     "title_en": "Combinatorics Poker Puzzle",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -14831,7 +14850,7 @@ const DB = {
   {
     "id": "the-10-most-important-concepts-for-new-poker-players",
     "slug": "the-10-most-important-concepts-for-new-poker-players",
-    "title_ko": "The 10 Most Important Concepts for New Poker Players (GTO 심층 분석)",
+    "title_ko": "The 10 Most Important Concepts for New Poker Players",
     "title_en": "The 10 Most Important Concepts for New Poker Players",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -14863,7 +14882,7 @@ const DB = {
   {
     "id": "what-is-gto-in-poker",
     "slug": "what-is-gto-in-poker",
-    "title_ko": "이해하기: GTO in Poker?",
+    "title_ko": "GTO(Game Theory Optimal)의 진정한 정의와 목적",
     "title_en": "What is GTO in Poker?",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "GTO 전략",
@@ -14895,7 +14914,7 @@ const DB = {
   {
     "id": "what-does-gto-aim-to-achieve",
     "slug": "what-does-gto-aim-to-achieve",
-    "title_ko": "What Does GTO Aim To Achieve? (GTO 심층 분석)",
+    "title_ko": "GTO 솔버가 도달하려는 최종 목표와 이론적 배경",
     "title_en": "What Does GTO Aim To Achieve?",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "수학/기초",
@@ -14927,7 +14946,7 @@ const DB = {
   {
     "id": "new-solutions-filter-trainer-improvements",
     "slug": "new-solutions-filter-trainer-improvements",
-    "title_ko": "New Solutions Filter + Trainer Improvements (GTO 심층 분석)",
+    "title_ko": "New Solutions Filter + Trainer Improvements",
     "title_en": "New Solutions Filter + Trainer Improvements",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -14959,7 +14978,7 @@ const DB = {
   {
     "id": "gto-wizard-in-japan",
     "slug": "gto-wizard-in-japan",
-    "title_ko": "GTO Wizard in Japan (GTO 심층 분석)",
+    "title_ko": "GTO Wizard in Japan",
     "title_en": "GTO Wizard in Japan",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -14991,7 +15010,7 @@ const DB = {
   {
     "id": "8max-cash-game-straddle-ante",
     "slug": "8max-cash-game-straddle-ante",
-    "title_ko": "8Max Cash Game Straddle + Ante Is Here! (GTO 심층 분석)",
+    "title_ko": "8Max 캐시 게임 스트래들 + 앤티 Is Here!",
     "title_en": "8Max Cash Game Straddle + Ante Is Here!",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "캐시/스트래들",
@@ -15023,7 +15042,7 @@ const DB = {
   {
     "id": "6-reasons-why-you-should-use-gto-wizard",
     "slug": "6-reasons-why-you-should-use-gto-wizard",
-    "title_ko": "6 Reasons Why You Should Use GTO Wizard (GTO 심층 분석)",
+    "title_ko": "6 Reasons Why You Should Use GTO Wizard",
     "title_en": "6 Reasons Why You Should Use GTO Wizard",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -15055,7 +15074,7 @@ const DB = {
   {
     "id": "6-grunde-warum-du-gto-wizard-nutzen-solltest",
     "slug": "6-grunde-warum-du-gto-wizard-nutzen-solltest",
-    "title_ko": "6 Gründe Warum Du GTO Wizard Nutzen Solltest (GTO 심층 분석)",
+    "title_ko": "6 Gründe Warum Du GTO Wizard Nutzen Solltest",
     "title_en": "6 Gründe Warum Du GTO Wizard Nutzen Solltest",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -15087,7 +15106,7 @@ const DB = {
   {
     "id": "mtt-postflop-solutions-and-breakdown-view",
     "slug": "mtt-postflop-solutions-and-breakdown-view",
-    "title_ko": "MTT Postflop Solutions, New Breakdown View & Many Improvements! (GTO 심층 분석)",
+    "title_ko": "MTT 포스트플랍 Solutions, New Breakdown View & Many Improvements!",
     "title_en": "MTT Postflop Solutions, New Breakdown View & Many Improvements!",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -15119,7 +15138,7 @@ const DB = {
   {
     "id": "range-builder-improvements-200bb-solutions-ipoker-support-more",
     "slug": "range-builder-improvements-200bb-solutions-ipoker-support-more",
-    "title_ko": "Range Builder Improvements, 200BB Solutions, iPoker Support & More! (GTO 심층 분석)",
+    "title_ko": "레인지 Builder Improvements, 200BB Solutions, iPoker Support & More!",
     "title_en": "Range Builder Improvements, 200BB Solutions, iPoker Support & More!",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
     "category": "GTO 전략",
@@ -15151,7 +15170,7 @@ const DB = {
   {
     "id": "new-cash-game-mtt-solutions-aggregated-reports-and-new-solutions-for-hh-analyzer",
     "slug": "new-cash-game-mtt-solutions-aggregated-reports-and-new-solutions-for-hh-analyzer",
-    "title_ko": "New Cash Game & MTT Solutions, Aggregated Reports and New Solutions for HH Analyzer! (GTO 심층 분석)",
+    "title_ko": "New 캐시 게임 & MTT Solutions, Aggregated Reports and New Solutions for HH Analyzer!",
     "title_en": "New Cash Game & MTT Solutions, Aggregated Reports and New Solutions for HH Analyzer!",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -15183,7 +15202,7 @@ const DB = {
   {
     "id": "releasing-many-improvements-gto-wizard-is-now-multilungual",
     "slug": "releasing-many-improvements-gto-wizard-is-now-multilungual",
-    "title_ko": "Many Improvements & GTO Wizard Is Now Multilungual! (GTO 심층 분석)",
+    "title_ko": "Many Improvements & GTO Wizard Is Now Multilungual!",
     "title_en": "Many Improvements & GTO Wizard Is Now Multilungual!",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -15215,7 +15234,7 @@ const DB = {
   {
     "id": "introducing-mtt-spin-go-and-hu-sng-postflop-solutions-for-free",
     "slug": "introducing-mtt-spin-go-and-hu-sng-postflop-solutions-for-free",
-    "title_ko": "MTT, Spin & Go and HU SnG Postflop Solutions (GTO 심층 분석)",
+    "title_ko": "MTT, Spin & Go and HU SnG 포스트플랍 Solutions",
     "title_en": "MTT, Spin & Go and HU SnG Postflop Solutions",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -15247,7 +15266,7 @@ const DB = {
   {
     "id": "the-best-solutions-we-ever-had-and-other-improvements",
     "slug": "the-best-solutions-we-ever-had-and-other-improvements",
-    "title_ko": "The Best Solutions We Ever Had and Other Improvements! (GTO 심층 분석)",
+    "title_ko": "The Best Solutions We Ever Had and Other Improvements!",
     "title_en": "The Best Solutions We Ever Had and Other Improvements!",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "수학/기초",
@@ -15279,7 +15298,7 @@ const DB = {
   {
     "id": "new-solutions-aggregation-reports-and-other-improvements",
     "slug": "new-solutions-aggregation-reports-and-other-improvements",
-    "title_ko": "New solutions, Aggregation reports and other improvements! (GTO 심층 분석)",
+    "title_ko": "New solutions, Aggregation reports and other improvements!",
     "title_en": "New solutions, Aggregation reports and other improvements!",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -15311,7 +15330,7 @@ const DB = {
   {
     "id": "another-update-many-improvements",
     "slug": "another-update-many-improvements",
-    "title_ko": "New update – Folder upload, Preflop shortcuts and more! (GTO 심층 분석)",
+    "title_ko": "New update – Folder upload, 프리플랍 shortcuts and more!",
     "title_en": "New update – Folder upload, Preflop shortcuts and more!",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "업데이트/소식",
@@ -15343,7 +15362,7 @@ const DB = {
   {
     "id": "status-and-info-about-our-solutions",
     "slug": "status-and-info-about-our-solutions",
-    "title_ko": "Status and Info About Our Solutions (GTO 심층 분석)",
+    "title_ko": "Status and Info About Our Solutions",
     "title_en": "Status and Info About Our Solutions",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -15375,7 +15394,7 @@ const DB = {
   {
     "id": "files-upload-premium-tier-and-more-a-major-update-is-here-2",
     "slug": "files-upload-premium-tier-and-more-a-major-update-is-here-2",
-    "title_ko": "Files Upload, Premium Tier, and Free Ranges! A Major Update Is Here (GTO 심층 분석)",
+    "title_ko": "Files Upload, Premium Tier, and Free 레인지! A Major Update Is Here",
     "title_en": "Files Upload, Premium Tier, and Free Ranges! A Major Update Is Here",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "업데이트/소식",
@@ -15407,7 +15426,7 @@ const DB = {
   {
     "id": "what-the-future-holds-for-gto-wizard",
     "slug": "what-the-future-holds-for-gto-wizard",
-    "title_ko": "What the Future Holds for GTO Wizard? (GTO 심층 분석)",
+    "title_ko": "What the Future Holds for GTO Wizard?",
     "title_en": "What the Future Holds for GTO Wizard?",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -15439,7 +15458,7 @@ const DB = {
   {
     "id": "all-you-need-to-know-about-our-solutions",
     "slug": "all-you-need-to-know-about-our-solutions",
-    "title_ko": "All You Need To Know About Our Solutions (GTO 심층 분석)",
+    "title_ko": "All You Need To Know About Our Solutions",
     "title_en": "All You Need To Know About Our Solutions",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -15471,7 +15490,7 @@ const DB = {
   {
     "id": "suported-sites-and-formats-for-hh-analyzer",
     "slug": "suported-sites-and-formats-for-hh-analyzer",
-    "title_ko": "Supported Sites and Formats for HH Analyzer (GTO 심층 분석)",
+    "title_ko": "Supported Sites and Formats for HH Analyzer",
     "title_en": "Supported Sites and Formats for HH Analyzer",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -15503,7 +15522,7 @@ const DB = {
   {
     "id": "hand-history-analyzer-is-here-patch-notes",
     "slug": "hand-history-analyzer-is-here-patch-notes",
-    "title_ko": "Hand History Analyzer Is Here! (GTO 심층 분석)",
+    "title_ko": "Hand History Analyzer Is Here!",
     "title_en": "Hand History Analyzer Is Here!",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "업데이트/소식",
@@ -20318,6 +20337,18 @@ const themeManager = {
         text.innerText = '라이트 모드';
       }
     }
+
+    const pIcon = document.getElementById('profile-theme-icon');
+    const pText = document.getElementById('profile-theme-text');
+    if (pIcon && pText) {
+      if (t === 'light') {
+        pIcon.innerText = '🌙';
+        pText.innerText = '다크 모드로 전환';
+      } else {
+        pIcon.innerText = '☀️';
+        pText.innerText = '라이트 모드로 전환';
+      }
+    }
   }
 };
 
@@ -20587,6 +20618,16 @@ const characterManager = {
     }
 
     this.updateModalSelections();
+
+    const kakaoEl = document.getElementById('profile-kakao-name');
+    if (kakaoEl) {
+      const auth = (window.authManager && authManager.isLoggedIn()) ? authManager.getAuthUser() : null;
+      kakaoEl.innerText = (auth && auth.kakao_nickname) || u.kakao_name || '미설정';
+    }
+    if (window.themeManager) {
+      themeManager.apply(themeManager.theme);
+    }
+
     const modal = document.getElementById('char-modal-overlay');
     if (modal) modal.style.display = 'flex';
   },
@@ -22144,11 +22185,12 @@ const matrix = {
     }
 
     // Award XP ONLY once per unlocked preset, persisted in storage (anti-cheat)
-    if (this._initialized && !isLocked && !app.userState.explored_ranges.includes(presetId)) {
+    if (!isLocked && !app.userState.explored_ranges.includes(presetId)) {
       app.userState.explored_ranges.push(presetId);
+      storage.save(app.userState);
       if (window.app && app.addXP) {
         app.addXP(20, 'range');
-        characterManager.showToast(`📊 새로운 레인지 [${preset.name}] 첫 탐색! (+20 XP)`);
+        characterManager.showToast(`📊 새로운 레인지 [${preset.name}] 첫 탐색 완료! (+20 XP 획득)`);
       }
     }
 
@@ -22382,9 +22424,117 @@ const roadmap = {
   load() {
     const rm = this.data;
     const userState = app.userState;
+    const lvlInfo = app.getLevelInfo(userState.xp);
+    const curLvl = lvlInfo.level;
+    const missions = app.getCurriculumForLevel(curLvl);
+    const reqArticles = missions.requiredArticles;
+    const reqQuizzes = missions.requiredQuizzes;
+    const targetRanges = Math.min(13, Math.max(2, Math.ceil(curLvl * 0.2)));
+    const exploredRangesCount = (userState.explored_ranges || []).length;
+    const isRangeDone = (exploredRangesCount >= targetRanges);
 
     const levelsContainer = document.getElementById('roadmap-levels-container');
-    levelsContainer.innerHTML = rm.levels.map(lvl => {
+    if (!levelsContainer) return;
+
+    // 1. 현재 레벨 실시간 퀘스트 연동 스킬트리 카드
+    const curMissionsHtml = `
+      <div class="roadmap-level-card active-quest-card" style="border: 2px solid #3b82f6; background: linear-gradient(180deg, rgba(59, 130, 246, 0.08) 0%, var(--bg-surface) 100%); box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15); margin-bottom: 2rem;">
+        <div class="level-badge-header">
+          <div>
+            <div style="display: inline-flex; align-items: center; gap: 0.35rem; background: #3b82f6; color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 12px; margin-bottom: 0.35rem;">
+              <span>🎯</span> 실시간 퀘스트 연동 마스터 코스
+            </div>
+            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main);">
+              Lv.${curLvl} ${lvlInfo.tier.name} 필수 성장 트리
+            </h3>
+            <p style="font-size: 0.85rem; color: #60a5fa; font-weight: 700;">
+              ✨ ${missions.title}
+            </p>
+          </div>
+          <span class="level-badge" style="background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff;">
+            Lv.${curLvl}
+          </span>
+        </div>
+
+        <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.5;">
+          추천 학습 로드맵의 마스터 스킬 트리는 <strong>현재 레벨업 퀘스트와 100% 실시간 연동</strong>됩니다. 아래 노드를 차례대로 완료하여 다음 레벨로 승급하세요!
+        </p>
+
+        <div class="nodes-list">
+          ${reqArticles.map((a, idx) => {
+            const isCompleted = (userState.completed_articles || []).includes(a.id || a.slug);
+            const title = a.title_ko || a.title || a.id;
+            return `
+              <div class="node-item ${isCompleted ? 'completed' : ''}" onclick="reader.openArticle('${a.id || a.slug}')" style="${!isCompleted && idx === 0 ? 'border: 1.5px solid #3b82f6; background: rgba(59, 130, 246, 0.05);' : ''}">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <span style="font-size: 1.2rem;">${isCompleted ? '✅' : '📖'}</span>
+                  <div>
+                    <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+                      <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">${title}</div>
+                      ${!isCompleted && idx === 0 ? '<span style="font-size: 0.68rem; background: #3b82f6; color: #fff; padding: 1px 6px; border-radius: 10px; font-weight: 800;">추천 다음 스팟</span>' : ''}
+                    </div>
+                    <span style="font-size: 0.75rem; color: var(--text-dim);">${a.category || '필수 GTO 이론'}</span>
+                  </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <span style="font-size: 0.8rem; color: #fbbf24; font-weight: 700;">+50 XP</span>
+                  <button class="${isCompleted ? 'btn-secondary' : 'btn-primary'}" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
+                    ${isCompleted ? '다시 읽기' : '지금 학습 시작 →'}
+                  </button>
+                </div>
+              </div>
+            `;
+          }).join('')}
+
+          ${reqQuizzes.map(q => {
+            const isCompleted = (userState.completed_quizzes || []).includes(q.id);
+            const streetKo = { 'Preflop': '프리플랍', 'Flop': '플랍', 'Turn': '턴', 'River': '리버' }[q.street] || q.street || '스팟';
+            return `
+              <div class="node-item ${isCompleted ? 'completed' : ''}" onclick="trainer.openQuizById('${q.id}')">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <span style="font-size: 1.2rem;">${isCompleted ? '✅' : '🎯'}</span>
+                  <div>
+                    <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">${q.title}</div>
+                    <span style="font-size: 0.75rem; color: var(--text-dim);">${streetKo} • ${q.category || '실전 퀴즈'}</span>
+                  </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <span style="font-size: 0.8rem; color: #fbbf24; font-weight: 700;">+50 XP</span>
+                  <button class="${isCompleted ? 'btn-secondary' : 'btn-primary'}" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; background: ${isCompleted ? '' : 'linear-gradient(135deg, #f59e0b, #d97706); color: #000; border: none;'}">
+                    ${isCompleted ? '다시 풀기' : '퀴즈 풀기 →'}
+                  </button>
+                </div>
+              </div>
+            `;
+          }).join('')}
+
+          <div class="node-item ${isRangeDone ? 'completed' : ''}" onclick="app.navigate('matrix')">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span style="font-size: 1.2rem;">${isRangeDone ? '✅' : '📊'}</span>
+              <div>
+                <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">13x13 매트릭스 레인지 탐색</div>
+                <span style="font-size: 0.75rem; color: var(--text-dim);">목표: 프리셋 ${targetRanges}개 탐색 (현재: ${exploredRangesCount}/${targetRanges}개)</span>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span style="font-size: 0.8rem; color: #fbbf24; font-weight: 700;">+20 XP</span>
+              <button class="btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
+                매트릭스 보기 →
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.25rem; text-align: center;">
+          <button onclick="questManager.openModal()" class="btn-secondary" style="font-size: 0.85rem; font-weight: 800; padding: 0.55rem 1.4rem; border-color: rgba(59, 130, 246, 0.4); color: #60a5fa; background: rgba(59, 130, 246, 0.08);">
+            📜 상세 레벨업 퀘스트 현황 보기 ➔
+          </button>
+        </div>
+      </div>
+    `;
+
+    // 2. 전체 6구간 전직 마스터 로드맵
+    const careerHtml = rm.levels.map(lvl => {
       const isLocked = (userState.xp < lvl.required_xp);
       return `
         <div class="roadmap-level-card ${isLocked ? 'locked' : ''}">
@@ -22402,20 +22552,22 @@ const roadmap = {
 
           ${isLocked ? `
             <div style="background: rgba(0,0,0,0.2); padding: 0.75rem; border-radius: 8px; font-size: 0.85rem; color: #f59e0b; font-weight: 700;">
-              🔒 해금 조건: ${lvl.required_xp} XP 달성 필요 (현재: ${userState.xp} XP)
+              🔒 해금 조건: ${lvl.required_xp.toLocaleString()} XP 달성 필요 (현재: ${userState.xp.toLocaleString()} XP)
             </div>
           ` : `
             <div class="nodes-list">
               ${lvl.nodes.map((n, idx) => {
                 const isCompleted = userState.completed_articles.includes(n.article_id);
                 const isFirstPending = !isCompleted && lvl.nodes.slice(0, idx).every(prev => userState.completed_articles.includes(prev.article_id));
+                const foundArt = (window.DB && DB.articles) ? DB.articles.find(a => a.id === n.article_id || a.slug === n.article_id) : null;
+                const nodeTitle = (foundArt && (foundArt.title_ko || foundArt.title)) || n.title;
                 return `
                   <div class="node-item ${isCompleted ? 'completed' : ''}" onclick="reader.openArticle('${n.article_id}')" style="${isFirstPending ? 'border: 1.5px solid #3b82f6; background: rgba(59, 130, 246, 0.05);' : ''}">
                     <div style="display: flex; align-items: center; gap: 0.75rem;">
                       <span style="font-size: 1.2rem;">${isCompleted ? '✅' : (isFirstPending ? '👉' : '📖')}</span>
                       <div>
                         <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
-                          <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">${n.title}</div>
+                          <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">${nodeTitle}</div>
                           ${isFirstPending ? '<span style="font-size: 0.68rem; background: #3b82f6; color: #fff; padding: 1px 6px; border-radius: 10px; font-weight: 800;">추천 다음 스팟</span>' : ''}
                         </div>
                         <span style="font-size: 0.75rem; color: var(--text-dim);">${n.category}</span>
@@ -22435,6 +22587,17 @@ const roadmap = {
         </div>
       `;
     }).join('');
+
+    levelsContainer.innerHTML = curMissionsHtml + `
+      <div style="margin: 2.5rem 0 1.25rem;">
+        <h3 style="font-size: 1.3rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem;">
+          <span>⚔️</span> 전체 6구간 마스터 전직 커리어 로드맵
+        </h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0.25rem 0 0;">
+          레벨업과 전직 심사 시험을 통과할수록 상위 커리어 티어가 차례대로 열립니다.
+        </p>
+      </div>
+    ` + careerHtml;
 
     const dynamicAchievements = [
       {
@@ -22988,6 +23151,7 @@ const questManager = {
           <div style="display: flex; flex-direction: column; gap: 0.65rem;">
             ${reqArticles.map(a => {
               const isDone = (u.completed_articles || []).includes(a.id || a.slug);
+              const title = a.title_ko || a.title || a.title_en || a.id;
               return `
                 <div style="background: ${isDone ? 'rgba(16, 185, 129, 0.06)' : 'rgba(0,0,0,0.12)'}; border: 1px solid ${isDone ? 'rgba(16, 185, 129, 0.35)' : 'var(--border-color)'}; border-radius: 10px; padding: 0.75rem 0.9rem; display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
                   <div style="flex: 1; min-width: 220px;">
@@ -22996,7 +23160,7 @@ const questManager = {
                       <span style="font-size: 0.72rem; color: var(--text-dim); background: rgba(59, 130, 246, 0.12); padding: 1px 6px; border-radius: 6px;">${a.category || '이론'}</span>
                       <span style="font-size: 0.72rem; color: #fbbf24; font-weight: 700;">+50 XP</span>
                     </div>
-                    <div style="font-size: 0.92rem; font-weight: 700; color: var(--text-main); line-height: 1.4;">${a.title_ko || a.title}</div>
+                    <div style="font-size: 0.92rem; font-weight: 700; color: var(--text-main); line-height: 1.4;">${title}</div>
                   </div>
                   <div>
                     ${isDone ? `
@@ -23030,12 +23194,13 @@ const questManager = {
           <div style="display: flex; flex-direction: column; gap: 0.65rem;">
             ${reqQuizzes.map(q => {
               const isDone = (u.completed_quizzes || []).includes(q.id);
+              const streetKo = { 'Preflop': '프리플랍', 'Flop': '플랍', 'Turn': '턴', 'River': '리버' }[q.street] || q.street || '스팟';
               return `
                 <div style="background: ${isDone ? 'rgba(16, 185, 129, 0.06)' : 'rgba(0,0,0,0.12)'}; border: 1px solid ${isDone ? 'rgba(16, 185, 129, 0.35)' : 'var(--border-color)'}; border-radius: 10px; padding: 0.75rem 0.9rem; display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
                   <div style="flex: 1; min-width: 220px;">
                     <div style="display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.25rem;">
                       <span style="font-size: 0.95rem;">${isDone ? '✅' : '⏳'}</span>
-                      <span style="font-size: 0.72rem; color: var(--text-dim); background: rgba(245, 158, 11, 0.12); padding: 1px 6px; border-radius: 6px;">${q.street || 'Preflop'} • ${q.category || '스팟'}</span>
+                      <span style="font-size: 0.72rem; color: var(--text-dim); background: rgba(245, 158, 11, 0.12); padding: 1px 6px; border-radius: 6px;">${streetKo} • ${q.category || '스팟'}</span>
                       <span style="font-size: 0.72rem; color: #fbbf24; font-weight: 700;">+50 XP</span>
                     </div>
                     <div style="font-size: 0.92rem; font-weight: 700; color: var(--text-main); line-height: 1.4;">${q.title}</div>
@@ -23058,17 +23223,35 @@ const questManager = {
         </div>
 
         <!-- Mission 3: Matrix Exploration -->
-        <div style="background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 14px; padding: 1rem 1.15rem; display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
-          <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <span style="font-size: 1.3rem;">📊</span>
-            <div>
-              <strong style="font-size: 0.92rem; color: var(--text-main); display: block;">13x13 매트릭스 레인지 탐색</strong>
-              <span style="font-size: 0.78rem; color: var(--text-dim);">포지션별 프리플랍/3벳 레인지 프리셋 인스펙션 (+20 XP)</span>
+        <div style="background: var(--bg-surface); border: 1.5px solid ${(exploredRangesCount >= targetRanges) ? 'rgba(16, 185, 129, 0.4)' : 'var(--border-color)'}; border-radius: 14px; padding: 1.15rem; margin-bottom: 1.15rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.45rem;">
+              <span style="font-size: 1.3rem;">📊</span>
+              <strong style="font-size: 0.96rem; color: var(--text-main);">13x13 매트릭스 레인지 탐색</strong>
             </div>
+            <span style="font-size: 0.82rem; font-weight: 800; color: ${(exploredRangesCount >= targetRanges) ? '#34d399' : '#fbbf24'};">
+              ${(exploredRangesCount >= targetRanges) ? '✅ 탐색 완료' : `⏳ 진행 중 (${exploredRangesCount} / ${targetRanges}개)`}
+            </span>
           </div>
-          <button onclick="questManager.closeModal(); app.navigate('matrix')" class="btn-secondary" style="padding: 0.4rem 0.85rem; font-size: 0.8rem; font-weight: 700; white-space: nowrap;">
-            매트릭스 보기 ➔
-          </button>
+
+          <div style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 0.65rem; line-height: 1.5;">
+            🎯 <strong>미션 달성 기준</strong>: 현재 레벨 목표로 서로 다른 포지션 레인지 차트를 <strong>최소 ${targetRanges}개 이상</strong> 직접 열람하여 탐색하세요. (새로운 차트 확인 시 1회당 <strong>+20 XP</strong> 즉시 획득)
+          </div>
+
+          <!-- Progress Bar -->
+          <div style="width: 100%; height: 8px; background: rgba(0,0,0,0.25); border-radius: 4px; overflow: hidden; margin-bottom: 0.75rem;">
+            <div style="width: ${rangePct}%; height: 100%; background: ${(exploredRangesCount >= targetRanges) ? 'linear-gradient(90deg, #10b981, #34d399)' : 'linear-gradient(90deg, #f59e0b, #fbbf24)'}; border-radius: 4px; transition: width 0.3s ease;"></div>
+          </div>
+
+          <div style="background: rgba(0,0,0,0.15); border-radius: 8px; padding: 0.7rem 0.85rem; margin-bottom: 0.85rem; font-size: 0.8rem; color: var(--text-dim); line-height: 1.5;">
+            💡 <strong>진행 방법</strong>: 아래 [매트릭스 차트 탐색하러 가기 ➔] 버튼을 눌러 레인지 뷰로 이동한 뒤, 상단 포지션 칩(UTG 오픈, BTN 오픈, BB 디펜드, 3-Bet 등)을 클릭하여 각 핸드 콤보의 액션 빈도(Raise, Call, Fold)를 학습하시면 미션 카운트가 올라갑니다.
+          </div>
+
+          <div style="display: flex; justify-content: flex-end;">
+            <button onclick="questManager.closeModal(); app.navigate('matrix')" class="btn-primary" style="padding: 0.45rem 1.1rem; font-size: 0.83rem; font-weight: 800; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);">
+              📊 지금 레인지 매트릭스 탐색하기 ➔
+            </button>
+          </div>
         </div>
       </div>
 
@@ -23338,33 +23521,8 @@ const rankingManager = {
     }
   },
 
-  // 실존 포커 전설 및 가상 랭커 데이터 (내 계정과 함께 실시간 경쟁)
-  rivals: [
-    { name: "LinusLove", avatar: "🦁", style: "GTO", level: 98, xp: 82400, articles: 340, tierNum: 5 },
-    { name: "Phil_Ivey", avatar: "👑", style: "EXPLOIT", level: 96, xp: 78900, articles: 325, tierNum: 5 },
-    { name: "폴푸아 (Master)", avatar: "🦈", style: "TAG", level: 94, xp: 75100, articles: 369, tierNum: 5 },
-    { name: "Daniel_Negreanu", avatar: "🦊", style: "EXPLOIT", level: 91, xp: 71200, articles: 290, tierNum: 5 },
-    { name: "Fedor_Holz", avatar: "🧠", style: "GTO", level: 88, xp: 68400, articles: 260, tierNum: 5 },
-    { name: "압구정샤크", avatar: "🦈", style: "TAG", level: 82, xp: 60200, articles: 210, tierNum: 4 },
-    { name: "마카오레귤러", avatar: "🦁", style: "LAG", level: 78, xp: 55400, articles: 185, tierNum: 4 },
-    { name: "GTO솔버러", avatar: "🤖", style: "GTO", level: 73, xp: 49800, articles: 160, tierNum: 4 },
-    { name: "체크레이즈달인", avatar: "🎭", style: "LAG", level: 68, xp: 44200, articles: 135, tierNum: 4 },
-    { name: "홍대펍지배자", avatar: "⚔️", style: "TAG", level: 62, xp: 38600, articles: 110, tierNum: 3 },
-    { name: "온라인그라인더99", avatar: "⚙️", style: "TAG", level: 56, xp: 33100, articles: 95, tierNum: 3 },
-    { name: "강남너트장인", avatar: "🦊", style: "EXPLOIT", level: 50, xp: 27900, articles: 80, tierNum: 3 },
-    { name: "리버원샷", avatar: "🦉", style: "HUNTER", level: 46, xp: 24500, articles: 65, tierNum: 3 },
-    { name: "스몰블라인드킬러", avatar: "🗡️", style: "LAG", level: 41, xp: 20800, articles: 55, tierNum: 2 },
-    { name: "팟스틸러", avatar: "🦊", style: "LAG", level: 36, xp: 17200, articles: 45, tierNum: 2 },
-    { name: "3벳마니아", avatar: "🦁", style: "LAG", level: 31, xp: 13900, articles: 38, tierNum: 2 },
-    { name: "에퀴티계산기", avatar: "🤖", style: "GTO", level: 27, xp: 10800, articles: 30, tierNum: 2 },
-    { name: "홀덤꿈나무", avatar: "🐣", style: "TAG", level: 23, xp: 8500, articles: 24, tierNum: 1 },
-    { name: "펍루키007", avatar: "⚔️", style: "HUNTER", level: 19, xp: 6200, articles: 18, tierNum: 1 },
-    { name: "포커새싹", avatar: "🌱", style: "TAG", level: 14, xp: 3900, articles: 12, tierNum: 1 },
-    { name: "마이크로도전자", avatar: "⚙️", style: "TAG", level: 11, xp: 2600, articles: 9, tierNum: 1 },
-    { name: "초보홀덤러", avatar: "🐟", style: "HUNTER", level: 7, xp: 1200, articles: 5, tierNum: 0 },
-    { name: "스타팅핸드공부중", avatar: "🐣", style: "TAG", level: 4, xp: 500, articles: 2, tierNum: 0 },
-    { name: "입문자A", avatar: "🐟", style: "TAG", level: 2, xp: 150, articles: 1, tierNum: 0 }
-  ],
+  // 임의의 가상 봇/라이벌을 완전히 제거하고 실제 클라우드 가입 회원들만 표시
+  rivals: [],
 
   setFilter(filter) {
     this.currentFilter = filter;
@@ -23399,7 +23557,7 @@ const rankingManager = {
       badgeClass: lvlInfo.tier.badgeClass
     };
 
-    // 실시간 클라우드 회원 목록 변환
+    // 실시간 클라우드 회원 목록 변환 (실제 가입된 회원만 포함)
     const cloudMembers = (this.cloudPlayers || [])
       .filter(p => {
         if (auth && p.id === auth.id) return false;
@@ -23433,28 +23591,9 @@ const rankingManager = {
         };
       });
 
-    // 라이벌 봇들 (이름 중복 방지)
-    const takenNames = new Set([me.name, ...cloudMembers.map(c => c.name)]);
-    const botList = this.rivals
-      .filter(r => !takenNames.has(r.name))
-      .map(r => {
-        const tierObj = PROMOTION_TIERS[r.tierNum] || PROMOTION_TIERS[0];
-        return {
-          ...r,
-          isMe: false,
-          kakao_nickname: '',
-          isCertified: false,
-          tierBadge: tierObj.badge,
-          badgeClass: tierObj.badgeClass,
-          quizzes: Math.floor(r.articles * 0.4)
-        };
-      });
+    // 🏆 임의의 닉네임 없이 실제 등록된 회원들만 정렬
+    const list = [me, ...cloudMembers];
 
-    const list = [me, ...cloudMembers, ...botList];
-
-    // 🏆 핵심 정렬 로직:
-    // 1순위: 레벨이 높은 순 (level DESC)
-    // 2순위: 레벨이 같으면 경험치가 높은 순 (xp DESC)
     list.sort((a, b) => {
       if (b.level !== a.level) {
         return b.level - a.level;
@@ -23462,7 +23601,6 @@ const rankingManager = {
       return b.xp - a.xp;
     });
 
-    // 랭킹 부여 (1-indexed)
     list.forEach((p, idx) => {
       p.rank = idx + 1;
     });
@@ -23523,25 +23661,17 @@ const rankingManager = {
     // 2. TOP 3 포디움 렌더링
     const podiumShowcase = document.getElementById('ranking-podium-showcase');
     if (podiumShowcase) {
-      const top3 = all.slice(0, 3);
-      // 순서: 2위(은), 1위(금), 3위(동)
-      const order = [top3[1] || top3[0], top3[0], top3[2] || top3[0]];
-      const ranks = [2, 1, 3];
-
-      podiumShowcase.innerHTML = order.map((p, i) => {
-        const r = ranks[i];
-        const isGold = (r === 1);
-        const medal = r === 1 ? '🥇 1위' : (r === 2 ? '🥈 2위' : '🥉 3위');
-        const cardClass = r === 1 ? 'podium-rank-1' : (r === 2 ? 'podium-rank-2' : 'podium-rank-3');
-
-        return `
-          <div class="podium-card ${cardClass}" style="${isGold ? 'order: 2;' : (r === 2 ? 'order: 1;' : 'order: 3;')}">
-            ${isGold ? '<div class="podium-crown">👑</div>' : ''}
+      if (all.length === 1) {
+        // 단 1명의 유저만 있을 때
+        const p = all[0];
+        podiumShowcase.innerHTML = `
+          <div class="podium-card podium-rank-1" style="max-width: 320px; margin: 0 auto; order: 1;">
+            <div class="podium-crown">👑</div>
             <div class="podium-avatar">${p.avatar}</div>
-            <div style="font-size: 1.1rem; font-weight: 800; color: ${isGold ? '#fbbf24' : 'var(--text-main)'}; margin-bottom: 0.2rem;">
-              ${medal}
+            <div style="font-size: 1.1rem; font-weight: 800; color: #fbbf24; margin-bottom: 0.2rem;">
+              🥇 1위 (챔피언)
             </div>
-            <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; gap: 0.3rem; flex-wrap: wrap;">
+            <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; gap: 0.3rem;">
               <span>${p.name}</span>
               ${p.isMe ? '<span style="color: #3b82f6; font-size: 0.75rem;">(나)</span>' : ''}
               ${p.isCertified ? '<span style="color: #34d399; font-size: 0.72rem;" title="클라우드 정회원">⭐</span>' : ''}
@@ -23553,7 +23683,68 @@ const rankingManager = {
             </div>
           </div>
         `;
-      }).join('');
+      } else if (all.length === 2) {
+        const p1 = all[0];
+        const p2 = all[1];
+        podiumShowcase.innerHTML = `
+          <div class="podium-card podium-rank-2" style="order: 1;">
+            <div class="podium-avatar">${p2.avatar}</div>
+            <div style="font-size: 1.1rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.2rem;">🥈 2위</div>
+            <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; gap: 0.3rem;">
+              <span>${p2.name}</span>
+              ${p2.isMe ? '<span style="color: #3b82f6; font-size: 0.75rem;">(나)</span>' : ''}
+              ${p2.isCertified ? '<span style="color: #34d399; font-size: 0.72rem;">⭐</span>' : ''}
+            </div>
+            ${p2.kakao_nickname ? `<div style="font-size: 0.72rem; color: #f59e0b; margin-bottom: 0.35rem; font-weight: 600;">💬 ${p2.kakao_nickname}</div>` : ''}
+            <span class="rank-badge ${p2.badgeClass}" style="margin-bottom: 0.5rem;">${p2.tierBadge}</span>
+            <div style="font-size: 0.85rem; font-weight: 800; color: #60a5fa;">Lv.${p2.level} • ${p2.xp.toLocaleString()} XP</div>
+          </div>
+          <div class="podium-card podium-rank-1" style="order: 2;">
+            <div class="podium-crown">👑</div>
+            <div class="podium-avatar">${p1.avatar}</div>
+            <div style="font-size: 1.1rem; font-weight: 800; color: #fbbf24; margin-bottom: 0.2rem;">🥇 1위</div>
+            <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; gap: 0.3rem;">
+              <span>${p1.name}</span>
+              ${p1.isMe ? '<span style="color: #3b82f6; font-size: 0.75rem;">(나)</span>' : ''}
+              ${p1.isCertified ? '<span style="color: #34d399; font-size: 0.72rem;">⭐</span>' : ''}
+            </div>
+            ${p1.kakao_nickname ? `<div style="font-size: 0.72rem; color: #f59e0b; margin-bottom: 0.35rem; font-weight: 600;">💬 ${p1.kakao_nickname}</div>` : ''}
+            <span class="rank-badge ${p1.badgeClass}" style="margin-bottom: 0.5rem;">${p1.tierBadge}</span>
+            <div style="font-size: 0.85rem; font-weight: 800; color: #60a5fa;">Lv.${p1.level} • ${p1.xp.toLocaleString()} XP</div>
+          </div>
+        `;
+      } else {
+        const top3 = all.slice(0, 3);
+        const order = [top3[1], top3[0], top3[2]];
+        const ranks = [2, 1, 3];
+
+        podiumShowcase.innerHTML = order.map((p, i) => {
+          const r = ranks[i];
+          const isGold = (r === 1);
+          const medal = r === 1 ? '🥇 1위' : (r === 2 ? '🥈 2위' : '🥉 3위');
+          const cardClass = r === 1 ? 'podium-rank-1' : (r === 2 ? 'podium-rank-2' : 'podium-rank-3');
+
+          return `
+            <div class="podium-card ${cardClass}" style="${isGold ? 'order: 2;' : (r === 2 ? 'order: 1;' : 'order: 3;')}">
+              ${isGold ? '<div class="podium-crown">👑</div>' : ''}
+              <div class="podium-avatar">${p.avatar}</div>
+              <div style="font-size: 1.1rem; font-weight: 800; color: ${isGold ? '#fbbf24' : 'var(--text-main)'}; margin-bottom: 0.2rem;">
+                ${medal}
+              </div>
+              <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; gap: 0.3rem; flex-wrap: wrap;">
+                <span>${p.name}</span>
+                ${p.isMe ? '<span style="color: #3b82f6; font-size: 0.75rem;">(나)</span>' : ''}
+                ${p.isCertified ? '<span style="color: #34d399; font-size: 0.72rem;" title="클라우드 정회원">⭐</span>' : ''}
+              </div>
+              ${p.kakao_nickname ? `<div style="font-size: 0.72rem; color: #f59e0b; margin-bottom: 0.35rem; font-weight: 600;">💬 ${p.kakao_nickname}</div>` : ''}
+              <span class="rank-badge ${p.badgeClass}" style="margin-bottom: 0.5rem;">${p.tierBadge}</span>
+              <div style="font-size: 0.85rem; font-weight: 800; color: #60a5fa;">
+                Lv.${p.level} • ${p.xp.toLocaleString()} XP
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
     }
 
     // 3. 필터 적용 및 테이블 렌더링
@@ -24437,20 +24628,8 @@ authManager = window.authManager = {
     const auth = this.getAuthUser();
 
     if (container) {
-      if (isAuth && auth) {
-        container.innerHTML = `
-          <button class="header-action-btn" onclick="authManager.openModal('profile')" title="내 계정 정보 및 클라우드 동기화" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.3)); border: 1.5px solid #10b981; color: #34d399; padding: 0.45rem 0.85rem; border-radius: 20px; font-weight: 800; cursor: pointer; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 0.45rem; transition: all 0.2s ease;">
-            <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #34d399; box-shadow: 0 0 6px #34d399;"></span>
-            <span>${this.escapeHtml(auth.game_nickname)}</span>
-          </button>
-        `;
-      } else {
-        container.innerHTML = `
-          <button class="header-action-btn" onclick="authManager.showGate('login')" title="클라우드 로그인" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.3)); border: 1.5px solid #f59e0b; color: #fbbf24; padding: 0.45rem 0.85rem; border-radius: 20px; font-weight: 800; cursor: pointer; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 0.4rem; transition: all 0.2s ease;">
-            <span>👤</span> 로그인
-          </button>
-        `;
-      }
+      container.style.display = 'none';
+      container.innerHTML = '';
     }
 
     const dAuthBtn = document.getElementById('dash-auth-btn');

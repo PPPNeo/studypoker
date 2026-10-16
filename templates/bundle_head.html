@@ -2803,25 +2803,14 @@ body.authenticated #auth-gate-screen {
       </nav>
 
       <div class="user-bar">
-        <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="themeManager.toggle()" title="화면 테마 변경">
-          <span id="theme-icon">🌙</span> <span id="theme-text">다크 모드</span>
-        </button>
-
-        <!-- Clickable Character Persona Header Pill -->
-        <button class="char-header-pill" id="char-header-pill" onclick="characterManager.openModal()" title="내 포커 캐릭터 프로필 및 커스텀">
+        <!-- Clickable Character Persona Header Pill (Profile & All Tools Hub) -->
+        <button class="char-header-pill" id="char-header-pill" onclick="characterManager.openModal()" title="내 포커 캐릭터 프로필 및 설정 메뉴 센터">
           <span class="char-avatar-icon" id="header-char-avatar">🦈</span>
           <div class="char-header-info">
             <span class="char-header-name" id="header-char-name"></span>
             <span class="char-header-tag" id="header-char-style">TAG</span>
           </div>
         </button>
-
-        <!-- Prominent Auth Button (Always front and center!) -->
-        <div id="header-auth-container" style="display: inline-flex; align-items: center; gap: 0.4rem;">
-          <button class="header-action-btn" onclick="authManager.openModal('login')" title="클라우드 회원 계정 로그인 / 회원가입" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(217, 119, 6, 0.35)); border: 1.5px solid #f59e0b; color: #fbbf24; padding: 0.45rem 0.85rem; border-radius: 20px; font-weight: 800; cursor: pointer; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 0.35rem; transition: all 0.2s ease;">
-            <span>👤</span> 로그인 / 회원가입
-          </button>
-        </div>
 
         <div class="streak-pill" title="연속 출석 스트릭">
           <span>🔥</span> <span id="user-streak">1</span>일 연속
@@ -2837,13 +2826,7 @@ body.authenticated #auth-gate-screen {
           </div>
         </div>
 
-        <button class="ai-coach-btn" onclick="aiCoach.open()">
-          <span>🤖</span> AI 코치
-        </button>
-        <button class="header-action-btn" onclick="guidebookManager.openModal()" title="스터디포커 시스템 가이드북" style="background: rgba(59, 130, 246, 0.15); border: 1.5px solid #3b82f6; color: #60a5fa; padding: 0.55rem 0.9rem; border-radius: 20px; font-weight: 700; cursor: pointer; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.4rem; transition: all 0.2s ease;">
-          <span>📖</span> 가이드북
-        </button>
-
+        <div id="header-auth-container" style="display: none;"></div>
       </div>
     </div>
   </header>
@@ -3466,6 +3449,42 @@ body.authenticated #auth-gate-screen {
       </div>
 
       <div class="char-modal-body">
+        <!-- Quick Action & Menu Hub (Theme, AI Coach, Guidebook, Quest, Account) -->
+        <div class="char-form-group" style="background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 12px; padding: 1rem; margin-bottom: 1.25rem;">
+          <label class="char-form-label" style="margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between;">
+            <span>⚙️ 바로가기 메뉴 & 환경설정</span>
+            <span style="font-size: 0.75rem; color: #34d399; font-weight: 700;">🟢 클라우드 정상 연동됨</span>
+          </label>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.5rem;">
+            <button type="button" onclick="themeManager.toggle();" class="btn-secondary" style="padding: 0.6rem 0.5rem; font-size: 0.82rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 0.35rem;">
+              <span id="profile-theme-icon">🌓</span> <span id="profile-theme-text">테마 모드 전환</span>
+            </button>
+            <button type="button" onclick="characterManager.closeModal(); aiCoach.open();" class="btn-secondary" style="padding: 0.6rem 0.5rem; font-size: 0.82rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 0.35rem;">
+              <span>🤖</span> <span>AI 코치 대화</span>
+            </button>
+            <button type="button" onclick="characterManager.closeModal(); guidebookManager.openModal();" class="btn-secondary" style="padding: 0.6rem 0.5rem; font-size: 0.82rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 0.35rem;">
+              <span>📖</span> <span>공식 가이드북</span>
+            </button>
+            <button type="button" onclick="characterManager.closeModal(); questManager.openModal();" class="btn-secondary" style="padding: 0.6rem 0.5rem; font-size: 0.82rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 0.35rem; color: #fbbf24; border-color: rgba(245, 158, 11, 0.4);">
+              <span>📜</span> <span>레벨업 퀘스트</span>
+            </button>
+          </div>
+          
+          <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+            <div style="font-size: 0.8rem; color: var(--text-dim);">
+              💬 단톡방 닉네임: <strong style="color: #f59e0b;" id="profile-kakao-name">미설정</strong>
+            </div>
+            <div style="display: flex; gap: 0.4rem;">
+              <button type="button" onclick="authManager.forcePushToCloud()" class="btn-secondary" style="padding: 0.35rem 0.7rem; font-size: 0.78rem;">
+                🔄 즉시 백업
+              </button>
+              <button type="button" onclick="characterManager.closeModal(); authManager.handleSignOut()" class="btn-secondary" style="padding: 0.35rem 0.7rem; font-size: 0.78rem; color: #f87171; border-color: rgba(239, 68, 68, 0.3);">
+                🚪 로그아웃
+              </button>
+            </div>
+          </div>
+        </div>
+
         <!-- 1. Avatar Picker -->
         <div class="char-form-group">
           <label class="char-form-label">1. 캐릭터 아바타 선택</label>

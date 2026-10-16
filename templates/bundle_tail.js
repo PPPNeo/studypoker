@@ -35,6 +35,18 @@ const themeManager = {
         text.innerText = '라이트 모드';
       }
     }
+
+    const pIcon = document.getElementById('profile-theme-icon');
+    const pText = document.getElementById('profile-theme-text');
+    if (pIcon && pText) {
+      if (t === 'light') {
+        pIcon.innerText = '🌙';
+        pText.innerText = '다크 모드로 전환';
+      } else {
+        pIcon.innerText = '☀️';
+        pText.innerText = '라이트 모드로 전환';
+      }
+    }
   }
 };
 
@@ -304,6 +316,16 @@ const characterManager = {
     }
 
     this.updateModalSelections();
+
+    const kakaoEl = document.getElementById('profile-kakao-name');
+    if (kakaoEl) {
+      const auth = (window.authManager && authManager.isLoggedIn()) ? authManager.getAuthUser() : null;
+      kakaoEl.innerText = (auth && auth.kakao_nickname) || u.kakao_name || '미설정';
+    }
+    if (window.themeManager) {
+      themeManager.apply(themeManager.theme);
+    }
+
     const modal = document.getElementById('char-modal-overlay');
     if (modal) modal.style.display = 'flex';
   },
@@ -1861,11 +1883,12 @@ const matrix = {
     }
 
     // Award XP ONLY once per unlocked preset, persisted in storage (anti-cheat)
-    if (this._initialized && !isLocked && !app.userState.explored_ranges.includes(presetId)) {
+    if (!isLocked && !app.userState.explored_ranges.includes(presetId)) {
       app.userState.explored_ranges.push(presetId);
+      storage.save(app.userState);
       if (window.app && app.addXP) {
         app.addXP(20, 'range');
-        characterManager.showToast(`📊 새로운 레인지 [${preset.name}] 첫 탐색! (+20 XP)`);
+        characterManager.showToast(`📊 새로운 레인지 [${preset.name}] 첫 탐색 완료! (+20 XP 획득)`);
       }
     }
 
@@ -2099,9 +2122,117 @@ const roadmap = {
   load() {
     const rm = this.data;
     const userState = app.userState;
+    const lvlInfo = app.getLevelInfo(userState.xp);
+    const curLvl = lvlInfo.level;
+    const missions = app.getCurriculumForLevel(curLvl);
+    const reqArticles = missions.requiredArticles;
+    const reqQuizzes = missions.requiredQuizzes;
+    const targetRanges = Math.min(13, Math.max(2, Math.ceil(curLvl * 0.2)));
+    const exploredRangesCount = (userState.explored_ranges || []).length;
+    const isRangeDone = (exploredRangesCount >= targetRanges);
 
     const levelsContainer = document.getElementById('roadmap-levels-container');
-    levelsContainer.innerHTML = rm.levels.map(lvl => {
+    if (!levelsContainer) return;
+
+    // 1. 현재 레벨 실시간 퀘스트 연동 스킬트리 카드
+    const curMissionsHtml = `
+      <div class="roadmap-level-card active-quest-card" style="border: 2px solid #3b82f6; background: linear-gradient(180deg, rgba(59, 130, 246, 0.08) 0%, var(--bg-surface) 100%); box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15); margin-bottom: 2rem;">
+        <div class="level-badge-header">
+          <div>
+            <div style="display: inline-flex; align-items: center; gap: 0.35rem; background: #3b82f6; color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 12px; margin-bottom: 0.35rem;">
+              <span>🎯</span> 실시간 퀘스트 연동 마스터 코스
+            </div>
+            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main);">
+              Lv.${curLvl} ${lvlInfo.tier.name} 필수 성장 트리
+            </h3>
+            <p style="font-size: 0.85rem; color: #60a5fa; font-weight: 700;">
+              ✨ ${missions.title}
+            </p>
+          </div>
+          <span class="level-badge" style="background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff;">
+            Lv.${curLvl}
+          </span>
+        </div>
+
+        <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.5;">
+          추천 학습 로드맵의 마스터 스킬 트리는 <strong>현재 레벨업 퀘스트와 100% 실시간 연동</strong>됩니다. 아래 노드를 차례대로 완료하여 다음 레벨로 승급하세요!
+        </p>
+
+        <div class="nodes-list">
+          ${reqArticles.map((a, idx) => {
+            const isCompleted = (userState.completed_articles || []).includes(a.id || a.slug);
+            const title = a.title_ko || a.title || a.id;
+            return `
+              <div class="node-item ${isCompleted ? 'completed' : ''}" onclick="reader.openArticle('${a.id || a.slug}')" style="${!isCompleted && idx === 0 ? 'border: 1.5px solid #3b82f6; background: rgba(59, 130, 246, 0.05);' : ''}">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <span style="font-size: 1.2rem;">${isCompleted ? '✅' : '📖'}</span>
+                  <div>
+                    <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+                      <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">${title}</div>
+                      ${!isCompleted && idx === 0 ? '<span style="font-size: 0.68rem; background: #3b82f6; color: #fff; padding: 1px 6px; border-radius: 10px; font-weight: 800;">추천 다음 스팟</span>' : ''}
+                    </div>
+                    <span style="font-size: 0.75rem; color: var(--text-dim);">${a.category || '필수 GTO 이론'}</span>
+                  </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <span style="font-size: 0.8rem; color: #fbbf24; font-weight: 700;">+50 XP</span>
+                  <button class="${isCompleted ? 'btn-secondary' : 'btn-primary'}" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
+                    ${isCompleted ? '다시 읽기' : '지금 학습 시작 →'}
+                  </button>
+                </div>
+              </div>
+            `;
+          }).join('')}
+
+          ${reqQuizzes.map(q => {
+            const isCompleted = (userState.completed_quizzes || []).includes(q.id);
+            const streetKo = { 'Preflop': '프리플랍', 'Flop': '플랍', 'Turn': '턴', 'River': '리버' }[q.street] || q.street || '스팟';
+            return `
+              <div class="node-item ${isCompleted ? 'completed' : ''}" onclick="trainer.openQuizById('${q.id}')">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <span style="font-size: 1.2rem;">${isCompleted ? '✅' : '🎯'}</span>
+                  <div>
+                    <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">${q.title}</div>
+                    <span style="font-size: 0.75rem; color: var(--text-dim);">${streetKo} • ${q.category || '실전 퀴즈'}</span>
+                  </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <span style="font-size: 0.8rem; color: #fbbf24; font-weight: 700;">+50 XP</span>
+                  <button class="${isCompleted ? 'btn-secondary' : 'btn-primary'}" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; background: ${isCompleted ? '' : 'linear-gradient(135deg, #f59e0b, #d97706); color: #000; border: none;'}">
+                    ${isCompleted ? '다시 풀기' : '퀴즈 풀기 →'}
+                  </button>
+                </div>
+              </div>
+            `;
+          }).join('')}
+
+          <div class="node-item ${isRangeDone ? 'completed' : ''}" onclick="app.navigate('matrix')">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span style="font-size: 1.2rem;">${isRangeDone ? '✅' : '📊'}</span>
+              <div>
+                <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">13x13 매트릭스 레인지 탐색</div>
+                <span style="font-size: 0.75rem; color: var(--text-dim);">목표: 프리셋 ${targetRanges}개 탐색 (현재: ${exploredRangesCount}/${targetRanges}개)</span>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span style="font-size: 0.8rem; color: #fbbf24; font-weight: 700;">+20 XP</span>
+              <button class="btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
+                매트릭스 보기 →
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.25rem; text-align: center;">
+          <button onclick="questManager.openModal()" class="btn-secondary" style="font-size: 0.85rem; font-weight: 800; padding: 0.55rem 1.4rem; border-color: rgba(59, 130, 246, 0.4); color: #60a5fa; background: rgba(59, 130, 246, 0.08);">
+            📜 상세 레벨업 퀘스트 현황 보기 ➔
+          </button>
+        </div>
+      </div>
+    `;
+
+    // 2. 전체 6구간 전직 마스터 로드맵
+    const careerHtml = rm.levels.map(lvl => {
       const isLocked = (userState.xp < lvl.required_xp);
       return `
         <div class="roadmap-level-card ${isLocked ? 'locked' : ''}">
@@ -2119,20 +2250,22 @@ const roadmap = {
 
           ${isLocked ? `
             <div style="background: rgba(0,0,0,0.2); padding: 0.75rem; border-radius: 8px; font-size: 0.85rem; color: #f59e0b; font-weight: 700;">
-              🔒 해금 조건: ${lvl.required_xp} XP 달성 필요 (현재: ${userState.xp} XP)
+              🔒 해금 조건: ${lvl.required_xp.toLocaleString()} XP 달성 필요 (현재: ${userState.xp.toLocaleString()} XP)
             </div>
           ` : `
             <div class="nodes-list">
               ${lvl.nodes.map((n, idx) => {
                 const isCompleted = userState.completed_articles.includes(n.article_id);
                 const isFirstPending = !isCompleted && lvl.nodes.slice(0, idx).every(prev => userState.completed_articles.includes(prev.article_id));
+                const foundArt = (window.DB && DB.articles) ? DB.articles.find(a => a.id === n.article_id || a.slug === n.article_id) : null;
+                const nodeTitle = (foundArt && (foundArt.title_ko || foundArt.title)) || n.title;
                 return `
                   <div class="node-item ${isCompleted ? 'completed' : ''}" onclick="reader.openArticle('${n.article_id}')" style="${isFirstPending ? 'border: 1.5px solid #3b82f6; background: rgba(59, 130, 246, 0.05);' : ''}">
                     <div style="display: flex; align-items: center; gap: 0.75rem;">
                       <span style="font-size: 1.2rem;">${isCompleted ? '✅' : (isFirstPending ? '👉' : '📖')}</span>
                       <div>
                         <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
-                          <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">${n.title}</div>
+                          <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">${nodeTitle}</div>
                           ${isFirstPending ? '<span style="font-size: 0.68rem; background: #3b82f6; color: #fff; padding: 1px 6px; border-radius: 10px; font-weight: 800;">추천 다음 스팟</span>' : ''}
                         </div>
                         <span style="font-size: 0.75rem; color: var(--text-dim);">${n.category}</span>
@@ -2152,6 +2285,17 @@ const roadmap = {
         </div>
       `;
     }).join('');
+
+    levelsContainer.innerHTML = curMissionsHtml + `
+      <div style="margin: 2.5rem 0 1.25rem;">
+        <h3 style="font-size: 1.3rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem;">
+          <span>⚔️</span> 전체 6구간 마스터 전직 커리어 로드맵
+        </h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0.25rem 0 0;">
+          레벨업과 전직 심사 시험을 통과할수록 상위 커리어 티어가 차례대로 열립니다.
+        </p>
+      </div>
+    ` + careerHtml;
 
     const dynamicAchievements = [
       {
@@ -2705,6 +2849,7 @@ const questManager = {
           <div style="display: flex; flex-direction: column; gap: 0.65rem;">
             ${reqArticles.map(a => {
               const isDone = (u.completed_articles || []).includes(a.id || a.slug);
+              const title = a.title_ko || a.title || a.title_en || a.id;
               return `
                 <div style="background: ${isDone ? 'rgba(16, 185, 129, 0.06)' : 'rgba(0,0,0,0.12)'}; border: 1px solid ${isDone ? 'rgba(16, 185, 129, 0.35)' : 'var(--border-color)'}; border-radius: 10px; padding: 0.75rem 0.9rem; display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
                   <div style="flex: 1; min-width: 220px;">
@@ -2713,7 +2858,7 @@ const questManager = {
                       <span style="font-size: 0.72rem; color: var(--text-dim); background: rgba(59, 130, 246, 0.12); padding: 1px 6px; border-radius: 6px;">${a.category || '이론'}</span>
                       <span style="font-size: 0.72rem; color: #fbbf24; font-weight: 700;">+50 XP</span>
                     </div>
-                    <div style="font-size: 0.92rem; font-weight: 700; color: var(--text-main); line-height: 1.4;">${a.title_ko || a.title}</div>
+                    <div style="font-size: 0.92rem; font-weight: 700; color: var(--text-main); line-height: 1.4;">${title}</div>
                   </div>
                   <div>
                     ${isDone ? `
@@ -2747,12 +2892,13 @@ const questManager = {
           <div style="display: flex; flex-direction: column; gap: 0.65rem;">
             ${reqQuizzes.map(q => {
               const isDone = (u.completed_quizzes || []).includes(q.id);
+              const streetKo = { 'Preflop': '프리플랍', 'Flop': '플랍', 'Turn': '턴', 'River': '리버' }[q.street] || q.street || '스팟';
               return `
                 <div style="background: ${isDone ? 'rgba(16, 185, 129, 0.06)' : 'rgba(0,0,0,0.12)'}; border: 1px solid ${isDone ? 'rgba(16, 185, 129, 0.35)' : 'var(--border-color)'}; border-radius: 10px; padding: 0.75rem 0.9rem; display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
                   <div style="flex: 1; min-width: 220px;">
                     <div style="display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.25rem;">
                       <span style="font-size: 0.95rem;">${isDone ? '✅' : '⏳'}</span>
-                      <span style="font-size: 0.72rem; color: var(--text-dim); background: rgba(245, 158, 11, 0.12); padding: 1px 6px; border-radius: 6px;">${q.street || 'Preflop'} • ${q.category || '스팟'}</span>
+                      <span style="font-size: 0.72rem; color: var(--text-dim); background: rgba(245, 158, 11, 0.12); padding: 1px 6px; border-radius: 6px;">${streetKo} • ${q.category || '스팟'}</span>
                       <span style="font-size: 0.72rem; color: #fbbf24; font-weight: 700;">+50 XP</span>
                     </div>
                     <div style="font-size: 0.92rem; font-weight: 700; color: var(--text-main); line-height: 1.4;">${q.title}</div>
@@ -2775,17 +2921,35 @@ const questManager = {
         </div>
 
         <!-- Mission 3: Matrix Exploration -->
-        <div style="background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 14px; padding: 1rem 1.15rem; display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
-          <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <span style="font-size: 1.3rem;">📊</span>
-            <div>
-              <strong style="font-size: 0.92rem; color: var(--text-main); display: block;">13x13 매트릭스 레인지 탐색</strong>
-              <span style="font-size: 0.78rem; color: var(--text-dim);">포지션별 프리플랍/3벳 레인지 프리셋 인스펙션 (+20 XP)</span>
+        <div style="background: var(--bg-surface); border: 1.5px solid ${(exploredRangesCount >= targetRanges) ? 'rgba(16, 185, 129, 0.4)' : 'var(--border-color)'}; border-radius: 14px; padding: 1.15rem; margin-bottom: 1.15rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.45rem;">
+              <span style="font-size: 1.3rem;">📊</span>
+              <strong style="font-size: 0.96rem; color: var(--text-main);">13x13 매트릭스 레인지 탐색</strong>
             </div>
+            <span style="font-size: 0.82rem; font-weight: 800; color: ${(exploredRangesCount >= targetRanges) ? '#34d399' : '#fbbf24'};">
+              ${(exploredRangesCount >= targetRanges) ? '✅ 탐색 완료' : `⏳ 진행 중 (${exploredRangesCount} / ${targetRanges}개)`}
+            </span>
           </div>
-          <button onclick="questManager.closeModal(); app.navigate('matrix')" class="btn-secondary" style="padding: 0.4rem 0.85rem; font-size: 0.8rem; font-weight: 700; white-space: nowrap;">
-            매트릭스 보기 ➔
-          </button>
+
+          <div style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 0.65rem; line-height: 1.5;">
+            🎯 <strong>미션 달성 기준</strong>: 현재 레벨 목표로 서로 다른 포지션 레인지 차트를 <strong>최소 ${targetRanges}개 이상</strong> 직접 열람하여 탐색하세요. (새로운 차트 확인 시 1회당 <strong>+20 XP</strong> 즉시 획득)
+          </div>
+
+          <!-- Progress Bar -->
+          <div style="width: 100%; height: 8px; background: rgba(0,0,0,0.25); border-radius: 4px; overflow: hidden; margin-bottom: 0.75rem;">
+            <div style="width: ${rangePct}%; height: 100%; background: ${(exploredRangesCount >= targetRanges) ? 'linear-gradient(90deg, #10b981, #34d399)' : 'linear-gradient(90deg, #f59e0b, #fbbf24)'}; border-radius: 4px; transition: width 0.3s ease;"></div>
+          </div>
+
+          <div style="background: rgba(0,0,0,0.15); border-radius: 8px; padding: 0.7rem 0.85rem; margin-bottom: 0.85rem; font-size: 0.8rem; color: var(--text-dim); line-height: 1.5;">
+            💡 <strong>진행 방법</strong>: 아래 [매트릭스 차트 탐색하러 가기 ➔] 버튼을 눌러 레인지 뷰로 이동한 뒤, 상단 포지션 칩(UTG 오픈, BTN 오픈, BB 디펜드, 3-Bet 등)을 클릭하여 각 핸드 콤보의 액션 빈도(Raise, Call, Fold)를 학습하시면 미션 카운트가 올라갑니다.
+          </div>
+
+          <div style="display: flex; justify-content: flex-end;">
+            <button onclick="questManager.closeModal(); app.navigate('matrix')" class="btn-primary" style="padding: 0.45rem 1.1rem; font-size: 0.83rem; font-weight: 800; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);">
+              📊 지금 레인지 매트릭스 탐색하기 ➔
+            </button>
+          </div>
         </div>
       </div>
 
@@ -3055,33 +3219,8 @@ const rankingManager = {
     }
   },
 
-  // 실존 포커 전설 및 가상 랭커 데이터 (내 계정과 함께 실시간 경쟁)
-  rivals: [
-    { name: "LinusLove", avatar: "🦁", style: "GTO", level: 98, xp: 82400, articles: 340, tierNum: 5 },
-    { name: "Phil_Ivey", avatar: "👑", style: "EXPLOIT", level: 96, xp: 78900, articles: 325, tierNum: 5 },
-    { name: "폴푸아 (Master)", avatar: "🦈", style: "TAG", level: 94, xp: 75100, articles: 369, tierNum: 5 },
-    { name: "Daniel_Negreanu", avatar: "🦊", style: "EXPLOIT", level: 91, xp: 71200, articles: 290, tierNum: 5 },
-    { name: "Fedor_Holz", avatar: "🧠", style: "GTO", level: 88, xp: 68400, articles: 260, tierNum: 5 },
-    { name: "압구정샤크", avatar: "🦈", style: "TAG", level: 82, xp: 60200, articles: 210, tierNum: 4 },
-    { name: "마카오레귤러", avatar: "🦁", style: "LAG", level: 78, xp: 55400, articles: 185, tierNum: 4 },
-    { name: "GTO솔버러", avatar: "🤖", style: "GTO", level: 73, xp: 49800, articles: 160, tierNum: 4 },
-    { name: "체크레이즈달인", avatar: "🎭", style: "LAG", level: 68, xp: 44200, articles: 135, tierNum: 4 },
-    { name: "홍대펍지배자", avatar: "⚔️", style: "TAG", level: 62, xp: 38600, articles: 110, tierNum: 3 },
-    { name: "온라인그라인더99", avatar: "⚙️", style: "TAG", level: 56, xp: 33100, articles: 95, tierNum: 3 },
-    { name: "강남너트장인", avatar: "🦊", style: "EXPLOIT", level: 50, xp: 27900, articles: 80, tierNum: 3 },
-    { name: "리버원샷", avatar: "🦉", style: "HUNTER", level: 46, xp: 24500, articles: 65, tierNum: 3 },
-    { name: "스몰블라인드킬러", avatar: "🗡️", style: "LAG", level: 41, xp: 20800, articles: 55, tierNum: 2 },
-    { name: "팟스틸러", avatar: "🦊", style: "LAG", level: 36, xp: 17200, articles: 45, tierNum: 2 },
-    { name: "3벳마니아", avatar: "🦁", style: "LAG", level: 31, xp: 13900, articles: 38, tierNum: 2 },
-    { name: "에퀴티계산기", avatar: "🤖", style: "GTO", level: 27, xp: 10800, articles: 30, tierNum: 2 },
-    { name: "홀덤꿈나무", avatar: "🐣", style: "TAG", level: 23, xp: 8500, articles: 24, tierNum: 1 },
-    { name: "펍루키007", avatar: "⚔️", style: "HUNTER", level: 19, xp: 6200, articles: 18, tierNum: 1 },
-    { name: "포커새싹", avatar: "🌱", style: "TAG", level: 14, xp: 3900, articles: 12, tierNum: 1 },
-    { name: "마이크로도전자", avatar: "⚙️", style: "TAG", level: 11, xp: 2600, articles: 9, tierNum: 1 },
-    { name: "초보홀덤러", avatar: "🐟", style: "HUNTER", level: 7, xp: 1200, articles: 5, tierNum: 0 },
-    { name: "스타팅핸드공부중", avatar: "🐣", style: "TAG", level: 4, xp: 500, articles: 2, tierNum: 0 },
-    { name: "입문자A", avatar: "🐟", style: "TAG", level: 2, xp: 150, articles: 1, tierNum: 0 }
-  ],
+  // 임의의 가상 봇/라이벌을 완전히 제거하고 실제 클라우드 가입 회원들만 표시
+  rivals: [],
 
   setFilter(filter) {
     this.currentFilter = filter;
@@ -3116,7 +3255,7 @@ const rankingManager = {
       badgeClass: lvlInfo.tier.badgeClass
     };
 
-    // 실시간 클라우드 회원 목록 변환
+    // 실시간 클라우드 회원 목록 변환 (실제 가입된 회원만 포함)
     const cloudMembers = (this.cloudPlayers || [])
       .filter(p => {
         if (auth && p.id === auth.id) return false;
@@ -3150,28 +3289,9 @@ const rankingManager = {
         };
       });
 
-    // 라이벌 봇들 (이름 중복 방지)
-    const takenNames = new Set([me.name, ...cloudMembers.map(c => c.name)]);
-    const botList = this.rivals
-      .filter(r => !takenNames.has(r.name))
-      .map(r => {
-        const tierObj = PROMOTION_TIERS[r.tierNum] || PROMOTION_TIERS[0];
-        return {
-          ...r,
-          isMe: false,
-          kakao_nickname: '',
-          isCertified: false,
-          tierBadge: tierObj.badge,
-          badgeClass: tierObj.badgeClass,
-          quizzes: Math.floor(r.articles * 0.4)
-        };
-      });
+    // 🏆 임의의 닉네임 없이 실제 등록된 회원들만 정렬
+    const list = [me, ...cloudMembers];
 
-    const list = [me, ...cloudMembers, ...botList];
-
-    // 🏆 핵심 정렬 로직:
-    // 1순위: 레벨이 높은 순 (level DESC)
-    // 2순위: 레벨이 같으면 경험치가 높은 순 (xp DESC)
     list.sort((a, b) => {
       if (b.level !== a.level) {
         return b.level - a.level;
@@ -3179,7 +3299,6 @@ const rankingManager = {
       return b.xp - a.xp;
     });
 
-    // 랭킹 부여 (1-indexed)
     list.forEach((p, idx) => {
       p.rank = idx + 1;
     });
@@ -3240,25 +3359,17 @@ const rankingManager = {
     // 2. TOP 3 포디움 렌더링
     const podiumShowcase = document.getElementById('ranking-podium-showcase');
     if (podiumShowcase) {
-      const top3 = all.slice(0, 3);
-      // 순서: 2위(은), 1위(금), 3위(동)
-      const order = [top3[1] || top3[0], top3[0], top3[2] || top3[0]];
-      const ranks = [2, 1, 3];
-
-      podiumShowcase.innerHTML = order.map((p, i) => {
-        const r = ranks[i];
-        const isGold = (r === 1);
-        const medal = r === 1 ? '🥇 1위' : (r === 2 ? '🥈 2위' : '🥉 3위');
-        const cardClass = r === 1 ? 'podium-rank-1' : (r === 2 ? 'podium-rank-2' : 'podium-rank-3');
-
-        return `
-          <div class="podium-card ${cardClass}" style="${isGold ? 'order: 2;' : (r === 2 ? 'order: 1;' : 'order: 3;')}">
-            ${isGold ? '<div class="podium-crown">👑</div>' : ''}
+      if (all.length === 1) {
+        // 단 1명의 유저만 있을 때
+        const p = all[0];
+        podiumShowcase.innerHTML = `
+          <div class="podium-card podium-rank-1" style="max-width: 320px; margin: 0 auto; order: 1;">
+            <div class="podium-crown">👑</div>
             <div class="podium-avatar">${p.avatar}</div>
-            <div style="font-size: 1.1rem; font-weight: 800; color: ${isGold ? '#fbbf24' : 'var(--text-main)'}; margin-bottom: 0.2rem;">
-              ${medal}
+            <div style="font-size: 1.1rem; font-weight: 800; color: #fbbf24; margin-bottom: 0.2rem;">
+              🥇 1위 (챔피언)
             </div>
-            <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; gap: 0.3rem; flex-wrap: wrap;">
+            <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; gap: 0.3rem;">
               <span>${p.name}</span>
               ${p.isMe ? '<span style="color: #3b82f6; font-size: 0.75rem;">(나)</span>' : ''}
               ${p.isCertified ? '<span style="color: #34d399; font-size: 0.72rem;" title="클라우드 정회원">⭐</span>' : ''}
@@ -3270,7 +3381,68 @@ const rankingManager = {
             </div>
           </div>
         `;
-      }).join('');
+      } else if (all.length === 2) {
+        const p1 = all[0];
+        const p2 = all[1];
+        podiumShowcase.innerHTML = `
+          <div class="podium-card podium-rank-2" style="order: 1;">
+            <div class="podium-avatar">${p2.avatar}</div>
+            <div style="font-size: 1.1rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.2rem;">🥈 2위</div>
+            <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; gap: 0.3rem;">
+              <span>${p2.name}</span>
+              ${p2.isMe ? '<span style="color: #3b82f6; font-size: 0.75rem;">(나)</span>' : ''}
+              ${p2.isCertified ? '<span style="color: #34d399; font-size: 0.72rem;">⭐</span>' : ''}
+            </div>
+            ${p2.kakao_nickname ? `<div style="font-size: 0.72rem; color: #f59e0b; margin-bottom: 0.35rem; font-weight: 600;">💬 ${p2.kakao_nickname}</div>` : ''}
+            <span class="rank-badge ${p2.badgeClass}" style="margin-bottom: 0.5rem;">${p2.tierBadge}</span>
+            <div style="font-size: 0.85rem; font-weight: 800; color: #60a5fa;">Lv.${p2.level} • ${p2.xp.toLocaleString()} XP</div>
+          </div>
+          <div class="podium-card podium-rank-1" style="order: 2;">
+            <div class="podium-crown">👑</div>
+            <div class="podium-avatar">${p1.avatar}</div>
+            <div style="font-size: 1.1rem; font-weight: 800; color: #fbbf24; margin-bottom: 0.2rem;">🥇 1위</div>
+            <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; gap: 0.3rem;">
+              <span>${p1.name}</span>
+              ${p1.isMe ? '<span style="color: #3b82f6; font-size: 0.75rem;">(나)</span>' : ''}
+              ${p1.isCertified ? '<span style="color: #34d399; font-size: 0.72rem;">⭐</span>' : ''}
+            </div>
+            ${p1.kakao_nickname ? `<div style="font-size: 0.72rem; color: #f59e0b; margin-bottom: 0.35rem; font-weight: 600;">💬 ${p1.kakao_nickname}</div>` : ''}
+            <span class="rank-badge ${p1.badgeClass}" style="margin-bottom: 0.5rem;">${p1.tierBadge}</span>
+            <div style="font-size: 0.85rem; font-weight: 800; color: #60a5fa;">Lv.${p1.level} • ${p1.xp.toLocaleString()} XP</div>
+          </div>
+        `;
+      } else {
+        const top3 = all.slice(0, 3);
+        const order = [top3[1], top3[0], top3[2]];
+        const ranks = [2, 1, 3];
+
+        podiumShowcase.innerHTML = order.map((p, i) => {
+          const r = ranks[i];
+          const isGold = (r === 1);
+          const medal = r === 1 ? '🥇 1위' : (r === 2 ? '🥈 2위' : '🥉 3위');
+          const cardClass = r === 1 ? 'podium-rank-1' : (r === 2 ? 'podium-rank-2' : 'podium-rank-3');
+
+          return `
+            <div class="podium-card ${cardClass}" style="${isGold ? 'order: 2;' : (r === 2 ? 'order: 1;' : 'order: 3;')}">
+              ${isGold ? '<div class="podium-crown">👑</div>' : ''}
+              <div class="podium-avatar">${p.avatar}</div>
+              <div style="font-size: 1.1rem; font-weight: 800; color: ${isGold ? '#fbbf24' : 'var(--text-main)'}; margin-bottom: 0.2rem;">
+                ${medal}
+              </div>
+              <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; gap: 0.3rem; flex-wrap: wrap;">
+                <span>${p.name}</span>
+                ${p.isMe ? '<span style="color: #3b82f6; font-size: 0.75rem;">(나)</span>' : ''}
+                ${p.isCertified ? '<span style="color: #34d399; font-size: 0.72rem;" title="클라우드 정회원">⭐</span>' : ''}
+              </div>
+              ${p.kakao_nickname ? `<div style="font-size: 0.72rem; color: #f59e0b; margin-bottom: 0.35rem; font-weight: 600;">💬 ${p.kakao_nickname}</div>` : ''}
+              <span class="rank-badge ${p.badgeClass}" style="margin-bottom: 0.5rem;">${p.tierBadge}</span>
+              <div style="font-size: 0.85rem; font-weight: 800; color: #60a5fa;">
+                Lv.${p.level} • ${p.xp.toLocaleString()} XP
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
     }
 
     // 3. 필터 적용 및 테이블 렌더링
@@ -4154,20 +4326,8 @@ authManager = window.authManager = {
     const auth = this.getAuthUser();
 
     if (container) {
-      if (isAuth && auth) {
-        container.innerHTML = `
-          <button class="header-action-btn" onclick="authManager.openModal('profile')" title="내 계정 정보 및 클라우드 동기화" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.3)); border: 1.5px solid #10b981; color: #34d399; padding: 0.45rem 0.85rem; border-radius: 20px; font-weight: 800; cursor: pointer; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 0.45rem; transition: all 0.2s ease;">
-            <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #34d399; box-shadow: 0 0 6px #34d399;"></span>
-            <span>${this.escapeHtml(auth.game_nickname)}</span>
-          </button>
-        `;
-      } else {
-        container.innerHTML = `
-          <button class="header-action-btn" onclick="authManager.showGate('login')" title="클라우드 로그인" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.3)); border: 1.5px solid #f59e0b; color: #fbbf24; padding: 0.45rem 0.85rem; border-radius: 20px; font-weight: 800; cursor: pointer; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 0.4rem; transition: all 0.2s ease;">
-            <span>👤</span> 로그인
-          </button>
-        `;
-      }
+      container.style.display = 'none';
+      container.innerHTML = '';
     }
 
     const dAuthBtn = document.getElementById('dash-auth-btn');
