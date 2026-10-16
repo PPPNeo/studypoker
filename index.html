@@ -207,41 +207,50 @@ header {
 }
 
 .header-container {
-  max-width: 1300px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 0.75rem 1.5rem;
+  padding: 0.65rem 1.25rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 1.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.header-container::-webkit-scrollbar {
+  display: none;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.65rem;
   cursor: pointer;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .brand-icon {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   background: linear-gradient(135deg, #10b981, #047857);
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.4rem;
-  box-shadow: 0 0 15px rgba(16, 185, 129, 0.35);
+  font-size: 1.3rem;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.35);
+  flex-shrink: 0;
 }
 
 .brand-title {
   font-weight: 800;
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   letter-spacing: -0.5px;
   background: linear-gradient(to right, #ffffff, #93c5fd);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  white-space: nowrap;
 }
 
 .brand-badge {
@@ -253,26 +262,35 @@ header {
   padding: 2px 6px;
   border-radius: 4px;
   margin-left: 6px;
+  white-space: nowrap;
 }
 
 nav.main-nav {
   display: flex;
-  gap: 0.4rem;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .nav-btn {
   background: transparent;
-  border: none;
+  border: 1px solid transparent;
   color: var(--text-muted);
   font-weight: 600;
-  font-size: 0.92rem;
-  padding: 0.5rem 0.85rem;
+  font-size: 0.88rem;
+  padding: 0.45rem 0.8rem;
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all 0.2s ease;
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.4rem;
+  white-space: nowrap !important;
+  flex-shrink: 0;
+  height: 38px;
+  line-height: 1;
 }
 
 .nav-btn:hover {
@@ -291,35 +309,46 @@ nav.main-nav {
 .user-bar {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .streak-pill {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
+  justify-content: center;
+  gap: 0.35rem;
   background: rgba(245, 158, 11, 0.15);
   border: 1px solid rgba(245, 158, 11, 0.35);
   color: #fbbf24;
   font-weight: 700;
-  font-size: 0.85rem;
-  padding: 4px 10px;
+  font-size: 0.82rem;
+  padding: 0.45rem 0.85rem;
   border-radius: 20px;
+  white-space: nowrap !important;
+  flex-shrink: 0;
+  height: 38px;
+  line-height: 1;
 }
 
 .xp-container {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 3px;
-  min-width: 140px;
+  min-width: 125px;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .xp-header {
   display: flex;
   justify-content: space-between;
-  font-size: 0.75rem;
+  font-size: 0.73rem;
   font-weight: 600;
   color: var(--text-muted);
+  white-space: nowrap;
 }
 
 .xp-bar {
@@ -343,12 +372,17 @@ nav.main-nav {
   border: none;
   font-weight: 700;
   font-size: 0.85rem;
-  padding: 0.5rem 0.9rem;
-  border-radius: var(--radius-md);
+  padding: 0.45rem 0.95rem;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.4rem;
+  white-space: nowrap !important;
+  flex-shrink: 0;
+  height: 38px;
+  line-height: 1;
   box-shadow: 0 4px 14px rgba(139, 92, 246, 0.35);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
@@ -362,14 +396,19 @@ nav.main-nav {
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
   color: var(--text-main);
-  font-weight: 700;
-  font-size: 0.85rem;
-  padding: 0.5rem 0.85rem;
-  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.82rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.35rem;
+  white-space: nowrap !important;
+  flex-shrink: 0;
+  height: 38px;
+  line-height: 1;
   transition: all 0.2s ease;
 }
 
@@ -1463,7 +1502,8 @@ main {
 /* Responsive adjustments */
 @media (max-width: 900px) {
   .header-container {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
   }
   .reader-container {
     grid-template-columns: 1fr;
@@ -1612,17 +1652,17 @@ body.theme-light .korean-summary-box ul li {
       <div class="filter-bar" style="margin-bottom: 0.75rem;">
         <div class="filter-pills" id="article-category-filters">
           <button class="filter-pill active" data-cat="all" onclick="reader.filterCategory('all')">전체 주제 (369)</button>
+          <button class="filter-pill" data-cat="GTO 전략" onclick="reader.filterCategory('GTO 전략')">GTO 전략 (98)</button>
           <button class="filter-pill" data-cat="토너먼트/ICM" onclick="reader.filterCategory('토너먼트/ICM')">토너먼트/ICM (72)</button>
-          <button class="filter-pill" data-cat="GTO 전략" onclick="reader.filterCategory('GTO 전략')">GTO 전략 (57)</button>
-          <button class="filter-pill" data-cat="플랍 전략" onclick="reader.filterCategory('플랍 전략')">플랍 전략 (53)</button>
-          <button class="filter-pill" data-cat="익스플로잇" onclick="reader.filterCategory('익스플로잇')">익스플로잇 (32)</button>
+          <button class="filter-pill" data-cat="플랍 전략" onclick="reader.filterCategory('플랍 전략')">플랍 전략 (51)</button>
           <button class="filter-pill" data-cat="턴/리버" onclick="reader.filterCategory('턴/리버')">턴/리버 (29)</button>
+          <button class="filter-pill" data-cat="익스플로잇" onclick="reader.filterCategory('익스플로잇')">익스플로잇 (25)</button>
           <button class="filter-pill" data-cat="PKO 바운티" onclick="reader.filterCategory('PKO 바운티')">PKO 바운티 (23)</button>
+          <button class="filter-pill" data-cat="솔버 이론" onclick="reader.filterCategory('솔버 이론')">솔버 이론 (20)</button>
           <button class="filter-pill" data-cat="3벳 팟" onclick="reader.filterCategory('3벳 팟')">3벳 팟 (19)</button>
-          <button class="filter-pill" data-cat="솔버 이론" onclick="reader.filterCategory('솔버 이론')">솔버 이론 (18)</button>
           <button class="filter-pill" data-cat="수학/기초" onclick="reader.filterCategory('수학/기초')">수학/기초 (17)</button>
-          <button class="filter-pill" data-cat="캐시/스트래들" onclick="reader.filterCategory('캐시/스트래들')">캐시/스트래들 (16)</button>
-          <button class="filter-pill" data-cat="업데이트/소식" onclick="reader.filterCategory('업데이트/소식')">업데이트/소식 (33)</button>
+          <button class="filter-pill" data-cat="캐시/스트래들" onclick="reader.filterCategory('캐시/스트래들')">캐시/스트래들 (12)</button>
+          <button class="filter-pill" data-cat="업데이트/소식" onclick="reader.filterCategory('업데이트/소식')">업데이트/소식 (3)</button>
         </div>
       </div>
 
@@ -1630,11 +1670,11 @@ body.theme-light .korean-summary-box ul li {
       <div class="filter-bar" style="margin-bottom: 1.5rem; justify-content: space-between;">
         <div class="filter-pills" id="article-level-filters">
           <span style="font-size: 0.85rem; color: var(--text-muted); align-self: center; margin-right: 0.4rem; font-weight: 600;">난이도:</span>
-          <button class="filter-pill active" data-lvl="all" onclick="reader.filterLevel('all')">전체 난이도</button>
-          <button class="filter-pill" data-lvl="Level 1" onclick="reader.filterLevel('Level 1')">Lv.1 입문 (50)</button>
-          <button class="filter-pill" data-lvl="Level 2" onclick="reader.filterLevel('Level 2')">Lv.2 초급 (126)</button>
-          <button class="filter-pill" data-lvl="Level 3" onclick="reader.filterLevel('Level 3')">Lv.3 중급 (80)</button>
-          <button class="filter-pill" data-lvl="Level 4" onclick="reader.filterLevel('Level 4')">Lv.4 고급 (113)</button>
+          <button class="filter-pill active" data-lvl="all" onclick="reader.filterLevel('all')">전체 난이도 (369)</button>
+          <button class="filter-pill" data-lvl="Level 1" onclick="reader.filterLevel('Level 1')">Lv.1 입문 (21)</button>
+          <button class="filter-pill" data-lvl="Level 2" onclick="reader.filterLevel('Level 2')">Lv.2 초급 (248)</button>
+          <button class="filter-pill" data-lvl="Level 3" onclick="reader.filterLevel('Level 3')">Lv.3 중급 (68)</button>
+          <button class="filter-pill" data-lvl="Level 4" onclick="reader.filterLevel('Level 4')">Lv.4 고급 (32)</button>
         </div>
         <div class="article-count-label" id="article-count-label" style="color: var(--text-dim); font-size: 0.9rem;">
           총 369편
@@ -1948,7 +1988,7 @@ const DB = {
     "slug": "preflop-icm-solving",
     "title_ko": "프리플랍 ICM 솔빙 기능 공식 출시",
     "title_en": "Now Live: Preflop ICM Solving",
-    "level": "Level 2 (초급)",
+    "level": "Level 4 (고급)",
     "category": "플랍 전략",
     "read_time": "13분",
     "author": "GTO Wizard",
@@ -2068,7 +2108,7 @@ const DB = {
     "slug": "plo-upgrades-custom-hu-solving-postflop-icm-nodelocking-more",
     "title_ko": "PLO 업그레이드: 헤즈업 솔빙, 포스트플랍 ICM & 노드락",
     "title_en": "PLO Upgrades: Custom HU Solving, Postflop ICM, Nodelocking & More",
-    "level": "Level 2 (초급)",
+    "level": "Level 4 (고급)",
     "category": "플랍 전략",
     "read_time": "12분",
     "author": "GTO Wizard",
@@ -2098,7 +2138,7 @@ const DB = {
     "slug": "playing-under-10bb-part-2-icm",
     "title_ko": "10bb 이하 숏스택 전략 2편: ICM 상황",
     "title_en": "Playing Under 10bb – Part 2: ICM",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "12분",
     "author": "Barry Carter",
@@ -2128,7 +2168,7 @@ const DB = {
     "slug": "playing-under-10bb-part-1-cev",
     "title_ko": "10bb 이하 숏스택 전략 1편: 칩EV(cEV) 기준",
     "title_en": "Playing Under 10bb – Part 1: cEV",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "14분",
     "author": "Barry Carter",
@@ -2158,8 +2198,8 @@ const DB = {
     "slug": "gto-wizard-at-the-2026-world-series-of-poker",
     "title_ko": "GTO Wizard at the 2026 World Series of Poker (GTO 심층 분석)",
     "title_en": "GTO Wizard at the 2026 World Series of Poker",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "4분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/gto-wizard-at-the-2026-world-series-of-poker/",
@@ -2278,7 +2318,7 @@ const DB = {
     "slug": "plo-just-changed-forever",
     "title_ko": "PLO Just Changed Forever (GTO 심층 분석)",
     "title_en": "PLO Just Changed Forever",
-    "level": "Level 1 (입문)",
+    "level": "Level 2 (초급)",
     "category": "수학/기초",
     "read_time": "13분",
     "author": "GTO Wizard",
@@ -2308,8 +2348,8 @@ const DB = {
     "slug": "how-gto-wizard-solved-plo",
     "title_ko": "How GTO Wizard Solved PLO (GTO 심층 분석)",
     "title_en": "How GTO Wizard Solved PLO",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "5분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/how-gto-wizard-solved-plo/",
@@ -2398,7 +2438,7 @@ const DB = {
     "slug": "small-blind-big-problems-when-to-size-up-from-oop-bvb",
     "title_ko": "스몰 블라인드의 딜레마: BvB 아웃포지션에서 벳 사이징 키우기",
     "title_en": "Small Blind, Big Problems: When to Size Up From OOP BvB",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "14분",
     "author": "Sibbeh",
@@ -2518,7 +2558,7 @@ const DB = {
     "slug": "when-to-open-shove-vs-different-player-profiles",
     "title_ko": "상대 성향별 오픈 셔브 기준과 타이밍",
     "title_en": "When to Open Shove vs. Different Player Profiles",
-    "level": "Level 3 (중급)",
+    "level": "Level 2 (초급)",
     "category": "익스플로잇",
     "read_time": "14분",
     "author": "Barry Carter",
@@ -2548,8 +2588,8 @@ const DB = {
     "slug": "probing-out-of-position-in-3-way-pots",
     "title_ko": "3웨이 팟에서의 프로브 벳(Probe Bet) 전략",
     "title_en": "Probing in 3-Way Pots",
-    "level": "Level 2 (초급)",
-    "category": "플랍 전략",
+    "level": "Level 3 (중급)",
+    "category": "GTO 전략",
     "read_time": "9분",
     "author": "Andrew Brokos",
     "original_url": "https://blog.gtowizard.com/probing-out-of-position-in-3-way-pots/",
@@ -2579,7 +2619,7 @@ const DB = {
     "title_ko": "두 명의 콜러를 상대로 인포지션(IP) 플레이하기",
     "title_en": "Playing In Position Against Two Callers",
     "level": "Level 2 (초급)",
-    "category": "플랍 전략",
+    "category": "솔버 이론",
     "read_time": "7분",
     "author": "JonnyLaw",
     "original_url": "https://blog.gtowizard.com/playing-in-position-against-two-callers/",
@@ -2668,7 +2708,7 @@ const DB = {
     "slug": "the-art-of-value-bluffing-from-the-button",
     "title_ko": "버튼에서의 밸류 블러핑(Value Bluffing) 기술",
     "title_en": "The Art of Value Bluffing From the Button",
-    "level": "Level 3 (중급)",
+    "level": "Level 2 (초급)",
     "category": "턴/리버",
     "read_time": "11분",
     "author": "Sibbeh",
@@ -2728,7 +2768,7 @@ const DB = {
     "slug": "introducing-multiway-preflop-solving",
     "title_ko": "멀티웨이 프리플랍 솔빙 기능 정식 공개",
     "title_en": "Introducing Multiway Preflop Solving",
-    "level": "Level 2 (초급)",
+    "level": "Level 4 (고급)",
     "category": "플랍 전략",
     "read_time": "7분",
     "author": "GTO Wizard",
@@ -2848,7 +2888,7 @@ const DB = {
     "slug": "mastering-pkos-with-custom-aggregated-reports",
     "title_ko": "어그리게이티드 리포트로 PKO 토너먼트 완전 정복",
     "title_en": "Mastering PKOs With Custom Aggregated Reports",
-    "level": "Level 4 (고급)",
+    "level": "Level 3 (중급)",
     "category": "PKO 바운티",
     "read_time": "9분",
     "author": "JonnyLaw",
@@ -2908,7 +2948,7 @@ const DB = {
     "slug": "how-to-improve-your-heads-up-game",
     "title_ko": "헤즈업 실력을 비약적으로 끌어올리는 법",
     "title_en": "How to Improve Your Heads-Up Game",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "4분",
     "author": "Sibbeh",
@@ -3058,7 +3098,7 @@ const DB = {
     "slug": "betting-draws-in-position-the-real-rules",
     "title_ko": "인포지션 드로우 벳의 진짜 원칙",
     "title_en": "Betting Draws in Position: The Real Rules",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "10분",
     "author": "Sibbeh",
@@ -3148,7 +3188,7 @@ const DB = {
     "slug": "custom-profiles-go-live-pokerarena-season-5",
     "title_ko": "Custom Profiles Go Live + PokerArena Season 5 (GTO 심층 분석)",
     "title_en": "Custom Profiles Go Live + PokerArena Season 5",
-    "level": "Level 3 (중급)",
+    "level": "Level 2 (초급)",
     "category": "익스플로잇",
     "read_time": "4분",
     "author": "GTO Wizard",
@@ -3208,7 +3248,7 @@ const DB = {
     "slug": "how_to_exploit_human_mistakes_after_a_flop_overbet",
     "title_ko": "플랍 오버벳 이후 상대의 실수를 익스플로잇하는 법",
     "title_en": "How to Exploit Human Mistakes After a Flop Overbet",
-    "level": "Level 2 (초급)",
+    "level": "Level 4 (고급)",
     "category": "플랍 전략",
     "read_time": "12분",
     "author": "Andrew Brokos",
@@ -3238,7 +3278,7 @@ const DB = {
     "slug": "the_art_of_the_flop_overbet_and_why_youre_probably_doing_it_wrong",
     "title_ko": "완벽 가이드: the Flop Overbet (and 왜 당신이 Probably Doing It Wrong)",
     "title_en": "The Art of the Flop Overbet (and Why You’re Probably Doing It Wrong)",
-    "level": "Level 2 (초급)",
+    "level": "Level 4 (고급)",
     "category": "플랍 전략",
     "read_time": "12분",
     "author": "Andrew Brokos",
@@ -3298,7 +3338,7 @@ const DB = {
     "slug": "how_pros_use_solvers_to_crush_pool_leaks",
     "title_ko": "프로들이 솔버로 필드(Pool)의 집단적 릭을 응징하는 법",
     "title_en": "How Pros Use Solvers To Crush Pool Leaks",
-    "level": "Level 3 (중급)",
+    "level": "Level 1 (입문)",
     "category": "익스플로잇",
     "read_time": "11분",
     "author": "Josh Lessner",
@@ -3328,7 +3368,7 @@ const DB = {
     "slug": "understanding_domination_the_hidden_logic_behind_every_bet",
     "title_ko": "도미네이션(Domination)의 이해: 모든 벳 뒤의 숨은 수학",
     "title_en": "Understanding Domination: The Hidden Logic Behind Every Bet",
-    "level": "Level 1 (입문)",
+    "level": "Level 4 (고급)",
     "category": "수학/기초",
     "read_time": "8분",
     "author": "Andrew Brokos",
@@ -3358,7 +3398,7 @@ const DB = {
     "slug": "profiles_explained_modeling_exploitable_opponents",
     "title_ko": "익스플로잇 가능한 상대를 모델링하는 프로필 분석법",
     "title_en": "Profiles Explained: Modeling Exploitable Opponents",
-    "level": "Level 3 (중급)",
+    "level": "Level 2 (초급)",
     "category": "익스플로잇",
     "read_time": "7분",
     "author": "GTO Wizard",
@@ -3388,7 +3428,7 @@ const DB = {
     "slug": "common_poker_sayings_that_ruin_your_winrate",
     "title_ko": "승률을 망치는 잘못된 포커 격언들",
     "title_en": "Common Poker Sayings That Ruin Your Winrate",
-    "level": "Level 2 (초급)",
+    "level": "Level 1 (입문)",
     "category": "GTO 전략",
     "read_time": "7분",
     "author": "Aidan Heberle",
@@ -3418,7 +3458,7 @@ const DB = {
     "slug": "punish_the_unstudied_capped_ranges_and_bluffing_imbalances",
     "title_ko": "캡된(Capped) 레인지와 블러프 불균형 완벽 응징하기",
     "title_en": "Punish the Unstudied: Capped Ranges & Bluffing Imbalances",
-    "level": "Level 3 (중급)",
+    "level": "Level 2 (초급)",
     "category": "턴/리버",
     "read_time": "13분",
     "author": "Vanja",
@@ -3478,7 +3518,7 @@ const DB = {
     "slug": "isolating_limpers_in_short_stack_hu",
     "title_ko": "숏스택 헤즈업에서 림퍼 아이솔레이션 전략",
     "title_en": "Isolating Limpers in Short Stack HU",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "13분",
     "author": "Sibbeh",
@@ -3508,8 +3548,8 @@ const DB = {
     "slug": "redesigned_analyzer_and_upgraded_gto_reports",
     "title_ko": "Redesigned Analyzer & Upgraded GTO Reports (GTO 심층 분석)",
     "title_en": "Redesigned Analyzer & Upgraded GTO Reports",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "5분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/redesigned_analyzer_and_upgraded_gto_reports/",
@@ -3568,7 +3608,7 @@ const DB = {
     "slug": "the_3_biggest_leaks_killing_your_winrate",
     "title_ko": "승률을 갉아먹는 가장 치명적인 3대 릭(Leak)",
     "title_en": "The 3 Biggest Leaks Killing Your Winrate",
-    "level": "Level 3 (중급)",
+    "level": "Level 1 (입문)",
     "category": "익스플로잇",
     "read_time": "17분",
     "author": "Vanja",
@@ -3599,7 +3639,7 @@ const DB = {
     "title_ko": "Poker Growth in Action: GTO Wizard’s Breakthrough in Japan (GTO 심층 분석)",
     "title_en": "Poker Growth in Action: GTO Wizard’s Breakthrough in Japan",
     "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "category": "GTO 전략",
     "read_time": "6분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/poker_growth_in_action_gto_wizards_breakthrough_in_japan/",
@@ -3628,7 +3668,7 @@ const DB = {
     "slug": "round_out_your_defense_the_power_of_raising",
     "title_ko": "방어 레인지를 완성하는 레이즈의 위력",
     "title_en": "Round Out Your Defense: The Power of Raising",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "솔버 이론",
     "read_time": "8분",
     "author": "Andrew Brokos",
@@ -3658,7 +3698,7 @@ const DB = {
     "slug": "the_hidden_cost_of_late_reg_in_pkos",
     "title_ko": "PKO 바운티 토너먼트 레이트 레지의 숨은 비용",
     "title_en": "The Hidden Cost of Late Reg in PKOs",
-    "level": "Level 4 (고급)",
+    "level": "Level 3 (중급)",
     "category": "PKO 바운티",
     "read_time": "7분",
     "author": "Dr. K",
@@ -3718,7 +3758,7 @@ const DB = {
     "slug": "now_live_3_way_solving_nodelocking_2_0_and_50k_icm_ft_sims",
     "title_ko": "Now Live: 3-Way Solving, Nodelocking 2.0, and 50k+ ICM FT Sims! (GTO 심층 분석)",
     "title_en": "Now Live: 3-Way Solving, Nodelocking 2.0, and 50k+ ICM FT Sims!",
-    "level": "Level 3 (중급)",
+    "level": "Level 4 (고급)",
     "category": "익스플로잇",
     "read_time": "11분",
     "author": "GTO Wizard",
@@ -3808,8 +3848,8 @@ const DB = {
     "slug": "announcing_frequency_locking_2_0",
     "title_ko": "Announcing Frequency Locking 2.0 (GTO 심층 분석)",
     "title_en": "Announcing Frequency Locking 2.0",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 4 (고급)",
+    "category": "GTO 전략",
     "read_time": "4분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/announcing_frequency_locking_2_0/",
@@ -3838,7 +3878,7 @@ const DB = {
     "slug": "register-late-win-more-the-math-behind-smarter-tournament-entry",
     "title_ko": "더 똑똑한 토너먼트 참가: 레이트 레지의 수학적 진실",
     "title_en": "Register Late, Win More: The Math Behind Smarter Tournament Entry",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "10분",
     "author": "Dr. K",
@@ -3928,7 +3968,7 @@ const DB = {
     "slug": "the_case_for_the_hero_check_why_great_players_know_when_not_to_bet",
     "title_ko": "히어로 체크: 최고 플레이어들이 벳을 참는 이유",
     "title_en": "The Case for the Hero Check: Why Great Players Know When Not to Bet",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "12분",
     "author": "Andrew Brokos",
@@ -3958,8 +3998,8 @@ const DB = {
     "slug": "introducing-table-wizard-the-ultimate-table-management-software",
     "title_ko": "Introducing Table Wizard: The Ultimate Table Management Software (GTO 심층 분석)",
     "title_en": "Introducing Table Wizard: The Ultimate Table Management Software",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "4분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/introducing-table-wizard-the-ultimate-table-management-software/",
@@ -3988,8 +4028,8 @@ const DB = {
     "slug": "enter_the_poker_arena_a_new_era_of_competitive_poker_has_begun",
     "title_ko": "Enter The PokerArena: A New Era of Competitive Poker Has Begun (GTO 심층 분석)",
     "title_en": "Enter The PokerArena: A New Era of Competitive Poker Has Begun",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "3분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/enter_the_poker_arena_a_new_era_of_competitive_poker_has_begun/",
@@ -4048,7 +4088,7 @@ const DB = {
     "slug": "tournament_pokers_hidden_stakes",
     "title_ko": "Tournament Poker’s Hidden Stakes (GTO 심층 분석)",
     "title_en": "Tournament Poker’s Hidden Stakes",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "15분",
     "author": "Andrew Brokos",
@@ -4108,8 +4148,8 @@ const DB = {
     "slug": "the_next_era_of_poker_broadcasting_with_gto_wizard_and_ggmillions",
     "title_ko": "The Next Era of Poker Broadcasting With GTO Wizard and GGMillion$ (GTO 심층 분석)",
     "title_en": "The Next Era of Poker Broadcasting With GTO Wizard and GGMillion$",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "3분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/the_next_era_of_poker_broadcasting_with_gto_wizard_and_ggmillions/",
@@ -4138,8 +4178,8 @@ const DB = {
     "slug": "introducing_custom_aggregated_reports",
     "title_ko": "Introducing Custom Aggregated Reports: A New Era in Poker Analysis (GTO 심층 분석)",
     "title_en": "Introducing Custom Aggregated Reports: A New Era in Poker Analysis",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "6분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/introducing_custom_aggregated_reports/",
@@ -4168,8 +4208,8 @@ const DB = {
     "slug": "introducing_dynamic_sizing_2",
     "title_ko": "Introducing Dynamic Sizing 2.0 (GTO 심층 분석)",
     "title_en": "Introducing Dynamic Sizing 2.0",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "5분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/introducing_dynamic_sizing_2/",
@@ -4198,8 +4238,8 @@ const DB = {
     "slug": "supporting_operators_in_protecting_online_poker",
     "title_ko": "Supporting Operators in Protecting Online Poker (GTO 심층 분석)",
     "title_en": "Supporting Operators in Protecting Online Poker",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "4분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/supporting_operators_in_protecting_online_poker/",
@@ -4318,7 +4358,7 @@ const DB = {
     "slug": "roundtable_aha_moments_using_solvers",
     "title_ko": "Roundtable: Aha! Moments in GTO Wizard (GTO 심층 분석)",
     "title_en": "Roundtable: Aha! Moments in GTO Wizard",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "솔버 이론",
     "read_time": "13분",
     "author": "Barry Carter",
@@ -4378,8 +4418,8 @@ const DB = {
     "slug": "ggmillion_x_gto_wizard_a_new_era_for_poker_broadcasting",
     "title_ko": "GGMillion$ x GTO Wizard: A New Era for Poker Broadcasting (GTO 심층 분석)",
     "title_en": "GGMillion$ x GTO Wizard: A New Era for Poker Broadcasting",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "1분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/ggmillion_x_gto_wizard_a_new_era_for_poker_broadcasting/",
@@ -4468,7 +4508,7 @@ const DB = {
     "slug": "introducing-quantal-response-equilibrium-the-next-evolution-of-gto",
     "title_ko": "Introducing Quantal Response Equilibrium: The Next Evolution of GTO (GTO 심층 분석)",
     "title_en": "Introducing Quantal Response Equilibrium: The Next Evolution of GTO",
-    "level": "Level 1 (입문)",
+    "level": "Level 4 (고급)",
     "category": "수학/기초",
     "read_time": "10분",
     "author": "GTO Wizard",
@@ -4558,7 +4598,7 @@ const DB = {
     "slug": "the-theory-of-bounty-tournaments-part-3-key-calculations",
     "title_ko": "The Theory of Bounty Tournaments – Part 3: Key Calculations (GTO 심층 분석)",
     "title_en": "The Theory of Bounty Tournaments – Part 3: Key Calculations",
-    "level": "Level 4 (고급)",
+    "level": "Level 3 (중급)",
     "category": "PKO 바운티",
     "read_time": "10분",
     "author": "Dr. K",
@@ -4678,7 +4718,7 @@ const DB = {
     "slug": "should-you-ever-bluff-with-a-pair",
     "title_ko": "Should You Ever Bluff with a Pair? (GTO 심층 분석)",
     "title_en": "Should You Ever Bluff with a Pair?",
-    "level": "Level 3 (중급)",
+    "level": "Level 2 (초급)",
     "category": "턴/리버",
     "read_time": "14분",
     "author": "Vanja",
@@ -4708,8 +4748,8 @@ const DB = {
     "slug": "major-upgrade-gto-reports-have-arrived-plus-tons-of-new-features",
     "title_ko": "Major Upgrade: GTO Reports Have Arrived – Plus Tons of New Features! (GTO 심층 분석)",
     "title_en": "Major Upgrade: GTO Reports Have Arrived – Plus Tons of New Features!",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "7분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/major-upgrade-gto-reports-have-arrived-plus-tons-of-new-features/",
@@ -4828,7 +4868,7 @@ const DB = {
     "slug": "when-is-bluffing-profitable-the-key-factors-you-need-to-know",
     "title_ko": "When Is Bluffing Profitable? (GTO 심층 분석)",
     "title_en": "When Is Bluffing Profitable?",
-    "level": "Level 3 (중급)",
+    "level": "Level 2 (초급)",
     "category": "턴/리버",
     "read_time": "15분",
     "author": "Andrew Brokos",
@@ -4858,7 +4898,7 @@ const DB = {
     "slug": "blockers-unblockers-the-secret-to-picking-great-bluffs",
     "title_ko": "Blockers & Unblockers: The Secret to Picking Great Bluffs (GTO 심층 분석)",
     "title_en": "Blockers & Unblockers: The Secret to Picking Great Bluffs",
-    "level": "Level 3 (중급)",
+    "level": "Level 2 (초급)",
     "category": "턴/리버",
     "read_time": "11분",
     "author": "Barry Carter",
@@ -4888,7 +4928,7 @@ const DB = {
     "slug": "the-art-of-game-selection-for-mtts-finding-soft-fields-extra-value",
     "title_ko": "완벽 가이드: Game Selection for MTTs: Finding Soft Fields & Extra Value",
     "title_en": "The Art of Game Selection for MTTs: Finding Soft Fields & Extra Value",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "11분",
     "author": "Barry Carter",
@@ -4918,7 +4958,7 @@ const DB = {
     "slug": "ai-and-the-future-of-poker",
     "title_ko": "AI and the Future of Poker (GTO 심층 분석)",
     "title_en": "AI and the Future of Poker",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "솔버 이론",
     "read_time": "5분",
     "author": "GTO Wizard",
@@ -4948,7 +4988,7 @@ const DB = {
     "slug": "how-to-get-the-most-out-of-your-hand-reviews",
     "title_ko": "공략법: Get the Most out of Your Hand Reviews",
     "title_en": "How to Get the Most out of Your Hand Reviews",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "9분",
     "author": "Andrew Brokos",
@@ -4978,7 +5018,7 @@ const DB = {
     "slug": "the-art-of-turn-probing-exploiting-checked-flops",
     "title_ko": "완벽 가이드: Turn Probing: 익스플로잇: Checked Flops",
     "title_en": "The Art of Turn Probing: Exploiting Checked Flops",
-    "level": "Level 2 (초급)",
+    "level": "Level 3 (중급)",
     "category": "플랍 전략",
     "read_time": "8분",
     "author": "Andrew Brokos",
@@ -5068,7 +5108,7 @@ const DB = {
     "slug": "what-happens-when-playing-chip-ev-and-icm-is-significant",
     "title_ko": "What Happens When Playing Chip EV and ICM Is Significant (GTO 심층 분석)",
     "title_en": "What Happens When Playing Chip EV and ICM Is Significant",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "11분",
     "author": "Barry Carter",
@@ -5099,7 +5139,7 @@ const DB = {
     "title_ko": "공략법: Become a Winning Poker Player in 2025 – Part 2",
     "title_en": "How To Become a Winning Poker Player in 2025 – Part 2",
     "level": "Level 2 (초급)",
-    "category": "캐시/스트래들",
+    "category": "GTO 전략",
     "read_time": "11분",
     "author": "Vanja",
     "original_url": "https://blog.gtowizard.com/how-to-become-a-winning-poker-player-in-2025-part-2/",
@@ -5129,7 +5169,7 @@ const DB = {
     "title_ko": "공략법: Become a Winning Poker Player in 2025 – Part 1",
     "title_en": "How to Become a Winning Poker Player in 2025 – Part 1",
     "level": "Level 2 (초급)",
-    "category": "캐시/스트래들",
+    "category": "GTO 전략",
     "read_time": "15분",
     "author": "Vanja",
     "original_url": "https://blog.gtowizard.com/how-to-become-a-winning-poker-player-in-2025-part-1/",
@@ -5218,7 +5258,7 @@ const DB = {
     "slug": "fixing-a-poker-leak-part-2-the-mental-game",
     "title_ko": "Fixing a Poker Leak Part 2: The Mental Game (GTO 심층 분석)",
     "title_en": "Fixing a Poker Leak Part 2: The Mental Game",
-    "level": "Level 3 (중급)",
+    "level": "Level 1 (입문)",
     "category": "익스플로잇",
     "read_time": "9분",
     "author": "Barry Carter",
@@ -5248,7 +5288,7 @@ const DB = {
     "slug": "fixing-a-poker-leak-part-1-spotting-and-correcting-errors",
     "title_ko": "Fixing a Poker Leak Part 1: Spotting and Correcting Errors (GTO 심층 분석)",
     "title_en": "Fixing a Poker Leak Part 1: Spotting and Correcting Errors",
-    "level": "Level 3 (중급)",
+    "level": "Level 1 (입문)",
     "category": "익스플로잇",
     "read_time": "12분",
     "author": "Barry Carter",
@@ -5278,7 +5318,7 @@ const DB = {
     "slug": "how-significant-is-icm-after-late-registering-a-tournament",
     "title_ko": "How Significant Is ICM During Late Registration? (GTO 심층 분석)",
     "title_en": "How Significant Is ICM During Late Registration?",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "11분",
     "author": "Barry Carter",
@@ -5368,7 +5408,7 @@ const DB = {
     "slug": "the-theory-of-bounty-tournaments-part-2-icm-and-equity-drops",
     "title_ko": "The Theory of Bounty Tournaments – Part 2: ICM and Equity Drops (GTO 심층 분석)",
     "title_en": "The Theory of Bounty Tournaments – Part 2: ICM and Equity Drops",
-    "level": "Level 4 (고급)",
+    "level": "Level 3 (중급)",
     "category": "PKO 바운티",
     "read_time": "10분",
     "author": "Dr. K",
@@ -5398,7 +5438,7 @@ const DB = {
     "slug": "kick-off-2025-with-new-cash-and-icm-solutions",
     "title_ko": "Kick Off 2025 With New Cash Game and ICM Solutions for MTTs (GTO 심층 분석)",
     "title_en": "Kick Off 2025 With New Cash Game and ICM Solutions for MTTs",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "5분",
     "author": "GTO Wizard",
@@ -5428,7 +5468,7 @@ const DB = {
     "slug": "the-theory-of-bounty-tournaments-part-1-prize-pool-fundamentals",
     "title_ko": "The Theory of Bounty Tournaments – Part 1: Prize Pool Fundamentals (GTO 심층 분석)",
     "title_en": "The Theory of Bounty Tournaments – Part 1: Prize Pool Fundamentals",
-    "level": "Level 4 (고급)",
+    "level": "Level 3 (중급)",
     "category": "PKO 바운티",
     "read_time": "12분",
     "author": "Dr. K",
@@ -5488,7 +5528,7 @@ const DB = {
     "slug": "donk-betting-as-the-covering-stack-in-mtts",
     "title_ko": "Donk Betting As the Covering Stack in MTTs (GTO 심층 분석)",
     "title_en": "Donk Betting As the Covering Stack in MTTs",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "10분",
     "author": "Andrew Brokos",
@@ -5548,7 +5588,7 @@ const DB = {
     "slug": "exploiting-bbs-who-never-donk-bet",
     "title_ko": "익스플로잇: BBs Who Never Donk Bet",
     "title_en": "Exploiting BBs Who Never Donk Bet",
-    "level": "Level 3 (중급)",
+    "level": "Level 2 (초급)",
     "category": "익스플로잇",
     "read_time": "10분",
     "author": "Andrew Brokos",
@@ -5578,7 +5618,7 @@ const DB = {
     "slug": "picking-the-right-semi-bluffs",
     "title_ko": "Picking the Right Semi-Bluffs (GTO 심층 분석)",
     "title_en": "Picking the Right Semi-Bluffs",
-    "level": "Level 3 (중급)",
+    "level": "Level 2 (초급)",
     "category": "턴/리버",
     "read_time": "10분",
     "author": "Barry Carter",
@@ -5638,8 +5678,8 @@ const DB = {
     "slug": "redefining-precision-introducing-hh-analyzer-2-0-and-much-more",
     "title_ko": "Redefining Precision: Introducing HH Analyzer 2.0 & Much More (GTO 심층 분석)",
     "title_en": "Redefining Precision: Introducing HH Analyzer 2.0 & Much More",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "9분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/redefining-precision-introducing-hh-analyzer-2-0-and-much-more/",
@@ -5668,7 +5708,7 @@ const DB = {
     "slug": "bringing-it-all-together-pko-review",
     "title_ko": "Bringing It All Together: PKO Review (GTO 심층 분석)",
     "title_en": "Bringing It All Together: PKO Review",
-    "level": "Level 4 (고급)",
+    "level": "Level 3 (중급)",
     "category": "PKO 바운티",
     "read_time": "9분",
     "author": "JonnyLaw",
@@ -5698,7 +5738,7 @@ const DB = {
     "slug": "what-factors-impact-ranges-the-most-in-pkos",
     "title_ko": "What Factors Impact Ranges the Most in PKOs? (GTO 심층 분석)",
     "title_en": "What Factors Impact Ranges the Most in PKOs?",
-    "level": "Level 4 (고급)",
+    "level": "Level 3 (중급)",
     "category": "PKO 바운티",
     "read_time": "9분",
     "author": "JonnyLaw",
@@ -5728,7 +5768,7 @@ const DB = {
     "slug": "pko-vs-classic-postflop-play",
     "title_ko": "PKO vs Classic: Postflop Play (GTO 심층 분석)",
     "title_en": "PKO vs Classic: Postflop Play",
-    "level": "Level 4 (고급)",
+    "level": "Level 3 (중급)",
     "category": "PKO 바운티",
     "read_time": "10분",
     "author": "JonnyLaw",
@@ -5758,7 +5798,7 @@ const DB = {
     "slug": "how-do-bounties-impact-our-flop-ranges-when-covering",
     "title_ko": "How Do Bounties Impact Our Flop Ranges When Covering? (GTO 심층 분석)",
     "title_en": "How Do Bounties Impact Our Flop Ranges When Covering?",
-    "level": "Level 4 (고급)",
+    "level": "Level 3 (중급)",
     "category": "PKO 바운티",
     "read_time": "10분",
     "author": "JonnyLaw",
@@ -5819,7 +5859,7 @@ const DB = {
     "title_ko": "Maximizing Monsters in Deep-Stacked Scenarios (GTO 심층 분석)",
     "title_en": "Maximizing Monsters in Deep-Stacked Scenarios",
     "level": "Level 2 (초급)",
-    "category": "캐시/스트래들",
+    "category": "GTO 전략",
     "read_time": "9분",
     "author": "Andrew Brokos",
     "original_url": "https://blog.gtowizard.com/maximizing-monsters-in-deep-stacked-scenarios/",
@@ -5848,7 +5888,7 @@ const DB = {
     "slug": "confronting-monsters-under-the-bed",
     "title_ko": "Confronting Monsters Under the Bed in Poker (GTO 심층 분석)",
     "title_en": "Confronting Monsters Under the Bed in Poker",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "10분",
     "author": "Andrew Brokos",
@@ -5878,7 +5918,7 @@ const DB = {
     "slug": "bullying-the-blinds-with-continuation-bets",
     "title_ko": "Bullying the Blinds With Continuation Bets (GTO 심층 분석)",
     "title_en": "Bullying the Blinds With Continuation Bets",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "10분",
     "author": "Andrew Brokos",
@@ -5908,7 +5948,7 @@ const DB = {
     "slug": "satellite-guide",
     "title_ko": "A Comprehensive Guide to Playing Satellites (GTO 심층 분석)",
     "title_en": "A Comprehensive Guide to Playing Satellites",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "12분",
     "author": "Barry Carter",
@@ -5938,7 +5978,7 @@ const DB = {
     "slug": "mystery-bounty-guide",
     "title_ko": "A Comprehensive Guide to Playing Mystery Bounties (GTO 심층 분석)",
     "title_en": "A Comprehensive Guide to Playing Mystery Bounties",
-    "level": "Level 4 (고급)",
+    "level": "Level 3 (중급)",
     "category": "PKO 바운티",
     "read_time": "12분",
     "author": "Barry Carter",
@@ -5968,8 +6008,8 @@ const DB = {
     "slug": "leading-hands-that-should-check-call",
     "title_ko": "Leading Hands That Should Check-Call (GTO 심층 분석)",
     "title_en": "Leading Hands That Should Check-Call",
-    "level": "Level 3 (중급)",
-    "category": "익스플로잇",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "10분",
     "author": "Barry Carter",
     "original_url": "https://blog.gtowizard.com/leading-hands-that-should-check-call/",
@@ -6028,7 +6068,7 @@ const DB = {
     "slug": "pko-versus-classic-responding-to-3-bets",
     "title_ko": "PKO Versus Classic: Responding to 3-Bets (GTO 심층 분석)",
     "title_en": "PKO Versus Classic: Responding to 3-Bets",
-    "level": "Level 4 (고급)",
+    "level": "Level 3 (중급)",
     "category": "PKO 바운티",
     "read_time": "11분",
     "author": "JonnyLaw",
@@ -6058,7 +6098,7 @@ const DB = {
     "slug": "pko-versus-classic-responding-to-a-preflop-open",
     "title_ko": "PKO Versus Classic: Responding to a Preflop Open (GTO 심층 분석)",
     "title_en": "PKO Versus Classic: Responding to a Preflop Open",
-    "level": "Level 4 (고급)",
+    "level": "Level 3 (중급)",
     "category": "PKO 바운티",
     "read_time": "10분",
     "author": "JonnyLaw",
@@ -6118,7 +6158,7 @@ const DB = {
     "slug": "the-five-imbalances-of-exploitative-poker",
     "title_ko": "The Five Imbalances of Exploitative Poker (GTO 심층 분석)",
     "title_en": "The Five Imbalances of Exploitative Poker",
-    "level": "Level 3 (중급)",
+    "level": "Level 2 (초급)",
     "category": "익스플로잇",
     "read_time": "17분",
     "author": "Barry Carter",
@@ -6148,7 +6188,7 @@ const DB = {
     "slug": "pko-versus-classic-preflop-rfi-range-comparisons",
     "title_ko": "PKO Versus Classic: Preflop RFI Range Comparisons (GTO 심층 분석)",
     "title_en": "PKO Versus Classic: Preflop RFI Range Comparisons",
-    "level": "Level 4 (고급)",
+    "level": "Level 3 (중급)",
     "category": "PKO 바운티",
     "read_time": "8분",
     "author": "JonnyLaw",
@@ -6178,8 +6218,8 @@ const DB = {
     "slug": "introducing-gto-wizard-play-mode",
     "title_ko": "Introducing GTO Wizard Play Mode: Play Poker, Study Effortlessly (GTO 심층 분석)",
     "title_en": "Introducing GTO Wizard Play Mode: Play Poker, Study Effortlessly",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "3분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/introducing-gto-wizard-play-mode/",
@@ -6268,7 +6308,7 @@ const DB = {
     "slug": "mdf-vs-icm-rethinking-bluffing-defense-strategies-in-mtts",
     "title_ko": "MDF vs ICM: Rethinking Bluffing & Defense Strategies in MTTs (GTO 심층 분석)",
     "title_en": "MDF vs ICM: Rethinking Bluffing & Defense Strategies in MTTs",
-    "level": "Level 3 (중급)",
+    "level": "Level 2 (초급)",
     "category": "턴/리버",
     "read_time": "9분",
     "author": "Andrew Brokos",
@@ -6298,7 +6338,7 @@ const DB = {
     "slug": "the-magic-of-equity-buckets",
     "title_ko": "The Magic of Equity Buckets (GTO 심층 분석)",
     "title_en": "The Magic of Equity Buckets",
-    "level": "Level 1 (입문)",
+    "level": "Level 2 (초급)",
     "category": "수학/기초",
     "read_time": "13분",
     "author": "Barry Carter",
@@ -6358,7 +6398,7 @@ const DB = {
     "slug": "5-levels-of-trainer-mastery-for-mtts",
     "title_ko": "The 5 Levels of Trainer Mastery for MTTs (GTO 심층 분석)",
     "title_en": "The 5 Levels of Trainer Mastery for MTTs",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "9분",
     "author": "JonnyLaw",
@@ -6448,7 +6488,7 @@ const DB = {
     "slug": "revolutionizing-mtts-the-ultimate-icm-solver-upgrade",
     "title_ko": "Revolutionizing MTTs: The Ultimate ICM Solver Upgrade (GTO 심층 분석)",
     "title_en": "Revolutionizing MTTs: The Ultimate ICM Solver Upgrade",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "4분",
     "author": "GTO Wizard",
@@ -6478,7 +6518,7 @@ const DB = {
     "slug": "theoretical-breakthroughs-in-icm",
     "title_ko": "Theoretical Breakthroughs in ICM (GTO 심층 분석)",
     "title_en": "Theoretical Breakthroughs in ICM",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "8분",
     "author": "Tombos21",
@@ -6568,7 +6608,7 @@ const DB = {
     "slug": "from-gutshots-to-airballs-choosing-your-bluffs",
     "title_ko": "From Gutshots to Airballs: Choosing Your Bluffs (GTO 심층 분석)",
     "title_en": "From Gutshots to Airballs: Choosing Your Bluffs",
-    "level": "Level 3 (중급)",
+    "level": "Level 2 (초급)",
     "category": "턴/리버",
     "read_time": "9분",
     "author": "Andrew Brokos",
@@ -6628,7 +6668,7 @@ const DB = {
     "slug": "the-math-of-multistreet-bluffs",
     "title_ko": "The Math of Multi-Street Bluffs (GTO 심층 분석)",
     "title_en": "The Math of Multi-Street Bluffs",
-    "level": "Level 3 (중급)",
+    "level": "Level 2 (초급)",
     "category": "턴/리버",
     "read_time": "9분",
     "author": "Tombos21",
@@ -6748,7 +6788,7 @@ const DB = {
     "slug": "facing-3-bets-from-covering-stacks-at-the-final-table",
     "title_ko": "Facing 3-Bets From Covering Stacks at the Final Table (GTO 심층 분석)",
     "title_en": "Facing 3-Bets From Covering Stacks at the Final Table",
-    "level": "Level 3 (중급)",
+    "level": "Level 4 (고급)",
     "category": "3벳 팟",
     "read_time": "10분",
     "author": "Andrew Brokos",
@@ -6838,7 +6878,7 @@ const DB = {
     "slug": "live-cash-solutions-and-4000-new-scenarios-for-cash-mtt-formats",
     "title_ko": "Live Cash Solutions and 4,000 New Scenarios for Cash & MTT Formats (GTO 심층 분석)",
     "title_en": "Live Cash Solutions and 4,000 New Scenarios for Cash & MTT Formats",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "4분",
     "author": "GTO Wizard",
@@ -6928,7 +6968,7 @@ const DB = {
     "slug": "calling-down-the-over-bluffed-lines-in-lower-limits",
     "title_ko": "Calling Down Over-Bluffed Lines in Lower Limits (GTO 심층 분석)",
     "title_en": "Calling Down Over-Bluffed Lines in Lower Limits",
-    "level": "Level 3 (중급)",
+    "level": "Level 2 (초급)",
     "category": "턴/리버",
     "read_time": "18분",
     "author": "Sotirios Liakos",
@@ -6988,7 +7028,7 @@ const DB = {
     "slug": "exploiting-cold-callers-who-stab-too-much",
     "title_ko": "익스플로잇: Cold Callers Who Stab Too Much",
     "title_en": "Exploiting Cold Callers Who Stab Too Much",
-    "level": "Level 3 (중급)",
+    "level": "Level 2 (초급)",
     "category": "익스플로잇",
     "read_time": "9분",
     "author": "Andrew Brokos",
@@ -7078,8 +7118,8 @@ const DB = {
     "slug": "buying-the-showdown",
     "title_ko": "Buying the Showdown (GTO 심층 분석)",
     "title_en": "Buying the Showdown",
-    "level": "Level 3 (중급)",
-    "category": "익스플로잇",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "7분",
     "author": "Andrew Brokos",
     "original_url": "https://blog.gtowizard.com/buying-the-showdown/",
@@ -7168,7 +7208,7 @@ const DB = {
     "slug": "a-champions-guide-to-knockout-poker-formats",
     "title_ko": "A Champion’s Guide to Knockout Poker Formats (GTO 심층 분석)",
     "title_en": "A Champion’s Guide to Knockout Poker Formats",
-    "level": "Level 4 (고급)",
+    "level": "Level 3 (중급)",
     "category": "PKO 바운티",
     "read_time": "9분",
     "author": "JonnyLaw",
@@ -7198,7 +7238,7 @@ const DB = {
     "slug": "pushing-equity-with-small-bets",
     "title_ko": "Pushing Equity With Small Bets (GTO 심층 분석)",
     "title_en": "Pushing Equity With Small Bets",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "9분",
     "author": "Andrew Brokos",
@@ -7318,7 +7358,7 @@ const DB = {
     "slug": "the-limits-of-nodelocking",
     "title_ko": "The Limits of Nodelocking (GTO 심층 분석)",
     "title_en": "The Limits of Nodelocking",
-    "level": "Level 3 (중급)",
+    "level": "Level 4 (고급)",
     "category": "익스플로잇",
     "read_time": "10분",
     "author": "Barry Carter",
@@ -7348,7 +7388,7 @@ const DB = {
     "slug": "limp-called-pot-as-bb",
     "title_ko": "Limp-Called Pot as BB (GTO 심층 분석)",
     "title_en": "Limp-Called Pot as BB",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "8분",
     "author": "Andrew Brokos",
@@ -7378,7 +7418,7 @@ const DB = {
     "slug": "why-not-shove",
     "title_ko": "Why Not Shove? (GTO 심층 분석)",
     "title_en": "Why Not Shove?",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "7분",
     "author": "Andrew Brokos",
@@ -7408,8 +7448,8 @@ const DB = {
     "slug": "what-we-can-learn-from-outlier-hands",
     "title_ko": "What We Can Learn From Outlier Hands (GTO 심층 분석)",
     "title_en": "What We Can Learn From Outlier Hands",
-    "level": "Level 3 (중급)",
-    "category": "익스플로잇",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "11분",
     "author": "Barry Carter",
     "original_url": "https://blog.gtowizard.com/what-we-can-learn-from-outlier-hands/",
@@ -7438,7 +7478,7 @@ const DB = {
     "slug": "building-exploits-from-showdown",
     "title_ko": "Building Exploits From Showdown (GTO 심층 분석)",
     "title_en": "Building Exploits From Showdown",
-    "level": "Level 3 (중급)",
+    "level": "Level 2 (초급)",
     "category": "익스플로잇",
     "read_time": "11분",
     "author": "Darren Wee",
@@ -7468,7 +7508,7 @@ const DB = {
     "slug": "pioneering-poker-ai-research",
     "title_ko": "Pioneering Poker AI Research (GTO 심층 분석)",
     "title_en": "Pioneering Poker AI Research",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "솔버 이론",
     "read_time": "4분",
     "author": "GTO Wizard",
@@ -7588,8 +7628,8 @@ const DB = {
     "slug": "how-to-handle-loose-passive-limpers",
     "title_ko": "공략법: Handle Loose-Passive Limpers",
     "title_en": "How to Handle Loose-Passive Limpers",
-    "level": "Level 3 (중급)",
-    "category": "익스플로잇",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "10분",
     "author": "Andrew Brokos",
     "original_url": "https://blog.gtowizard.com/how-to-handle-loose-passive-limpers/",
@@ -7618,7 +7658,7 @@ const DB = {
     "slug": "top-5-mistakes-in-spin-gos",
     "title_ko": "Top 5 Mistakes in Spin & Gos (GTO 심층 분석)",
     "title_en": "Top 5 Mistakes in Spin & Gos",
-    "level": "Level 4 (고급)",
+    "level": "Level 1 (입문)",
     "category": "토너먼트/ICM",
     "read_time": "8분",
     "author": "Beldarion",
@@ -7648,7 +7688,7 @@ const DB = {
     "slug": "an-introduction-to-spin-gos",
     "title_ko": "An Introduction to Spin & Gos (GTO 심층 분석)",
     "title_en": "An Introduction to Spin & Gos",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "5분",
     "author": "Beldarion",
@@ -7769,7 +7809,7 @@ const DB = {
     "title_ko": "체크-레이즈 a Single Pair",
     "title_en": "Check-Raising a Single Pair",
     "level": "Level 2 (초급)",
-    "category": "캐시/스트래들",
+    "category": "솔버 이론",
     "read_time": "7분",
     "author": "Andrew Brokos",
     "original_url": "https://blog.gtowizard.com/check-raising-a-single-pair/",
@@ -7798,7 +7838,7 @@ const DB = {
     "slug": "your-daily-dose-of-gto-is-here",
     "title_ko": "Your Daily Dose of GTO is Here! (GTO 심층 분석)",
     "title_en": "Your Daily Dose of GTO is Here!",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "솔버 이론",
     "read_time": "7분",
     "author": "GTO Wizard",
@@ -7858,7 +7898,7 @@ const DB = {
     "slug": "when-to-encourage-multiway-pots-in-pkos",
     "title_ko": "언제 ~해야 하는가: Encourage Multiway Pots in PKOs",
     "title_en": "When to Encourage Multiway Pots in PKOs",
-    "level": "Level 4 (고급)",
+    "level": "Level 3 (중급)",
     "category": "PKO 바운티",
     "read_time": "10분",
     "author": "Barry Carter",
@@ -7888,7 +7928,7 @@ const DB = {
     "slug": "protect-equity-and-prosper",
     "title_ko": "Protect Equity and Prosper (GTO 심층 분석)",
     "title_en": "Protect Equity and Prosper",
-    "level": "Level 1 (입문)",
+    "level": "Level 2 (초급)",
     "category": "수학/기초",
     "read_time": "11분",
     "author": "Andrew Brokos",
@@ -7918,7 +7958,7 @@ const DB = {
     "slug": "do-solvers-have-targets",
     "title_ko": "Do Solvers Have Targets? (GTO 심층 분석)",
     "title_en": "Do Solvers Have Targets?",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "솔버 이론",
     "read_time": "7분",
     "author": "Andrew Brokos",
@@ -7948,8 +7988,8 @@ const DB = {
     "slug": "disciplining-big-blind-in-limped-pots",
     "title_ko": "Disciplining Big Blind in Limped Pots (GTO 심층 분석)",
     "title_en": "Disciplining Big Blind in Limped Pots",
-    "level": "Level 3 (중급)",
-    "category": "익스플로잇",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "8분",
     "author": "Andrew Brokos",
     "original_url": "https://blog.gtowizard.com/disciplining-big-blind-in-limped-pots/",
@@ -7978,7 +8018,7 @@ const DB = {
     "slug": "id-rather-be-drawing",
     "title_ko": "I’d Rather Be Drawing (GTO 심층 분석)",
     "title_en": "I’d Rather Be Drawing",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "8분",
     "author": "Andrew Brokos",
@@ -8008,7 +8048,7 @@ const DB = {
     "slug": "curious-case-of-open-limping-buttons",
     "title_ko": "The Curious Case of Open-Limping Buttons (GTO 심층 분석)",
     "title_en": "The Curious Case of Open-Limping Buttons",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "8분",
     "author": "Andrew Brokos",
@@ -8038,8 +8078,8 @@ const DB = {
     "slug": "cleaning-out-sticky-ip-callers",
     "title_ko": "Cleaning Out Sticky IP Callers (GTO 심층 분석)",
     "title_en": "Cleaning Out Sticky IP Callers",
-    "level": "Level 3 (중급)",
-    "category": "익스플로잇",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "12분",
     "author": "Andrew Brokos",
     "original_url": "https://blog.gtowizard.com/cleaning-out-sticky-ip-callers/",
@@ -8218,8 +8258,8 @@ const DB = {
     "slug": "gto-wizard-2023-wrapup",
     "title_ko": "GTO Wizard 2023 Wrapup (GTO 심층 분석)",
     "title_en": "GTO Wizard 2023 Wrapup",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "5분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/gto-wizard-2023-wrapup/",
@@ -8338,7 +8378,7 @@ const DB = {
     "slug": "how-to-adjust-when-villain-has-no-bluffs",
     "title_ko": "공략법: Adjust When Villain Has No Bluffs",
     "title_en": "How to Adjust When Villain Has No Bluffs",
-    "level": "Level 3 (중급)",
+    "level": "Level 2 (초급)",
     "category": "턴/리버",
     "read_time": "7분",
     "author": "Barry Carter",
@@ -8548,8 +8588,8 @@ const DB = {
     "slug": "is-limping-pimping",
     "title_ko": "Is Limping Pimping? (GTO 심층 분석)",
     "title_en": "Is Limping Pimping?",
-    "level": "Level 3 (중급)",
-    "category": "익스플로잇",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "10분",
     "author": "JonnyLaw",
     "original_url": "https://blog.gtowizard.com/is-limping-pimping/",
@@ -8608,7 +8648,7 @@ const DB = {
     "slug": "preflop-button-mastery-in-pkos",
     "title_ko": "Preflop Button Mastery in PKOs (GTO 심층 분석)",
     "title_en": "Preflop Button Mastery in PKOs",
-    "level": "Level 4 (고급)",
+    "level": "Level 3 (중급)",
     "category": "PKO 바운티",
     "read_time": "6분",
     "author": "JonnyLaw",
@@ -8788,7 +8828,7 @@ const DB = {
     "slug": "mastering-thin-value-bets-in-checked-down-pots",
     "title_ko": "마스터하기: Thin Value Bets in Checked-Down Pots",
     "title_en": "Mastering Thin Value Bets in Checked-Down Pots",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "12분",
     "author": "Andrew Brokos",
@@ -8938,7 +8978,7 @@ const DB = {
     "slug": "how-stack-sizes-change-your-range",
     "title_ko": "How Stack Sizes Change Your Range (GTO 심층 분석)",
     "title_en": "How Stack Sizes Change Your Range",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "10분",
     "author": "Barry Carter",
@@ -8968,7 +9008,7 @@ const DB = {
     "slug": "introducing-nodelocking",
     "title_ko": "Introducing Nodelocking (GTO 심층 분석)",
     "title_en": "Introducing Nodelocking",
-    "level": "Level 3 (중급)",
+    "level": "Level 4 (고급)",
     "category": "익스플로잇",
     "read_time": "11분",
     "author": "GTO Wizard",
@@ -8998,7 +9038,7 @@ const DB = {
     "slug": "how-to-leverage-gto-wizards-ev-comparison-tool",
     "title_ko": "공략법: Leverage GTO Wizard's EV Comparison Tool",
     "title_en": "How to Leverage GTO Wizard’s EV Comparison Tool",
-    "level": "Level 1 (입문)",
+    "level": "Level 2 (초급)",
     "category": "수학/기초",
     "read_time": "8분",
     "author": "Andrew Brokos",
@@ -9058,7 +9098,7 @@ const DB = {
     "slug": "when-icm-breaks-down",
     "title_ko": "When ICM Breaks Down (GTO 심층 분석)",
     "title_en": "When ICM Breaks Down",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "9분",
     "author": "Barry Carter",
@@ -9148,8 +9188,8 @@ const DB = {
     "slug": "towards-a-safer-poker-ecosystem",
     "title_ko": "Towards a Safer Poker Ecosystem (GTO 심층 분석)",
     "title_en": "Towards a Safer Poker Ecosystem",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "7분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/towards-a-safer-poker-ecosystem/",
@@ -9178,7 +9218,7 @@ const DB = {
     "slug": "short-stacked-play-in-mtts",
     "title_ko": "Short-Stacked Play in MTTs (GTO 심층 분석)",
     "title_en": "Short-Stacked Play in MTTs",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "10분",
     "author": "Andrew Brokos",
@@ -9208,7 +9248,7 @@ const DB = {
     "slug": "when-to-ladder-in-tournaments",
     "title_ko": "언제 ~해야 하는가: Ladder in Tournaments",
     "title_en": "When to Ladder in Tournaments",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "12분",
     "author": "Barry Carter",
@@ -9238,7 +9278,7 @@ const DB = {
     "slug": "how-payout-structures-impact-icm",
     "title_ko": "How Payout Structures Impact ICM (GTO 심층 분석)",
     "title_en": "How Payout Structures Impact ICM",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "11분",
     "author": "Barry Carter",
@@ -9358,7 +9398,7 @@ const DB = {
     "slug": "dynamic-sizing-benchmarks",
     "title_ko": "Dynamic Sizing Benchmarks (GTO 심층 분석)",
     "title_en": "Dynamic Sizing Benchmarks",
-    "level": "Level 2 (초급)",
+    "level": "Level 4 (고급)",
     "category": "GTO 전략",
     "read_time": "6분",
     "author": "Tombos21",
@@ -9388,7 +9428,7 @@ const DB = {
     "slug": "understanding-the-impact-of-field-size-on-icm-in-poker",
     "title_ko": "Understanding the Impact Of Field Size on ICM in Poker (GTO 심층 분석)",
     "title_en": "Understanding the Impact Of Field Size on ICM in Poker",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "9분",
     "author": "Barry Carter",
@@ -9418,7 +9458,7 @@ const DB = {
     "slug": "defending-vs-bb-check-raise-on-paired-flops",
     "title_ko": "Defending vs BB Check-Raise on Paired Flops (GTO 심층 분석)",
     "title_en": "Defending vs BB Check-Raise on Paired Flops",
-    "level": "Level 2 (초급)",
+    "level": "Level 3 (중급)",
     "category": "플랍 전략",
     "read_time": "12분",
     "author": "Andrew Brokos",
@@ -9568,7 +9608,7 @@ const DB = {
     "slug": "kk-vs-qq-vs-jj-at-wsop-main-event",
     "title_ko": "KK vs QQ vs JJ at WSOP Main Event (GTO 심층 분석)",
     "title_en": "KK vs QQ vs JJ at WSOP Main Event",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "9분",
     "author": "Andrew Brokos",
@@ -9598,7 +9638,7 @@ const DB = {
     "slug": "responding-to-bb-squeezes",
     "title_ko": "Responding to BB Squeezes (GTO 심층 분석)",
     "title_en": "Responding to BB Squeezes",
-    "level": "Level 3 (중급)",
+    "level": "Level 2 (초급)",
     "category": "3벳 팟",
     "read_time": "8분",
     "author": "Andrew Brokos",
@@ -9658,7 +9698,7 @@ const DB = {
     "slug": "gto-wizard-ai-explained",
     "title_ko": "GTO Wizard AI Explained (GTO 심층 분석)",
     "title_en": "GTO Wizard AI Explained",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "솔버 이론",
     "read_time": "5분",
     "author": "GTO Wizard",
@@ -9688,7 +9728,7 @@ const DB = {
     "slug": "introducing-gto-wizard-ai",
     "title_ko": "Introducing GTO Wizard AI (GTO 심층 분석)",
     "title_en": "Introducing GTO Wizard AI",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "솔버 이론",
     "read_time": "4분",
     "author": "GTO Wizard",
@@ -9748,7 +9788,7 @@ const DB = {
     "slug": "table-management-in-pkos",
     "title_ko": "Table Management in PKOs (GTO 심층 분석)",
     "title_en": "Table Management in PKOs",
-    "level": "Level 4 (고급)",
+    "level": "Level 3 (중급)",
     "category": "PKO 바운티",
     "read_time": "11분",
     "author": "Barry Carter",
@@ -9778,7 +9818,7 @@ const DB = {
     "slug": "overcalling-from-the-bb",
     "title_ko": "Overcalling From the BB (GTO 심층 분석)",
     "title_en": "Overcalling From the BB",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "9분",
     "author": "Andrew Brokos",
@@ -9808,7 +9848,7 @@ const DB = {
     "slug": "understanding-which-mistakes-cost-you-the-most-money",
     "title_ko": "Understanding Which Mistakes Cost You the Most Money (GTO 심층 분석)",
     "title_en": "Understanding Which Mistakes Cost You the Most Money",
-    "level": "Level 4 (고급)",
+    "level": "Level 1 (입문)",
     "category": "토너먼트/ICM",
     "read_time": "14분",
     "author": "Barry Carter",
@@ -9838,7 +9878,7 @@ const DB = {
     "slug": "overbetting-the-flop-in-cash-games",
     "title_ko": "Overbetting the Flop in Cash Games (GTO 심층 분석)",
     "title_en": "Overbetting the Flop in Cash Games",
-    "level": "Level 2 (초급)",
+    "level": "Level 4 (고급)",
     "category": "플랍 전략",
     "read_time": "7분",
     "author": "Madmanslime",
@@ -9898,7 +9938,7 @@ const DB = {
     "slug": "flatting-ace-x-hands-shortstacked",
     "title_ko": "Flatting Ace-X Hands Short Stacked (GTO 심층 분석)",
     "title_en": "Flatting Ace-X Hands Short Stacked",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "6분",
     "author": "Andrew Brokos",
@@ -9928,7 +9968,7 @@ const DB = {
     "slug": "playing-limped-pots-as-the-bb-in-mtts",
     "title_ko": "Playing Limped Pots as the BB in MTTs (GTO 심층 분석)",
     "title_en": "Playing Limped Pots as the BB in MTTs",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "7분",
     "author": "Andrew Brokos",
@@ -9988,7 +10028,7 @@ const DB = {
     "slug": "playing-limped-pots-as-sb-in-mtts",
     "title_ko": "Playing Limped Pots as the SB in MTTs (GTO 심층 분석)",
     "title_en": "Playing Limped Pots as the SB in MTTs",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "8분",
     "author": "Andrew Brokos",
@@ -10018,8 +10058,8 @@ const DB = {
     "slug": "simplified-solutions-and-a-new-interface",
     "title_ko": "Simplified Solutions and a New Interface! (GTO 심층 분석)",
     "title_en": "Simplified Solutions and a New Interface!",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "9분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/simplified-solutions-and-a-new-interface/",
@@ -10078,7 +10118,7 @@ const DB = {
     "slug": "is-donk-betting-for-donkeys",
     "title_ko": "Is Donk Betting for Donkeys? (GTO 심층 분석)",
     "title_en": "Is Donk Betting for Donkeys?",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "10분",
     "author": "Andrew Brokos",
@@ -10138,7 +10178,7 @@ const DB = {
     "slug": "probe-betting",
     "title_ko": "Probe Betting (GTO 심층 분석)",
     "title_en": "Probe Betting",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "7분",
     "author": "Andrew Brokos",
@@ -10168,7 +10208,7 @@ const DB = {
     "slug": "icm-and-blind-battles-the-big-blind",
     "title_ko": "ICM and Blind Battles: The Big Blind (GTO 심층 분석)",
     "title_en": "ICM and Blind Battles: The Big Blind",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "7분",
     "author": "Andrew Brokos",
@@ -10198,7 +10238,7 @@ const DB = {
     "slug": "icm-and-blind-battles-the-small-blind",
     "title_ko": "ICM and Blind Battles: The Small Blind (GTO 심층 분석)",
     "title_en": "ICM and Blind Battles: The Small Blind",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "5분",
     "author": "Andrew Brokos",
@@ -10258,7 +10298,7 @@ const DB = {
     "slug": "mastering-the-chiplead-the-scalpel-and-the-sledgehammer",
     "title_ko": "마스터하기: the Chiplead: The Scalpel and the Sledgehammer",
     "title_en": "Mastering the Chiplead: The Scalpel and the Sledgehammer",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "7분",
     "author": "Andrew Brokos",
@@ -10318,7 +10358,7 @@ const DB = {
     "slug": "how-icm-impacts-restealing-from-the-blinds",
     "title_ko": "How ICM Impacts Restealing From the Blinds (GTO 심층 분석)",
     "title_en": "How ICM Impacts Restealing From the Blinds",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "8분",
     "author": "Andrew Brokos",
@@ -10348,7 +10388,7 @@ const DB = {
     "slug": "the-icm-benefits-of-late-registration-in-poker-tournaments",
     "title_ko": "The ICM Benefits of Late Registration in Poker Tournaments (GTO 심층 분석)",
     "title_en": "The ICM Benefits of Late Registration in Poker Tournaments",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "10분",
     "author": "Barry Carter",
@@ -10468,7 +10508,7 @@ const DB = {
     "slug": "how-does-icm-impact-pko-strategy",
     "title_ko": "How Does ICM Impact PKO Strategy? (GTO 심층 분석)",
     "title_en": "How Does ICM Impact PKO Strategy?",
-    "level": "Level 4 (고급)",
+    "level": "Level 3 (중급)",
     "category": "PKO 바운티",
     "read_time": "12분",
     "author": "Barry Carter",
@@ -10498,7 +10538,7 @@ const DB = {
     "slug": "understanding-blockers-in-poker",
     "title_ko": "Understanding Blockers in Poker (GTO 심층 분석)",
     "title_en": "Understanding Blockers in Poker",
-    "level": "Level 3 (중급)",
+    "level": "Level 2 (초급)",
     "category": "턴/리버",
     "read_time": "9분",
     "author": "Madmanslime",
@@ -10618,7 +10658,7 @@ const DB = {
     "slug": "multiway-strategy-in-progressive-knockout-tournaments",
     "title_ko": "Multiway strategy in Progressive Knockout Tournaments (GTO 심층 분석)",
     "title_en": "Multiway strategy in Progressive Knockout Tournaments",
-    "level": "Level 4 (고급)",
+    "level": "Level 3 (중급)",
     "category": "PKO 바운티",
     "read_time": "10분",
     "author": "Barry Carter",
@@ -10648,7 +10688,7 @@ const DB = {
     "slug": "how-to-calculate-raises-in-poker",
     "title_ko": "공략법: Calculate Raises in Poker",
     "title_en": "How to Calculate Raises in Poker",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "솔버 이론",
     "read_time": "2분",
     "author": "Tombos21",
@@ -10678,7 +10718,7 @@ const DB = {
     "slug": "new-spins-solutions-study-plans-and-ev-comparison",
     "title_ko": "New Spins Solutions, Study Plans & EV Comparison (GTO 심층 분석)",
     "title_en": "New Spins Solutions, Study Plans & EV Comparison",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "9분",
     "author": "GTO Wizard",
@@ -10738,7 +10778,7 @@ const DB = {
     "slug": "exploitative-dynamics",
     "title_ko": "Exploitative Dynamics (GTO 심층 분석)",
     "title_en": "Exploitative Dynamics",
-    "level": "Level 3 (중급)",
+    "level": "Level 2 (초급)",
     "category": "익스플로잇",
     "read_time": "11분",
     "author": "Andrew Brokos",
@@ -10798,7 +10838,7 @@ const DB = {
     "slug": "10-tips-multiway-pots-in-poker",
     "title_ko": "10 Tips for Multiway Pots in Poker (GTO 심층 분석)",
     "title_en": "10 Tips for Multiway Pots in Poker",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "13분",
     "author": "Tombos21",
@@ -10858,7 +10898,7 @@ const DB = {
     "slug": "the-theory-of-progressive-knockout-tournaments",
     "title_ko": "The Theory of Progressive Knockout Tournaments (GTO 심층 분석)",
     "title_en": "The Theory of Progressive Knockout Tournaments",
-    "level": "Level 4 (고급)",
+    "level": "Level 3 (중급)",
     "category": "PKO 바운티",
     "read_time": "9분",
     "author": "Tombos21",
@@ -10888,7 +10928,7 @@ const DB = {
     "slug": "how-to-analyze-turn-textures-in-poker",
     "title_ko": "공략법: Analyze Turn Textures in Poker",
     "title_en": "How to Analyze Turn Textures in Poker",
-    "level": "Level 2 (초급)",
+    "level": "Level 3 (중급)",
     "category": "플랍 전략",
     "read_time": "7분",
     "author": "Andrew Brokos",
@@ -10948,7 +10988,7 @@ const DB = {
     "slug": "poker-strategies-tournaments-vs-cash-games",
     "title_ko": "Poker Strategies: Tournaments vs. Cash Games (GTO 심층 분석)",
     "title_en": "Poker Strategies: Tournaments vs. Cash Games",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "11분",
     "author": "Andrew Brokos",
@@ -10978,7 +11018,7 @@ const DB = {
     "slug": "how-solvers-work",
     "title_ko": "How Solvers Work (GTO 심층 분석)",
     "title_en": "How Solvers Work",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "솔버 이론",
     "read_time": "11분",
     "author": "Tombos21",
@@ -11008,7 +11048,7 @@ const DB = {
     "slug": "the-most-powerful-play-in-poker",
     "title_ko": "The Most Powerful Play in Poker (GTO 심층 분석)",
     "title_en": "The Most Powerful Play in Poker",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "5분",
     "author": "Andrew Brokos",
@@ -11038,7 +11078,7 @@ const DB = {
     "slug": "pko-solutions-and-new-dashboard",
     "title_ko": "PKO Solutions & New Dashboard (GTO 심층 분석)",
     "title_en": "PKO Solutions & New Dashboard",
-    "level": "Level 4 (고급)",
+    "level": "Level 3 (중급)",
     "category": "PKO 바운티",
     "read_time": "9분",
     "author": "GTO Wizard",
@@ -11068,7 +11108,7 @@ const DB = {
     "slug": "when-does-icm-become-significant-in-mtts",
     "title_ko": "When does ICM become significant in MTTs? (GTO 심층 분석)",
     "title_en": "When does ICM become significant in MTTs?",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "14분",
     "author": "Tombos21",
@@ -11158,7 +11198,7 @@ const DB = {
     "slug": "interpreting-equity-distributions",
     "title_ko": "Interpreting Equity Distributions (GTO 심층 분석)",
     "title_en": "Interpreting Equity Distributions",
-    "level": "Level 1 (입문)",
+    "level": "Level 2 (초급)",
     "category": "수학/기초",
     "read_time": "6분",
     "author": "Andrew Brokos",
@@ -11218,7 +11258,7 @@ const DB = {
     "slug": "reasons-for-value-betting-in-poker",
     "title_ko": "Reasons for Value Betting in Poker (GTO 심층 분석)",
     "title_en": "Reasons for Value Betting in Poker",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "6분",
     "author": "Andrew Brokos",
@@ -11278,7 +11318,7 @@ const DB = {
     "slug": "what-is-valor-in-poker",
     "title_ko": "이해하기: Valor in Poker?",
     "title_en": "What Is Valor in Poker?",
-    "level": "Level 4 (고급)",
+    "level": "Level 1 (입문)",
     "category": "토너먼트/ICM",
     "read_time": "7분",
     "author": "Elijah",
@@ -11308,7 +11348,7 @@ const DB = {
     "slug": "drill-management-and-new-blocker-scores",
     "title_ko": "New Blocker Scores & Drill Management and ICM Solutions (GTO 심층 분석)",
     "title_en": "New Blocker Scores & Drill Management and ICM Solutions",
-    "level": "Level 3 (중급)",
+    "level": "Level 2 (초급)",
     "category": "턴/리버",
     "read_time": "8분",
     "author": "GTO Wizard",
@@ -11368,7 +11408,7 @@ const DB = {
     "slug": "a-beginners-guide-to-poker-combinatorics",
     "title_ko": "A Beginner’s Guide to Poker Combinatorics (GTO 심층 분석)",
     "title_en": "A Beginner’s Guide to Poker Combinatorics",
-    "level": "Level 2 (초급)",
+    "level": "Level 1 (입문)",
     "category": "GTO 전략",
     "read_time": "8분",
     "author": "Tombos21",
@@ -11428,7 +11468,7 @@ const DB = {
     "slug": "equity-realization",
     "title_ko": "에퀴티 실현(EQR)",
     "title_en": "Equity Realization",
-    "level": "Level 1 (입문)",
+    "level": "Level 2 (초급)",
     "category": "수학/기초",
     "read_time": "9분",
     "author": "Andrew Brokos",
@@ -11698,7 +11738,7 @@ const DB = {
     "slug": "how-to-become-a-gto-wizard",
     "title_ko": "공략법: Become a GTO Wizard",
     "title_en": "How to Become a GTO Wizard",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "8분",
     "author": "GTO Wizard",
@@ -11758,8 +11798,8 @@ const DB = {
     "slug": "gto-wizard-themes-winners",
     "title_ko": "GTO Wizard Themes Competition Winners (GTO 심층 분석)",
     "title_en": "GTO Wizard Themes Competition Winners",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "4분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/gto-wizard-themes-winners/",
@@ -11788,7 +11828,7 @@ const DB = {
     "slug": "train-like-a-pro",
     "title_ko": "Train Like a Pro (GTO 심층 분석)",
     "title_en": "Train Like a Pro",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "솔버 이론",
     "read_time": "5분",
     "author": "GTO Wizard",
@@ -11818,8 +11858,8 @@ const DB = {
     "slug": "multitabling-new-solutions",
     "title_ko": "Multi-Tabling & New solutions (GTO 심층 분석)",
     "title_en": "Multi-Tabling & New solutions",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "7분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/multitabling-new-solutions/",
@@ -11848,7 +11888,7 @@ const DB = {
     "slug": "mathematical-misconceptions-in-poker",
     "title_ko": "Mathematical Misconceptions in Poker (GTO 심층 분석)",
     "title_en": "Mathematical Misconceptions in Poker",
-    "level": "Level 1 (입문)",
+    "level": "Level 2 (초급)",
     "category": "수학/기초",
     "read_time": "6분",
     "author": "Tombos21",
@@ -11908,7 +11948,7 @@ const DB = {
     "slug": "the-value-of-fold-equity-experiment",
     "title_ko": "The Value of Fold Equity – Experiment (GTO 심층 분석)",
     "title_en": "The Value of Fold Equity – Experiment",
-    "level": "Level 1 (입문)",
+    "level": "Level 2 (초급)",
     "category": "수학/기초",
     "read_time": "5분",
     "author": "Tombos21",
@@ -11938,7 +11978,7 @@ const DB = {
     "slug": "mdf-alpha",
     "title_ko": "MDF & Alpha (GTO 심층 분석)",
     "title_en": "MDF & Alpha",
-    "level": "Level 1 (입문)",
+    "level": "Level 2 (초급)",
     "category": "수학/기초",
     "read_time": "10분",
     "author": "Tombos21",
@@ -11968,7 +12008,7 @@ const DB = {
     "slug": "what-are-pot-odds-in-poker",
     "title_ko": "What Are Pot Odds in Poker? (GTO 심층 분석)",
     "title_en": "What Are Pot Odds in Poker?",
-    "level": "Level 4 (고급)",
+    "level": "Level 1 (입문)",
     "category": "토너먼트/ICM",
     "read_time": "8분",
     "author": "Tombos21",
@@ -12058,7 +12098,7 @@ const DB = {
     "slug": "icm-basics",
     "title_ko": "ICM Basics (GTO 심층 분석)",
     "title_en": "ICM Basics",
-    "level": "Level 4 (고급)",
+    "level": "Level 1 (입문)",
     "category": "토너먼트/ICM",
     "read_time": "8분",
     "author": "Tombos21",
@@ -12118,7 +12158,7 @@ const DB = {
     "slug": "icm-mtt-9max-cash-solutions-great-improvements",
     "title_ko": "ICM MTT, 9Max Cash Solutions & Great Improvements (GTO 심층 분석)",
     "title_en": "ICM MTT, 9Max Cash Solutions & Great Improvements",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "5분",
     "author": "GTO Wizard",
@@ -12178,7 +12218,7 @@ const DB = {
     "slug": "what-is-expected-value-in-poker",
     "title_ko": "이해하기: 기대값(EV) in Poker?",
     "title_en": "What Is Expected Value in Poker?",
-    "level": "Level 2 (초급)",
+    "level": "Level 1 (입문)",
     "category": "GTO 전략",
     "read_time": "9분",
     "author": "Tombos21",
@@ -12238,7 +12278,7 @@ const DB = {
     "slug": "understanding-nash-distance",
     "title_ko": "Understanding Nash Distance (GTO 심층 분석)",
     "title_en": "Understanding Nash Distance",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "솔버 이론",
     "read_time": "5분",
     "author": "Tombos21",
@@ -12328,7 +12368,7 @@ const DB = {
     "slug": "what-is-gto-in-poker",
     "title_ko": "이해하기: GTO in Poker?",
     "title_en": "What is GTO in Poker?",
-    "level": "Level 2 (초급)",
+    "level": "Level 1 (입문)",
     "category": "GTO 전략",
     "read_time": "4분",
     "author": "Tombos21",
@@ -12358,7 +12398,7 @@ const DB = {
     "slug": "what-does-gto-aim-to-achieve",
     "title_ko": "What Does GTO Aim To Achieve? (GTO 심층 분석)",
     "title_en": "What Does GTO Aim To Achieve?",
-    "level": "Level 1 (입문)",
+    "level": "Level 2 (초급)",
     "category": "수학/기초",
     "read_time": "4분",
     "author": "Tombos21",
@@ -12388,7 +12428,7 @@ const DB = {
     "slug": "new-solutions-filter-trainer-improvements",
     "title_ko": "New Solutions Filter + Trainer Improvements (GTO 심층 분석)",
     "title_en": "New Solutions Filter + Trainer Improvements",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "솔버 이론",
     "read_time": "5분",
     "author": "GTO Wizard",
@@ -12418,8 +12458,8 @@ const DB = {
     "slug": "gto-wizard-in-japan",
     "title_ko": "GTO Wizard in Japan (GTO 심층 분석)",
     "title_en": "GTO Wizard in Japan",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "1분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/gto-wizard-in-japan/",
@@ -12478,8 +12518,8 @@ const DB = {
     "slug": "6-reasons-why-you-should-use-gto-wizard",
     "title_ko": "6 Reasons Why You Should Use GTO Wizard (GTO 심층 분석)",
     "title_en": "6 Reasons Why You Should Use GTO Wizard",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "5분",
     "author": "Tombos21",
     "original_url": "https://blog.gtowizard.com/6-reasons-why-you-should-use-gto-wizard/",
@@ -12508,8 +12548,8 @@ const DB = {
     "slug": "6-grunde-warum-du-gto-wizard-nutzen-solltest",
     "title_ko": "6 Gründe Warum Du GTO Wizard Nutzen Solltest (GTO 심층 분석)",
     "title_en": "6 Gründe Warum Du GTO Wizard Nutzen Solltest",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "5분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/6-grunde-warum-du-gto-wizard-nutzen-solltest/",
@@ -12568,8 +12608,8 @@ const DB = {
     "slug": "range-builder-improvements-200bb-solutions-ipoker-support-more",
     "title_ko": "Range Builder Improvements, 200BB Solutions, iPoker Support & More! (GTO 심층 분석)",
     "title_en": "Range Builder Improvements, 200BB Solutions, iPoker Support & More!",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "4분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/range-builder-improvements-200bb-solutions-ipoker-support-more/",
@@ -12598,7 +12638,7 @@ const DB = {
     "slug": "new-cash-game-mtt-solutions-aggregated-reports-and-new-solutions-for-hh-analyzer",
     "title_ko": "New Cash Game & MTT Solutions, Aggregated Reports and New Solutions for HH Analyzer! (GTO 심층 분석)",
     "title_en": "New Cash Game & MTT Solutions, Aggregated Reports and New Solutions for HH Analyzer!",
-    "level": "Level 4 (고급)",
+    "level": "Level 2 (초급)",
     "category": "토너먼트/ICM",
     "read_time": "3분",
     "author": "GTO Wizard",
@@ -12628,8 +12668,8 @@ const DB = {
     "slug": "releasing-many-improvements-gto-wizard-is-now-multilungual",
     "title_ko": "Many Improvements & GTO Wizard Is Now Multilungual! (GTO 심층 분석)",
     "title_en": "Many Improvements & GTO Wizard Is Now Multilungual!",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "5분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/releasing-many-improvements-gto-wizard-is-now-multilungual/",
@@ -12688,7 +12728,7 @@ const DB = {
     "slug": "the-best-solutions-we-ever-had-and-other-improvements",
     "title_ko": "The Best Solutions We Ever Had and Other Improvements! (GTO 심층 분석)",
     "title_en": "The Best Solutions We Ever Had and Other Improvements!",
-    "level": "Level 1 (입문)",
+    "level": "Level 2 (초급)",
     "category": "수학/기초",
     "read_time": "5분",
     "author": "GTO Wizard",
@@ -12718,8 +12758,8 @@ const DB = {
     "slug": "new-solutions-aggregation-reports-and-other-improvements",
     "title_ko": "New solutions, Aggregation reports and other improvements! (GTO 심층 분석)",
     "title_en": "New solutions, Aggregation reports and other improvements!",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "5분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/new-solutions-aggregation-reports-and-other-improvements/",
@@ -12778,8 +12818,8 @@ const DB = {
     "slug": "status-and-info-about-our-solutions",
     "title_ko": "Status and Info About Our Solutions (GTO 심층 분석)",
     "title_en": "Status and Info About Our Solutions",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "6분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/status-and-info-about-our-solutions/",
@@ -12838,8 +12878,8 @@ const DB = {
     "slug": "what-the-future-holds-for-gto-wizard",
     "title_ko": "What the Future Holds for GTO Wizard? (GTO 심층 분석)",
     "title_en": "What the Future Holds for GTO Wizard?",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "5분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/what-the-future-holds-for-gto-wizard/",
@@ -12868,8 +12908,8 @@ const DB = {
     "slug": "all-you-need-to-know-about-our-solutions",
     "title_ko": "All You Need To Know About Our Solutions (GTO 심층 분석)",
     "title_en": "All You Need To Know About Our Solutions",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "13분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/all-you-need-to-know-about-our-solutions/",
@@ -12898,8 +12938,8 @@ const DB = {
     "slug": "suported-sites-and-formats-for-hh-analyzer",
     "title_ko": "Supported Sites and Formats for HH Analyzer (GTO 심층 분석)",
     "title_en": "Supported Sites and Formats for HH Analyzer",
-    "level": "Level 1 (입문)",
-    "category": "업데이트/소식",
+    "level": "Level 2 (초급)",
+    "category": "GTO 전략",
     "read_time": "3분",
     "author": "GTO Wizard",
     "original_url": "https://blog.gtowizard.com/suported-sites-and-formats-for-hh-analyzer/",
@@ -13846,39 +13886,108 @@ const reader = {
   displayLimit: 24,
 
   loadArticles() {
+    this.updateFilterPillsUI();
     this.renderArticleCards();
   },
 
   searchArticles(q) {
     this.searchQuery = q.toLowerCase().trim();
     this.displayLimit = 24;
+    this.updateFilterPillsUI();
     this.renderArticleCards();
   },
 
   filterCategory(cat) {
     this.activeCategory = cat;
     this.displayLimit = 24;
-    document.querySelectorAll('#article-category-filters .filter-pill').forEach(pill => {
-      if (pill.dataset.cat === cat || (cat === 'all' && pill.dataset.cat === 'all')) {
-        pill.classList.add('active');
-      } else {
-        pill.classList.remove('active');
+
+    // Smart adjustment: if currently selected level has 0 items in this category, reset level to all
+    if (this.activeLevel !== 'all') {
+      const matchWithLevel = this.articles.filter(a =>
+        (cat === 'all' || a.category === cat) && a.level.startsWith(this.activeLevel)
+      );
+      if (matchWithLevel.length === 0) {
+        this.activeLevel = 'all';
       }
-    });
+    }
+
+    this.updateFilterPillsUI();
     this.renderArticleCards();
   },
 
   filterLevel(lvl) {
     this.activeLevel = lvl;
     this.displayLimit = 24;
-    document.querySelectorAll('#article-level-filters .filter-pill').forEach(pill => {
-      if (pill.dataset.lvl === lvl || (lvl === 'all' && pill.dataset.lvl === 'all')) {
+
+    // Smart adjustment: if currently selected category has 0 items in this level, reset category to all!
+    if (this.activeCategory !== 'all') {
+      const matchWithCategory = this.articles.filter(a =>
+        a.category === this.activeCategory && (lvl === 'all' || a.level.startsWith(lvl))
+      );
+      if (matchWithCategory.length === 0) {
+        this.activeCategory = 'all';
+      }
+    }
+
+    this.updateFilterPillsUI();
+    this.renderArticleCards();
+  },
+
+  resetFilters() {
+    this.activeCategory = 'all';
+    this.activeLevel = 'all';
+    this.searchQuery = '';
+    const input = document.getElementById('article-search-input');
+    if (input) input.value = '';
+    this.displayLimit = 24;
+    this.updateFilterPillsUI();
+    this.renderArticleCards();
+    if (window.app && app.playAudioEffect) app.playAudioEffect('click');
+  },
+
+  updateFilterPillsUI() {
+    // 1. Update active class on Category pills
+    document.querySelectorAll('#article-category-filters .filter-pill').forEach(pill => {
+      const c = pill.dataset.cat;
+      if (c === this.activeCategory || (this.activeCategory === 'all' && c === 'all')) {
         pill.classList.add('active');
       } else {
         pill.classList.remove('active');
       }
     });
-    this.renderArticleCards();
+
+    // 2. Update active class on Level pills
+    document.querySelectorAll('#article-level-filters .filter-pill').forEach(pill => {
+      const l = pill.dataset.lvl;
+      if (l === this.activeLevel || (this.activeLevel === 'all' && l === 'all')) {
+        pill.classList.add('active');
+      } else {
+        pill.classList.remove('active');
+      }
+    });
+
+    // 3. Dynamically update Level pill counts based on active category
+    const levelLabels = {
+      'Level 1': 'Lv.1 입문',
+      'Level 2': 'Lv.2 초급',
+      'Level 3': 'Lv.3 중급',
+      'Level 4': 'Lv.4 고급'
+    };
+
+    document.querySelectorAll('#article-level-filters .filter-pill').forEach(pill => {
+      const l = pill.dataset.lvl;
+      if (l === 'all') {
+        const cnt = this.articles.filter(a => this.activeCategory === 'all' || a.category === this.activeCategory).length;
+        pill.innerText = `전체 난이도 (${cnt})`;
+        pill.style.opacity = '1';
+      } else {
+        const cnt = this.articles.filter(a => 
+          (this.activeCategory === 'all' || a.category === this.activeCategory) && a.level.startsWith(l)
+        ).length;
+        pill.innerText = `${levelLabels[l] || l} (${cnt})`;
+        pill.style.opacity = (cnt === 0) ? '0.45' : '1';
+      }
+    });
   },
 
   loadMore() {
@@ -13903,6 +14012,22 @@ const reader = {
     const slice = filtered.slice(0, this.displayLimit);
 
     document.getElementById('article-count-label').innerText = `총 369편 중 ${totalCount}편 일치 (${slice.length}편 표시 중)`;
+
+    if (totalCount === 0) {
+      container.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 3.5rem 1.5rem; background: var(--bg-card); border: 1.5px dashed var(--border-color); border-radius: 14px; margin: 1rem 0;">
+          <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🔍</div>
+          <h3 style="font-size: 1.2rem; color: var(--text-main); margin-bottom: 0.5rem; font-weight: 700;">조건에 일치하는 아티클이 없습니다</h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">선택하신 카테고리와 난이도 조합에 해당하는 글이 없습니다.</p>
+          <button class="btn-primary" onclick="reader.resetFilters()" style="padding: 0.65rem 1.75rem; font-size: 0.95rem; border-radius: 25px;">
+            🔄 필터 초기화하고 전체 아티클 보기
+          </button>
+        </div>
+      `;
+      const loadMoreContainer = document.getElementById('articles-load-more-container');
+      if (loadMoreContainer) loadMoreContainer.style.display = 'none';
+      return;
+    }
 
     container.innerHTML = slice.map(a => {
       const isCompleted = app.userState.completed_articles.includes(a.id);
