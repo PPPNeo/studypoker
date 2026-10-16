@@ -1572,6 +1572,18 @@ const reader = {
       if (/^Example\s*(\d+)/i.test(clean)) return clean.replace(/^Example\s*(\d+)/i, '실전 예시 $1');
       if (/^Example\s*:/i.test(clean)) return clean.replace(/^Example\s*:/i, '실전 예시: ');
     }
+    // Clean Hold'em terms
+    clean = clean.replace(/플롭/g, '플랍')
+                 .replace(/쇼다운 가치/g, '쇼다운 밸류')
+                 .replace(/가치 베팅/g, '밸류 벳')
+                 .replace(/블록 베팅/g, '블락벳')
+                 .replace(/팟 배당률/g, '팟 오즈')
+                 .replace(/내재 배당률/g, '임플라이드 오즈')
+                 .replace(/자기자본/g, '에퀴티')
+                 .replace(/거품 요인/g, '버블 팩터')
+                 .replace(/\b냄비\b/g, '팟')
+                 .replace(/\b수표\b/g, '체크')
+                 .replace(/\b허세\b/g, '블러프');
     return clean;
   },
 
