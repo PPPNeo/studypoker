@@ -2814,39 +2814,11 @@ body.theme-light [style*="color:#94a3b8"] {
   color: #475569 !important;
 }
 
-/* 🏆 Ranking Summary Card Theme Awareness */
-#my-ranking-summary-card {
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
-  border: 1.5px solid #3b82f6;
-  border-radius: 14px;
-  padding: 1.25rem 1.5rem;
-  margin-bottom: 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-  box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.2);
-}
-
-body.theme-light #my-ranking-summary-card {
-  background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%) !important;
-  border: 1.5px solid #60a5fa !important;
-  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.12) !important;
-}
-
-body.theme-light .podium-rank-1 {
-  border: 2px solid #d97706 !important;
-  background: linear-gradient(180deg, #fffbeb, #ffffff) !important;
-  box-shadow: 0 8px 20px rgba(217, 119, 6, 0.15) !important;
-}
-body.theme-light .podium-rank-2 {
-  border: 1.5px solid #94a3b8 !important;
-  background: linear-gradient(180deg, #f8fafc, #ffffff) !important;
-}
-body.theme-light .podium-rank-3 {
+/* 🏆 Horizontal Champion Spotlight Theme Overrides */
+body.theme-light .champion-spotlight-banner {
+  background: linear-gradient(90deg, #fffbeb 0%, #ffffff 60%, #fef3c7 100%) !important;
   border: 1.5px solid #d97706 !important;
-  background: linear-gradient(180deg, #fef3c7, #ffffff) !important;
+  box-shadow: 0 6px 20px rgba(217, 119, 6, 0.15) !important;
 }
 
 body.theme-light .badge-level {
@@ -2870,19 +2842,9 @@ body.theme-light .btn-original-link {
   .article-card {
     padding: 1.15rem 1rem !important;
   }
-  #ranking-podium-showcase {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 0.85rem !important;
-  }
-  .podium-rank-1 {
-    order: 1 !important;
-  }
-  .podium-rank-2 {
-    order: 2 !important;
-  }
-  .podium-rank-3 {
-    order: 3 !important;
+  .champion-spotlight-banner {
+    padding: 0.85rem 1rem !important;
+    gap: 0.75rem !important;
   }
   .col-hide-mobile {
     display: none !important;
@@ -3265,55 +3227,98 @@ body.theme-light .article-card.locked {
   }
 }
 
-/* 🏆 Leaderboard & Ranking System Styles */
-.podium-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
+/* 🏆 Leaderboard & Horizontal Champion Spotlight Styles */
+.champion-spotlight-banner {
+  background: linear-gradient(90deg, rgba(245, 158, 11, 0.12) 0%, rgba(30, 41, 59, 0.8) 40%, rgba(15, 23, 42, 0.95) 100%);
+  border: 1.5px solid #f59e0b;
   border-radius: 14px;
-  padding: 1.5rem 1rem;
+  padding: 1rem 1.4rem;
+  margin-bottom: 1.5rem;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  text-align: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  box-shadow: 0 8px 24px -4px rgba(245, 158, 11, 0.25);
   position: relative;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
 }
-.podium-card:hover {
-  transform: translateY(-4px);
+.champion-spotlight-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: linear-gradient(180deg, #fbbf24, #d97706);
 }
-.podium-rank-1 {
-  border: 2px solid #f59e0b;
-  background: linear-gradient(180deg, rgba(245, 158, 11, 0.15), var(--bg-card));
-  box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.25);
-}
-.podium-rank-2 {
-  border: 1.5px solid #94a3b8;
-  background: linear-gradient(180deg, rgba(148, 163, 184, 0.12), var(--bg-card));
-}
-.podium-rank-3 {
-  border: 1.5px solid #b45309;
-  background: linear-gradient(180deg, rgba(180, 83, 9, 0.12), var(--bg-card));
-}
-.podium-crown {
-  font-size: 1.8rem;
-  margin-bottom: -0.4rem;
-}
-.podium-avatar {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: var(--bg-surface);
-  display: flex;
+
+/* 📍 Leaderboard My Row & Scroll-to-Me Styles */
+.btn-scroll-to-me {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #ffffff !important;
+  border: 1px solid #3b82f6;
+  border-radius: 8px;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  font-size: 2.2rem;
-  margin-bottom: 0.75rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  gap: 0.35rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+  white-space: nowrap;
 }
-.ranking-row-me {
-  background: rgba(59, 130, 246, 0.12) !important;
+.btn-scroll-to-me:hover {
+  background: linear-gradient(135deg, #1d4ed8, #1e40af);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+}
+.my-rank-indicator-pill {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #ffffff !important;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.35);
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+.ranking-row-me td {
+  background: rgba(59, 130, 246, 0.16) !important;
+  border-top: 2.5px solid #3b82f6 !important;
+  border-bottom: 2.5px solid #3b82f6 !important;
   font-weight: 700;
-  border-left: 3px solid #3b82f6 !important;
+}
+.ranking-row-me td:first-child {
+  border-left: 6px solid #2563eb !important;
+}
+.ranking-row-me td:last-child {
+  border-right: 2.5px solid #3b82f6 !important;
+}
+body.theme-light .ranking-row-me td {
+  background: rgba(37, 99, 235, 0.1) !important;
+  border-top: 2.5px solid #2563eb !important;
+  border-bottom: 2.5px solid #2563eb !important;
+}
+body.theme-light .ranking-row-me td:first-child {
+  border-left: 6px solid #1d4ed8 !important;
+}
+body.theme-light .ranking-row-me td:last-child {
+  border-right: 2.5px solid #2563eb !important;
+}
+@keyframes pulseMe {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.01); }
+  100% { transform: scale(1); }
+}
+.pulse-me-highlight td {
+  animation: pulseMe 0.8s ease-in-out 2;
+  background: rgba(59, 130, 246, 0.3) !important;
 }
 .ranking-table tr:hover {
   background: var(--bg-card-hover);
@@ -4168,20 +4173,20 @@ body.authenticated #auth-gate-screen {
             레벨(Lv.1~100) 및 누적 경험치(XP) 기준 전체 순위 • 실시간 반영
           </p>
         </div>
-        <div style="display: flex; gap: 0.5rem; background: var(--bg-card); padding: 0.3rem; border-radius: 10px; border: 1px solid var(--border-color);">
-          <button class="filter-pill active" id="rank-filter-all" onclick="rankingManager.setFilter('all')">전체 랭킹</button>
-          <button class="filter-pill" id="rank-filter-top10" onclick="rankingManager.setFilter('top10')">TOP 10</button>
-          <button class="filter-pill" id="rank-filter-near" onclick="rankingManager.setFilter('near')">내 순위 주변</button>
+        <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+          <div style="display: flex; gap: 0.4rem; background: var(--bg-card); padding: 0.3rem; border-radius: 10px; border: 1px solid var(--border-color);">
+            <button class="filter-pill active" id="rank-filter-all" onclick="rankingManager.setFilter('all')">전체 랭킹</button>
+            <button class="filter-pill" id="rank-filter-top10" onclick="rankingManager.setFilter('top10')">TOP 10</button>
+            <button class="filter-pill" id="rank-filter-near" onclick="rankingManager.setFilter('near')">내 순위 주변</button>
+          </div>
+          <button id="btn-scroll-to-me" class="btn-scroll-to-me" onclick="rankingManager.scrollToMe()" title="랭킹 리더보드에서 내 위치로 바로 이동">
+            📍 내 위치 (#1위)
+          </button>
         </div>
       </div>
 
-      <!-- My Rank Highlight Card -->
-      <div id="my-ranking-summary-card">
-        <!-- Injected dynamically by rankingManager -->
-      </div>
-
-      <!-- TOP 3 Podium Showcase -->
-      <div class="podium-container" id="ranking-podium-showcase" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-bottom: 2rem;">
+      <!-- Horizontal 1st Place Champion Spotlight Banner -->
+      <div id="ranking-champion-spotlight">
         <!-- Injected dynamically by rankingManager -->
       </div>
 

@@ -4072,6 +4072,29 @@ var rankingManager = window.rankingManager = {
     this.render();
   },
 
+  scrollToMe() {
+    const all = this.getAllPlayers();
+    const me = all.find(p => p.isMe);
+    if (!me) return;
+
+    if (this.currentFilter === 'top10' && me.rank > 10) {
+      this.setFilter('all');
+    }
+
+    setTimeout(() => {
+      const myRow = document.querySelector('.ranking-row-me');
+      if (myRow) {
+        myRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        myRow.classList.remove('pulse-me-highlight');
+        void myRow.offsetWidth;
+        myRow.classList.add('pulse-me-highlight');
+        setTimeout(() => {
+          myRow.classList.remove('pulse-me-highlight');
+        }, 2000);
+      }
+    }, 50);
+  },
+
   getAllPlayers() {
     const u = app.userState;
     const lvlInfo = app.getLevelInfo(u.xp);
@@ -4154,139 +4177,67 @@ var rankingManager = window.rankingManager = {
     const totalCount = all.length;
     const topPct = Math.max(1, Math.round((myRank / totalCount) * 100));
 
-    // 1. 내 랭킹 요약 카드 렌더링
-    const summaryCard = document.getElementById('my-ranking-summary-card');
-    if (summaryCard && me) {
-      const nextRival = all[myRank - 2]; // 내 바로 위 순위자
-      const xpToOvertake = nextRival ? Math.max(0, nextRival.xp - me.xp + 10) : 0;
-
-      summaryCard.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 1rem;">
-          <div style="font-size: 2.8rem; background: var(--bg-surface); width: 68px; height: 68px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #3b82f6;">
-            ${me.avatar}
-          </div>
-          <div>
-            <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
-              <span style="font-size: 1.4rem; font-weight: 800; color: var(--accent-gold);">현재 나의 순위: #${myRank}위</span>
-              <span style="font-size: 0.78rem; background: rgba(59, 130, 246, 0.18); color: var(--accent-blue-title); padding: 2px 8px; border-radius: 12px; font-weight: 800; white-space: nowrap;">
-                상위 ${topPct}%
-              </span>
-            </div>
-            <div style="font-size: 0.95rem; color: var(--text-main); margin-top: 0.25rem; display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
-              <strong>${me.name}</strong>
-              ${me.kakao_nickname ? `<span style="font-size: 0.75rem; color: #b45309; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 4px; padding: 1px 6px; font-weight: 700; white-space: nowrap;">💬 카톡: ${me.kakao_nickname}</span>` : ''}
-              ${me.isCertified ? `<span style="font-size: 0.68rem; background: rgba(16, 185, 129, 0.2); color: #047857; border: 1px solid rgba(16, 185, 129, 0.4); padding: 1px 5px; border-radius: 4px; font-weight: 800; white-space: nowrap;">⭐ 인증회원</span>` : ''}
-              • <span class="rank-badge ${me.badgeClass}">${me.tierBadge}</span> • <span style="color: var(--accent-blue-title); font-weight: 700; white-space: nowrap;">Lv.${me.level}</span>
-            </div>
-          </div>
-        </div>
-
-        <div style="text-align: right;">
-          <div style="font-size: 0.8rem; color: var(--text-dim);">누적 경험치</div>
-          <div style="font-size: 1.3rem; font-weight: 800; color: var(--accent-gold); white-space: nowrap;">${me.xp.toLocaleString()} XP</div>
-          ${nextRival ? `
-            <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.25rem; white-space: nowrap;">
-              #${nextRival.rank}위(${nextRival.name}) 역전까지: <strong style="color: var(--accent-blue-title);">+${xpToOvertake} XP</strong>
-            </div>
-          ` : `
-            <div style="font-size: 0.78rem; color: #047857; font-weight: 800; margin-top: 0.25rem; white-space: nowrap;">
-              👑 전체 1위 독주 중!
-            </div>
-          `}
-        </div>
-      `;
+    // '내 위치' 버튼 텍스트 업데이트
+    const btnScrollToMe = document.getElementById('btn-scroll-to-me');
+    if (btnScrollToMe) {
+      btnScrollToMe.innerHTML = `📍 내 위치 (#${myRank}위)`;
     }
 
-    // 2. TOP 3 포디움 렌더링
-    const podiumShowcase = document.getElementById('ranking-podium-showcase');
-    if (podiumShowcase) {
-      if (all.length === 1) {
-        // 단 1명의 유저만 있을 때
-        const p = all[0];
-        podiumShowcase.innerHTML = `
-          <div class="podium-card podium-rank-1" style="max-width: 320px; margin: 0 auto; order: 1;">
-            <div class="podium-crown">👑</div>
-            <div class="podium-avatar">${p.avatar}</div>
-            <div style="font-size: 1.1rem; font-weight: 800; color: var(--accent-gold); margin-bottom: 0.2rem; white-space: nowrap;">
-              🥇 1위 (챔피언)
-            </div>
-            <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; gap: 0.3rem; flex-wrap: wrap;">
-              <span>${p.name}</span>
-              ${p.isMe ? '<span style="color: #3b82f6; font-size: 0.75rem;">(나)</span>' : ''}
-              ${p.isCertified ? '<span style="color: #047857; font-size: 0.72rem;" title="클라우드 정회원">⭐</span>' : ''}
-            </div>
-            ${p.kakao_nickname ? `<div style="font-size: 0.72rem; color: #b45309; margin-bottom: 0.35rem; font-weight: 600; white-space: nowrap;">💬 ${p.kakao_nickname}</div>` : ''}
-            <span class="rank-badge ${p.badgeClass}" style="margin-bottom: 0.5rem;">${p.tierBadge}</span>
-            <div style="font-size: 0.85rem; font-weight: 800; color: var(--accent-blue-title); white-space: nowrap;">
-              Lv.${p.level} • ${p.xp.toLocaleString()} XP
-            </div>
-          </div>
-        `;
-      } else if (all.length === 2) {
+    // 1. Horizontal 1위 챔피언 스포트라이트 배너 렌더링 (가로 와이드형)
+    const championSpotlight = document.getElementById('ranking-champion-spotlight');
+    if (championSpotlight) {
+      if (all.length > 0) {
         const p1 = all[0];
-        const p2 = all[1];
-        podiumShowcase.innerHTML = `
-          <div class="podium-card podium-rank-2" style="order: 1;">
-            <div class="podium-avatar">${p2.avatar}</div>
-            <div style="font-size: 1.1rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.2rem; white-space: nowrap;">🥈 2위</div>
-            <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; gap: 0.3rem; flex-wrap: wrap;">
-              <span>${p2.name}</span>
-              ${p2.isMe ? '<span style="color: #3b82f6; font-size: 0.75rem;">(나)</span>' : ''}
-              ${p2.isCertified ? '<span style="color: #047857; font-size: 0.72rem;">⭐</span>' : ''}
+        championSpotlight.innerHTML = `
+          <div class="champion-spotlight-banner">
+            <div style="display: flex; align-items: center; gap: 0.9rem;">
+              <div style="position: relative; flex-shrink: 0;">
+                <div style="font-size: 2.2rem; width: 56px; height: 56px; border-radius: 50%; background: var(--bg-surface); border: 2px solid #f59e0b; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(245, 158, 11, 0.35);">
+                  ${p1.avatar}
+                </div>
+                <span style="position: absolute; top: -10px; right: -6px; font-size: 1.25rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));" title="시즌 챔피언">👑</span>
+              </div>
+              <div>
+                <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.25rem;">
+                  <span style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; font-weight: 900; font-size: 0.75rem; padding: 2px 8px; border-radius: 12px; letter-spacing: 0.02em; box-shadow: 0 2px 6px rgba(245, 158, 11, 0.4);">
+                    🥇 1위 • 시즌 챔피언
+                  </span>
+                  ${p1.isMe ? '<span class="my-rank-indicator-pill">👤 나 (MY RANK)</span>' : ''}
+                  ${p1.isCertified ? '<span style="font-size: 0.68rem; background: rgba(16, 185, 129, 0.2); color: #047857; border: 1px solid rgba(16, 185, 129, 0.4); padding: 1px 5px; border-radius: 4px; font-weight: 800; white-space: nowrap;">⭐ 인증회원</span>' : ''}
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                  <strong style="font-size: 1.15rem; color: var(--text-main); font-weight: 800;">${p1.name}</strong>
+                  ${p1.kakao_nickname ? `<span style="font-size: 0.72rem; color: #b45309; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 4px; padding: 1px 5px; font-weight: 600; white-space: nowrap;">💬 ${p1.kakao_nickname}</span>` : ''}
+                  <span class="rank-badge ${p1.badgeClass}" style="font-size: 0.75rem;">${p1.tierBadge}</span>
+                  <span style="font-size: 0.78rem; color: var(--text-dim);">${p1.style} 스타일</span>
+                </div>
+              </div>
             </div>
-            ${p2.kakao_nickname ? `<div style="font-size: 0.72rem; color: #b45309; margin-bottom: 0.35rem; font-weight: 600; white-space: nowrap;">💬 ${p2.kakao_nickname}</div>` : ''}
-            <span class="rank-badge ${p2.badgeClass}" style="margin-bottom: 0.5rem;">${p2.tierBadge}</span>
-            <div style="font-size: 0.85rem; font-weight: 800; color: var(--accent-blue-title); white-space: nowrap;">Lv.${p2.level} • ${p2.xp.toLocaleString()} XP</div>
-          </div>
-          <div class="podium-card podium-rank-1" style="order: 2;">
-            <div class="podium-crown">👑</div>
-            <div class="podium-avatar">${p1.avatar}</div>
-            <div style="font-size: 1.1rem; font-weight: 800; color: var(--accent-gold); margin-bottom: 0.2rem; white-space: nowrap;">🥇 1위</div>
-            <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; gap: 0.3rem; flex-wrap: wrap;">
-              <span>${p1.name}</span>
-              ${p1.isMe ? '<span style="color: #3b82f6; font-size: 0.75rem;">(나)</span>' : ''}
-              ${p1.isCertified ? '<span style="color: #047857; font-size: 0.72rem;">⭐</span>' : ''}
+
+            <div style="display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; margin-left: auto;">
+              <div style="text-align: right;">
+                <div style="font-size: 0.75rem; color: var(--text-dim);">누적 획득 경험치</div>
+                <div style="font-size: 1.25rem; font-weight: 900; color: var(--accent-gold); white-space: nowrap;">
+                  ${p1.xp.toLocaleString()} <span style="font-size: 0.82rem; font-weight: 700;">XP</span>
+                </div>
+              </div>
+              <div style="background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 10px; padding: 0.45rem 0.85rem; text-align: center; white-space: nowrap;">
+                <div style="font-size: 0.72rem; color: var(--text-muted);">현재 레벨</div>
+                <div style="font-size: 1.1rem; font-weight: 900; color: var(--accent-blue-title);">Lv.${p1.level}</div>
+              </div>
+              <div class="col-hide-mobile" style="background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 10px; padding: 0.45rem 0.85rem; text-align: center; white-space: nowrap;">
+                <div style="font-size: 0.72rem; color: var(--text-muted);">마스터 기록</div>
+                <div style="font-size: 0.88rem; font-weight: 800; color: #10b981;">📖 ${p1.articles}편 • 🎯 ${p1.quizzes}개</div>
+              </div>
             </div>
-            ${p1.kakao_nickname ? `<div style="font-size: 0.72rem; color: #b45309; margin-bottom: 0.35rem; font-weight: 600; white-space: nowrap;">💬 ${p1.kakao_nickname}</div>` : ''}
-            <span class="rank-badge ${p1.badgeClass}" style="margin-bottom: 0.5rem;">${p1.tierBadge}</span>
-            <div style="font-size: 0.85rem; font-weight: 800; color: var(--accent-blue-title); white-space: nowrap;">Lv.${p1.level} • ${p1.xp.toLocaleString()} XP</div>
           </div>
         `;
       } else {
-        const top3 = all.slice(0, 3);
-        const order = [top3[1], top3[0], top3[2]];
-        const ranks = [2, 1, 3];
-
-        podiumShowcase.innerHTML = order.map((p, i) => {
-          const r = ranks[i];
-          const isGold = (r === 1);
-          const medal = r === 1 ? '🥇 1위' : (r === 2 ? '🥈 2위' : '🥉 3위');
-          const cardClass = r === 1 ? 'podium-rank-1' : (r === 2 ? 'podium-rank-2' : 'podium-rank-3');
-
-          return `
-            <div class="podium-card ${cardClass}" style="${isGold ? 'order: 2;' : (r === 2 ? 'order: 1;' : 'order: 3;')}">
-              ${isGold ? '<div class="podium-crown">👑</div>' : ''}
-              <div class="podium-avatar">${p.avatar}</div>
-              <div style="font-size: 1.1rem; font-weight: 800; color: ${isGold ? 'var(--accent-gold)' : 'var(--text-main)'}; margin-bottom: 0.2rem; white-space: nowrap;">
-                ${medal}
-              </div>
-              <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; gap: 0.3rem; flex-wrap: wrap;">
-                <span>${p.name}</span>
-                ${p.isMe ? '<span style="color: #3b82f6; font-size: 0.75rem;">(나)</span>' : ''}
-                ${p.isCertified ? '<span style="color: #047857; font-size: 0.72rem;" title="클라우드 정회원">⭐</span>' : ''}
-              </div>
-              ${p.kakao_nickname ? `<div style="font-size: 0.72rem; color: #b45309; margin-bottom: 0.35rem; font-weight: 600; white-space: nowrap;">💬 ${p.kakao_nickname}</div>` : ''}
-              <span class="rank-badge ${p.badgeClass}" style="margin-bottom: 0.5rem;">${p.tierBadge}</span>
-              <div style="font-size: 0.85rem; font-weight: 800; color: var(--accent-blue-title); white-space: nowrap;">
-                Lv.${p.level} • ${p.xp.toLocaleString()} XP
-              </div>
-            </div>
-          `;
-        }).join('');
+        championSpotlight.innerHTML = '';
       }
     }
 
-    // 3. 필터 적용 및 테이블 렌더링
+    // 2. 필터 적용 및 테이블 렌더링
     let displayList = all;
     if (this.currentFilter === 'top10') {
       displayList = all.slice(0, 10);
@@ -4306,8 +4257,11 @@ var rankingManager = window.rankingManager = {
 
         return `
           <tr class="${p.isMe ? 'ranking-row-me' : ''}" style="border-bottom: 1px solid var(--border-color); transition: background 0.15s ease;">
-            <td style="padding: 1rem 1.25rem; text-align: center; font-weight: 800; color: ${p.rank <= 3 ? 'var(--accent-gold)' : 'var(--text-dim)'}; font-size: 1.05rem; white-space: nowrap;">
-              ${rankBadge}
+            <td style="padding: 1rem 1.25rem; text-align: center; font-weight: 800; color: ${p.rank <= 3 ? 'var(--accent-gold)' : (p.isMe ? '#2563eb' : 'var(--text-dim)')}; font-size: 1.05rem; white-space: nowrap;">
+              <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <span>${rankBadge}</span>
+                ${p.isMe ? '<span style="font-size: 0.65rem; background: #2563eb; color: #fff; border-radius: 4px; padding: 1px 4px; font-weight: 800; margin-top: 2px; white-space: nowrap;">내 순위</span>' : ''}
+              </div>
             </td>
             <td style="padding: 1rem 1.25rem;">
               <div style="display: flex; align-items: center; gap: 0.65rem;">
@@ -4317,7 +4271,7 @@ var rankingManager = window.rankingManager = {
                     <strong style="color: var(--text-main); font-size: 0.95rem; word-break: keep-all;">${p.name}</strong>
                     ${p.kakao_nickname ? `<span style="font-size: 0.72rem; color: #b45309; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 4px; padding: 1px 5px; font-weight: 600; white-space: nowrap;">💬 카톡: ${p.kakao_nickname}</span>` : ''}
                     ${p.isCertified ? `<span style="font-size: 0.68rem; background: rgba(16, 185, 129, 0.2); color: #047857; border: 1px solid rgba(16, 185, 129, 0.4); padding: 1px 5px; border-radius: 4px; font-weight: 800; white-space: nowrap;">⭐ 인증회원</span>` : ''}
-                    ${p.isMe ? '<span style="background: #3b82f6; color: #fff; font-size: 0.68rem; font-weight: 800; padding: 1px 5px; border-radius: 4px; white-space: nowrap;">나</span>' : ''}
+                    ${p.isMe ? '<span class="my-rank-indicator-pill">👤 나 (MY RANK)</span>' : ''}
                   </div>
                   <span style="font-size: 0.75rem; color: var(--text-dim); word-break: keep-all;">${p.style} 스타일</span>
                 </div>
