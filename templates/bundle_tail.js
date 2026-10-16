@@ -682,6 +682,7 @@ var app = window.app = {
     characterManager.init();
     this.updateUserBar();
     roadmap.load();
+    reader.autoSelectUserLevel();
     reader.loadArticles();
     matrix.init();
     glossary.load();
@@ -740,6 +741,11 @@ var app = window.app = {
       trainer.init();
     } else if (viewId === 'roadmap') {
       roadmap.load();
+    } else if (viewId === 'articles') {
+      if (window.reader) {
+        reader.autoSelectUserLevel();
+        reader.loadArticles();
+      }
     } else if (viewId === 'glossary') {
       glossary.load();
     } else if (viewId === 'ranking') {
@@ -1118,14 +1124,31 @@ const reader = {
   articles: DB.articles,
   currentArticle: null,
   activeCategory: 'all',
-  activeLevel: 'all',
+  activeLevel: 'Level 1',
   searchQuery: '',
   displayLimit: 24,
   unlockedOnly: false,
   readTimer: null,
   secondsRemaining: 45,
 
+  autoSelectUserLevel() {
+    const userLvl = (window.app && app.userState) ? (app.getLevelInfo(app.userState.xp).level || 1) : 1;
+    let target = 'Level 1';
+    if (userLvl >= 85) target = 'Level 6';
+    else if (userLvl >= 65) target = 'Level 5';
+    else if (userLvl >= 45) target = 'Level 4';
+    else if (userLvl >= 25) target = 'Level 3';
+    else if (userLvl >= 10) target = 'Level 2';
+    else target = 'Level 1';
+    this.activeLevel = target;
+    this.displayLimit = 24;
+    this.updateFilterPillsUI();
+  },
+
   loadArticles() {
+    if (!this.activeLevel || this.activeLevel === 'all') {
+      this.autoSelectUserLevel();
+    }
     this.updateFilterPillsUI();
     this.renderArticleCards();
   },
@@ -1175,7 +1198,7 @@ const reader = {
 
   resetFilters() {
     this.activeCategory = 'all';
-    this.activeLevel = 'all';
+    this.autoSelectUserLevel();
     this.searchQuery = '';
     const input = document.getElementById('article-search-input');
     if (input) input.value = '';
@@ -1481,6 +1504,77 @@ const reader = {
     app.navigate('reader');
   },
 
+  translateHeadingText(text) {
+    if (!text) return '';
+    let clean = text.trim();
+    clean = clean.replace(/\s*\((?:Overview|Conclusion|Summary|Deeper Stacks|Preflop Ranges|Barreling the Turn|Preflop ICM|Postflop ICM|Continuation Betting)\)\s*$/i, '');
+    const exactMap = {
+      "Where Does EV Come From?": "기대값(EV)은 어디에서 발생하는가?",
+      "Fold EV, Denying Equity and Folding out Worse": "폴드 EV: 에퀴티 차단과 열세 핸드 폴드 유도",
+      "Thin Block-Bet Example": "씬 블락-벳(Block-Bet) 실전 예시",
+      "EV Relativity": "기대값(EV)의 상대성 원리",
+      "EV Units of Measurement": "기대값(EV)의 측정 단위 (bb, $, chips)",
+      "EV Defined": "기대값(EV)의 수학적 정의",
+      "Deriving Other Poker Metrics from EV": "기대값(EV)으로부터 다른 포커 지표 도출하기",
+      "Donk Betting": "동크 벳(Donk Bet) 전략",
+      "Responding to Donk Bets": "동크 벳에 대한 올바른 대응법",
+      "Flop Example": "플랍 실전 핸드 예시",
+      "Turn Example": "턴 실전 핸드 예시",
+      "River Example": "리버 실전 핸드 예시",
+      "A Dynamic Flop": "다이내믹(웻) 플랍에서의 전략",
+      "A Static Flop": "스태틱(드라이) 플랍에서의 전략",
+      "A Turn Example": "턴 액션 실전 예시",
+      "Study the Games You Actually Play": "실제 플레이하는 게임 포맷 집중 분석",
+      "Hand Upload Integration": "핸드 히스토리 업로드 및 연동 가이드",
+      "Roadmap & Current Limitations": "개발 로드맵 및 현재의 한계점",
+      "Keeping the Game Fair": "게임 공정성과 무결성 유지 정책",
+      "Why Late-Stage Decisions Matter": "토너먼트 후반부 의사결정이 중요한 이유",
+      "Why Fold EV Isn't Always Zero": "폴드 EV가 항상 0이 아닌 이유",
+      "Bubble Factors": "버블 팩터(Bubble Factor) 계산과 적용",
+      "Range Advantage": "레인지 어드밴티지(Range Advantage) 분석",
+      "Nut Advantage": "너트 어드밴티지(Nut Advantage) 분석",
+      "Cheat Sheet": "실전 요약 치트시트",
+      "The Experiment": "실전 실험 및 데이터 분석",
+      "Methodology": "연구 방법론 및 솔버 세팅",
+      "Practice": "실전 연습 및 트레이닝",
+      "The Hand": "실전 핸드 히스토리 분석",
+      "New Solutions": "신규 솔루션 업데이트",
+      "New Features": "신규 기능 안내",
+      "Improvements": "성능 개선 및 업데이트",
+      "Bug Fixes": "오류 수정 사항",
+      "What's Next?": "향후 로드맵 및 다음 단계",
+      "What's Next": "향후 로드맵 및 다음 단계",
+      "Looking Ahead": "향후 전망 및 발전 방향",
+      "Key Takeaways": "핵심 핵심 요점 정리",
+      "Final Thoughts": "최종 결론 및 실전 팁",
+      "Shallower Stacks": "숏스택 상황에서의 전략",
+      "Deeper Stacks": "딥스택 상황에서의 전략",
+      "Asymmetric Stacks": "비대칭 스택 상황 분석",
+      "Medium Stacks": "미들스택 상황에서의 전략",
+      "Shallow Stacks": "숏스택 상황에서의 전략",
+      "FAQ": "자주 묻는 질문 (FAQ)",
+      "Quiz": "핵심 확인 퀴즈",
+      "Small C-Bet Boards": "스몰 C-bet 추천 보드",
+      "Medium C-bet Boards": "미디엄 C-bet 추천 보드",
+      "Large C-bet Boards": "라지 C-bet 추천 보드"
+    };
+    const m = clean.match(/^(\d+\.\s*)(.*)$/);
+    if (m) {
+      const numPrefix = m[1];
+      const core = m[2].trim();
+      if (exactMap[core]) return numPrefix + exactMap[core];
+      if (/^Example\s*(\d+)\s*:/i.test(core)) return numPrefix + core.replace(/^Example\s*(\d+)\s*:/i, '실전 예시 $1:');
+      if (/^Example\s*(\d+)/i.test(core)) return numPrefix + core.replace(/^Example\s*(\d+)/i, '실전 예시 $1');
+      if (/^Example\s*:/i.test(core)) return numPrefix + core.replace(/^Example\s*:/i, '실전 예시: ');
+    } else {
+      if (exactMap[clean]) return exactMap[clean];
+      if (/^Example\s*(\d+)\s*:/i.test(clean)) return clean.replace(/^Example\s*(\d+)\s*:/i, '실전 예시 $1:');
+      if (/^Example\s*(\d+)/i.test(clean)) return clean.replace(/^Example\s*(\d+)/i, '실전 예시 $1');
+      if (/^Example\s*:/i.test(clean)) return clean.replace(/^Example\s*:/i, '실전 예시: ');
+    }
+    return clean;
+  },
+
   generateTOC(bodyEl) {
     const tocList = document.getElementById('reader-toc-list');
     const headings = bodyEl.querySelectorAll('h2');
@@ -1492,7 +1586,9 @@ const reader = {
     tocList.innerHTML = Array.from(headings).map((h, i) => {
       const id = `heading-${i}`;
       h.id = id;
-      return `<li><a href="#${id}" onclick="event.preventDefault(); document.getElementById('${id}').scrollIntoView({behavior: 'smooth'})">${h.innerText}</a></li>`;
+      const cleanTitle = this.translateHeadingText(h.innerText);
+      h.innerText = cleanTitle;
+      return `<li><a href="#${id}" onclick="event.preventDefault(); document.getElementById('${id}').scrollIntoView({behavior: 'smooth'})">${cleanTitle}</a></li>`;
     }).join('');
   },
 
