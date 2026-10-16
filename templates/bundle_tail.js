@@ -268,6 +268,22 @@ const LEVEL_TIERS = PROMOTION_TIERS.map(pt => ({
   tierName: pt.name
 }));
 
+// 테마에 따른 고대비 전직 티어 색상 헬퍼
+function getTierColor(pt) {
+  if (!pt) return '#94a3b8';
+  const isLight = typeof document !== 'undefined' && document.body && document.body.classList.contains('theme-light');
+  if (isLight) {
+    if (pt.tier === 0) return '#475569';
+    if (pt.tier === 1) return '#059669';
+    if (pt.tier === 2) return '#2563eb';
+    if (pt.tier === 3) return '#dc2626';
+    if (pt.tier === 4) return '#7c3aed';
+    if (pt.tier === 5) return '#b45309'; // Deep Amber (contrast > 5.5:1 on white)
+    if (pt.tier === 6) return '#a16207'; // Deep Golden Brown (contrast > 6:1 on white)
+  }
+  return pt.color || '#94a3b8';
+}
+
 const PLAYSTYLES = {
   TAG: { title: "⚡ TAG (타이트 어그레시브)", tag: "TAG", bio: "엄선된 프리미엄 핸드로 강력하게 주도권을 잡는 정석적인 승리 공식" },
   LAG: { title: "🔥 LAG (루즈 어그레시브)", tag: "LAG", bio: "넓은 레인지와 포스트플랍 공격성으로 상대에게 끊임없는 압박 부여" },
@@ -578,6 +594,20 @@ var characterManager = window.characterManager = {
     if (dSt) dSt.innerText = styleInfo.title;
     if (dTr) dTr.innerText = lvlInfo.title;
 
+    // 🦉 PLO 3부작 완독 특별 칭호 표시
+    const dSpecial = document.getElementById('dash-special-title');
+    const isPloComplete = ['plo-just-changed-forever', 'how-gto-wizard-solved-plo', 'plo-upgrades-custom-hu-solving-postflop-icm-nodelocking-more']
+      .every(id => (u.completed_articles || []).includes(id));
+    if (dSpecial) {
+      if (u.plo_title_unlocked || isPloComplete) {
+        dSpecial.style.display = 'inline-flex';
+        dSpecial.innerText = '🦉 오마하의 현인';
+        dSpecial.title = '4장 오마하(PLO) 3부작 완독자 전용 특별 칭호';
+      } else {
+        dSpecial.style.display = 'none';
+      }
+    }
+
     const dRank = document.getElementById('dash-char-rank');
     if (dRank && window.rankingManager && rankingManager.getUserRank) {
       const rInfo = rankingManager.getUserRank();
@@ -850,7 +880,7 @@ var app = window.app = {
         title: '에러 교정과 멘탈 게임 강화'
       },
       9: {
-        articleIds: ['how_pros_use_solvers_to_crush_pool_leaks', 'how-to-leverage-gto-wizards-ev-comparison-tool', 'plo-just-changed-forever'],
+        articleIds: ['how_pros_use_solvers_to_crush_pool_leaks', 'how-to-leverage-gto-wizards-ev-comparison-tool', 'crush-calling-stations-with-these-3-solver-approved-strategies'],
         quizIds: ['quiz-16', 'quiz-17'],
         title: '1차 전직 대비: 솔버 활용 및 필드 공략'
       }
@@ -859,9 +889,10 @@ var app = window.app = {
     let track = curatedTracks[lvl];
 
     if (!track) {
-      // Lv.10 이상 구간별 자동 순환 트랙
+      // Lv.10 이상 구간별 자동 순환 트랙 (외전 PLO 제외)
       const tierNum = lvl >= 85 ? 6 : lvl >= 65 ? 5 : lvl >= 45 ? 4 : lvl >= 25 ? 3 : 2;
       const tierArticles = allArticles.filter(a => {
+        if (['plo-just-changed-forever', 'how-gto-wizard-solved-plo', 'plo-upgrades-custom-hu-solving-postflop-icm-nodelocking-more'].includes(a.id)) return false;
         if (tierNum === 2) return a.level && a.level.includes('Lv.10~24');
         if (tierNum === 3) return a.level && a.level.includes('Lv.25~44');
         if (tierNum === 4) return a.level && a.level.includes('Lv.45~64');
@@ -1132,6 +1163,14 @@ const reader = {
   readTimer: null,
   secondsRemaining: 45,
 
+  isPloArticle(a) {
+    if (!a) return false;
+    const id = a.id || a.slug || '';
+    if (id === 'plo-just-changed-forever' || id === 'how-gto-wizard-solved-plo' || id === 'plo-upgrades-custom-hu-solving-postflop-icm-nodelocking-more') return true;
+    const text = `${id} ${a.title_ko || ''} ${a.title || ''} ${a.category || ''}`.toLowerCase();
+    return /\bplo\b|omaha|오마하/.test(text);
+  },
+
   autoSelectUserLevel() {
     const userLvl = (window.app && app.userState) ? (app.getLevelInfo(app.userState.xp).level || 1) : 1;
     let target = 'Level 1';
@@ -1165,10 +1204,12 @@ const reader = {
     this.activeCategory = cat;
     this.displayLimit = 24;
 
-    // Smart adjustment: if currently selected level has 0 items in this category, reset level to all
-    if (this.activeLevel !== 'all') {
+    // Smart adjustment: PLO외전 클릭 시 전체 난이도로 자동 전환
+    if (cat === '외전: PLO 오마하') {
+      this.activeLevel = 'all';
+    } else if (this.activeLevel !== 'all') {
       const matchWithLevel = this.articles.filter(a =>
-        (cat === 'all' || a.category === cat) && a.level.startsWith(this.activeLevel)
+        !this.isPloArticle(a) && (cat === 'all' || a.category === cat) && (a.level && a.level.startsWith(this.activeLevel))
       );
       if (matchWithLevel.length === 0) {
         this.activeLevel = 'all';
@@ -1183,10 +1224,9 @@ const reader = {
     this.activeLevel = lvl;
     this.displayLimit = 24;
 
-    // Smart adjustment: if currently selected category has 0 items in this level, reset category to all!
-    if (this.activeCategory !== 'all') {
+    if (this.activeCategory !== '외전: PLO 오마하' && this.activeCategory !== 'all') {
       const matchWithCategory = this.articles.filter(a =>
-        a.category === this.activeCategory && (lvl === 'all' || a.level.startsWith(lvl))
+        !this.isPloArticle(a) && a.category === this.activeCategory && (lvl === 'all' || (a.level && a.level.startsWith(lvl)))
       );
       if (matchWithCategory.length === 0) {
         this.activeCategory = 'all';
@@ -1232,6 +1272,7 @@ const reader = {
 
     // 3. Dynamically update Level pill counts and Lock badges based on active category & user level
     const userLvl = app.getLevelInfo(app.userState.xp).level;
+    const isPloCat = this.activeCategory === '외전: PLO 오마하';
     const levelMeta = {
       'Level 1': { title: '[입문] 동네 피쉬 (Lv.1~9)', req: 1, tierNum: 1 },
       'Level 2': { title: '[1차 전직] 펍 레귤러 (Lv.10~24)', req: 10, tierNum: 2 },
@@ -1244,16 +1285,23 @@ const reader = {
     document.querySelectorAll('#article-level-filters .filter-pill').forEach(pill => {
       const l = pill.dataset.lvl;
       if (l === 'all') {
-        const cnt = this.articles.filter(a => this.activeCategory === 'all' || a.category === this.activeCategory).length;
+        const cnt = this.articles.filter(a => {
+          if (isPloCat) return this.isPloArticle(a);
+          return !this.isPloArticle(a) && (this.activeCategory === 'all' || a.category === this.activeCategory);
+        }).length;
         pill.innerText = `전체 난이도 (${cnt})`;
         pill.style.opacity = '1';
       } else if (levelMeta[l]) {
         const meta = levelMeta[l];
         const isLocked = meta.req > userLvl;
-        const cnt = this.articles.filter(a => 
-          (this.activeCategory === 'all' || a.category === this.activeCategory) &&
-          (a.tier_num === meta.tierNum || a.tier_category === l || a.level.startsWith(l))
-        ).length;
+        const cnt = this.articles.filter(a => {
+          if (isPloCat) {
+            return this.isPloArticle(a) && (a.tier_num === meta.tierNum || a.tier_category === l || (a.level && a.level.startsWith(l)));
+          }
+          return !this.isPloArticle(a) &&
+            (this.activeCategory === 'all' || a.category === this.activeCategory) &&
+            (a.tier_num === meta.tierNum || a.tier_category === l || (a.level && a.level.startsWith(l)));
+        }).length;
         pill.innerText = `${isLocked ? '🔒 ' : '🔓 '}${meta.title} (${cnt})`;
         pill.style.opacity = (cnt === 0) ? '0.45' : '1';
       }
@@ -1269,11 +1317,19 @@ const reader = {
   renderArticleCards() {
     const container = document.getElementById('articles-grid-container');
     const userLvl = app.getLevelInfo(app.userState.xp).level;
+    const isPloCat = this.activeCategory === '외전: PLO 오마하';
+
     const filtered = this.articles.filter(a => {
-      if (this.activeCategory !== 'all' && a.category !== this.activeCategory) return false;
+      const isPlo = this.isPloArticle(a);
+      if (isPloCat) {
+        if (!isPlo) return false;
+      } else {
+        if (isPlo) return false; // 기본 홀덤 도서관에서는 PLO 숨김
+        if (this.activeCategory !== 'all' && a.category !== this.activeCategory) return false;
+      }
       if (this.activeLevel !== 'all') {
         const meta = { 'Level 1': 1, 'Level 2': 2, 'Level 3': 3, 'Level 4': 4, 'Level 5': 5, 'Level 6': 6 }[this.activeLevel];
-        const matchesLevel = a.tier_num === meta || a.tier_category === this.activeLevel || a.level.startsWith(this.activeLevel);
+        const matchesLevel = a.tier_num === meta || a.tier_category === this.activeLevel || (a.level && a.level.startsWith(this.activeLevel));
         if (!matchesLevel) return false;
       }
       if (this.unlockedOnly && (a.required_level || 1) > userLvl) return false;
@@ -1287,7 +1343,14 @@ const reader = {
     const totalCount = filtered.length;
     const slice = filtered.slice(0, this.displayLimit);
 
-    document.getElementById('article-count-label').innerText = `총 369편 중 ${totalCount}편 일치 (${slice.length}편 표시 중)`;
+    const countLabelEl = document.getElementById('article-count-label');
+    if (countLabelEl) {
+      if (isPloCat) {
+        countLabelEl.innerText = `외전 PLO 오마하 아티클 ${totalCount}편 (자유 열람 • 특별 칭호 코너)`;
+      } else {
+        countLabelEl.innerText = `총 366편 중 ${totalCount}편 일치 (${slice.length}편 표시 중)`;
+      }
+    }
 
     if (totalCount === 0) {
       container.innerHTML = `
@@ -1305,7 +1368,26 @@ const reader = {
       return;
     }
 
-    container.innerHTML = slice.map(a => {
+    const ploBannerHtml = isPloCat ? `
+      <div style="grid-column: 1 / -1; background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(88, 28, 135, 0.25)); border: 1.5px solid #a855f7; border-radius: 14px; padding: 1.25rem 1.5rem; margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 0.85rem;">
+          <span style="font-size: 2.2rem;">🦉</span>
+          <div>
+            <div style="font-size: 1.1rem; font-weight: 800; color: #c084fc; margin-bottom: 0.25rem;">
+              외전: PLO(팟 리밋 오마하) 특별 학습 코너
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-main); margin: 0; line-height: 1.5;">
+              텍사스 노리밋 홀덤 레벨업 및 전직 심사와는 무관한 <strong>자유 외전 코너</strong>입니다. 아래 3부작을 모두 완독하시면 특별 칭호 <strong>[오마하의 현인 🦉]</strong>을 수여합니다!
+            </p>
+          </div>
+        </div>
+        <div style="font-size: 0.82rem; font-weight: 800; color: #fbbf24; background: rgba(0,0,0,0.3); padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(251, 191, 36, 0.3);">
+          특전: [오마하의 현인 🦉] 칭호
+        </div>
+      </div>
+    ` : '';
+
+    container.innerHTML = ploBannerHtml + slice.map(a => {
       const isCompleted = app.userState.completed_articles.includes(a.id);
       const isLocked = (a.required_level || 1) > userLvl;
 
@@ -1730,11 +1812,33 @@ const reader = {
       app.userState.completed_articles.push(this.currentArticle.id);
       app.addXP(50, 'article');
       characterManager.showToast('📖 아티클 정독 완료! (+50 XP 획득)');
+      this.checkPloTitleUnlock();
     }
     
     this.updateCompletionUI(true, 0);
 
     this.renderArticleCards();
+  },
+
+  checkPloTitleUnlock() {
+    const ploIds = [
+      'plo-just-changed-forever',
+      'how-gto-wizard-solved-plo',
+      'plo-upgrades-custom-hu-solving-postflop-icm-nodelocking-more'
+    ];
+    const u = app.userState;
+    if (!u) return;
+    const completedAllPlo = ploIds.every(id => (u.completed_articles || []).includes(id));
+    if (completedAllPlo && !u.plo_title_unlocked) {
+      u.plo_title_unlocked = true;
+      storage.save(u);
+      setTimeout(() => {
+        characterManager.showToast('🦉 축하합니다! PLO 오마하 3부작 완독 달성! 특별 칭호 <strong>[오마하의 현인 🦉]</strong>을 획득하셨습니다!');
+        if (window.characterManager && characterManager.renderDashboard) {
+          characterManager.renderDashboard();
+        }
+      }, 1200);
+    }
   }
 };
 
@@ -2576,6 +2680,14 @@ var roadmap = window.roadmap = {
         desc: "13x13 매트릭스 5개 이상 포지션 탐색",
         icon: "📊",
         unlocked: (userState.explored_ranges && userState.explored_ranges.length >= 5)
+      },
+      {
+        id: "plo_sage",
+        title: "오마하의 현인",
+        desc: "4장의 세계! PLO 3부작 완독 달성 시 [오마하의 현인 🦉] 특별 칭호 획득",
+        icon: "🦉",
+        unlocked: ['plo-just-changed-forever', 'how-gto-wizard-solved-plo', 'plo-upgrades-custom-hu-solving-postflop-icm-nodelocking-more']
+          .every(id => (userState.completed_articles || []).includes(id))
       }
     ];
 
@@ -3028,7 +3140,7 @@ var questManager = window.questManager = {
           </div>
           <div style="text-align: right;">
             <span style="font-size: 0.8rem; color: var(--text-dim); display: block;">누적 경험치</span>
-            <strong style="font-size: 1.1rem; color: #fbbf24;">${curXp} XP</strong>
+            <strong style="font-size: 1.1rem; color: var(--accent-gold);">${curXp} XP</strong>
           </div>
         </div>
 
@@ -3050,7 +3162,7 @@ var questManager = window.questManager = {
             <h4 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin: 0 0 0.25rem; display: flex; align-items: center; gap: 0.4rem;">
               <span>🎯</span> Lv.${curLvl} ➔ Lv.${nextLvl} 레벨업 필수 지정 미션
             </h4>
-            <p style="font-size: 0.82rem; color: #60a5fa; margin: 0; font-weight: 700;">
+            <p style="font-size: 0.82rem; color: var(--accent-blue-title); margin: 0; font-weight: 700;">
               ✨ ${missions.title}
             </p>
           </div>
@@ -3060,14 +3172,14 @@ var questManager = window.questManager = {
                 🎉 필수 미션 모두 완료!
               </span>
             ` : `
-              <span style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); padding: 4px 12px; border-radius: 14px; font-size: 0.82rem; font-weight: 800;">
+              <span class="quest-status-pending" style="padding: 4px 12px; border-radius: 14px; font-size: 0.82rem; font-weight: 800;">
                 ⏳ 미션 진행 중 (${completedArtsCount}/${reqArticles.length} 아티클, ${completedQsCount}/${reqQuizzes.length} 퀴즈)
               </span>
             `}
           </div>
         </div>
 
-        <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 10px; padding: 0.75rem 1rem; margin-bottom: 1.15rem; font-size: 0.82rem; color: #93c5fd; line-height: 1.5;">
+        <div class="quest-rule-notice" style="border-radius: 10px; padding: 0.75rem 1rem; margin-bottom: 1.15rem; font-size: 0.82rem; line-height: 1.5;">
           💡 <strong>순차 레벨업 규칙</strong>: 레벨업을 위해서는 경험치(XP)뿐만 아니라, 현재 레벨에 <strong>지정된 필수 아티클과 스팟 퀴즈를 모두 완료</strong>해야 다음 레벨로 승급합니다.
         </div>
 
@@ -3078,7 +3190,7 @@ var questManager = window.questManager = {
               <span style="font-size: 1.3rem;">📖</span>
               <strong style="font-size: 0.96rem; color: var(--text-main);">지정 필수 GTO 아티클</strong>
             </div>
-            <span style="font-size: 0.82rem; font-weight: 800; color: ${completedArtsCount === reqArticles.length ? '#34d399' : '#fbbf24'};">
+            <span style="font-size: 0.82rem; font-weight: 800; color: ${completedArtsCount === reqArticles.length ? '#34d399' : 'var(--accent-gold)'};">
               ${completedArtsCount} / ${reqArticles.length} 완독
             </span>
           </div>
@@ -3088,12 +3200,12 @@ var questManager = window.questManager = {
               const isDone = (u.completed_articles || []).includes(a.id || a.slug);
               const title = a.title_ko || a.title || a.title_en || a.id;
               return `
-                <div style="background: ${isDone ? 'rgba(16, 185, 129, 0.06)' : 'rgba(0,0,0,0.12)'}; border: 1px solid ${isDone ? 'rgba(16, 185, 129, 0.35)' : 'var(--border-color)'}; border-radius: 10px; padding: 0.75rem 0.9rem; display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                <div style="background: ${isDone ? 'rgba(16, 185, 129, 0.06)' : 'var(--quest-item-bg)'}; border: 1px solid ${isDone ? 'rgba(16, 185, 129, 0.35)' : 'var(--border-color)'}; border-radius: 10px; padding: 0.75rem 0.9rem; display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
                   <div style="flex: 1; min-width: 220px;">
                     <div style="display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.25rem;">
                       <span style="font-size: 0.95rem;">${isDone ? '✅' : '⏳'}</span>
                       <span style="font-size: 0.72rem; color: var(--text-dim); background: rgba(59, 130, 246, 0.12); padding: 1px 6px; border-radius: 6px;">${a.category || '이론'}</span>
-                      <span style="font-size: 0.72rem; color: #fbbf24; font-weight: 700;">+50 XP</span>
+                      <span style="font-size: 0.72rem; color: var(--accent-gold); font-weight: 700;">+50 XP</span>
                     </div>
                     <div style="font-size: 0.92rem; font-weight: 700; color: var(--text-main); line-height: 1.4;">${title}</div>
                   </div>
@@ -3121,7 +3233,7 @@ var questManager = window.questManager = {
               <span style="font-size: 1.3rem;">🎯</span>
               <strong style="font-size: 0.96rem; color: var(--text-main);">지정 필수 실전 스팟 퀴즈</strong>
             </div>
-            <span style="font-size: 0.82rem; font-weight: 800; color: ${completedQsCount === reqQuizzes.length ? '#34d399' : '#fbbf24'};">
+            <span style="font-size: 0.82rem; font-weight: 800; color: ${completedQsCount === reqQuizzes.length ? '#34d399' : 'var(--accent-gold)'};">
               ${completedQsCount} / ${reqQuizzes.length} 정답
             </span>
           </div>
@@ -3131,12 +3243,12 @@ var questManager = window.questManager = {
               const isDone = (u.completed_quizzes || []).includes(q.id);
               const streetKo = { 'Preflop': '프리플랍', 'Flop': '플랍', 'Turn': '턴', 'River': '리버' }[q.street] || q.street || '스팟';
               return `
-                <div style="background: ${isDone ? 'rgba(16, 185, 129, 0.06)' : 'rgba(0,0,0,0.12)'}; border: 1px solid ${isDone ? 'rgba(16, 185, 129, 0.35)' : 'var(--border-color)'}; border-radius: 10px; padding: 0.75rem 0.9rem; display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                <div style="background: ${isDone ? 'rgba(16, 185, 129, 0.06)' : 'var(--quest-item-bg)'}; border: 1px solid ${isDone ? 'rgba(16, 185, 129, 0.35)' : 'var(--border-color)'}; border-radius: 10px; padding: 0.75rem 0.9rem; display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
                   <div style="flex: 1; min-width: 220px;">
                     <div style="display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.25rem;">
                       <span style="font-size: 0.95rem;">${isDone ? '✅' : '⏳'}</span>
                       <span style="font-size: 0.72rem; color: var(--text-dim); background: rgba(245, 158, 11, 0.12); padding: 1px 6px; border-radius: 6px;">${streetKo} • ${q.category || '스팟'}</span>
-                      <span style="font-size: 0.72rem; color: #fbbf24; font-weight: 700;">+50 XP</span>
+                      <span style="font-size: 0.72rem; color: var(--accent-gold); font-weight: 700;">+50 XP</span>
                     </div>
                     <div style="font-size: 0.92rem; font-weight: 700; color: var(--text-main); line-height: 1.4;">${q.title}</div>
                   </div>
@@ -3164,7 +3276,7 @@ var questManager = window.questManager = {
               <span style="font-size: 1.3rem;">📊</span>
               <strong style="font-size: 0.96rem; color: var(--text-main);">13x13 매트릭스 레인지 탐색</strong>
             </div>
-            <span style="font-size: 0.82rem; font-weight: 800; color: ${(exploredRangesCount >= targetRanges) ? '#34d399' : '#fbbf24'};">
+            <span style="font-size: 0.82rem; font-weight: 800; color: ${(exploredRangesCount >= targetRanges) ? '#34d399' : 'var(--accent-gold)'};">
               ${(exploredRangesCount >= targetRanges) ? '✅ 탐색 완료' : `⏳ 진행 중 (${exploredRangesCount} / ${targetRanges}개)`}
             </span>
           </div>
@@ -3175,7 +3287,7 @@ var questManager = window.questManager = {
 
           <!-- Progress Bar -->
           <div style="width: 100%; height: 8px; background: rgba(0,0,0,0.25); border-radius: 4px; overflow: hidden; margin-bottom: 0.75rem;">
-            <div style="width: ${rangePct}%; height: 100%; background: ${(exploredRangesCount >= targetRanges) ? 'linear-gradient(90deg, #10b981, #34d399)' : 'linear-gradient(90deg, #f59e0b, #fbbf24)'}; border-radius: 4px; transition: width 0.3s ease;"></div>
+            <div style="width: ${rangePct}%; height: 100%; background: ${(exploredRangesCount >= targetRanges) ? 'linear-gradient(90deg, #10b981, #34d399)' : 'linear-gradient(90deg, #f59e0b, var(--accent-gold))'}; border-radius: 4px; transition: width 0.3s ease;"></div>
           </div>
 
           <div style="background: rgba(0,0,0,0.15); border-radius: 8px; padding: 0.7rem 0.85rem; margin-bottom: 0.85rem; font-size: 0.8rem; color: var(--text-dim); line-height: 1.5;">
@@ -3205,13 +3317,13 @@ var questManager = window.questManager = {
             return `
               <div class="promo-step-card ${isPassed ? 'unlocked' : ''} ${isTarget ? 'active-target' : ''}">
                 <div style="font-size: 1.8rem; margin-bottom: 0.35rem;">${pt.icon}</div>
-                <div style="font-size: 0.9rem; font-weight: 800; color: ${pt.color}; margin-bottom: 0.2rem;">
+                <div style="font-size: 0.9rem; font-weight: 800; color: ${getTierColor(pt)}; margin-bottom: 0.2rem;">
                   ${pt.name}
                 </div>
                 <span style="font-size: 0.72rem; color: var(--text-dim); display: block; margin-bottom: 0.4rem;">
                   목표: Lv.${pt.targetLevel}
                 </span>
-                <div style="font-size: 0.78rem; font-weight: 700; color: ${isPassed ? '#34d399' : (isTarget ? '#fbbf24' : '#64748b')};">
+                <div style="font-size: 0.78rem; font-weight: 700; color: ${isPassed ? '#34d399' : (isTarget ? 'var(--accent-gold)' : '#64748b')};">
                   ${isPassed ? '✅ 전직 완료' : (isTarget ? '⚡ 시험 응시 가능!' : '🔒 레벨 미달')}
                 </div>
                 ${isTarget ? `
@@ -3401,7 +3513,7 @@ const promotionManager = {
             <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
               <span style="font-size: 1.6rem;">${tierInfo.icon}</span>
               <div>
-                <strong style="color: ${tierInfo.color}; font-size: 1.1rem;">${tierInfo.title}</strong>
+                <strong style="color: ${getTierColor(tierInfo)}; font-size: 1.1rem;">${tierInfo.title}</strong>
                 <div style="font-size: 0.8rem; color: var(--text-dim);">${tierInfo.desc}</div>
               </div>
             </div>
@@ -3811,22 +3923,23 @@ const guidebookManager = {
             const isEntry = pt.tier === 0;
             const lvlSpan = isEntry ? 'Lv.1 ~ Lv.9' : pt.tier === 1 ? 'Lv.10 ~ Lv.24' : pt.tier === 2 ? 'Lv.25 ~ Lv.44' : pt.tier === 3 ? 'Lv.45 ~ Lv.64' : pt.tier === 4 ? 'Lv.65 ~ Lv.84' : pt.tier === 5 ? 'Lv.85 ~ Lv.99' : 'Lv.100 (만렙)';
             const tierPrefix = isEntry ? '[입문]' : pt.tier === 6 ? '[최종 6차]' : `[${pt.tier}차 전직]`;
+            const color = getTierColor(pt);
 
             return `
-              <div style="background: var(--bg-card); border: 1.5px solid ${pt.color}55; border-radius: 12px; padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+              <div style="background: var(--bg-card); border: 1.5px solid ${color}55; border-radius: 12px; padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
                 <div style="display: flex; align-items: center; gap: 0.85rem;">
-                  <span style="font-size: 2.2rem; filter: drop-shadow(0 2px 8px ${pt.color}44);">${pt.icon}</span>
+                  <span style="font-size: 2.2rem; filter: drop-shadow(0 2px 8px ${color}44);">${pt.icon}</span>
                   <div>
                     <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                      <span style="font-weight: 800; font-size: 1.05rem; color: ${pt.color};">${tierPrefix} ${pt.name}</span>
-                      <span style="background: ${pt.color}22; color: ${pt.color}; font-size: 0.78rem; font-weight: 800; padding: 2px 8px; border-radius: 12px; border: 1px solid ${pt.color}44;">(${lvlSpan})</span>
+                      <span style="font-weight: 800; font-size: 1.05rem; color: ${color};">${tierPrefix} ${pt.name}</span>
+                      <span style="background: ${color}22; color: ${color}; font-size: 0.78rem; font-weight: 800; padding: 2px 8px; border-radius: 12px; border: 1px solid ${color}44;">(${lvlSpan})</span>
                     </div>
                     <p style="font-size: 0.83rem; color: var(--text-muted); margin: 0.25rem 0 0; line-height: 1.5;">${pt.desc}</p>
                   </div>
                 </div>
                 <div style="text-align: right; min-width: 140px;">
                   <span style="font-size: 0.75rem; color: var(--text-dim); display: block;">심사 자격 레벨</span>
-                  <strong style="color: #fbbf24; font-size: 0.95rem;">${isEntry ? '기본 입문' : `Lv.${pt.targetLevel} 도달 시`}</strong>
+                  <strong style="color: var(--accent-gold); font-size: 0.95rem;">${isEntry ? '기본 입문' : `Lv.${pt.targetLevel} 도달 시`}</strong>
                   ${pt.bonusXP > 0 ? `<div style="font-size: 0.75rem; color: #34d399; font-weight: 700; margin-top: 2px;">🎁 전직 보너스 +${pt.bonusXP.toLocaleString()} XP</div>` : ''}
                 </div>
               </div>
@@ -3852,7 +3965,7 @@ const guidebookManager = {
               <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; font-weight: 800; font-size: 0.8rem; padding: 2px 8px; border-radius: 10px;">+50 XP</span>
             </div>
             <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
-              369편의 GTO 솔버 아티클을 <strong>최소 35초 이상 집중 열람</strong>하고 본문의 <strong>75% 이상을 스크롤</strong>하면 완독 및 +50 XP가 지급됩니다.
+              366편의 노리밋 홀덤 전략 아티클을 <strong>최소 35초 이상 집중 열람</strong>하고 본문의 <strong>75% 이상을 스크롤</strong>하면 완독 및 +50 XP가 지급됩니다. (외전 PLO 3편 별도 제공)
             </p>
           </div>
 
