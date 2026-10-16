@@ -40,7 +40,7 @@
       "subtitle": "Flop Mechanics & C-Bet Strategy",
       "badge": "⚔️ 펍 레귤러",
       "description": "A-하이 드라이 보드와 웻 보드의 C-bet 차이를 이해하고, 3벳 팟 주도권을 제어하기 시작합니다.",
-      "required_xp": 200,
+      "required_xp": 600,
       "nodes": [
         {
           "id": "node-2-1",
@@ -74,7 +74,7 @@
       "subtitle": "Turn Barreling & Blocker Selection",
       "badge": "🔥 온라인 그라인더",
       "description": "블로커/언블로커 콤보 수학을 실전에 적용하고, 턴/리버에서 폴라라이즈드 배럴을 감행합니다.",
-      "required_xp": 500,
+      "required_xp": 2000,
       "nodes": [
         {
           "id": "node-3-1",
@@ -108,7 +108,7 @@
       "subtitle": "ICM Pressure & Node Locking",
       "badge": "🦊 세미프로",
       "description": "토너먼트 파이널 테이블의 상금 점프(ICM)와 리스크 프리미엄을 통제하며 솔버로 상대를 응징합니다.",
-      "required_xp": 1000,
+      "required_xp": 5000,
       "nodes": [
         {
           "id": "node-4-1",
@@ -142,7 +142,7 @@
       "subtitle": "High Stakes Exploits & Deep Stack Solving",
       "badge": "🦁 하이롤러",
       "description": "200bb+ 딥스택, PKO 바운티 팩터, 고난도 노드락 익스플로잇으로 필드의 칩을 지배합니다.",
-      "required_xp": 2000,
+      "required_xp": 10000,
       "nodes": [
         {
           "id": "node-5-1",
@@ -176,7 +176,7 @@
       "subtitle": "The God of Poker Theory & Balance",
       "badge": "👑 WSOP 챔피언",
       "description": "멀티웨이 내쉬 균형, 휴먼 솔버 경지의 완벽한 직관으로 세계 챔피언의 반열에 등극합니다.",
-      "required_xp": 4000,
+      "required_xp": 18000,
       "nodes": [
         {
           "id": "node-6-1",
@@ -203,14 +203,14 @@
       "title": "모험의 시작",
       "desc": "나만의 포커 캐릭터 생성 및 첫 발걸음",
       "icon": "🦈",
-      "unlocked": true
+      "unlocked": false
     },
     {
       "id": "first_read",
       "title": "첫 페이지를 넘기다",
       "desc": "첫 번째 GTO 아티클 완독 (+50 XP)",
       "icon": "📖",
-      "unlocked": true
+      "unlocked": false
     },
     {
       "id": "quiz_ace",
@@ -224,12 +224,12 @@
       "title": "3일 연속 그라인딩",
       "desc": "3일 연속 학습 스트릭 유지",
       "icon": "🔥",
-      "unlocked": true
+      "unlocked": false
     },
     {
       "id": "level_up",
       "title": "로컬 레귤러 달성",
-      "desc": "200 XP 달성 및 Lv.2 진화",
+      "desc": "600 XP 달성 및 Lv.2 진화",
       "icon": "⚔️",
       "unlocked": false
     },

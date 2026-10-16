@@ -45,7 +45,10 @@ const storage = {
         if (!parsed.name) parsed.name = '포커신동';
         if (!parsed.avatar) parsed.avatar = '🦈';
         if (!parsed.playstyle) parsed.playstyle = 'TAG';
-        if (!parsed.stats) parsed.stats = { theory: 35, decision: 40, ranges: 25, mental: 50 };
+        if (!parsed.stats) parsed.stats = { theory: 0, decision: 0, ranges: 0, mental: 0 };
+        if (parsed.xp === undefined) parsed.xp = 0;
+        if (!parsed.completed_articles) parsed.completed_articles = [];
+        if (!parsed.completed_quizzes) parsed.completed_quizzes = [];
         return parsed;
       } catch(e) {}
     }
@@ -53,16 +56,16 @@ const storage = {
       name: '포커신동',
       avatar: '🦈',
       playstyle: 'TAG',
-      xp: 120,
+      xp: 0,
       level: 1,
-      streak: 3,
+      streak: 1,
       stats: {
-        theory: 35,
-        decision: 40,
-        ranges: 25,
-        mental: 50
+        theory: 0,
+        decision: 0,
+        ranges: 0,
+        mental: 0
       },
-      completed_articles: ['what-is-expected-value-in-poker'],
+      completed_articles: [],
       completed_quizzes: []
     };
   },
@@ -72,14 +75,14 @@ const storage = {
 };
 
 
-// 6-Tier RPG Level System
+// 6-Tier RPG Level System (Deep Long-Term Mastery Curve)
 const LEVEL_TIERS = [
-  { level: 1, title: "Lv.1 동네 피쉬 탈출기 🐟", badge: "🐣 피쉬 탈출", minXp: 0, maxXp: 200, tierName: "동네 피쉬" },
-  { level: 2, title: "Lv.2 홀덤펍 로컬 레귤러 ⚔️", badge: "⚔️ 펍 레귤러", minXp: 200, maxXp: 500, tierName: "로컬 레귤러" },
-  { level: 3, title: "Lv.3 마이크로 그라인더 🔥", badge: "🔥 온라인 그라인더", minXp: 500, maxXp: 1000, tierName: "마이크로 그라인더" },
-  { level: 4, title: "Lv.4 온라인 세미프로 🦊", badge: "🦊 세미프로", minXp: 1000, maxXp: 2000, tierName: "온라인 세미프로" },
-  { level: 5, title: "Lv.5 하이롤러 토너 크러셔 🦁", badge: "🦁 하이롤러", minXp: 2000, maxXp: 4000, tierName: "토너 크러셔" },
-  { level: 6, title: "Lv.6 WSOP 챔피언 👑", badge: "👑 WSOP 챔피언", minXp: 4000, maxXp: 9999, tierName: "세계 챔피언" }
+  { level: 1, title: "Lv.1 동네 피쉬 탈출기 🐟", badge: "🐣 피쉬 탈출", minXp: 0, maxXp: 600, tierName: "동네 피쉬" },
+  { level: 2, title: "Lv.2 홀덤펍 로컬 레귤러 ⚔️", badge: "⚔️ 펍 레귤러", minXp: 600, maxXp: 2000, tierName: "로컬 레귤러" },
+  { level: 3, title: "Lv.3 마이크로 그라인더 🔥", badge: "🔥 온라인 그라인더", minXp: 2000, maxXp: 5000, tierName: "마이크로 그라인더" },
+  { level: 4, title: "Lv.4 온라인 세미프로 🦊", badge: "🦊 세미프로", minXp: 5000, maxXp: 10000, tierName: "온라인 세미프로" },
+  { level: 5, title: "Lv.5 하이롤러 토너 크러셔 🦁", badge: "🦁 하이롤러", minXp: 10000, maxXp: 18000, tierName: "토너 크러셔" },
+  { level: 6, title: "Lv.6 WSOP 챔피언 👑", badge: "👑 WSOP 챔피언", minXp: 18000, maxXp: 99999, tierName: "세계 챔피언" }
 ];
 
 const PLAYSTYLES = {
@@ -252,18 +255,30 @@ const characterManager = {
     const nameInput = document.getElementById('char-name-input');
     const newName = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : '포커신동';
 
+    const isFirstTime = !localStorage.getItem('studypoker_char_created');
+
     app.userState.name = newName;
     app.userState.avatar = this.selectedAvatar;
     app.userState.playstyle = this.selectedStyle;
 
+    if (isFirstTime) {
+      app.userState.xp = 0;
+      app.userState.level = 1;
+      app.userState.streak = 1;
+      app.userState.stats = { theory: 0, decision: 0, ranges: 0, mental: 0 };
+      app.userState.completed_articles = [];
+      app.userState.completed_quizzes = [];
+    }
+
     localStorage.setItem('studypoker_char_created', 'true');
     storage.save(app.userState);
+    app.updateUserBar();
     this.renderHeader();
     this.renderDashboard();
     this.closeModal();
 
     if (window.app && app.playAudioEffect) app.playAudioEffect('correct');
-    this.showToast(`🎉 <strong>[${newName}]</strong> 님, 환영합니다! Lv.1 피쉬 탈출 퀘스트를 시작하세요.`);
+    this.showToast(`🎉 <strong>[${newName}]</strong> 님, 환영합니다! 0 XP에서 시작하여 Lv.1 피쉬 탈출 퀘스트를 완수해보세요!`);
   },
 
   renderHeader() {
@@ -308,7 +323,7 @@ const characterManager = {
     if (dXpFill) dXpFill.style.width = `${lvlInfo.progressPct}%`;
 
     // 4 Core RPG Stats
-    const stats = u.stats || { theory: 35, decision: 40, ranges: 25, mental: 50 };
+    const stats = u.stats || { theory: 0, decision: 0, ranges: 0, mental: 0 };
     this.updateStatCard('theory', stats.theory);
     this.updateStatCard('decision', stats.decision);
     this.updateStatCard('ranges', stats.ranges);
@@ -379,6 +394,12 @@ const app = {
   },
 
   navigate(viewId) {
+    if (viewId !== 'reader' && window.reader && reader.readTimer) {
+      clearInterval(reader.readTimer);
+      reader.readTimer = null;
+      reader.secondsRemaining = 45;
+    }
+
     this.currentView = viewId;
     window.location.hash = viewId;
 
@@ -392,6 +413,14 @@ const app = {
     }
 
     document.querySelectorAll('.nav-btn').forEach(btn => {
+      if (btn.dataset.target === viewId) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
       if (btn.dataset.target === viewId) {
         btn.classList.add('active');
       } else {
@@ -424,7 +453,7 @@ const app = {
         };
       }
     }
-    return { level: 1, title: "Lv.1 동네 피쉬 탈출기 🐟", badge: "🐣 피쉬 탈출", minXp: 0, maxXp: 200, progressPct: 0, remainingXp: 200, tierName: "동네 피쉬" };
+    return { level: 1, title: "Lv.1 동네 피쉬 탈출기 🐟", badge: "🐣 피쉬 탈출", minXp: 0, maxXp: 600, progressPct: 0, remainingXp: 600, tierName: "동네 피쉬" };
   },
 
   updateUserBar() {
@@ -457,6 +486,7 @@ const app = {
   },
 
   addXP(amount, type = 'general') {
+    if (!amount || amount <= 0) return;
     const prevLvl = this.getLevelInfo(this.userState.xp).level;
     this.userState.xp += amount;
 
@@ -555,6 +585,8 @@ const reader = {
   searchQuery: '',
   displayLimit: 24,
   unlockedOnly: false,
+  readTimer: null,
+  secondsRemaining: 45,
 
   loadArticles() {
     this.updateFilterPillsUI();
@@ -786,16 +818,39 @@ const reader = {
       origFooterLink.style.display = 'inline-flex';
     }
 
+    if (this.readTimer) {
+      clearInterval(this.readTimer);
+      this.readTimer = null;
+    }
+
     const isCompleted = app.userState.completed_articles.includes(data.id);
     const btnComplete = document.getElementById('btn-complete-article');
     if (isCompleted) {
-      btnComplete.innerText = '✓ 학습 완료됨';
+      btnComplete.innerText = '✓ 이미 완독 완료한 아티클';
       btnComplete.disabled = true;
       btnComplete.style.opacity = '0.6';
+      btnComplete.style.cursor = 'not-allowed';
     } else {
-      btnComplete.innerText = '✓ 완독 완료 (+50 XP)';
-      btnComplete.disabled = false;
-      btnComplete.style.opacity = '1';
+      this.secondsRemaining = 45;
+      btnComplete.disabled = true;
+      btnComplete.style.opacity = '0.7';
+      btnComplete.style.cursor = 'wait';
+      btnComplete.innerText = `⏱️ 아티클 정독 중... (${this.secondsRemaining}초 후 완독 가능)`;
+
+      this.readTimer = setInterval(() => {
+        this.secondsRemaining--;
+        if (this.secondsRemaining > 0) {
+          btnComplete.innerText = `⏱️ 아티클 정독 중... (${this.secondsRemaining}초 후 완독 가능)`;
+        } else {
+          clearInterval(this.readTimer);
+          this.readTimer = null;
+          btnComplete.disabled = false;
+          btnComplete.style.opacity = '1';
+          btnComplete.style.cursor = 'pointer';
+          btnComplete.innerText = '✓ 정독 완료! (+50 XP 획득하기)';
+          if (window.app && app.playAudioEffect) app.playAudioEffect('xp');
+        }
+      }, 1000);
     }
 
     const tldrGrid = document.getElementById('reader-tldr-grid');
@@ -883,7 +938,7 @@ const reader = {
     if (!q) return;
 
     const isCorrect = (selectedIdx === q.correct_index);
-    const xpGained = isCorrect ? 50 : 10;
+    const xpGained = isCorrect ? 50 : 0;
 
     const buttons = document.querySelectorAll('#embedded-quiz-options .quiz-opt-btn');
     buttons.forEach((b, i) => {
@@ -899,26 +954,47 @@ const reader = {
     feedbackEl.style.display = 'block';
     feedbackEl.innerHTML = `
       <div style="font-weight: 800; color: ${isCorrect ? '#34d399' : '#f87171'}; margin-bottom: 0.5rem;">
-        ${isCorrect ? '🎉 정답입니다!' : '❌ 오답입니다.'} (+${xpGained} XP)
+        ${isCorrect ? '🎉 정답입니다!' : '❌ 오답입니다 (솔버 해설을 정독하세요)'} (+${xpGained} XP)
       </div>
       <div style="font-size: 0.9rem; color: var(--text-main); line-height: 1.5;">${q.explanation}</div>
     `;
 
-    app.addXP(xpGained);
-    app.playAudioEffect(isCorrect ? 'correct' : 'wrong');
+    if (isCorrect) {
+      if (!app.userState.completed_quizzes.includes(q.id)) {
+        app.userState.completed_quizzes.push(q.id);
+      }
+      app.addXP(xpGained, 'quiz');
+      app.playAudioEffect('correct');
+    } else {
+      app.playAudioEffect('wrong');
+    }
   },
 
   markCompleted() {
     if (!this.currentArticle) return;
+    if (this.secondsRemaining > 0 && !app.userState.completed_articles.includes(this.currentArticle.id)) {
+      characterManager.showToast(`⏱️ 아티클을 깊이 있게 정독해주세요! (${this.secondsRemaining}초 남음)`);
+      return;
+    }
+
+    if (this.readTimer) {
+      clearInterval(this.readTimer);
+      this.readTimer = null;
+    }
+
     if (!app.userState.completed_articles.includes(this.currentArticle.id)) {
       app.userState.completed_articles.push(this.currentArticle.id);
       app.addXP(50, 'article');
+      characterManager.showToast('📖 아티클 정독 완료! (+50 XP 획득)');
     }
     
     const btn = document.getElementById('btn-complete-article');
-    btn.innerText = '✓ 학습 완료됨 (+50 XP 획득!)';
-    btn.disabled = true;
-    btn.style.opacity = '0.7';
+    if (btn) {
+      btn.innerText = '✓ 학습 완료됨 (+50 XP 획득 완료)';
+      btn.disabled = true;
+      btn.style.opacity = '0.6';
+      btn.style.cursor = 'not-allowed';
+    }
 
     this.renderArticleCards();
   }
@@ -1106,7 +1182,7 @@ const trainer = {
     const q = this.quizzes[this.currentIndex];
 
     const isCorrect = (optIndex === q.correct_index);
-    const xpGained = isCorrect ? 50 : 10;
+    const xpGained = isCorrect ? 50 : 0;
 
     q.options.forEach((opt, i) => {
       const btn = document.getElementById(`quiz-btn-${i}`);
@@ -1130,13 +1206,21 @@ const trainer = {
     const explanationText = document.getElementById('feedback-explanation-text');
 
     statusTitle.className = `feedback-status ${isCorrect ? 'correct' : 'wrong'}`;
-    statusTitle.innerText = isCorrect ? `✅ 정답입니다! (+${xpGained} XP)` : `❌ 아쉽네요! (+${xpGained} XP)`;
+    statusTitle.innerText = isCorrect ? `✅ 정답입니다! (+${xpGained} XP)` : `❌ 오답입니다 (+0 XP) — 아래 솔버 해설을 정독하세요!`;
     conceptTag.innerText = `핵심 원리: ${q.key_concept}`;
     explanationText.innerText = q.explanation;
     feedbackBox.style.display = 'block';
 
-    app.addXP(xpGained);
-    app.playAudioEffect(isCorrect ? 'correct' : 'wrong');
+    if (isCorrect) {
+      if (!app.userState.completed_quizzes.includes(q.id)) {
+        app.userState.completed_quizzes.push(q.id);
+      }
+      app.addXP(xpGained, 'quiz');
+      app.playAudioEffect('correct');
+    } else {
+      app.playAudioEffect('wrong');
+      characterManager.showToast('❌ 오답입니다. 솔버 해설을 꼼꼼히 확인하고 복습하세요!');
+    }
   },
 
   nextQuiz() {
@@ -1464,17 +1548,64 @@ const roadmap = {
       `;
     }).join('');
 
+    const dynamicAchievements = [
+      {
+        id: "char_created",
+        title: "모험의 시작",
+        desc: "나만의 포커 캐릭터 생성 및 첫 발걸음",
+        icon: userState.avatar || "🦈",
+        unlocked: !!localStorage.getItem('studypoker_char_created')
+      },
+      {
+        id: "first_read",
+        title: "첫 페이지를 넘기다",
+        desc: "첫 번째 GTO 아티클 완독 (+50 XP)",
+        icon: "📖",
+        unlocked: (userState.completed_articles && userState.completed_articles.length > 0)
+      },
+      {
+        id: "quiz_ace",
+        title: "솔버적 뇌지컬",
+        desc: "스팟 퀴즈 정답 맞히기 (+50 XP)",
+        icon: "🎯",
+        unlocked: (userState.completed_quizzes && userState.completed_quizzes.length > 0)
+      },
+      {
+        id: "streak_3",
+        title: "3일 연속 그라인딩",
+        desc: "3일 연속 학습 스트릭 유지",
+        icon: "🔥",
+        unlocked: ((userState.streak || 0) >= 3)
+      },
+      {
+        id: "level_up",
+        title: "로컬 레귤러 달성",
+        desc: "600 XP 달성 및 Lv.2 진화",
+        icon: "⚔️",
+        unlocked: ((userState.xp || 0) >= 600)
+      },
+      {
+        id: "matrix_explorer",
+        title: "레인지의 지배자",
+        desc: "13x13 매트릭스 5개 이상 포지션 탐색",
+        icon: "📊",
+        unlocked: (matrix._explored && Object.keys(matrix._explored).length >= 5)
+      }
+    ];
+
     const achContainer = document.getElementById('roadmap-achievements-container');
-    achContainer.innerHTML = rm.achievements.map(a => `
-      <div class="feature-item" style="opacity: ${a.unlocked ? '1' : '0.45'};">
-        <div style="font-size: 2rem; margin-bottom: 0.5rem;">${a.icon}</div>
-        <h4 style="font-size: 1.05rem; margin-bottom: 0.25rem;">${a.title}</h4>
-        <p style="font-size: 0.85rem; color: var(--text-muted);">${a.desc}</p>
-        <div style="margin-top: 0.75rem; font-size: 0.75rem; font-weight: 700; color: ${a.unlocked ? '#34d399' : '#64748b'};">
-          ${a.unlocked ? '🏆 달성 완료' : '미달성'}
+    if (achContainer) {
+      achContainer.innerHTML = dynamicAchievements.map(a => `
+        <div class="feature-item" style="opacity: ${a.unlocked ? '1' : '0.45'};">
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">${a.icon}</div>
+          <h4 style="font-size: 1.05rem; margin-bottom: 0.25rem;">${a.title}</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">${a.desc}</p>
+          <div style="margin-top: 0.75rem; font-size: 0.75rem; font-weight: 700; color: ${a.unlocked ? '#34d399' : '#64748b'};">
+            ${a.unlocked ? '🏆 달성 완료' : '미달성'}
+          </div>
         </div>
-      </div>
-    `).join('');
+      `).join('');
+    }
   }
 };
 
