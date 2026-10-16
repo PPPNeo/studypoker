@@ -269,9 +269,9 @@ const characterManager = {
     this.renderHeader();
     this.renderDashboard();
 
-    // If new user visiting for the first time, auto-open character setup popup!
+    // If new user visiting for the first time and logged in, auto-open character setup popup!
     const hasConfigured = localStorage.getItem('studypoker_char_created');
-    if (!hasConfigured) {
+    if (!hasConfigured && window.authManager && authManager.isLoggedIn()) {
       setTimeout(() => {
         this.openModal(true); // isFirstTime = true
       }, 400);
@@ -3851,13 +3851,17 @@ const SUPABASE_CONFIG = {
 };
 
 const authManager = {
-  currentMode: 'login', // 'login', 'signup', 'forgot', 'profile'
+  gateMode: 'login', // 'login', 'signup', 'forgot'
+  currentMode: 'profile', // modal mode: 'profile'
   _syncDebounceTimer: null,
   _isSyncing: false,
 
   init() {
-    this.renderAuthButton();
-    if (this.isLoggedIn()) {
+    if (!this.isLoggedIn()) {
+      this.showGate('login');
+    } else {
+      this.hideGate();
+      this.renderAuthButton();
       this.syncFromCloudSilently();
     }
   },
@@ -3890,118 +3894,64 @@ const authManager = {
     }
   },
 
-  openModal(mode = 'login') {
-    if (this.isLoggedIn() && mode === 'login') {
-      mode = 'profile';
-    }
-    this.currentMode = mode;
-    this.render();
-    const overlay = document.getElementById('auth-modal-overlay');
-    if (overlay) overlay.style.display = 'flex';
+  showGate(mode = 'login') {
+    this.gateMode = mode;
+    const gate = document.getElementById('auth-gate-screen');
+    if (gate) gate.style.display = 'flex';
+
+    const header = document.getElementById('app-header') || document.querySelector('header');
+    const main = document.querySelector('main');
+    const mobileNav = document.querySelector('.mobile-bottom-nav');
+
+    if (header) header.style.display = 'none';
+    if (main) main.style.display = 'none';
+    if (mobileNav) mobileNav.style.display = 'none';
+
+    this.renderGate();
+  },
+
+  hideGate() {
+    const gate = document.getElementById('auth-gate-screen');
+    if (gate) gate.style.display = 'none';
+
+    const header = document.getElementById('app-header') || document.querySelector('header');
+    const main = document.querySelector('main');
+    const mobileNav = document.querySelector('.mobile-bottom-nav');
+
+    if (header) header.style.display = '';
+    if (main) main.style.display = '';
+    if (mobileNav) mobileNav.style.display = '';
+  },
+
+  switchGateMode(mode) {
+    this.gateMode = mode;
+    this.renderGate();
     if (window.app && app.playAudioEffect) app.playAudioEffect('click');
   },
 
-  closeModal() {
-    const overlay = document.getElementById('auth-modal-overlay');
-    if (overlay) overlay.style.display = 'none';
-  },
-
-  switchMode(mode) {
-    this.currentMode = mode;
-    this.render();
-    if (window.app && app.playAudioEffect) app.playAudioEffect('click');
-  },
-
-  renderAuthButton() {
-    const container = document.getElementById('header-auth-container');
-    const isAuth = this.isLoggedIn();
-    const auth = this.getAuthUser();
-
-    if (container) {
-      if (isAuth && auth) {
-        container.innerHTML = `
-          <button class="header-action-btn" onclick="authManager.openModal('profile')" title="내 계정 정보 및 클라우드 동기화" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.3)); border: 1.5px solid #10b981; color: #34d399; padding: 0.45rem 0.85rem; border-radius: 20px; font-weight: 800; cursor: pointer; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 0.45rem; transition: all 0.2s ease;">
-            <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #34d399; box-shadow: 0 0 6px #34d399;"></span>
-            <span>${this.escapeHtml(auth.game_nickname)}</span>
-          </button>
-        `;
-      } else {
-        container.innerHTML = `
-          <button class="header-action-btn" onclick="authManager.openModal('login')" title="클라우드 회원가입 및 로그인" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.3)); border: 1.5px solid #f59e0b; color: #fbbf24; padding: 0.45rem 0.85rem; border-radius: 20px; font-weight: 800; cursor: pointer; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 0.4rem; transition: all 0.2s ease;">
-            <span>👤</span> 로그인 / 회원가입
-          </button>
-        `;
-      }
-    }
-
-    const dAuthBtn = document.getElementById('dash-auth-btn');
-    if (dAuthBtn) {
-      dAuthBtn.innerHTML = isAuth ? '<span>⚙️</span> 내 계정 관리' : '<span>👤</span> 회원가입 / 로그인';
-    }
-    const dKakao = document.getElementById('dash-kakao-tag');
-    if (dKakao) {
-      if (isAuth && auth && auth.kakao_nickname) {
-        dKakao.innerText = `💬 카톡: ${auth.kakao_nickname}`;
-        dKakao.style.display = 'inline-flex';
-      } else if (app.userState.kakao_name) {
-        dKakao.innerText = `💬 카톡: ${app.userState.kakao_name}`;
-        dKakao.style.display = 'inline-flex';
-      } else {
-        dKakao.innerText = `💬 카톡: 미연동`;
-      }
-    }
-
-    const guestBanner = document.getElementById('guest-signup-banner');
-    if (guestBanner) {
-      guestBanner.style.display = isAuth ? 'none' : 'flex';
-    }
-  },
-
-  escapeHtml(str) {
-    if (!str) return '';
-    return String(str).replace(/[&<>"']/g, m => ({
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#39;'
-    }[m]));
-  },
-
-  render() {
-    const titleEl = document.getElementById('auth-modal-title');
-    const descEl = document.getElementById('auth-modal-desc');
-    const iconEl = document.getElementById('auth-modal-icon');
-    const bodyEl = document.getElementById('auth-modal-body');
-
+  renderGate() {
+    const bodyEl = document.getElementById('auth-gate-body');
     if (!bodyEl) return;
 
-    if (this.currentMode === 'login') {
-      if (titleEl) titleEl.innerText = '스터디포커 간편 로그인';
-      if (descEl) descEl.innerText = '가입하신 게임 닉네임 또는 이메일과 6자리 PIN으로 로그인하세요.';
-      if (iconEl) iconEl.innerText = '🔑';
-
+    if (this.gateMode === 'login') {
       bodyEl.innerHTML = `
         <div style="padding: 0.25rem 0;">
+          <!-- Tab Navigation -->
           <div style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
-            <button onclick="authManager.switchMode('login')" style="flex: 1; padding: 0.6rem; border-radius: 8px; font-size: 0.9rem; font-weight: 800; background: #3b82f6; color: #fff; border: none; cursor: pointer;">
+            <button onclick="authManager.switchGateMode('login')" style="flex: 1; padding: 0.65rem; border-radius: 8px; font-size: 0.95rem; font-weight: 800; background: #3b82f6; color: #fff; border: none; cursor: pointer;">
               🔑 로그인
             </button>
-            <button onclick="authManager.switchMode('signup')" style="flex: 1; padding: 0.6rem; border-radius: 8px; font-size: 0.9rem; font-weight: 700; background: var(--bg-card); color: var(--text-muted); border: 1px solid var(--border-color); cursor: pointer;">
+            <button onclick="authManager.switchGateMode('signup')" style="flex: 1; padding: 0.65rem; border-radius: 8px; font-size: 0.95rem; font-weight: 700; background: var(--bg-surface); color: var(--text-muted); border: 1px solid var(--border-color); cursor: pointer;">
               ✨ 30초 회원가입
             </button>
           </div>
 
-          <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 1.25rem; font-size: 0.83rem; color: #93c5fd; line-height: 1.5;">
-            🛡️ <strong>3중 철통 보안 시스템</strong>: 비밀번호는 SHA-256 + bcrypt 이중 암호화로 안전하게 보호되며, 이메일 정보는 외부 조회가 100% 차단된 특수 보안 금고에 보관됩니다.
-          </div>
-
-          <form onsubmit="event.preventDefault(); authManager.handleLoginSubmit();" style="display: flex; flex-direction: column; gap: 1rem;">
+          <form onsubmit="event.preventDefault(); authManager.handleGateLoginSubmit();" style="display: flex; flex-direction: column; gap: 1rem;">
             <div>
               <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.4rem;">
                 아이디 (게임 닉네임 또는 가입 이메일)
               </label>
-              <input type="text" id="auth-login-id" required placeholder="예: 포커신동 또는 user@email.com" autocomplete="username" style="width: 100%; padding: 0.75rem 0.9rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.95rem; box-sizing: border-box;">
+              <input type="text" id="gate-login-id" required placeholder="게임 닉네임 입력 (또는 등록된 이메일)" autocomplete="username" style="width: 100%; padding: 0.75rem 0.9rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.95rem; box-sizing: border-box;">
             </div>
 
             <div>
@@ -4009,243 +3959,147 @@ const authManager = {
                 <label style="font-size: 0.85rem; font-weight: 700; color: var(--text-main);">
                   비밀번호 (숫자 6자리 PIN)
                 </label>
-                <a href="javascript:void(0)" onclick="authManager.switchMode('forgot')" style="font-size: 0.78rem; color: #60a5fa; text-decoration: none;">
-                  비밀번호를 잊으셨나요?
+                <a href="javascript:void(0)" onclick="authManager.switchGateMode('forgot')" style="font-size: 0.78rem; color: #60a5fa; text-decoration: none;">
+                  비밀번호 찾기
                 </a>
               </div>
-              <input type="password" id="auth-login-pin" required maxlength="6" pattern="[0-9]{6}" inputmode="numeric" placeholder="숫자 6자리 입력 (예: 123456)" autocomplete="current-password" style="width: 100%; padding: 0.75rem 0.9rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.95rem; box-sizing: border-box; letter-spacing: 2px;">
+              <input type="password" id="gate-login-pin" required maxlength="6" pattern="[0-9]{6}" inputmode="numeric" placeholder="숫자 6자리 입력 (예: 123456)" autocomplete="current-password" style="width: 100%; padding: 0.75rem 0.9rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.95rem; box-sizing: border-box; letter-spacing: 2px;">
             </div>
 
-            <div id="auth-login-status" style="display: none; padding: 0.6rem; border-radius: 6px; font-size: 0.83rem; text-align: center;"></div>
+            <div id="gate-login-status" style="display: none; padding: 0.6rem; border-radius: 6px; font-size: 0.83rem; text-align: center;"></div>
 
-            <button type="submit" id="auth-login-submit-btn" class="btn-primary" style="width: 100%; padding: 0.85rem; font-size: 1rem; font-weight: 800; border-radius: 8px; margin-top: 0.5rem;">
-              🔑 보안 로그인하고 동기화 시작하기
+            <button type="submit" id="gate-login-submit-btn" class="btn-primary" style="width: 100%; padding: 0.85rem; font-size: 1rem; font-weight: 800; border-radius: 8px; margin-top: 0.35rem;">
+              🔑 로그인하고 게임 시작하기
             </button>
           </form>
 
           <div style="text-align: center; margin-top: 1.25rem; font-size: 0.85rem; color: var(--text-muted);">
-            아직 회원이 아니신가요? <a href="javascript:void(0)" onclick="authManager.switchMode('signup')" style="color: #fbbf24; font-weight: 700; text-decoration: underline;">간편 회원가입 (30초 소요)</a>
+            처음 오셨나요? <a href="javascript:void(0)" onclick="authManager.switchGateMode('signup')" style="color: #fbbf24; font-weight: 800; text-decoration: underline;">간편 회원가입 (이메일 없이 10초 완료)</a>
           </div>
         </div>
       `;
-    } else if (this.currentMode === 'signup') {
-      if (titleEl) titleEl.innerText = '스터디포커 정회원 가입';
-      if (descEl) descEl.innerText = '모바일 ↔ PC 실시간 클라우드 동기화 및 단톡방 랭킹 연동을 지원합니다.';
-      if (iconEl) iconEl.innerText = '✨';
-
-      const currentNick = (app.userState && app.userState.name) ? app.userState.name : '';
-      const currentKakao = (app.userState && app.userState.kakao_name) ? app.userState.kakao_name : '';
-
+    } else if (this.gateMode === 'signup') {
       bodyEl.innerHTML = `
         <div style="padding: 0.25rem 0;">
+          <!-- Tab Navigation -->
           <div style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
-            <button onclick="authManager.switchMode('login')" style="flex: 1; padding: 0.6rem; border-radius: 8px; font-size: 0.9rem; font-weight: 700; background: var(--bg-card); color: var(--text-muted); border: 1px solid var(--border-color); cursor: pointer;">
+            <button onclick="authManager.switchGateMode('login')" style="flex: 1; padding: 0.65rem; border-radius: 8px; font-size: 0.95rem; font-weight: 700; background: var(--bg-surface); color: var(--text-muted); border: 1px solid var(--border-color); cursor: pointer;">
               🔑 로그인
             </button>
-            <button onclick="authManager.switchMode('signup')" style="flex: 1; padding: 0.6rem; border-radius: 8px; font-size: 0.9rem; font-weight: 800; background: #3b82f6; color: #fff; border: none; cursor: pointer;">
+            <button onclick="authManager.switchGateMode('signup')" style="flex: 1; padding: 0.65rem; border-radius: 8px; font-size: 0.95rem; font-weight: 800; background: #3b82f6; color: #fff; border: none; cursor: pointer;">
               ✨ 30초 회원가입
             </button>
           </div>
 
-          <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 1.25rem; font-size: 0.82rem; color: #34d399; line-height: 1.5;">
-            🔒 <strong>개인정보 보호 보장</strong>:
-            <div style="margin-top: 0.3rem; color: var(--text-main); font-size: 0.8rem;">
-              • <strong>이메일 외부 노출 원천 차단</strong>: 랭킹 및 프로필에 이메일이 일절 포함되지 않습니다.<br>
-              • <strong>비밀번호 복호화 불가</strong>: SHA-256 + bcrypt 암호화로 관리자도 비밀번호를 볼 수 없습니다.<br>
-              • <strong>모바일 ↔ PC 동기화</strong>: 폰과 PC 어디서든 한 계정으로 자동 동기화됩니다.
-            </div>
-          </div>
-
-          <form onsubmit="event.preventDefault(); authManager.handleSignUpSubmit();" style="display: flex; flex-direction: column; gap: 0.9rem;">
+          <form onsubmit="event.preventDefault(); authManager.handleGateSignUpSubmit();" style="display: flex; flex-direction: column; gap: 0.85rem;">
             <div>
               <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">
-                1. 게임 닉네임 <span style="color: #ef4444;">*</span> <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: 400;">(캐릭터명 & 로그인 아이디)</span>
+                1. 게임 닉네임 <span style="color: #ef4444;">*</span> <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 400;">(캐릭터명 & 로그인 아이디)</span>
               </label>
-              <input type="text" id="auth-reg-game-nick" required minlength="2" maxlength="16" value="${this.escapeHtml(currentNick)}" placeholder="예: 압구정포커신 (2~16자)" autocomplete="nickname" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box;">
+              <input type="text" id="gate-reg-game-nick" required minlength="2" maxlength="16" placeholder="예: 압구정포커신 (2~16자)" autocomplete="nickname" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box;">
             </div>
 
             <div>
               <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">
-                2. 카카오톡 단톡방 닉네임 <span style="color: #ef4444;">*</span> <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: 400;">(랭킹보드 표시용)</span>
+                2. 카카오톡 단톡방 닉네임 <span style="color: #ef4444;">*</span> <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 400;">(단톡방 랭킹 표시용)</span>
               </label>
-              <input type="text" id="auth-reg-kakao-nick" required minlength="1" maxlength="20" value="${this.escapeHtml(currentKakao)}" placeholder="예: 홍길동/오픈채팅방닉네임" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box;">
+              <input type="text" id="gate-reg-kakao-nick" required minlength="1" maxlength="20" placeholder="예: 홍길동/오픈채팅방닉네임" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box;">
             </div>
 
-            <div>
-              <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">
-                3. 이메일 주소 <span style="color: #ef4444;">*</span> <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: 400;">(비밀번호 분실 시 재설정용, 비공개)</span>
-              </label>
-              <input type="email" id="auth-reg-email" required placeholder="예: user@example.com" autocomplete="email" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box;">
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem;">
               <div>
                 <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">
-                  4. 비밀번호 <span style="color: #ef4444;">*</span> <span style="font-size: 0.72rem; color: var(--text-dim); font-weight: 400;">(숫자 6자리)</span>
+                  3. 비밀번호 <span style="color: #ef4444;">*</span> <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 400;">(숫자 6자리)</span>
                 </label>
-                <input type="password" id="auth-reg-pin" required maxlength="6" pattern="[0-9]{6}" inputmode="numeric" placeholder="숫자 6자리" autocomplete="new-password" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box; letter-spacing: 2px;">
+                <input type="password" id="gate-reg-pin" required maxlength="6" pattern="[0-9]{6}" inputmode="numeric" placeholder="숫자 6자리" autocomplete="new-password" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box; letter-spacing: 2px;">
               </div>
               <div>
                 <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">
                   비밀번호 확인 <span style="color: #ef4444;">*</span>
                 </label>
-                <input type="password" id="auth-reg-pin-confirm" required maxlength="6" pattern="[0-9]{6}" inputmode="numeric" placeholder="숫자 6자리 재입력" autocomplete="new-password" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box; letter-spacing: 2px;">
+                <input type="password" id="gate-reg-pin-confirm" required maxlength="6" pattern="[0-9]{6}" inputmode="numeric" placeholder="6자리 재입력" autocomplete="new-password" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box; letter-spacing: 2px;">
               </div>
             </div>
 
-            <div id="auth-reg-status" style="display: none; padding: 0.6rem; border-radius: 6px; font-size: 0.83rem; text-align: center;"></div>
+            <div>
+              <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">
+                4. 이메일 주소 <span style="font-size: 0.75rem; color: #10b981; font-weight: 700;">(선택사항)</span>
+              </label>
+              <input type="email" id="gate-reg-email" placeholder="이메일 입력 (입력 안 해도 가입 가능)" autocomplete="email" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box;">
+              <div style="font-size: 0.74rem; color: #f59e0b; margin-top: 4px; line-height: 1.4;">
+                ⚠️ <strong>선택사항 안내</strong>: 이메일을 적지 않아도 10초 만에 가입하여 바로 플레이할 수 있습니다. 단, 비밀번호 분실 시 재설정이 불가능하므로 기억하기 쉬운 6자리 PIN을 설정해주세요.
+              </div>
+            </div>
 
-            <button type="submit" id="auth-reg-submit-btn" class="btn-primary" style="width: 100%; padding: 0.85rem; font-size: 1rem; font-weight: 800; border-radius: 8px; margin-top: 0.5rem; background: linear-gradient(135deg, #10b981, #059669);">
-              🔒 암호화 가입 및 클라우드 동기화 시작하기
+            <div id="gate-reg-status" style="display: none; padding: 0.6rem; border-radius: 6px; font-size: 0.83rem; text-align: center;"></div>
+
+            <button type="submit" id="gate-reg-submit-btn" class="btn-primary" style="width: 100%; padding: 0.85rem; font-size: 1rem; font-weight: 800; border-radius: 8px; margin-top: 0.35rem; background: linear-gradient(135deg, #10b981, #059669);">
+              ✨ 가입하고 게임 시작하기
             </button>
           </form>
 
           <div style="text-align: center; margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">
-            이미 계정이 있으신가요? <a href="javascript:void(0)" onclick="authManager.switchMode('login')" style="color: #60a5fa; font-weight: 700; text-decoration: underline;">로그인하기</a>
+            이미 계정이 있으신가요? <a href="javascript:void(0)" onclick="authManager.switchGateMode('login')" style="color: #60a5fa; font-weight: 800; text-decoration: underline;">로그인하기</a>
           </div>
         </div>
       `;
-    } else if (this.currentMode === 'forgot') {
-      if (titleEl) titleEl.innerText = '비밀번호 재설정';
-      if (descEl) descEl.innerText = '가입한 이메일과 게임 닉네임으로 6자리 PIN 비밀번호를 즉시 재설정합니다.';
-      if (iconEl) iconEl.innerText = '🔍';
-
+    } else if (this.gateMode === 'forgot') {
       bodyEl.innerHTML = `
         <div style="padding: 0.25rem 0;">
-          <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 1.25rem; font-size: 0.83rem; color: #93c5fd; line-height: 1.5;">
-            🔍 <strong>비밀번호 재설정</strong>: 가입 시 입력하신 <strong>이메일 주소</strong>와 <strong>게임 닉네임</strong>을 입력하시면, 새 6자리 PIN으로 즉시 안전하게 재설정됩니다.
+          <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 1.25rem; font-size: 0.82rem; color: #93c5fd; line-height: 1.5;">
+            🔍 <strong>비밀번호 재설정</strong>: 가입 시 <strong>이메일을 등록한 회원</strong>에 한하여 새 6자리 PIN으로 즉시 변경됩니다.
           </div>
 
-          <form onsubmit="event.preventDefault(); authManager.handleForgotSubmit();" style="display: flex; flex-direction: column; gap: 0.9rem;">
+          <form onsubmit="event.preventDefault(); authManager.handleGateForgotSubmit();" style="display: flex; flex-direction: column; gap: 0.9rem;">
             <div>
               <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">가입 이메일 주소</label>
-              <input type="email" id="auth-forgot-email" required placeholder="예: user@example.com" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box;">
+              <input type="email" id="gate-forgot-email" required placeholder="가입 시 입력했던 이메일" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box;">
             </div>
 
             <div>
               <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">게임 닉네임</label>
-              <input type="text" id="auth-forgot-nick" required placeholder="가입한 게임 닉네임" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box;">
+              <input type="text" id="gate-forgot-nick" required placeholder="가입한 게임 닉네임" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box;">
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem;">
               <div>
                 <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">새 비밀번호 (6자리)</label>
-                <input type="password" id="auth-forgot-pin" required maxlength="6" pattern="[0-9]{6}" inputmode="numeric" placeholder="새 숫자 6자리" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box; letter-spacing: 2px;">
+                <input type="password" id="gate-forgot-pin" required maxlength="6" pattern="[0-9]{6}" inputmode="numeric" placeholder="새 숫자 6자리" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box; letter-spacing: 2px;">
               </div>
               <div>
                 <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">새 비밀번호 확인</label>
-                <input type="password" id="auth-forgot-pin-confirm" required maxlength="6" pattern="[0-9]{6}" inputmode="numeric" placeholder="6자리 재입력" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box; letter-spacing: 2px;">
+                <input type="password" id="gate-forgot-pin-confirm" required maxlength="6" pattern="[0-9]{6}" inputmode="numeric" placeholder="6자리 재입력" style="width: 100%; padding: 0.7rem 0.85rem; background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.92rem; box-sizing: border-box; letter-spacing: 2px;">
               </div>
             </div>
 
-            <div id="auth-forgot-status" style="display: none; padding: 0.6rem; border-radius: 6px; font-size: 0.83rem; text-align: center;"></div>
+            <div id="gate-forgot-status" style="display: none; padding: 0.6rem; border-radius: 6px; font-size: 0.83rem; text-align: center;"></div>
 
-            <button type="submit" id="auth-forgot-submit-btn" class="btn-primary" style="width: 100%; padding: 0.85rem; font-size: 1rem; font-weight: 800; border-radius: 8px; margin-top: 0.5rem;">
+            <button type="submit" id="gate-forgot-submit-btn" class="btn-primary" style="width: 100%; padding: 0.85rem; font-size: 1rem; font-weight: 800; border-radius: 8px; margin-top: 0.35rem;">
               🔑 새 비밀번호로 변경하기
             </button>
           </form>
 
           <div style="text-align: center; margin-top: 1rem; font-size: 0.85rem;">
-            <a href="javascript:void(0)" onclick="authManager.switchMode('login')" style="color: #60a5fa; font-weight: 700; text-decoration: underline;">
+            <a href="javascript:void(0)" onclick="authManager.switchGateMode('login')" style="color: #60a5fa; font-weight: 800; text-decoration: underline;">
               ← 로그인 화면으로 돌아가기
             </a>
           </div>
         </div>
       `;
-    } else if (this.currentMode === 'profile') {
-      const auth = this.getAuthUser();
-      const u = app.userState;
-      const lvlInfo = app.getLevelInfo(u.xp || 0);
-
-      if (titleEl) titleEl.innerText = '내 계정 및 클라우드 동기화 상태';
-      if (descEl) descEl.innerText = '현재 로그인된 계정 정보와 클라우드 실시간 동기화 상태입니다.';
-      if (iconEl) iconEl.innerText = '👤';
-
-      bodyEl.innerHTML = `
-        <div style="padding: 0.25rem 0;">
-          <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(59, 130, 246, 0.15)); border: 1.5px solid rgba(16, 185, 129, 0.4); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.25rem;">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.5rem;">
-              <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <span style="font-size: 2.2rem;">${u.avatar || '🦈'}</span>
-                <div>
-                  <div style="font-size: 1.15rem; font-weight: 800; color: var(--text-main);">
-                    ${this.escapeHtml(auth ? auth.game_nickname : u.name)}
-                  </div>
-                  <div style="font-size: 0.82rem; color: #34d399; font-weight: 700; display: flex; align-items: center; gap: 0.35rem; margin-top: 2px;">
-                    <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #34d399; box-shadow: 0 0 6px #34d399;"></span>
-                    3중 철통 보안 연동 중 (SHA-256 + 금고 격리)
-                  </div>
-                </div>
-              </div>
-              <span class="rank-badge ${lvlInfo.tier.badgeClass}">${lvlInfo.tier.badge}</span>
-            </div>
-
-            <div style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 0.85rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; font-size: 0.85rem;">
-              <div>
-                <span style="color: var(--text-muted); display: block; font-size: 0.75rem;">💬 카카오톡 단톡방 닉네임</span>
-                <strong style="color: #f59e0b;">${this.escapeHtml((auth && auth.kakao_nickname) ? auth.kakao_nickname : (u.kakao_name || '미설정'))}</strong>
-              </div>
-              <div>
-                <span style="color: var(--text-muted); display: block; font-size: 0.75rem;">🔒 가입 정보 보호</span>
-                <strong style="color: #34d399; font-size: 0.8rem;">비공개 금고 보관됨</strong>
-              </div>
-              <div>
-                <span style="color: var(--text-muted); display: block; font-size: 0.75rem;">⭐ 현재 레벨 & 경험치</span>
-                <strong style="color: #60a5fa;">Lv.${lvlInfo.level} (${(u.xp || 0).toLocaleString()} XP)</strong>
-              </div>
-              <div>
-                <span style="color: var(--text-muted); display: block; font-size: 0.75rem;">📖 완독한 아티클</span>
-                <strong style="color: #a78bfa;">${(u.completed_articles || []).length}편</strong>
-              </div>
-            </div>
-          </div>
-
-          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; margin-bottom: 1.25rem;">
-            <div style="font-weight: 700; color: var(--text-main); font-size: 0.9rem; margin-bottom: 0.35rem;">
-              📱 모바일 ↔ PC 크로스 디바이스 연동 방법
-            </div>
-            <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0; line-height: 1.5;">
-              스마트폰이나 다른 컴퓨터 브라우저에서 <strong>https://studypoker.vercel.app</strong> 접속 후,
-              우측 상단의 <strong>[로그인]</strong> 버튼을 누르고 게임 닉네임(<strong>${this.escapeHtml(auth ? auth.game_nickname : u.name)}</strong>)과 6자리 PIN을 입력하시면 모든 공부 기록이 즉시 동기화됩니다!
-            </p>
-          </div>
-
-          <div id="auth-profile-status" style="display: none; padding: 0.6rem; border-radius: 6px; font-size: 0.83rem; text-align: center; margin-bottom: 0.75rem;"></div>
-
-          <div style="display: flex; gap: 0.75rem;">
-            <button onclick="authManager.forcePushToCloud()" class="btn-primary" style="flex: 1; padding: 0.75rem; font-size: 0.9rem; font-weight: 800; border-radius: 8px;">
-              🔄 지금 즉시 클라우드 백업
-            </button>
-            <button onclick="authManager.handleSignOut()" class="btn-secondary" style="flex: 1; padding: 0.75rem; font-size: 0.9rem; font-weight: 800; border-radius: 8px; border-color: #ef444455; color: #f87171;">
-              🚪 로그아웃 (기기 해제)
-            </button>
-          </div>
-        </div>
-      `;
     }
   },
 
-  showStatus(elementId, message, isError = false) {
-    const el = document.getElementById(elementId);
-    if (!el) return;
-    el.style.display = 'block';
-    el.style.background = isError ? 'rgba(239, 68, 68, 0.15)' : 'rgba(16, 185, 129, 0.15)';
-    el.style.color = isError ? '#fca5a5' : '#6ee7b7';
-    el.style.border = isError ? '1px solid rgba(239, 68, 68, 0.3)' : '1px solid rgba(16, 185, 129, 0.3)';
-    el.innerText = message;
-  },
-
-  async handleLoginSubmit() {
-    const loginId = (document.getElementById('auth-login-id')?.value || '').trim();
-    const pin = (document.getElementById('auth-login-pin')?.value || '').trim();
-    const submitBtn = document.getElementById('auth-login-submit-btn');
+  async handleGateLoginSubmit() {
+    const loginId = (document.getElementById('gate-login-id')?.value || '').trim();
+    const pin = (document.getElementById('gate-login-pin')?.value || '').trim();
+    const submitBtn = document.getElementById('gate-login-submit-btn');
 
     if (!loginId) {
-      this.showStatus('auth-login-status', '아이디(게임 닉네임 또는 이메일)를 입력해주세요.', true);
+      this.showStatus('gate-login-status', '아이디(게임 닉네임 또는 이메일)를 입력해주세요.', true);
       return;
     }
     if (!pin || pin.length !== 6 || !/^[0-9]{6}$/.test(pin)) {
-      this.showStatus('auth-login-status', '비밀번호는 숫자 6자리여야 합니다.', true);
+      this.showStatus('gate-login-status', '비밀번호는 숫자 6자리여야 합니다.', true);
       return;
     }
 
@@ -4255,9 +4109,7 @@ const authManager = {
     }
 
     try {
-      // 클라이언트에서 1차 SHA-256 해시 생성 (평문 PIN 전송 차단)
       const pinHash = await this.hashPin(pin);
-
       const url = `${SUPABASE_CONFIG.url}/rest/v1/rpc/poker_login`;
       const res = await fetch(url, {
         method: 'POST',
@@ -4272,21 +4124,19 @@ const authManager = {
         })
       });
 
-      if (!res.ok) {
-        throw new Error(`보안 검증 서버 응답 오류 (${res.status})`);
-      }
+      if (!res.ok) throw new Error(`서버 응답 오류 (${res.status})`);
 
       const result = await res.json();
       if (!result || result.success === false) {
-        this.showStatus('auth-login-status', result.error || '일치하는 계정을 찾을 수 없습니다.', true);
+        this.showStatus('gate-login-status', result.error || '일치하는 계정을 찾을 수 없습니다.', true);
         if (submitBtn) {
           submitBtn.disabled = false;
-          submitBtn.innerText = '🔑 보안 로그인하고 동기화 시작하기';
+          submitBtn.innerText = '🔑 로그인하고 게임 시작하기';
         }
         return;
       }
 
-      // 로그인 성공! 안전한 32바이트 인증 토큰 저장 (이메일, 비밀번호는 로컬스토리지에도 저장하지 않음)
+      // 로그인 성공! 세션 저장
       localStorage.setItem('studypoker_auth', JSON.stringify({
         id: result.user_id,
         game_nickname: result.game_nickname,
@@ -4294,24 +4144,21 @@ const authManager = {
         auth_token: result.auth_token
       }));
 
-      // 클라우드 데이터와 로컬 데이터 합병
+      // 유저 상태 수화
       const u = app.userState;
-      const mergedXp = Math.max(u.xp || 0, result.xp || 0);
-      const mergedArticles = Array.from(new Set([...(u.completed_articles || []), ...(result.completed_articles || [])]));
-      const mergedQuizzes = Array.from(new Set([...(u.completed_quizzes || []), ...(result.completed_quizzes || [])]));
-      const mergedPromotions = Array.from(new Set([...(u.promotions_passed || [0]), ...(result.promotions_passed || [0])]));
-
       u.name = result.game_nickname;
       u.kakao_name = result.kakao_nickname;
-      u.avatar = result.avatar || u.avatar || '🦈';
-      u.playstyle = result.playstyle || u.playstyle || 'TAG';
-      u.xp = mergedXp;
-      u.completed_articles = mergedArticles;
-      u.completed_quizzes = mergedQuizzes;
-      u.promotions_passed = mergedPromotions;
+      u.avatar = result.avatar || '🦈';
+      u.playstyle = result.playstyle || 'TAG';
+      u.xp = result.xp || 0;
+      u.completed_articles = result.completed_articles || [];
+      u.completed_quizzes = result.completed_quizzes || [];
+      u.promotions_passed = result.promotions_passed || [0];
+      u.stats = result.stats || {};
 
       storage.save(u);
 
+      this.hideGate();
       this.renderAuthButton();
       characterManager.renderDashboard();
       characterManager.renderHeader();
@@ -4321,62 +4168,57 @@ const authManager = {
         rankingManager.fetchCloudPlayers();
       }
 
-      this.closeModal();
-      characterManager.showToast(`🎉 반갑습니다, ${result.game_nickname}님! 기기 동기화가 완료되었습니다.`);
-      this.syncToCloud(true);
+      characterManager.showToast(`🎉 반갑습니다, ${result.game_nickname}님! 게임이 시작되었습니다.`);
     } catch (e) {
-      console.error("Login error:", e);
-      this.showStatus('auth-login-status', `로그인 중 오류가 발생했습니다: ${e.message}`, true);
+      console.error("Gate login error:", e);
+      this.showStatus('gate-login-status', `로그인 실패: ${e.message}`, true);
     } finally {
       if (submitBtn) {
         submitBtn.disabled = false;
-        submitBtn.innerText = '🔑 보안 로그인하고 동기화 시작하기';
+        submitBtn.innerText = '🔑 로그인하고 게임 시작하기';
       }
     }
   },
 
-  async handleSignUpSubmit() {
-    const gameNick = (document.getElementById('auth-reg-game-nick')?.value || '').trim();
-    const kakaoNick = (document.getElementById('auth-reg-kakao-nick')?.value || '').trim();
-    const email = (document.getElementById('auth-reg-email')?.value || '').trim();
-    const pin = (document.getElementById('auth-reg-pin')?.value || '').trim();
-    const pinConfirm = (document.getElementById('auth-reg-pin-confirm')?.value || '').trim();
-    const submitBtn = document.getElementById('auth-reg-submit-btn');
+  async handleGateSignUpSubmit() {
+    const gameNick = (document.getElementById('gate-reg-game-nick')?.value || '').trim();
+    const kakaoNick = (document.getElementById('gate-reg-kakao-nick')?.value || '').trim();
+    const email = (document.getElementById('gate-reg-email')?.value || '').trim();
+    const pin = (document.getElementById('gate-reg-pin')?.value || '').trim();
+    const pinConfirm = (document.getElementById('gate-reg-pin-confirm')?.value || '').trim();
+    const submitBtn = document.getElementById('gate-reg-submit-btn');
 
     if (!gameNick || gameNick.length < 2) {
-      this.showStatus('auth-reg-status', '게임 닉네임은 최소 2글자 이상이어야 합니다.', true);
+      this.showStatus('gate-reg-status', '게임 닉네임은 최소 2글자 이상이어야 합니다.', true);
       return;
     }
     if (!kakaoNick || kakaoNick.length < 1) {
-      this.showStatus('auth-reg-status', '카카오톡 단톡방 닉네임을 입력해주세요.', true);
+      this.showStatus('gate-reg-status', '카카오톡 오픈채팅방 닉네임을 입력해주세요.', true);
       return;
     }
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      this.showStatus('auth-reg-status', '올바른 이메일 형식을 입력해주세요.', true);
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      this.showStatus('gate-reg-status', '올바른 이메일 형식을 입력해주세요.', true);
       return;
     }
     if (!pin || pin.length !== 6 || !/^[0-9]{6}$/.test(pin)) {
-      this.showStatus('auth-reg-status', '비밀번호는 반드시 숫자 6자리여야 합니다.', true);
+      this.showStatus('gate-reg-status', '비밀번호는 반드시 숫자 6자리여야 합니다.', true);
       return;
     }
     if (pin !== pinConfirm) {
-      this.showStatus('auth-reg-status', '비밀번호와 비밀번호 확인이 일치하지 않습니다.', true);
+      this.showStatus('gate-reg-status', '비밀번호와 비밀번호 확인이 일치하지 않습니다.', true);
       return;
     }
 
     if (submitBtn) {
       submitBtn.disabled = true;
-      submitBtn.innerText = '🔒 암호화 및 금고 등록 중...';
+      submitBtn.innerText = '🔒 3중 보안 가입 처리 중...';
     }
 
     try {
-      // 1. 브라우저에서 1차 SHA-256 해시 생성 (네트워크 상 평문 PIN 전송 절대 없음)
       const pinHash = await this.hashPin(pin);
-
       const u = app.userState;
       const lvlInfo = app.getLevelInfo(u.xp || 0);
 
-      // 2. 오직 보안 함수(RPC)를 통해서만 안전하게 생성
       const signupUrl = `${SUPABASE_CONFIG.url}/rest/v1/rpc/poker_signup`;
       const res = await fetch(signupUrl, {
         method: 'POST',
@@ -4388,17 +4230,17 @@ const authManager = {
         body: JSON.stringify({
           p_game_nickname: gameNick,
           p_kakao_nickname: kakaoNick,
-          p_email: email,
+          p_email: email, // Optional, can be empty string
           p_pin_hash: pinHash,
-          p_level: lvlInfo.level,
-          p_xp: u.xp || 0,
-          p_streak: u.streak || 1,
-          p_avatar: u.avatar || '🦈',
-          p_playstyle: u.playstyle || 'TAG',
-          p_completed_articles: u.completed_articles || [],
-          p_completed_quizzes: u.completed_quizzes || [],
-          p_promotions_passed: u.promotions_passed || [0],
-          p_stats: u.stats || {}
+          p_level: 1,
+          p_xp: 0,
+          p_streak: 1,
+          p_avatar: '🦈',
+          p_playstyle: 'TAG',
+          p_completed_articles: [],
+          p_completed_quizzes: [],
+          p_promotions_passed: [0],
+          p_stats: {}
         })
       });
 
@@ -4409,15 +4251,14 @@ const authManager = {
 
       const result = await res.json();
       if (!result || result.success === false) {
-        this.showStatus('auth-reg-status', result.error || '회원 등록에 실패했습니다.', true);
+        this.showStatus('gate-reg-status', result.error || '회원 등록에 실패했습니다.', true);
         if (submitBtn) {
           submitBtn.disabled = false;
-          submitBtn.innerText = '🔒 암호화 가입 및 클라우드 동기화 시작하기';
+          submitBtn.innerText = '✨ 가입하고 게임 시작하기';
         }
         return;
       }
 
-      // 등록 성공! 로컬에 32바이트 인증 토큰 저장
       localStorage.setItem('studypoker_auth', JSON.stringify({
         id: result.user_id,
         game_nickname: result.game_nickname,
@@ -4427,46 +4268,51 @@ const authManager = {
 
       u.name = gameNick;
       u.kakao_name = kakaoNick;
+      u.xp = 0;
+      u.completed_articles = [];
+      u.completed_quizzes = [];
+      u.promotions_passed = [0];
       storage.save(u);
 
+      this.hideGate();
       this.renderAuthButton();
       characterManager.renderDashboard();
       characterManager.renderHeader();
       app.updateUserBar();
+      roadmap.load();
       if (window.rankingManager && rankingManager.fetchCloudPlayers) {
         rankingManager.fetchCloudPlayers();
       }
 
-      this.closeModal();
-      characterManager.showToast(`🎉 ${gameNick}님, 3중 보안 가입 완료! 모바일/PC 어디서든 안전하게 동기화됩니다.`);
+      characterManager.showToast(`🎉 ${gameNick}님, 환영합니다! 스터디포커가 시작되었습니다.`);
     } catch (e) {
-      console.error("Sign up error:", e);
-      this.showStatus('auth-reg-status', `가입 중 오류 발생: ${e.message}`, true);
+      console.error("Gate signup error:", e);
+      this.showStatus('gate-reg-status', `가입 실패: ${e.message}`, true);
     } finally {
       if (submitBtn) {
         submitBtn.disabled = false;
-        submitBtn.innerText = '🔒 암호화 가입 및 클라우드 동기화 시작하기';
+        submitBtn.innerText = '✨ 가입하고 게임 시작하기';
       }
     }
   },
 
-  async handleForgotSubmit() {
-    const email = (document.getElementById('auth-forgot-email')?.value || '').trim();
-    const gameNick = (document.getElementById('auth-forgot-nick')?.value || '').trim();
-    const pin = (document.getElementById('auth-forgot-pin')?.value || '').trim();
-    const pinConfirm = (document.getElementById('auth-forgot-pin-confirm')?.value || '').trim();
-    const submitBtn = document.getElementById('auth-forgot-submit-btn');
+  async handleGateForgotSubmit() {
+    const email = (document.getElementById('gate-forgot-email')?.value || '').trim();
+    const gameNick = (document.getElementById('gate-forgot-nick')?.value || '').trim();
+    const pin = (document.getElementById('gate-forgot-pin')?.value || '').trim();
+    const pinConfirm = (document.getElementById('gate-forgot-pin-confirm')?.value || '').trim();
+    const submitBtn = document.getElementById('gate-forgot-submit-btn');
 
     if (!email || !gameNick) {
-      this.showStatus('auth-forgot-status', '가입 이메일과 게임 닉네임을 모두 입력해주세요.', true);
+      this.showStatus('gate-forgot-status', '가입 이메일과 게임 닉네임을 모두 입력해주세요.', true);
       return;
     }
     if (!pin || pin.length !== 6 || !/^[0-9]{6}$/.test(pin)) {
-      this.showStatus('auth-forgot-status', '새 비밀번호는 숫자 6자리여야 합니다.', true);
+      this.showStatus('gate-forgot-status', '새 비밀번호는 숫자 6자리여야 합니다.', true);
       return;
     }
     if (pin !== pinConfirm) {
-      this.showStatus('auth-forgot-status', '비밀번호 확인이 일치하지 않습니다.', true);
+      this.showStatus('gate-forgot-status', '비밀번호 확인이 일치하지 않습니다.', true);
       return;
     }
 
@@ -4496,7 +4342,7 @@ const authManager = {
 
       const result = await res.json();
       if (!result || result.success === false) {
-        this.showStatus('auth-forgot-status', result.error || '일치하는 가입 회원 정보를 찾을 수 없습니다.', true);
+        this.showStatus('gate-forgot-status', result.error || '일치하는 가입 회원 정보를 찾을 수 없습니다.', true);
         if (submitBtn) {
           submitBtn.disabled = false;
           submitBtn.innerText = '🔑 새 비밀번호로 변경하기';
@@ -4505,10 +4351,10 @@ const authManager = {
       }
 
       characterManager.showToast("✅ 6자리 비밀번호가 재설정되었습니다! 새 비밀번호로 로그인해주세요.");
-      this.switchMode('login');
+      this.switchGateMode('login');
     } catch (e) {
-      console.error("Password reset error:", e);
-      this.showStatus('auth-forgot-status', `재설정 실패: ${e.message}`, true);
+      console.error("Gate forgot error:", e);
+      this.showStatus('gate-forgot-status', `재설정 실패: ${e.message}`, true);
     } finally {
       if (submitBtn) {
         submitBtn.disabled = false;
@@ -4517,18 +4363,175 @@ const authManager = {
     }
   },
 
+  openModal(mode = 'profile') {
+    if (!this.isLoggedIn()) {
+      this.showGate('login');
+      return;
+    }
+    this.currentMode = mode;
+    this.renderModal();
+    const overlay = document.getElementById('auth-modal-overlay');
+    if (overlay) overlay.style.display = 'flex';
+    if (window.app && app.playAudioEffect) app.playAudioEffect('click');
+  },
+
+  closeModal() {
+    const overlay = document.getElementById('auth-modal-overlay');
+    if (overlay) overlay.style.display = 'none';
+  },
+
+  renderAuthButton() {
+    const container = document.getElementById('header-auth-container');
+    const isAuth = this.isLoggedIn();
+    const auth = this.getAuthUser();
+
+    if (container) {
+      if (isAuth && auth) {
+        container.innerHTML = `
+          <button class="header-action-btn" onclick="authManager.openModal('profile')" title="내 계정 정보 및 클라우드 동기화" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.3)); border: 1.5px solid #10b981; color: #34d399; padding: 0.45rem 0.85rem; border-radius: 20px; font-weight: 800; cursor: pointer; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 0.45rem; transition: all 0.2s ease;">
+            <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #34d399; box-shadow: 0 0 6px #34d399;"></span>
+            <span>${this.escapeHtml(auth.game_nickname)}</span>
+          </button>
+        `;
+      } else {
+        container.innerHTML = `
+          <button class="header-action-btn" onclick="authManager.showGate('login')" title="클라우드 로그인" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.3)); border: 1.5px solid #f59e0b; color: #fbbf24; padding: 0.45rem 0.85rem; border-radius: 20px; font-weight: 800; cursor: pointer; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 0.4rem; transition: all 0.2s ease;">
+            <span>👤</span> 로그인
+          </button>
+        `;
+      }
+    }
+
+    const dAuthBtn = document.getElementById('dash-auth-btn');
+    if (dAuthBtn) {
+      dAuthBtn.innerHTML = isAuth ? '<span>⚙️</span> 내 계정 관리' : '<span>👤</span> 로그인';
+      dAuthBtn.onclick = () => {
+        if (isAuth) authManager.openModal('profile');
+        else authManager.showGate('login');
+      };
+    }
+
+    const dKakao = document.getElementById('dash-kakao-tag');
+    if (dKakao) {
+      if (isAuth && auth && auth.kakao_nickname) {
+        dKakao.innerText = `💬 단톡방: ${auth.kakao_nickname}`;
+        dKakao.style.display = 'inline-flex';
+      } else if (app.userState.kakao_name) {
+        dKakao.innerText = `💬 단톡방: ${app.userState.kakao_name}`;
+        dKakao.style.display = 'inline-flex';
+      } else {
+        dKakao.innerText = `💬 단톡방 닉네임: 미등록`;
+      }
+    }
+  },
+
+  escapeHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/[&<>"']/g, m => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[m]));
+  },
+
+  renderModal() {
+    const titleEl = document.getElementById('auth-modal-title');
+    const descEl = document.getElementById('auth-modal-desc');
+    const iconEl = document.getElementById('auth-modal-icon');
+    const bodyEl = document.getElementById('auth-modal-body');
+
+    if (!bodyEl) return;
+    const auth = this.getAuthUser();
+    const u = app.userState;
+    const lvlInfo = app.getLevelInfo(u.xp || 0);
+
+    if (titleEl) titleEl.innerText = '내 계정 및 클라우드 연동 상태';
+    if (descEl) descEl.innerText = '현재 로그인된 계정 정보와 클라우드 실시간 동기화 상태입니다.';
+    if (iconEl) iconEl.innerText = '👤';
+
+    bodyEl.innerHTML = `
+      <div style="padding: 0.25rem 0;">
+        <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(59, 130, 246, 0.15)); border: 1.5px solid rgba(16, 185, 129, 0.4); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.25rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span style="font-size: 2.2rem;">${u.avatar || '🦈'}</span>
+              <div>
+                <div style="font-size: 1.15rem; font-weight: 800; color: var(--text-main);">
+                  ${this.escapeHtml(auth ? auth.game_nickname : u.name)}
+                </div>
+                <div style="font-size: 0.82rem; color: #34d399; font-weight: 700; display: flex; align-items: center; gap: 0.35rem; margin-top: 2px;">
+                  <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #34d399; box-shadow: 0 0 6px #34d399;"></span>
+                  3중 철통 보안 연동 중
+                </div>
+              </div>
+            </div>
+            <span class="rank-badge ${lvlInfo.tier.badgeClass}">${lvlInfo.tier.badge}</span>
+          </div>
+
+          <div style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 0.85rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; font-size: 0.85rem;">
+            <div>
+              <span style="color: var(--text-muted); display: block; font-size: 0.75rem;">💬 카카오톡 단톡방 닉네임</span>
+              <strong style="color: #f59e0b;">${this.escapeHtml((auth && auth.kakao_nickname) ? auth.kakao_nickname : (u.kakao_name || '미설정'))}</strong>
+            </div>
+            <div>
+              <span style="color: var(--text-muted); display: block; font-size: 0.75rem;">🔒 가입 정보 보호</span>
+              <strong style="color: #34d399; font-size: 0.8rem;">비공개 금고 격리됨</strong>
+            </div>
+            <div>
+              <span style="color: var(--text-muted); display: block; font-size: 0.75rem;">⭐ 현재 레벨 & 경험치</span>
+              <strong style="color: #60a5fa;">Lv.${lvlInfo.level} (${(u.xp || 0).toLocaleString()} XP)</strong>
+            </div>
+            <div>
+              <span style="color: var(--text-muted); display: block; font-size: 0.75rem;">📖 완독한 아티클</span>
+              <strong style="color: #a78bfa;">${(u.completed_articles || []).length}편</strong>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; margin-bottom: 1.25rem;">
+          <div style="font-weight: 700; color: var(--text-main); font-size: 0.9rem; margin-bottom: 0.35rem;">
+            📱 모바일 ↔ PC 어디서든 이어하는 방법
+          </div>
+          <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0; line-height: 1.5;">
+            스마트폰이나 다른 컴퓨터 브라우저에서 <strong>https://studypoker.vercel.app</strong> 접속 후,
+            게임 닉네임(<strong>${this.escapeHtml(auth ? auth.game_nickname : u.name)}</strong>)과 6자리 PIN으로 로그인하시면 모든 공부 기록이 즉시 동기화됩니다!
+          </p>
+        </div>
+
+        <div id="auth-profile-status" style="display: none; padding: 0.6rem; border-radius: 6px; font-size: 0.83rem; text-align: center; margin-bottom: 0.75rem;"></div>
+
+        <div style="display: flex; gap: 0.75rem;">
+          <button onclick="authManager.forcePushToCloud()" class="btn-primary" style="flex: 1; padding: 0.75rem; font-size: 0.9rem; font-weight: 800; border-radius: 8px;">
+            🔄 지금 즉시 클라우드 백업
+          </button>
+          <button onclick="authManager.handleSignOut()" class="btn-secondary" style="flex: 1; padding: 0.75rem; font-size: 0.9rem; font-weight: 800; border-radius: 8px; border-color: #ef444455; color: #f87171;">
+            🚪 로그아웃
+          </button>
+        </div>
+      </div>
+    `;
+  },
+
+  showStatus(elementId, message, isError = false) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+    el.style.display = 'block';
+    el.style.background = isError ? 'rgba(239, 68, 68, 0.15)' : 'rgba(16, 185, 129, 0.15)';
+    el.style.color = isError ? '#fca5a5' : '#6ee7b7';
+    el.style.border = isError ? '1px solid rgba(239, 68, 68, 0.3)' : '1px solid rgba(16, 185, 129, 0.3)';
+    el.innerText = message;
+  },
+
   handleSignOut() {
-    if (!confirm("정말 로그아웃 하시겠습니까? 로그아웃 시 이 기기에서의 자동 동기화가 중단됩니다.")) {
+    if (!confirm("정말 로그아웃 하시겠습니까?")) {
       return;
     }
     localStorage.removeItem('studypoker_auth');
-    this.renderAuthButton();
-    characterManager.renderDashboard();
     this.closeModal();
-    characterManager.showToast("🚪 로그아웃 되었습니다. 게스트 모드로 전환됩니다.");
-    if (window.rankingManager && rankingManager.fetchCloudPlayers) {
-      rankingManager.fetchCloudPlayers();
-    }
+    this.showGate('login');
+    characterManager.showToast("🚪 로그아웃 되었습니다.");
   },
 
   async syncFromCloudSilently() {
@@ -4536,7 +4539,6 @@ const authManager = {
     if (!auth || !auth.id) return;
 
     try {
-      // 공개 테이블에서 본인 게임 정보만 안전하게 동기화 (이메일, 비밀번호는 아예 없음)
       const res = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/poker_users?id=eq.${auth.id}&select=*`, {
         headers: {
           'apikey': SUPABASE_CONFIG.key,
@@ -4613,7 +4615,6 @@ const authManager = {
         const u = app.userState;
         const lvlInfo = app.getLevelInfo(u.xp || 0);
 
-        // 오직 본인의 32바이트 보안 토큰 검증 함수(RPC)를 통해서만 수정 가능
         await fetch(`${SUPABASE_CONFIG.url}/rest/v1/rpc/poker_sync_progress`, {
           method: 'POST',
           headers: {
@@ -4661,7 +4662,7 @@ const authManager = {
       if (statusEl) {
         statusEl.style.background = 'rgba(16, 185, 129, 0.15)';
         statusEl.style.color = '#6ee7b7';
-        statusEl.innerText = `✅ 클라우드 암호화 동기화 완료! (${new Date().toLocaleTimeString('ko-KR')})`;
+        statusEl.innerText = `✅ 클라우드 동기화 완료! (${new Date().toLocaleTimeString('ko-KR')})`;
       }
       characterManager.showToast("☁️ 최신 캐릭터 상태가 클라우드에 안전하게 백업되었습니다.");
     } catch (e) {
