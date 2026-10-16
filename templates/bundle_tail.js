@@ -2350,20 +2350,20 @@ var roadmap = window.roadmap = {
             const title = a.title_ko || a.title || a.id;
             return `
               <div class="node-item ${isCompleted ? 'completed' : ''}" onclick="reader.openArticle('${a.id || a.slug}')" style="${!isCompleted && idx === 0 ? 'border: 1.5px solid #3b82f6; background: rgba(59, 130, 246, 0.05);' : ''}">
-                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                  <span style="font-size: 1.2rem;">${isCompleted ? '✅' : '📖'}</span>
-                  <div>
-                    <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
-                      <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">${title}</div>
-                      ${!isCompleted && idx === 0 ? '<span style="font-size: 0.68rem; background: #3b82f6; color: #fff; padding: 1px 6px; border-radius: 10px; font-weight: 800;">추천 다음 스팟</span>' : ''}
+                <div style="display: flex; align-items: center; gap: 0.65rem; min-width: 0; flex: 1;">
+                  <span style="font-size: 1.15rem; flex-shrink: 0;">${isCompleted ? '✅' : '📖'}</span>
+                  <div style="min-width: 0; flex: 1;">
+                    <div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap;">
+                      <div style="font-weight: 700; font-size: 0.92rem; color: var(--text-main); word-break: keep-all; line-height: 1.35;">${title}</div>
+                      ${!isCompleted && idx === 0 ? '<span style="font-size: 0.65rem; background: #3b82f6; color: #fff; padding: 1px 6px; border-radius: 10px; font-weight: 800; white-space: nowrap; flex-shrink: 0;">추천 다음 스팟</span>' : ''}
                     </div>
-                    <span style="font-size: 0.75rem; color: var(--text-dim);">${a.category || '필수 GTO 이론'}</span>
+                    <span style="font-size: 0.72rem; color: var(--text-dim); word-break: keep-all;">${a.category || '필수 GTO 이론'}</span>
                   </div>
                 </div>
-                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                  <span style="font-size: 0.8rem; color: #fbbf24; font-weight: 700;">+50 XP</span>
-                  <button class="${isCompleted ? 'btn-secondary' : 'btn-primary'}" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
-                    ${isCompleted ? '다시 읽기' : '지금 학습 시작 →'}
+                <div style="display: flex; align-items: center; gap: 0.45rem; flex-shrink: 0; margin-left: 0.4rem;">
+                  <span style="font-size: 0.78rem; color: #fbbf24; font-weight: 800; white-space: nowrap;">+50 XP</span>
+                  <button class="${isCompleted ? 'btn-secondary' : 'btn-primary'}" style="padding: 0.35rem 0.65rem; font-size: 0.78rem; font-weight: 700; white-space: nowrap; flex-shrink: 0;">
+                    ${isCompleted ? '다시읽기' : '학습시작'}
                   </button>
                 </div>
               </div>
@@ -2375,17 +2375,17 @@ var roadmap = window.roadmap = {
             const streetKo = { 'Preflop': '프리플랍', 'Flop': '플랍', 'Turn': '턴', 'River': '리버' }[q.street] || q.street || '스팟';
             return `
               <div class="node-item ${isCompleted ? 'completed' : ''}" onclick="trainer.openQuizById('${q.id}')">
-                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                  <span style="font-size: 1.2rem;">${isCompleted ? '✅' : '🎯'}</span>
-                  <div>
-                    <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">${q.title}</div>
-                    <span style="font-size: 0.75rem; color: var(--text-dim);">${streetKo} • ${q.category || '실전 퀴즈'}</span>
+                <div style="display: flex; align-items: center; gap: 0.65rem; min-width: 0; flex: 1;">
+                  <span style="font-size: 1.15rem; flex-shrink: 0;">${isCompleted ? '✅' : '🎯'}</span>
+                  <div style="min-width: 0; flex: 1;">
+                    <div style="font-weight: 700; font-size: 0.92rem; color: var(--text-main); word-break: keep-all; line-height: 1.35;">${q.title}</div>
+                    <span style="font-size: 0.72rem; color: var(--text-dim); word-break: keep-all;">${streetKo} • ${q.category || '실전 퀴즈'}</span>
                   </div>
                 </div>
-                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                  <span style="font-size: 0.8rem; color: #fbbf24; font-weight: 700;">+50 XP</span>
-                  <button class="${isCompleted ? 'btn-secondary' : 'btn-primary'}" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; background: ${isCompleted ? '' : 'linear-gradient(135deg, #f59e0b, #d97706); color: #000; border: none;'}">
-                    ${isCompleted ? '다시 풀기' : '퀴즈 풀기 →'}
+                <div style="display: flex; align-items: center; gap: 0.45rem; flex-shrink: 0; margin-left: 0.4rem;">
+                  <span style="font-size: 0.78rem; color: #fbbf24; font-weight: 800; white-space: nowrap;">+50 XP</span>
+                  <button class="${isCompleted ? 'btn-secondary' : 'btn-primary'}" style="padding: 0.35rem 0.65rem; font-size: 0.78rem; font-weight: 700; white-space: nowrap; flex-shrink: 0; ${isCompleted ? '' : 'background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; border: none;'}">
+                    ${isCompleted ? '다시풀기' : '퀴즈풀기'}
                   </button>
                 </div>
               </div>
@@ -2393,17 +2393,17 @@ var roadmap = window.roadmap = {
           }).join('')}
 
           <div class="node-item ${isRangeDone ? 'completed' : ''}" onclick="app.navigate('matrix')">
-            <div style="display: flex; align-items: center; gap: 0.75rem;">
-              <span style="font-size: 1.2rem;">${isRangeDone ? '✅' : '📊'}</span>
-              <div>
-                <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">13x13 매트릭스 레인지 탐색</div>
-                <span style="font-size: 0.75rem; color: var(--text-dim);">목표: 프리셋 ${targetRanges}개 탐색 (현재: ${exploredRangesCount}/${targetRanges}개)</span>
+            <div style="display: flex; align-items: center; gap: 0.65rem; min-width: 0; flex: 1;">
+              <span style="font-size: 1.15rem; flex-shrink: 0;">${isRangeDone ? '✅' : '📊'}</span>
+              <div style="min-width: 0; flex: 1;">
+                <div style="font-weight: 700; font-size: 0.92rem; color: var(--text-main); word-break: keep-all; line-height: 1.35;">13x13 매트릭스 레인지 탐색</div>
+                <span style="font-size: 0.72rem; color: var(--text-dim); word-break: keep-all;">목표: 프리셋 ${targetRanges}개 탐색 (${exploredRangesCount}/${targetRanges}개)</span>
               </div>
             </div>
-            <div style="display: flex; align-items: center; gap: 0.75rem;">
-              <span style="font-size: 0.8rem; color: #fbbf24; font-weight: 700;">+20 XP</span>
-              <button class="btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
-                매트릭스 보기 →
+            <div style="display: flex; align-items: center; gap: 0.45rem; flex-shrink: 0; margin-left: 0.4rem;">
+              <span style="font-size: 0.78rem; color: #fbbf24; font-weight: 800; white-space: nowrap;">+20 XP</span>
+              <button class="btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.78rem; font-weight: 700; white-space: nowrap; flex-shrink: 0;">
+                매트릭스 →
               </button>
             </div>
           </div>
@@ -2438,35 +2438,42 @@ var roadmap = window.roadmap = {
     const tierReqDesc = tierReqDescs[lvlIdx] || "전직 심사 시험 통과 필요";
 
     return `
-      <div class="roadmap-level-card ${isLocked ? 'locked' : ''}" style="margin-bottom: 2rem;">
-        <div class="level-badge-header">
-          <div>
-            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-              <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin: 0;">${lvl.title}</h3>
-              <span style="font-size: 0.72rem; padding: 2px 8px; border-radius: 10px; font-weight: 800; ${isLocked ? 'background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3);' : 'background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3);'}">
-                ${isLocked ? '🔒 잠금됨' : '🔓 해금됨'}
-              </span>
-            </div>
-            <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 4px;">${lvl.subtitle}</p>
+      <div class="roadmap-level-card ${isLocked ? 'locked' : ''}" style="margin-bottom: 1.75rem;">
+        <!-- Top Tag Row: Badge on Left, Lock status on Right -->
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.5rem; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 0.45rem;">
+            <span class="level-badge" style="font-size: 0.78rem; font-weight: 800; padding: 2px 9px; border-radius: 12px; white-space: nowrap;">
+              ${lvl.badge}
+            </span>
+            <span style="font-size: 0.72rem; padding: 2px 8px; border-radius: 10px; font-weight: 800; white-space: nowrap; ${isLocked ? 'background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3);' : 'background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3);'}">
+              ${isLocked ? '🔒 잠금됨' : '🔓 해금됨'}
+            </span>
           </div>
-          <span class="level-badge">${lvl.badge}</span>
         </div>
 
-        <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+        <!-- Title: 100% full width, word-break: keep-all -->
+        <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-main); margin: 0 0 0.25rem; line-height: 1.35; word-break: keep-all;">
+          ${lvl.title}
+        </h3>
+        <p style="font-size: 0.85rem; color: var(--text-dim); margin: 0 0 0.75rem; word-break: keep-all; line-height: 1.4;">
+          ${lvl.subtitle}
+        </p>
+
+        <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 0.75rem; word-break: keep-all; line-height: 1.5;">
           ${lvl.description}
         </p>
 
         <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 10px; padding: 0.75rem 1rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
-          <div style="font-size: 0.82rem; color: var(--text-main);">
+          <div style="font-size: 0.82rem; color: var(--text-main); word-break: keep-all;">
             <span style="color: #fbbf24; font-weight: 700;">🎖️ 전직 요건:</span> ${tierReqDesc}
           </div>
-          <div style="font-size: 0.82rem; color: #60a5fa; font-weight: 700;">
+          <div style="font-size: 0.82rem; color: #60a5fa; font-weight: 700; white-space: nowrap;">
             티어 정복도: ${tierCompletedCount}/${tierTotalCount}편 (${tierProgressPct}%)
           </div>
         </div>
 
         ${isLocked ? `
-          <div style="background: rgba(0,0,0,0.2); padding: 0.75rem; border-radius: 8px; font-size: 0.85rem; color: #f59e0b; font-weight: 700;">
+          <div style="background: rgba(0,0,0,0.2); padding: 0.75rem; border-radius: 8px; font-size: 0.85rem; color: #f59e0b; font-weight: 700; word-break: keep-all;">
             🔒 해금 조건: ${lvl.required_xp.toLocaleString()} XP 달성 필요 (현재: ${userState.xp.toLocaleString()} XP)
           </div>
         ` : `
@@ -2477,20 +2484,20 @@ var roadmap = window.roadmap = {
               const nodeTitle = (foundArt && (foundArt.title_ko || foundArt.title)) || n.title;
               return `
                 <div class="node-item ${isCompleted ? 'completed' : ''}" onclick="reader.openArticle('${n.article_id}')">
-                  <div style="display: flex; align-items: center; gap: 0.75rem;">
-                    <span style="font-size: 1.2rem;">${isCompleted ? '✅' : '📖'}</span>
-                    <div>
-                      <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
-                        <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">${nodeTitle}</div>
-                        <span style="font-size: 0.68rem; background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); padding: 1px 6px; border-radius: 10px; font-weight: 700;">커리어 핵심</span>
+                  <div style="display: flex; align-items: center; gap: 0.65rem; min-width: 0; flex: 1;">
+                    <span style="font-size: 1.15rem; flex-shrink: 0;">${isCompleted ? '✅' : '📖'}</span>
+                    <div style="min-width: 0; flex: 1;">
+                      <div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap;">
+                        <div style="font-weight: 700; font-size: 0.92rem; color: var(--text-main); word-break: keep-all; line-height: 1.35;">${nodeTitle}</div>
+                        <span style="font-size: 0.65rem; background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); padding: 1px 6px; border-radius: 10px; font-weight: 700; white-space: nowrap; flex-shrink: 0;">커리어 핵심</span>
                       </div>
-                      <span style="font-size: 0.75rem; color: var(--text-dim);">${n.category}</span>
+                      <span style="font-size: 0.72rem; color: var(--text-dim); word-break: keep-all;">${n.category}</span>
                     </div>
                   </div>
-                  <div style="display: flex; align-items: center; gap: 0.75rem;">
-                    <span style="font-size: 0.8rem; color: #fbbf24; font-weight: 700;">+${n.xp} XP</span>
-                    <button class="btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
-                      ${isCompleted ? '✓ 완독 (다시읽기)' : '📖 아티클 열람'}
+                  <div style="display: flex; align-items: center; gap: 0.45rem; flex-shrink: 0; margin-left: 0.4rem;">
+                    <span style="font-size: 0.78rem; color: #fbbf24; font-weight: 800; white-space: nowrap;">+${n.xp} XP</span>
+                    <button class="btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.78rem; font-weight: 700; white-space: nowrap; flex-shrink: 0;">
+                      ${isCompleted ? '다시읽기' : '열람하기'}
                     </button>
                   </div>
                 </div>
@@ -2499,7 +2506,7 @@ var roadmap = window.roadmap = {
           </div>
 
           <div style="margin-top: 1rem; text-align: center;">
-            <button onclick="reader.filterLevel('${tierLvlKey}'); app.navigate('articles');" class="btn-secondary" style="font-size: 0.82rem; font-weight: 700; padding: 0.45rem 1.2rem; border-color: rgba(59, 130, 246, 0.4); color: #60a5fa; background: rgba(59, 130, 246, 0.08); border-radius: 8px;">
+            <button onclick="reader.filterLevel('${tierLvlKey}'); app.navigate('articles');" class="btn-secondary" style="font-size: 0.82rem; font-weight: 700; padding: 0.45rem 1.2rem; border-color: rgba(59, 130, 246, 0.4); color: #60a5fa; background: rgba(59, 130, 246, 0.08); border-radius: 8px; white-space: nowrap;">
               📚 [${lvl.badge}] 티어 도서관 아티클 전체보기 (${tierTotalCount}편) ➔
             </button>
           </div>

@@ -194,6 +194,13 @@ body {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+h1, h2, h3, h4, h5, h6, p, .roadmap-level-card, .node-item {
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 /* Header & Navigation */
@@ -2637,6 +2644,20 @@ body.theme-light .article-card.locked {
   }
   .char-name-title {
     font-size: 1.3rem;
+  }
+
+  /* Mobile Roadmap Card & Node Optimizations */
+  .roadmap-level-card {
+    padding: 1.25rem 1rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+  .node-item {
+    padding: 0.85rem 0.95rem !important;
+    gap: 0.5rem !important;
+  }
+  .node-item button {
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
   }
 }
 
