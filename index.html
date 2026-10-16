@@ -2575,6 +2575,9 @@ body.theme-light .article-card.locked {
                   <button class="btn-character-edit" onclick="characterManager.openModal()">
                     <span>🎭</span> 캐릭터 설정
                   </button>
+                  <button class="btn-character-reset" onclick="characterManager.resetCharacter()" title="캐릭터 학습 데이터 초기화" style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.35); color: #ef4444; padding: 0.45rem 0.8rem; border-radius: 8px; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;">
+                    <span>🔄</span> 초기화
+                  </button>
                 </div>
               </div>
               <p class="char-bio-text" id="dash-char-bio">
@@ -2811,6 +2814,20 @@ body.theme-light .article-card.locked {
           </div>
 
           <div id="reader-quiz-container" style="margin-top: 3rem; padding-top: 2rem; border-top: 2px dashed var(--border-color);"></div>
+
+          <!-- Bottom Article Completion Verification Card (Strict Anti-Cheat) -->
+          <div class="article-completion-card" id="article-bottom-completion-card" style="margin-top: 3rem; padding: 2.25rem 1.5rem; background: var(--bg-surface); border: 2px solid var(--border-color); border-radius: 16px; text-align: center;">
+            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;" id="bottom-complete-icon">📖</div>
+            <h3 style="font-size: 1.3rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.4rem;" id="bottom-complete-title">
+              아티클 정독 완료 인증
+            </h3>
+            <p style="font-size: 0.92rem; color: var(--text-muted); max-width: 520px; margin: 0 auto 1.5rem; line-height: 1.6;" id="bottom-complete-desc">
+              본문을 최소 45초 이상 꼼꼼히 정독하고 아래 완료 버튼을 직접 눌러야 정독이 인정되며 <strong>+50 XP</strong>를 획득합니다.
+            </p>
+            <button class="btn-primary" id="btn-bottom-complete-article" style="padding: 0.9rem 2.5rem; font-size: 1.05rem; font-weight: 800; border-radius: 30px; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.35); transition: all 0.2s ease;" onclick="reader.markCompleted()">
+              ⏱️ 아티클 정독 중... (45초 후 완독 가능)
+            </button>
+          </div>
         </article>
       </div>
     </section>
@@ -3150,11 +3167,16 @@ body.theme-light .article-card.locked {
         </div>
       </div>
 
-      <div class="char-modal-footer">
-        <button class="btn-secondary" onclick="characterManager.closeModal()">취소</button>
-        <button id="btn-save-character" class="btn-primary" style="padding: 0.65rem 1.8rem; font-weight: 800;" onclick="characterManager.saveCharacter()">
-          ✨ 캐릭터 저장 및 육성 시작
+      <div class="char-modal-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap; gap: 0.75rem;">
+        <button type="button" class="btn-danger-outline" id="btn-modal-reset-character" onclick="characterManager.resetCharacter()" style="padding: 0.55rem 1rem; font-size: 0.82rem; font-weight: 700; color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.08); border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
+          ⚠️ 캐릭터 데이터 초기화
         </button>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <button class="btn-secondary" onclick="characterManager.closeModal()">취소</button>
+          <button id="btn-save-character" class="btn-primary" style="padding: 0.65rem 1.8rem; font-weight: 800;" onclick="characterManager.saveCharacter()">
+            ✨ 캐릭터 저장 및 육성 시작
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -19388,10 +19410,49 @@ const themeManager = {
   }
 };
 
-// User Session state with localStorage persistence
+// Storage with one-time fair-play patch migration (Global 0 XP reset for this update)
+const FAIR_PLAY_PATCH_VERSION = 'v2026_fair_play_reset_v1';
+
 const storage = {
   get() {
+    const patchApplied = localStorage.getItem('studypoker_patch_version');
     const saved = localStorage.getItem('studypoker_user');
+    
+    // One-time global XP reset for this update
+    if (patchApplied !== FAIR_PLAY_PATCH_VERSION) {
+      localStorage.setItem('studypoker_patch_version', FAIR_PLAY_PATCH_VERSION);
+      let preservedName = '포커신동';
+      let preservedAvatar = '🦈';
+      let preservedStyle = 'TAG';
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (parsed.name) preservedName = parsed.name;
+          if (parsed.avatar) preservedAvatar = parsed.avatar;
+          if (parsed.playstyle) preservedStyle = parsed.playstyle;
+        } catch(e) {}
+      }
+      const resetState = {
+        name: preservedName,
+        avatar: preservedAvatar,
+        playstyle: preservedStyle,
+        xp: 0,
+        level: 1,
+        streak: 1,
+        stats: { theory: 0, decision: 0, ranges: 0, mental: 0 },
+        completed_articles: [],
+        completed_quizzes: [],
+        explored_ranges: []
+      };
+      this.save(resetState);
+      setTimeout(() => {
+        if (window.characterManager && characterManager.showToast) {
+          characterManager.showToast('🛡️ 공정 밸런스 패치 적용: 퀴즈/레인지 무한 파밍 방지 및 모든 유저 0 XP 초기화가 완료되었습니다.');
+        }
+      }, 1000);
+      return resetState;
+    }
+
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -19402,6 +19463,7 @@ const storage = {
         if (parsed.xp === undefined) parsed.xp = 0;
         if (!parsed.completed_articles) parsed.completed_articles = [];
         if (!parsed.completed_quizzes) parsed.completed_quizzes = [];
+        if (!parsed.explored_ranges) parsed.explored_ranges = [];
         return parsed;
       } catch(e) {}
     }
@@ -19419,7 +19481,8 @@ const storage = {
         mental: 0
       },
       completed_articles: [],
-      completed_quizzes: []
+      completed_quizzes: [],
+      explored_ranges: []
     };
   },
   save(state) {
@@ -19516,6 +19579,51 @@ const characterManager = {
       if (btn) btn.classList.remove('active');
     }
     if (window.app && app.playAudioEffect) app.playAudioEffect('click');
+  },
+
+  resetCharacter() {
+    const ok = confirm("⚠️ 캐릭터 초기화 확인\n\n정말로 모든 학습 기록(경험치, 레벨, 완독 아티클, 퀴즈 기록, 4대 능력치)을 초기화하시겠습니까?\n\n초기화 시 0 XP (Lv.1 동네 피쉬)로 완전히 새로 시작합니다.");
+    if (!ok) return;
+
+    localStorage.removeItem('studypoker_user');
+    localStorage.removeItem('studypoker_char_created');
+
+    app.userState = {
+      name: '포커신동',
+      avatar: '🦈',
+      playstyle: 'TAG',
+      xp: 0,
+      level: 1,
+      streak: 1,
+      stats: {
+        theory: 0,
+        decision: 0,
+        ranges: 0,
+        mental: 0
+      },
+      completed_articles: [],
+      completed_quizzes: [],
+      explored_ranges: []
+    };
+    storage.save(app.userState);
+
+    this.selectedAvatar = '🦈';
+    this.selectedStyle = 'TAG';
+
+    this.closeModal();
+    app.updateUserBar();
+    this.renderHeader();
+    this.renderDashboard();
+    if (window.roadmap && roadmap.load) roadmap.load();
+    if (window.reader && reader.renderArticleCards) reader.renderArticleCards();
+    if (window.trainer && trainer.renderCurrentQuiz) trainer.renderCurrentQuiz();
+
+    this.showToast("🔄 모든 학습 데이터가 0 XP(초기 상태)로 깨끗하게 초기화되었습니다.");
+    if (window.app && app.playAudioEffect) app.playAudioEffect('click');
+
+    setTimeout(() => {
+      this.openModal(true);
+    }, 500);
   },
 
   selectAvatar(emoji) {
@@ -19639,6 +19747,7 @@ const characterManager = {
       app.userState.stats = { theory: 0, decision: 0, ranges: 0, mental: 0 };
       app.userState.completed_articles = [];
       app.userState.completed_quizzes = [];
+      app.userState.explored_ranges = [];
     }
 
     localStorage.setItem('studypoker_char_created', 'true');
@@ -20158,6 +20267,60 @@ const reader = {
     }
   },
 
+  updateCompletionUI(isCompleted, secondsRemaining) {
+    const btnSidebar = document.getElementById('btn-complete-article');
+    const btnBottom = document.getElementById('btn-bottom-complete-article');
+    const bottomDesc = document.getElementById('bottom-complete-desc');
+    const bottomIcon = document.getElementById('bottom-complete-icon');
+
+    if (isCompleted) {
+      if (btnSidebar) {
+        btnSidebar.innerText = '✓ 이미 완독 완료한 아티클';
+        btnSidebar.disabled = true;
+        btnSidebar.style.opacity = '0.6';
+        btnSidebar.style.cursor = 'not-allowed';
+      }
+      if (btnBottom) {
+        btnBottom.innerText = '✓ 이미 완독 완료한 아티클 (+50 XP 획득 완료)';
+        btnBottom.disabled = true;
+        btnBottom.style.opacity = '0.6';
+        btnBottom.style.cursor = 'not-allowed';
+      }
+      if (bottomIcon) bottomIcon.innerText = '✅';
+      if (bottomDesc) bottomDesc.innerHTML = '이미 정독을 완료하여 경험치(50 XP)를 획득한 아티클입니다.';
+    } else if (secondsRemaining > 0) {
+      if (btnSidebar) {
+        btnSidebar.innerText = `⏱️ 정독 중... (${secondsRemaining}초)`;
+        btnSidebar.disabled = true;
+        btnSidebar.style.opacity = '0.7';
+        btnSidebar.style.cursor = 'wait';
+      }
+      if (btnBottom) {
+        btnBottom.innerText = `⏱️ 아티클 정독 중... (${secondsRemaining}초 후 완독 가능)`;
+        btnBottom.disabled = true;
+        btnBottom.style.opacity = '0.7';
+        btnBottom.style.cursor = 'wait';
+      }
+      if (bottomIcon) bottomIcon.innerText = '📖';
+      if (bottomDesc) bottomDesc.innerHTML = `본문을 최소 45초 이상 꼼꼼히 정독하고 아래 완료 버튼을 직접 눌러야 정독이 인정되며 <strong>+50 XP</strong>를 획득합니다. (남은 시간: ${secondsRemaining}초)`;
+    } else {
+      if (btnSidebar) {
+        btnSidebar.innerText = '✓ 정독 완료 (+50 XP)';
+        btnSidebar.disabled = false;
+        btnSidebar.style.opacity = '1';
+        btnSidebar.style.cursor = 'pointer';
+      }
+      if (btnBottom) {
+        btnBottom.innerText = '✓ 정독 완료! (+50 XP 획득하기)';
+        btnBottom.disabled = false;
+        btnBottom.style.opacity = '1';
+        btnBottom.style.cursor = 'pointer';
+      }
+      if (bottomIcon) bottomIcon.innerText = '🎉';
+      if (bottomDesc) bottomDesc.innerHTML = '🎉 <strong>45초 정독 시간 충족!</strong> 아래 버튼을 직접 클릭해야 정독이 완료되고 경험치가 지급됩니다.';
+    }
+  },
+
   openArticle(articleId) {
     const data = this.articles.find(a => a.id === articleId || a.slug === articleId);
     if (!data) return;
@@ -20195,30 +20358,21 @@ const reader = {
     }
 
     const isCompleted = app.userState.completed_articles.includes(data.id);
-    const btnComplete = document.getElementById('btn-complete-article');
     if (isCompleted) {
-      btnComplete.innerText = '✓ 이미 완독 완료한 아티클';
-      btnComplete.disabled = true;
-      btnComplete.style.opacity = '0.6';
-      btnComplete.style.cursor = 'not-allowed';
+      this.secondsRemaining = 0;
+      this.updateCompletionUI(true, 0);
     } else {
       this.secondsRemaining = 45;
-      btnComplete.disabled = true;
-      btnComplete.style.opacity = '0.7';
-      btnComplete.style.cursor = 'wait';
-      btnComplete.innerText = `⏱️ 아티클 정독 중... (${this.secondsRemaining}초 후 완독 가능)`;
+      this.updateCompletionUI(false, 45);
 
       this.readTimer = setInterval(() => {
         this.secondsRemaining--;
         if (this.secondsRemaining > 0) {
-          btnComplete.innerText = `⏱️ 아티클 정독 중... (${this.secondsRemaining}초 후 완독 가능)`;
+          this.updateCompletionUI(false, this.secondsRemaining);
         } else {
           clearInterval(this.readTimer);
           this.readTimer = null;
-          btnComplete.disabled = false;
-          btnComplete.style.opacity = '1';
-          btnComplete.style.cursor = 'pointer';
-          btnComplete.innerText = '✓ 정독 완료! (+50 XP 획득하기)';
+          this.updateCompletionUI(false, 0);
           if (window.app && app.playAudioEffect) app.playAudioEffect('xp');
         }
       }, 1000);
@@ -20309,7 +20463,8 @@ const reader = {
     if (!q) return;
 
     const isCorrect = (selectedIdx === q.correct_index);
-    const xpGained = isCorrect ? 50 : 0;
+    const alreadyCompleted = app.userState.completed_quizzes && app.userState.completed_quizzes.includes(q.id);
+    const xpGained = (isCorrect && !alreadyCompleted) ? 50 : 0;
 
     const buttons = document.querySelectorAll('#embedded-quiz-options .quiz-opt-btn');
     buttons.forEach((b, i) => {
@@ -20323,18 +20478,30 @@ const reader = {
 
     const feedbackEl = document.getElementById('embedded-quiz-feedback');
     feedbackEl.style.display = 'block';
+
+    let feedbackTitle = '';
+    if (isCorrect) {
+      feedbackTitle = alreadyCompleted
+        ? '🎉 정답입니다! (이미 해결한 퀴즈 복습 • +0 XP)'
+        : `🎉 정답입니다! (+${xpGained} XP)`;
+    } else {
+      feedbackTitle = '❌ 오답입니다 (+0 XP) — 솔버 해설을 정독하세요';
+    }
+
     feedbackEl.innerHTML = `
       <div style="font-weight: 800; color: ${isCorrect ? '#34d399' : '#f87171'}; margin-bottom: 0.5rem;">
-        ${isCorrect ? '🎉 정답입니다!' : '❌ 오답입니다 (솔버 해설을 정독하세요)'} (+${xpGained} XP)
+        ${feedbackTitle}
       </div>
       <div style="font-size: 0.9rem; color: var(--text-main); line-height: 1.5;">${q.explanation}</div>
     `;
 
     if (isCorrect) {
-      if (!app.userState.completed_quizzes.includes(q.id)) {
+      if (!alreadyCompleted) {
+        if (!app.userState.completed_quizzes) app.userState.completed_quizzes = [];
         app.userState.completed_quizzes.push(q.id);
+        app.addXP(xpGained, 'quiz');
+        characterManager.showToast('🎯 체크업 퀴즈 첫 정답 달성! (+50 XP 획득)');
       }
-      app.addXP(xpGained, 'quiz');
       app.playAudioEffect('correct');
     } else {
       app.playAudioEffect('wrong');
@@ -20359,13 +20526,7 @@ const reader = {
       characterManager.showToast('📖 아티클 정독 완료! (+50 XP 획득)');
     }
     
-    const btn = document.getElementById('btn-complete-article');
-    if (btn) {
-      btn.innerText = '✓ 학습 완료됨 (+50 XP 획득 완료)';
-      btn.disabled = true;
-      btn.style.opacity = '0.6';
-      btn.style.cursor = 'not-allowed';
-    }
+    this.updateCompletionUI(true, 0);
 
     this.renderArticleCards();
   }
@@ -20553,7 +20714,8 @@ const trainer = {
     const q = this.quizzes[this.currentIndex];
 
     const isCorrect = (optIndex === q.correct_index);
-    const xpGained = isCorrect ? 50 : 0;
+    const alreadyCompleted = app.userState.completed_quizzes && app.userState.completed_quizzes.includes(q.id);
+    const xpGained = (isCorrect && !alreadyCompleted) ? 50 : 0;
 
     q.options.forEach((opt, i) => {
       const btn = document.getElementById(`quiz-btn-${i}`);
@@ -20577,16 +20739,26 @@ const trainer = {
     const explanationText = document.getElementById('feedback-explanation-text');
 
     statusTitle.className = `feedback-status ${isCorrect ? 'correct' : 'wrong'}`;
-    statusTitle.innerText = isCorrect ? `✅ 정답입니다! (+${xpGained} XP)` : `❌ 오답입니다 (+0 XP) — 아래 솔버 해설을 정독하세요!`;
+    if (isCorrect) {
+      if (alreadyCompleted) {
+        statusTitle.innerText = `✅ 정답입니다! (이미 클리어한 퀴즈 • 복습 완료 / +0 XP)`;
+      } else {
+        statusTitle.innerText = `✅ 정답입니다! (+${xpGained} XP)`;
+      }
+    } else {
+      statusTitle.innerText = `❌ 오답입니다 (+0 XP) — 아래 솔버 해설을 정독하세요!`;
+    }
     conceptTag.innerText = `핵심 원리: ${q.key_concept}`;
     explanationText.innerText = q.explanation;
     feedbackBox.style.display = 'block';
 
     if (isCorrect) {
-      if (!app.userState.completed_quizzes.includes(q.id)) {
+      if (!alreadyCompleted) {
+        if (!app.userState.completed_quizzes) app.userState.completed_quizzes = [];
         app.userState.completed_quizzes.push(q.id);
+        app.addXP(xpGained, 'quiz');
+        characterManager.showToast('🎯 스팟 퀴즈 첫 정답 달성! (+50 XP 획득)');
       }
-      app.addXP(xpGained, 'quiz');
       app.playAudioEffect('correct');
     } else {
       app.playAudioEffect('wrong');
@@ -20628,16 +20800,22 @@ const matrix = {
     const preset = this.rangesData.presets.find(p => p.id === presetId);
     if (!preset) return;
 
-    if (this._initialized && !this._explored[presetId]) {
-      this._explored[presetId] = true;
-      if (window.app && app.addXP) {
-        app.addXP(20, 'range');
-      }
-    }
-
     const userLvlInfo = app.getLevelInfo(app.userState.xp);
     const userLvl = userLvlInfo.level;
     const isLocked = (preset.required_level || 1) > userLvl;
+
+    if (!app.userState.explored_ranges) {
+      app.userState.explored_ranges = [];
+    }
+
+    // Award XP ONLY once per unlocked preset, persisted in storage (anti-cheat)
+    if (this._initialized && !isLocked && !app.userState.explored_ranges.includes(presetId)) {
+      app.userState.explored_ranges.push(presetId);
+      if (window.app && app.addXP) {
+        app.addXP(20, 'range');
+        characterManager.showToast(`📊 새로운 레인지 [${preset.name}] 첫 탐색! (+20 XP)`);
+      }
+    }
 
     this.currentPreset = preset;
 
@@ -20964,7 +21142,7 @@ const roadmap = {
         title: "레인지의 지배자",
         desc: "13x13 매트릭스 5개 이상 포지션 탐색",
         icon: "📊",
-        unlocked: (matrix._explored && Object.keys(matrix._explored).length >= 5)
+        unlocked: (userState.explored_ranges && userState.explored_ranges.length >= 5)
       }
     ];
 
