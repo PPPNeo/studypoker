@@ -248,8 +248,41 @@ def check_level_up():
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 @app.get("/")
+@app.get("/index.html")
 def serve_index():
+    root_index = os.path.join(BASE_DIR, "index.html")
+    if os.path.exists(root_index):
+        return FileResponse(root_index)
     return FileResponse(os.path.join(STATIC_DIR, "index.html"))
+
+# Also support routes without /api prefix in case serverless strips it
+@app.get("/articles")
+def get_articles_alias(category: Optional[str] = None, level: Optional[str] = None):
+    return get_articles(category=category, level=level)
+
+@app.get("/quizzes")
+def get_quizzes_alias():
+    return get_quizzes()
+
+@app.get("/glossary")
+def get_glossary_alias(q: Optional[str] = None, category: Optional[str] = None):
+    return get_glossary(q=q, category=category)
+
+@app.get("/roadmap")
+def get_roadmap_alias():
+    return get_roadmap()
+
+@app.get("/ranges")
+def get_ranges_alias():
+    return get_ranges()
+
+@app.post("/ai/ask")
+def ask_ai_alias(query: AIQuestion):
+    return ask_ai_coach(query)
+
+@app.post("/quizzes/submit")
+def submit_quiz_alias(sub: QuizSubmission):
+    return submit_quiz(sub)
 
 if __name__ == "__main__":
     import uvicorn
