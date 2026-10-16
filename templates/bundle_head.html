@@ -1735,7 +1735,8 @@ body.theme-light .korean-summary-box ul li {
   color: #d97706;
   border: 1px solid rgba(245, 158, 11, 0.35);
 }
-.btn-character-edit {
+.btn-character-edit,
+.btn-character-stats {
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
   color: var(--text-main);
@@ -1749,9 +1750,11 @@ body.theme-light .korean-summary-box ul li {
   gap: 0.4rem;
   transition: all 0.2s ease;
 }
-.btn-character-edit:hover {
+.btn-character-edit:hover,
+.btn-character-stats:hover,
+.btn-character-stats.active {
   border-color: #3b82f6;
-  background: var(--bg-card-hover);
+  background: rgba(59, 130, 246, 0.12);
   color: #3b82f6;
 }
 
@@ -1894,58 +1897,6 @@ body.theme-light .korean-summary-box ul li {
   font-size: 0.78rem;
   color: var(--text-dim);
   text-align: right;
-  font-weight: 700;
-}
-
-/* Fast Action Quests Box */
-.char-quests-box {
-  background: var(--bg-card);
-  border: 1.5px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  padding: 1.5rem;
-}
-.quest-title-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-.quest-items-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-.quest-item {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  padding: 0.9rem 1.25rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  transition: all 0.2s ease;
-}
-.quest-item:hover {
-  border-color: #3b82f6;
-  background: var(--bg-card-hover);
-}
-.quest-info {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-}
-.quest-check {
-  font-size: 1.4rem;
-}
-.quest-name {
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: var(--text-main);
-}
-.quest-reward {
-  font-size: 0.78rem;
-  color: #fbbf24;
   font-weight: 700;
 }
 
@@ -2168,13 +2119,18 @@ body.theme-light .stat-card {
   background: #f8fafc;
   border-color: #e2e8f0;
 }
-body.theme-light .char-quests-box {
-  background: #ffffff;
-  border-color: #cbd5e1;
-}
-body.theme-light .quest-item {
+body.theme-light .btn-character-edit,
+body.theme-light .btn-character-stats {
   background: #f8fafc;
-  border-color: #e2e8f0;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+body.theme-light .btn-character-edit:hover,
+body.theme-light .btn-character-stats:hover,
+body.theme-light .btn-character-stats.active {
+  background: #eff6ff;
+  border-color: #3b82f6;
+  color: #2563eb;
 }
 body.theme-light .char-create-modal {
   background: #ffffff;
@@ -2612,9 +2568,14 @@ body.theme-light .article-card.locked {
                   <span class="char-style-tag" id="dash-char-style">⚡ TAG 스타일</span>
                   <span class="char-tier-badge" id="dash-char-tier">Lv.1 동네 피쉬 탈출기 🐟</span>
                 </div>
-                <button class="btn-character-edit" onclick="characterManager.openModal()">
-                  <span>🎭</span> 캐릭터 설정
-                </button>
+                <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                  <button class="btn-character-stats" id="btn-toggle-stats" onclick="characterManager.toggleStats()" title="4대 핵심 능력치 접기/펼치기">
+                    <span>📊</span> 4대 능력치 <span id="stats-toggle-arrow">▼</span>
+                  </button>
+                  <button class="btn-character-edit" onclick="characterManager.openModal()">
+                    <span>🎭</span> 캐릭터 설정
+                  </button>
+                </div>
               </div>
               <p class="char-bio-text" id="dash-char-bio">
                 "엄선된 프리미엄 핸드로 강력하게 주도권을 잡는 정석적인 승리 공식"
@@ -2633,9 +2594,12 @@ body.theme-light .article-card.locked {
             </div>
           </div>
 
-          <!-- 4 Core RPG Poker Stats Grid -->
-          <div class="char-stats-panel">
-            <h3 class="panel-subtitle">📊 포커 RPG 4대 핵심 능력치</h3>
+          <!-- 4 Core RPG Poker Stats Grid (Toggled via button) -->
+          <div class="char-stats-panel" id="char-stats-panel" style="display: none; margin-top: 0.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.15rem;">
+              <h3 class="panel-subtitle" style="margin-bottom: 0;">📊 포커 RPG 4대 핵심 능력치</h3>
+              <button onclick="characterManager.toggleStats()" style="background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 0.85rem; font-weight: 700; padding: 4px 8px;">✕ 접기</button>
+            </div>
             <div class="stats-grid">
               <div class="stat-card">
                 <div class="stat-icon-title">
@@ -2698,54 +2662,16 @@ body.theme-light .article-card.locked {
               </div>
             </div>
           </div>
-
-          <!-- Fast Action Quest Quick Links -->
-          <div class="char-quests-box">
-            <div class="quest-title-row">
-              <span style="font-size: 1.1rem; font-weight: 800; color: var(--text-main);">⚡ 오늘의 캐릭터 고속 육성 퀘스트</span>
-              <span style="font-size: 0.8rem; color: var(--text-dim);">매일 훈련하여 레벨업 달성</span>
-            </div>
-            <div class="quest-items-list">
-              <div class="quest-item">
-                <div class="quest-info">
-                  <span class="quest-check" id="quest-check-article">📖</span>
-                  <div>
-                    <div class="quest-name">GTO 아티클 1편 정독하고 완독 버튼 누르기</div>
-                    <div class="quest-reward">+50 XP • GTO 이론력 +10</div>
-                  </div>
-                </div>
-                <button class="btn-primary" style="padding: 0.45rem 1rem; font-size: 0.85rem;" onclick="app.navigate('articles')">도서관 가기 ↗</button>
-              </div>
-
-              <div class="quest-item">
-                <div class="quest-info">
-                  <span class="quest-check" id="quest-check-quiz">🎯</span>
-                  <div>
-                    <div class="quest-name">GTO 실전 스팟 퀴즈 풀고 정답 맞히기</div>
-                    <div class="quest-reward">+50 XP • 스팟 결단력 +15</div>
-                  </div>
-                </div>
-                <button class="btn-primary" style="padding: 0.45rem 1rem; font-size: 0.85rem;" onclick="app.navigate('trainer')">퀴즈 풀기 ↗</button>
-              </div>
-
-              <div class="quest-item">
-                <div class="quest-info">
-                  <span class="quest-check" id="quest-check-matrix">📊</span>
-                  <div>
-                    <div class="quest-name">13x13 레인지 매트릭스 프리셋 탐색하기</div>
-                    <div class="quest-reward">+20 XP • 레인지 이해도 +10</div>
-                  </div>
-                </div>
-                <button class="btn-primary" style="padding: 0.45rem 1rem; font-size: 0.85rem;" onclick="app.navigate('matrix')">매트릭스 보기 ↗</button>
-              </div>
-            </div>
-          </div>
         </div>
 
-        <div style="text-align: center; margin-bottom: 2.5rem;">
-          <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem;">🗺️ GTO 마스터 스킬 트리</h2>
-          <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">
-            피쉬에서 시작하여 GTO 마스터까지! 아티클을 정독하고 퀴즈를 맞혀 XP를 획득하고 다음 단계 스킬을 해금하세요.
+        <div style="text-align: center; margin: 2rem auto 2.5rem; max-width: 680px;">
+          <div style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(59, 130, 246, 0.12); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.3); padding: 4px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 800; margin-bottom: 0.75rem;">
+            <span>🧭</span> 추천 학습 로드맵
+          </div>
+          <h2 style="font-size: 1.85rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text-main);">🗺️ GTO 마스터 스킬 트리</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin: 0 auto;">
+            어디서부터 시작할지 고민할 필요 없이, 아래 <strong>Lv.1 동네 피쉬 탈출기의 첫 노드</strong>부터 순서대로 학습을 시작하세요!<br>
+            아티클 완독과 퀴즈 통과로 경험치(XP)를 쌓으면 상위 레벨과 고급 콘텐츠가 자동으로 열립니다.
           </p>
         </div>
 

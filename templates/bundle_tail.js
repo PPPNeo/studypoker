@@ -147,6 +147,24 @@ const characterManager = {
     if (modal) modal.style.display = 'none';
   },
 
+  toggleStats() {
+    const panel = document.getElementById('char-stats-panel');
+    const arrow = document.getElementById('stats-toggle-arrow');
+    const btn = document.getElementById('btn-toggle-stats');
+    if (!panel) return;
+    const isHidden = (panel.style.display === 'none' || getComputedStyle(panel).display === 'none');
+    if (isHidden) {
+      panel.style.display = 'block';
+      if (arrow) arrow.innerText = '▲';
+      if (btn) btn.classList.add('active');
+    } else {
+      panel.style.display = 'none';
+      if (arrow) arrow.innerText = '▼';
+      if (btn) btn.classList.remove('active');
+    }
+    if (window.app && app.playAudioEffect) app.playAudioEffect('click');
+  },
+
   selectAvatar(emoji) {
     this.selectedAvatar = emoji;
     this.updateModalSelections();
@@ -1522,21 +1540,25 @@ const roadmap = {
             </div>
           ` : `
             <div class="nodes-list">
-              ${lvl.nodes.map(n => {
+              ${lvl.nodes.map((n, idx) => {
                 const isCompleted = userState.completed_articles.includes(n.article_id);
+                const isFirstPending = !isCompleted && lvl.nodes.slice(0, idx).every(prev => userState.completed_articles.includes(prev.article_id));
                 return `
-                  <div class="node-item ${isCompleted ? 'completed' : ''}" onclick="reader.openArticle('${n.article_id}')">
+                  <div class="node-item ${isCompleted ? 'completed' : ''}" onclick="reader.openArticle('${n.article_id}')" style="${isFirstPending ? 'border: 1.5px solid #3b82f6; background: rgba(59, 130, 246, 0.05);' : ''}">
                     <div style="display: flex; align-items: center; gap: 0.75rem;">
-                      <span style="font-size: 1.2rem;">${isCompleted ? '✅' : '📖'}</span>
+                      <span style="font-size: 1.2rem;">${isCompleted ? '✅' : (isFirstPending ? '👉' : '📖')}</span>
                       <div>
-                        <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">${n.title}</div>
+                        <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+                          <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">${n.title}</div>
+                          ${isFirstPending ? '<span style="font-size: 0.68rem; background: #3b82f6; color: #fff; padding: 1px 6px; border-radius: 10px; font-weight: 800;">추천 다음 스팟</span>' : ''}
+                        </div>
                         <span style="font-size: 0.75rem; color: var(--text-dim);">${n.category}</span>
                       </div>
                     </div>
                     <div style="display: flex; align-items: center; gap: 0.75rem;">
                       <span style="font-size: 0.8rem; color: #fbbf24; font-weight: 700;">+${n.xp} XP</span>
-                      <button class="btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
-                        ${isCompleted ? '다시 읽기' : '학습 시작'}
+                      <button class="${isFirstPending ? 'btn-primary' : 'btn-secondary'}" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
+                        ${isCompleted ? '다시 읽기' : (isFirstPending ? '지금 학습 시작 →' : '학습 시작')}
                       </button>
                     </div>
                   </div>
