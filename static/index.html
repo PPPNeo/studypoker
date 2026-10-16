@@ -1961,25 +1961,43 @@ body.theme-light .korean-summary-box ul li {
 
 .avatar-select-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.75rem;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.55rem;
+  max-height: 290px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  border: 1.5px solid var(--border-color);
 }
-@media (max-width: 500px) {
+@media (max-width: 600px) {
   .avatar-select-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.45rem;
   }
+}
+@media (max-width: 400px) {
+  .avatar-select-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.4rem;
+  }
+}
+body.theme-light .avatar-select-grid {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: #e2e8f0;
 }
 .avatar-option {
   background: var(--bg-surface);
-  border: 2px solid var(--border-color);
-  border-radius: 12px;
-  padding: 0.75rem 0.5rem;
+  border: 1.5px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.55rem 0.3rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.25rem;
   cursor: pointer;
   transition: all 0.2s ease;
+  user-select: none;
 }
 .avatar-option:hover {
   border-color: #3b82f6;
@@ -1987,16 +2005,19 @@ body.theme-light .korean-summary-box ul li {
 }
 .avatar-option.active {
   border-color: #3b82f6;
-  background: rgba(59, 130, 246, 0.12);
-  box-shadow: 0 0 14px rgba(59, 130, 246, 0.3);
+  background: rgba(59, 130, 246, 0.15);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.35);
 }
 .avatar-emoji {
-  font-size: 2.2rem;
+  font-size: 1.85rem;
+  line-height: 1.1;
 }
 .avatar-name {
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   font-weight: 700;
   color: var(--text-main);
+  text-align: center;
+  white-space: nowrap;
 }
 
 .char-input {
@@ -2981,8 +3002,8 @@ body.authenticated #auth-gate-screen {
           </div>
           <h2 style="font-size: 1.85rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text-main);">🗺️ GTO 마스터 스킬 트리</h2>
           <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin: 0 auto;">
-            어디서부터 시작할지 고민할 필요 없이, 아래 <strong>Lv.1 동네 피쉬 탈출기의 첫 노드</strong>부터 순서대로 학습을 시작하세요!<br>
-            아티클 완독과 퀴즈 통과로 경험치(XP)를 쌓으면 상위 레벨과 고급 콘텐츠가 자동으로 열립니다.
+            어디서부터 시작할지 고민할 필요 없이, 아래 <strong>[입문 티어] 동네 피쉬 탈출기의 첫 노드</strong>부터 순서대로 학습을 시작하세요!<br>
+            아티클 완독과 퀴즈 통과로 경험치(XP)를 쌓으면 상위 전직 구간과 고급 콘텐츠가 자동으로 열립니다.
           </p>
         </div>
 
@@ -3469,9 +3490,13 @@ body.authenticated #auth-gate-screen {
               <span class="avatar-emoji">👑</span>
               <span class="avatar-name">황제</span>
             </div>
-            <div class="avatar-option" data-avatar="🥷" onclick="characterManager.selectAvatar('🥷')">
-              <span class="avatar-emoji">🥷</span>
-              <span class="avatar-name">닌자</span>
+            <div class="avatar-option" data-avatar="🎭" onclick="characterManager.selectAvatar('🎭')">
+              <span class="avatar-emoji">🎭</span>
+              <span class="avatar-name">팬텀</span>
+            </div>
+            <div class="avatar-option" data-avatar="🗡️" onclick="characterManager.selectAvatar('🗡️')">
+              <span class="avatar-emoji">🗡️</span>
+              <span class="avatar-name">어쌔신</span>
             </div>
             <div class="avatar-option" data-avatar="🤖" onclick="characterManager.selectAvatar('🤖')">
               <span class="avatar-emoji">🤖</span>
@@ -3480,6 +3505,66 @@ body.authenticated #auth-gate-screen {
             <div class="avatar-option" data-avatar="🐟" onclick="characterManager.selectAvatar('🐟')">
               <span class="avatar-emoji">🐟</span>
               <span class="avatar-name">피쉬</span>
+            </div>
+            <div class="avatar-option" data-avatar="🐉" onclick="characterManager.selectAvatar('🐉')">
+              <span class="avatar-emoji">🐉</span>
+              <span class="avatar-name">드래곤</span>
+            </div>
+            <div class="avatar-option" data-avatar="🦅" onclick="characterManager.selectAvatar('🦅')">
+              <span class="avatar-emoji">🦅</span>
+              <span class="avatar-name">독수리</span>
+            </div>
+            <div class="avatar-option" data-avatar="🐺" onclick="characterManager.selectAvatar('🐺')">
+              <span class="avatar-emoji">🐺</span>
+              <span class="avatar-name">늑대</span>
+            </div>
+            <div class="avatar-option" data-avatar="🐯" onclick="characterManager.selectAvatar('🐯')">
+              <span class="avatar-emoji">🐯</span>
+              <span class="avatar-name">호랑이</span>
+            </div>
+            <div class="avatar-option" data-avatar="🧙" onclick="characterManager.selectAvatar('🧙')">
+              <span class="avatar-emoji">🧙</span>
+              <span class="avatar-name">마법사</span>
+            </div>
+            <div class="avatar-option" data-avatar="🎩" onclick="characterManager.selectAvatar('🎩')">
+              <span class="avatar-emoji">🎩</span>
+              <span class="avatar-name">마술사</span>
+            </div>
+            <div class="avatar-option" data-avatar="🕶️" onclick="characterManager.selectAvatar('🕶️')">
+              <span class="avatar-emoji">🕶️</span>
+              <span class="avatar-name">에이전트</span>
+            </div>
+            <div class="avatar-option" data-avatar="💎" onclick="characterManager.selectAvatar('💎')">
+              <span class="avatar-emoji">💎</span>
+              <span class="avatar-name">다이아</span>
+            </div>
+            <div class="avatar-option" data-avatar="🔥" onclick="characterManager.selectAvatar('🔥')">
+              <span class="avatar-emoji">🔥</span>
+              <span class="avatar-name">불꽃</span>
+            </div>
+            <div class="avatar-option" data-avatar="⚡" onclick="characterManager.selectAvatar('⚡')">
+              <span class="avatar-emoji">⚡</span>
+              <span class="avatar-name">번개</span>
+            </div>
+            <div class="avatar-option" data-avatar="🎲" onclick="characterManager.selectAvatar('🎲')">
+              <span class="avatar-emoji">🎲</span>
+              <span class="avatar-name">갬블러</span>
+            </div>
+            <div class="avatar-option" data-avatar="🐙" onclick="characterManager.selectAvatar('🐙')">
+              <span class="avatar-emoji">🐙</span>
+              <span class="avatar-name">크라켄</span>
+            </div>
+            <div class="avatar-option" data-avatar="🐻" onclick="characterManager.selectAvatar('🐻')">
+              <span class="avatar-emoji">🐻</span>
+              <span class="avatar-name">곰</span>
+            </div>
+            <div class="avatar-option" data-avatar="🃏" onclick="characterManager.selectAvatar('🃏')">
+              <span class="avatar-emoji">🃏</span>
+              <span class="avatar-name">조커</span>
+            </div>
+            <div class="avatar-option" data-avatar="🏆" onclick="characterManager.selectAvatar('🏆')">
+              <span class="avatar-emoji">🏆</span>
+              <span class="avatar-name">챔피언</span>
             </div>
           </div>
         </div>
@@ -19954,9 +20039,9 @@ const DB = {
   "levels": [
     {
       "level": 1,
-      "title": "Lv.1 동네 피쉬 탈출기 🐟",
-      "subtitle": "Fundamentals & Pot Odds Mastery",
-      "badge": "🐣 피쉬 탈출",
+      "title": "[입문 티어] 동네 피쉬 탈출기 🐟",
+      "subtitle": "Fundamentals & Pot Odds (기초 EV와 팟오즈 정복)",
+      "badge": "🐣 [입문] 동네 피쉬",
       "description": "기대값(EV)과 팟 오즈의 기본 원리를 깨우치고, 단순한 운 게임에서 벗어나 포커 수학의 기초를 다집니다.",
       "required_xp": 0,
       "nodes": [
@@ -19988,9 +20073,9 @@ const DB = {
     },
     {
       "level": 2,
-      "title": "Lv.2 홀덤펍 로컬 레귤러 ⚔️",
-      "subtitle": "Flop Mechanics & C-Bet Strategy",
-      "badge": "⚔️ 펍 레귤러",
+      "title": "[1차 전직] 홀덤펍 로컬 레귤러 ⚔️",
+      "subtitle": "Flop Mechanics & C-Bet (플랍 C-bet과 포지션 주도권)",
+      "badge": "⚔️ [1차 전직] 펍 레귤러",
       "description": "A-하이 드라이 보드와 웻 보드의 C-bet 차이를 이해하고, 3벳 팟 주도권을 제어하기 시작합니다.",
       "required_xp": 600,
       "nodes": [
@@ -20022,9 +20107,9 @@ const DB = {
     },
     {
       "level": 3,
-      "title": "Lv.3 마이크로 그라인더 🔥",
-      "subtitle": "Turn Barreling & Blocker Selection",
-      "badge": "🔥 온라인 그라인더",
+      "title": "[2차 전직] 마이크로 그라인더 ⚙️",
+      "subtitle": "Turn Barreling & Blockers (블로커와 턴 배럴 수학)",
+      "badge": "⚙️ [2차 전직] 마이크로 그라인더",
       "description": "블로커/언블로커 콤보 수학을 실전에 적용하고, 턴/리버에서 폴라라이즈드 배럴을 감행합니다.",
       "required_xp": 2000,
       "nodes": [
@@ -20056,9 +20141,9 @@ const DB = {
     },
     {
       "level": 4,
-      "title": "Lv.4 온라인 세미프로 🦊",
-      "subtitle": "ICM Pressure & Node Locking",
-      "badge": "🦊 세미프로",
+      "title": "[3차 전직] 로우스테이크 크러셔 🔥",
+      "subtitle": "ICM Pressure & Capped Ranges (ICM 압박과 캡된 레인지 공략)",
+      "badge": "🔥 [3차 전직] 로우스테이크 크러셔",
       "description": "토너먼트 파이널 테이블의 상금 점프(ICM)와 리스크 프리미엄을 통제하며 솔버로 상대를 응징합니다.",
       "required_xp": 5000,
       "nodes": [
@@ -20090,9 +20175,9 @@ const DB = {
     },
     {
       "level": 5,
-      "title": "Lv.5 하이롤러 토너 크러셔 🦁",
-      "subtitle": "High Stakes Exploits & Deep Stack Solving",
-      "badge": "🦁 하이롤러",
+      "title": "[4차 전직] 미드스테이크 프로 🦊",
+      "subtitle": "High Stakes Exploits & Deep Stack (딥스택과 성향별 익스플로잇)",
+      "badge": "🦊 [4차 전직] 미드스테이크 프로",
       "description": "200bb+ 딥스택, PKO 바운티 팩터, 고난도 노드락 익스플로잇으로 필드의 칩을 지배합니다.",
       "required_xp": 10000,
       "nodes": [
@@ -20124,9 +20209,9 @@ const DB = {
     },
     {
       "level": 6,
-      "title": "Lv.6 WSOP 챔피언 👑",
-      "subtitle": "The God of Poker Theory & Balance",
-      "badge": "👑 WSOP 챔피언",
+      "title": "[최종 전직] WSOP 레전드 챔피언 👑",
+      "subtitle": "Nash Equilibrium & Immortal Mindset (멀티웨이 내쉬 균형과 챔피언 마인드셋)",
+      "badge": "👑 [최종 전직] WSOP 챔피언",
       "description": "멀티웨이 내쉬 균형, 휴먼 솔버 경지의 완벽한 직관으로 세계 챔피언의 반열에 등극합니다.",
       "required_xp": 18000,
       "nodes": [
@@ -20180,8 +20265,8 @@ const DB = {
     },
     {
       "id": "level_up",
-      "title": "로컬 레귤러 달성",
-      "desc": "600 XP 달성 및 Lv.2 진화",
+      "title": "1차 전직 달성",
+      "desc": "600 XP 달성 및 1차 전직 심사 해금",
       "icon": "⚔️",
       "unlocked": false
     },
@@ -22242,8 +22327,8 @@ const roadmap = {
       },
       {
         id: "level_up",
-        title: "로컬 레귤러 달성",
-        desc: "600 XP 달성 및 Lv.2 진화",
+        title: "1차 전직 달성",
+        desc: "600 XP 달성 및 1차 전직 심사 해금",
         icon: "⚔️",
         unlocked: ((userState.xp || 0) >= 600)
       },
@@ -23090,12 +23175,12 @@ const rankingManager = {
     { name: "압구정샤크", avatar: "🦈", style: "TAG", level: 82, xp: 60200, articles: 210, tierNum: 4 },
     { name: "마카오레귤러", avatar: "🦁", style: "LAG", level: 78, xp: 55400, articles: 185, tierNum: 4 },
     { name: "GTO솔버러", avatar: "🤖", style: "GTO", level: 73, xp: 49800, articles: 160, tierNum: 4 },
-    { name: "체크레이즈달인", avatar: "🥷", style: "LAG", level: 68, xp: 44200, articles: 135, tierNum: 4 },
+    { name: "체크레이즈달인", avatar: "🎭", style: "LAG", level: 68, xp: 44200, articles: 135, tierNum: 4 },
     { name: "홍대펍지배자", avatar: "⚔️", style: "TAG", level: 62, xp: 38600, articles: 110, tierNum: 3 },
     { name: "온라인그라인더99", avatar: "⚙️", style: "TAG", level: 56, xp: 33100, articles: 95, tierNum: 3 },
     { name: "강남너트장인", avatar: "🦊", style: "EXPLOIT", level: 50, xp: 27900, articles: 80, tierNum: 3 },
     { name: "리버원샷", avatar: "🦉", style: "HUNTER", level: 46, xp: 24500, articles: 65, tierNum: 3 },
-    { name: "스몰블라인드킬러", avatar: "🥷", style: "LAG", level: 41, xp: 20800, articles: 55, tierNum: 2 },
+    { name: "스몰블라인드킬러", avatar: "🗡️", style: "LAG", level: 41, xp: 20800, articles: 55, tierNum: 2 },
     { name: "팟스틸러", avatar: "🦊", style: "LAG", level: 36, xp: 17200, articles: 45, tierNum: 2 },
     { name: "3벳마니아", avatar: "🦁", style: "LAG", level: 31, xp: 13900, articles: 38, tierNum: 2 },
     { name: "에퀴티계산기", avatar: "🤖", style: "GTO", level: 27, xp: 10800, articles: 30, tierNum: 2 },

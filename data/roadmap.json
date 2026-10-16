@@ -2,9 +2,9 @@
   "levels": [
     {
       "level": 1,
-      "title": "Lv.1 동네 피쉬 탈출기 🐟",
-      "subtitle": "Fundamentals & Pot Odds Mastery",
-      "badge": "🐣 피쉬 탈출",
+      "title": "[입문 티어] 동네 피쉬 탈출기 🐟",
+      "subtitle": "Fundamentals & Pot Odds (기초 EV와 팟오즈 정복)",
+      "badge": "🐣 [입문] 동네 피쉬",
       "description": "기대값(EV)과 팟 오즈의 기본 원리를 깨우치고, 단순한 운 게임에서 벗어나 포커 수학의 기초를 다집니다.",
       "required_xp": 0,
       "nodes": [
@@ -36,9 +36,9 @@
     },
     {
       "level": 2,
-      "title": "Lv.2 홀덤펍 로컬 레귤러 ⚔️",
-      "subtitle": "Flop Mechanics & C-Bet Strategy",
-      "badge": "⚔️ 펍 레귤러",
+      "title": "[1차 전직] 홀덤펍 로컬 레귤러 ⚔️",
+      "subtitle": "Flop Mechanics & C-Bet (플랍 C-bet과 포지션 주도권)",
+      "badge": "⚔️ [1차 전직] 펍 레귤러",
       "description": "A-하이 드라이 보드와 웻 보드의 C-bet 차이를 이해하고, 3벳 팟 주도권을 제어하기 시작합니다.",
       "required_xp": 600,
       "nodes": [
@@ -70,9 +70,9 @@
     },
     {
       "level": 3,
-      "title": "Lv.3 마이크로 그라인더 🔥",
-      "subtitle": "Turn Barreling & Blocker Selection",
-      "badge": "🔥 온라인 그라인더",
+      "title": "[2차 전직] 마이크로 그라인더 ⚙️",
+      "subtitle": "Turn Barreling & Blockers (블로커와 턴 배럴 수학)",
+      "badge": "⚙️ [2차 전직] 마이크로 그라인더",
       "description": "블로커/언블로커 콤보 수학을 실전에 적용하고, 턴/리버에서 폴라라이즈드 배럴을 감행합니다.",
       "required_xp": 2000,
       "nodes": [
@@ -104,9 +104,9 @@
     },
     {
       "level": 4,
-      "title": "Lv.4 온라인 세미프로 🦊",
-      "subtitle": "ICM Pressure & Node Locking",
-      "badge": "🦊 세미프로",
+      "title": "[3차 전직] 로우스테이크 크러셔 🔥",
+      "subtitle": "ICM Pressure & Capped Ranges (ICM 압박과 캡된 레인지 공략)",
+      "badge": "🔥 [3차 전직] 로우스테이크 크러셔",
       "description": "토너먼트 파이널 테이블의 상금 점프(ICM)와 리스크 프리미엄을 통제하며 솔버로 상대를 응징합니다.",
       "required_xp": 5000,
       "nodes": [
@@ -138,9 +138,9 @@
     },
     {
       "level": 5,
-      "title": "Lv.5 하이롤러 토너 크러셔 🦁",
-      "subtitle": "High Stakes Exploits & Deep Stack Solving",
-      "badge": "🦁 하이롤러",
+      "title": "[4차 전직] 미드스테이크 프로 🦊",
+      "subtitle": "High Stakes Exploits & Deep Stack (딥스택과 성향별 익스플로잇)",
+      "badge": "🦊 [4차 전직] 미드스테이크 프로",
       "description": "200bb+ 딥스택, PKO 바운티 팩터, 고난도 노드락 익스플로잇으로 필드의 칩을 지배합니다.",
       "required_xp": 10000,
       "nodes": [
@@ -172,9 +172,9 @@
     },
     {
       "level": 6,
-      "title": "Lv.6 WSOP 챔피언 👑",
-      "subtitle": "The God of Poker Theory & Balance",
-      "badge": "👑 WSOP 챔피언",
+      "title": "[최종 전직] WSOP 레전드 챔피언 👑",
+      "subtitle": "Nash Equilibrium & Immortal Mindset (멀티웨이 내쉬 균형과 챔피언 마인드셋)",
+      "badge": "👑 [최종 전직] WSOP 챔피언",
       "description": "멀티웨이 내쉬 균형, 휴먼 솔버 경지의 완벽한 직관으로 세계 챔피언의 반열에 등극합니다.",
       "required_xp": 18000,
       "nodes": [
@@ -228,8 +228,8 @@
     },
     {
       "id": "level_up",
-      "title": "로컬 레귤러 달성",
-      "desc": "600 XP 달성 및 Lv.2 진화",
+      "title": "1차 전직 달성",
+      "desc": "600 XP 달성 및 1차 전직 심사 해금",
       "icon": "⚔️",
       "unlocked": false
     },
