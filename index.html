@@ -2714,6 +2714,13 @@ body.theme-light .article-card.locked {
           </div>
         </button>
 
+        <!-- Prominent Auth Button (Always front and center!) -->
+        <div id="header-auth-container" style="display: inline-flex; align-items: center; gap: 0.4rem;">
+          <button class="header-action-btn" onclick="authManager.openModal('login')" title="클라우드 회원 계정 로그인 / 회원가입" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(217, 119, 6, 0.35)); border: 1.5px solid #f59e0b; color: #fbbf24; padding: 0.45rem 0.85rem; border-radius: 20px; font-weight: 800; cursor: pointer; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 0.35rem; transition: all 0.2s ease;">
+            <span>👤</span> 로그인 / 회원가입
+          </button>
+        </div>
+
         <div class="streak-pill" title="연속 출석 스트릭">
           <span>🔥</span> <span id="user-streak">1</span>일 연속
         </div>
@@ -2737,11 +2744,6 @@ body.theme-light .article-card.locked {
         <button class="header-action-btn" onclick="syncManager.openModal()" title="스마트폰 ↔ PC 계정 동기화" style="background: rgba(16, 185, 129, 0.15); border: 1.5px solid #10b981; color: #34d399; padding: 0.55rem 0.9rem; border-radius: 20px; font-weight: 700; cursor: pointer; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.4rem; transition: all 0.2s ease;">
           <span>📱</span> 기기 연동
         </button>
-        <div id="header-auth-container" style="display: inline-flex; align-items: center; gap: 0.4rem;">
-          <button class="header-action-btn" onclick="authManager.openModal('login')" title="클라우드 회원 계정 로그인 / 회원가입" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.3)); border: 1.5px solid #f59e0b; color: #fbbf24; padding: 0.55rem 1rem; border-radius: 20px; font-weight: 800; cursor: pointer; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.4rem; transition: all 0.2s ease;">
-            <span>👤</span> 로그인 / 회원가입
-          </button>
-        </div>
       </div>
     </div>
   </header>
@@ -2752,6 +2754,27 @@ body.theme-light .article-card.locked {
     <!-- 5. Roadmap & Skill Tree View -->
     <section id="view-roadmap" class="view-section active">
       <div class="roadmap-container">
+
+        <!-- 🌟 Prominent Guest Signup & Multi-Device Sync Callout Banner -->
+        <div id="guest-signup-banner" style="margin-bottom: 1.25rem; background: linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(59, 130, 246, 0.18)); border: 1.5px solid #f59e0b; border-radius: 14px; padding: 1rem 1.35rem; display: flex; align-items: center; justify-content: space-between; gap: 0.85rem; flex-wrap: wrap; box-shadow: 0 4px 18px rgba(245, 158, 11, 0.15);">
+          <div style="display: flex; align-items: center; gap: 0.85rem;">
+            <span style="font-size: 2rem;">☁️</span>
+            <div>
+              <div style="font-size: 1.05rem; font-weight: 800; color: #fbbf24;">스마트폰 ↔ PC 실시간 계정 연동 시작하기</div>
+              <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">
+                게임 닉네임, 카톡 닉네임, 이메일, 6자리 PIN으로 <strong>30초 만에 간편 가입</strong>하고 어디서든 내 캐릭터를 이어하세요!
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <button onclick="authManager.openModal('signup')" style="background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none; padding: 0.65rem 1.25rem; border-radius: 10px; font-weight: 800; font-size: 0.92rem; cursor: pointer; white-space: nowrap; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35); transition: transform 0.15s ease;">
+              ✨ 30초 회원가입 ➔
+            </button>
+            <button onclick="authManager.openModal('login')" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1.5px solid #3b82f6; padding: 0.65rem 1.1rem; border-radius: 10px; font-weight: 800; font-size: 0.92rem; cursor: pointer; white-space: nowrap;">
+              🔑 기존 로그인
+            </button>
+          </div>
+        </div>
 
         <!-- RPG Character Persona & Growth Dashboard -->
         <div class="character-dashboard" id="character-dashboard-card">
@@ -24103,6 +24126,11 @@ const authManager = {
       } else {
         dKakao.innerText = `💬 카톡: 미연동`;
       }
+    }
+
+    const guestBanner = document.getElementById('guest-signup-banner');
+    if (guestBanner) {
+      guestBanner.style.display = isAuth ? 'none' : 'flex';
     }
   },
 

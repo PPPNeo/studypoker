@@ -3950,6 +3950,11 @@ const authManager = {
         dKakao.innerText = `💬 카톡: 미연동`;
       }
     }
+
+    const guestBanner = document.getElementById('guest-signup-banner');
+    if (guestBanner) {
+      guestBanner.style.display = isAuth ? 'none' : 'flex';
+    }
   },
 
   escapeHtml(str) {
