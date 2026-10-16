@@ -1,194 +1,3151 @@
 {
   "presets": [
     {
-      "id": "btn_open",
-      "name": "BTN 오픈 레이스 (6-Max 100BB)",
-      "description": "버튼(BTN)에서 표준 2.5bb 오픈 레이스하는 GTO 레인지 (약 43.5% 빈도)",
+      "id": "utg_open",
+      "category": "6-Max 100BB 오픈",
+      "name": "UTG 오픈 레이스 (15.5%)",
+      "description": "언더 더 건(UTG) 6-Max 100BB GTO 오픈 레이스 레인지. 뒤에 5명이 남아있으므로 최상위 15.5% 프리미엄 핸드로만 엄격히 레이즈합니다.",
       "legend": [
-        {"action": "Raise 2.5bb", "color": "#ef4444", "label": "레이스 (오픈)"},
-        {"action": "Fold", "color": "#1e293b", "label": "폴드"}
+        {
+          "action": "Raise 2.5bb",
+          "color": "#ef4444",
+          "label": "레이스 (오픈)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드"
+        }
       ],
       "actions": {
-        "AA": {"action": "Raise 2.5bb", "freq": 100},
-        "KK": {"action": "Raise 2.5bb", "freq": 100},
-        "QQ": {"action": "Raise 2.5bb", "freq": 100},
-        "JJ": {"action": "Raise 2.5bb", "freq": 100},
-        "TT": {"action": "Raise 2.5bb", "freq": 100},
-        "99": {"action": "Raise 2.5bb", "freq": 100},
-        "88": {"action": "Raise 2.5bb", "freq": 100},
-        "77": {"action": "Raise 2.5bb", "freq": 100},
-        "66": {"action": "Raise 2.5bb", "freq": 100},
-        "55": {"action": "Raise 2.5bb", "freq": 100},
-        "44": {"action": "Raise 2.5bb", "freq": 100},
-        "33": {"action": "Raise 2.5bb", "freq": 100},
-        "22": {"action": "Raise 2.5bb", "freq": 85},
-
-        "AKs": {"action": "Raise 2.5bb", "freq": 100},
-        "AQs": {"action": "Raise 2.5bb", "freq": 100},
-        "AJs": {"action": "Raise 2.5bb", "freq": 100},
-        "ATs": {"action": "Raise 2.5bb", "freq": 100},
-        "A9s": {"action": "Raise 2.5bb", "freq": 100},
-        "A8s": {"action": "Raise 2.5bb", "freq": 100},
-        "A7s": {"action": "Raise 2.5bb", "freq": 100},
-        "A6s": {"action": "Raise 2.5bb", "freq": 100},
-        "A5s": {"action": "Raise 2.5bb", "freq": 100},
-        "A4s": {"action": "Raise 2.5bb", "freq": 100},
-        "A3s": {"action": "Raise 2.5bb", "freq": 100},
-        "A2s": {"action": "Raise 2.5bb", "freq": 100},
-
-        "KQs": {"action": "Raise 2.5bb", "freq": 100},
-        "KJs": {"action": "Raise 2.5bb", "freq": 100},
-        "KTs": {"action": "Raise 2.5bb", "freq": 100},
-        "K9s": {"action": "Raise 2.5bb", "freq": 100},
-        "K8s": {"action": "Raise 2.5bb", "freq": 90},
-        "K7s": {"action": "Raise 2.5bb", "freq": 80},
-        "K6s": {"action": "Raise 2.5bb", "freq": 70},
-        "K5s": {"action": "Raise 2.5bb", "freq": 65},
-        "K4s": {"action": "Raise 2.5bb", "freq": 60},
-        "K3s": {"action": "Raise 2.5bb", "freq": 50},
-        "K2s": {"action": "Raise 2.5bb", "freq": 40},
-
-        "QJs": {"action": "Raise 2.5bb", "freq": 100},
-        "QTs": {"action": "Raise 2.5bb", "freq": 100},
-        "Q9s": {"action": "Raise 2.5bb", "freq": 100},
-        "Q8s": {"action": "Raise 2.5bb", "freq": 90},
-        "Q7s": {"action": "Raise 2.5bb", "freq": 60},
-        "Q6s": {"action": "Raise 2.5bb", "freq": 50},
-        "Q5s": {"action": "Raise 2.5bb", "freq": 40},
-        "Q4s": {"action": "Raise 2.5bb", "freq": 30},
-
-        "JTs": {"action": "Raise 2.5bb", "freq": 100},
-        "J9s": {"action": "Raise 2.5bb", "freq": 100},
-        "J8s": {"action": "Raise 2.5bb", "freq": 90},
-        "J7s": {"action": "Raise 2.5bb", "freq": 60},
-        "J6s": {"action": "Raise 2.5bb", "freq": 30},
-
-        "T9s": {"action": "Raise 2.5bb", "freq": 100},
-        "T8s": {"action": "Raise 2.5bb", "freq": 100},
-        "T7s": {"action": "Raise 2.5bb", "freq": 80},
-        "T6s": {"action": "Raise 2.5bb", "freq": 30},
-
-        "98s": {"action": "Raise 2.5bb", "freq": 100},
-        "97s": {"action": "Raise 2.5bb", "freq": 100},
-        "96s": {"action": "Raise 2.5bb", "freq": 70},
-
-        "87s": {"action": "Raise 2.5bb", "freq": 100},
-        "86s": {"action": "Raise 2.5bb", "freq": 90},
-        "85s": {"action": "Raise 2.5bb", "freq": 50},
-
-        "76s": {"action": "Raise 2.5bb", "freq": 100},
-        "75s": {"action": "Raise 2.5bb", "freq": 80},
-        "65s": {"action": "Raise 2.5bb", "freq": 100},
-        "64s": {"action": "Raise 2.5bb", "freq": 70},
-        "54s": {"action": "Raise 2.5bb", "freq": 100},
-        "53s": {"action": "Raise 2.5bb", "freq": 50},
-        "43s": {"action": "Raise 2.5bb", "freq": 70},
-
-        "AKo": {"action": "Raise 2.5bb", "freq": 100},
-        "AQo": {"action": "Raise 2.5bb", "freq": 100},
-        "AJo": {"action": "Raise 2.5bb", "freq": 100},
-        "ATo": {"action": "Raise 2.5bb", "freq": 100},
-        "A9o": {"action": "Raise 2.5bb", "freq": 90},
-        "A8o": {"action": "Raise 2.5bb", "freq": 70},
-        "A7o": {"action": "Raise 2.5bb", "freq": 50},
-        "A6o": {"action": "Raise 2.5bb", "freq": 30},
-        "A5o": {"action": "Raise 2.5bb", "freq": 60},
-        "A4o": {"action": "Raise 2.5bb", "freq": 40},
-
-        "KQo": {"action": "Raise 2.5bb", "freq": 100},
-        "KJo": {"action": "Raise 2.5bb", "freq": 100},
-        "KTo": {"action": "Raise 2.5bb", "freq": 90},
-        "K9o": {"action": "Raise 2.5bb", "freq": 50},
-
-        "QJo": {"action": "Raise 2.5bb", "freq": 100},
-        "QTo": {"action": "Raise 2.5bb", "freq": 80},
-        "Q9o": {"action": "Raise 2.5bb", "freq": 40},
-
-        "JTo": {"action": "Raise 2.5bb", "freq": 90},
-        "J9o": {"action": "Raise 2.5bb", "freq": 40},
-        "T9o": {"action": "Raise 2.5bb", "freq": 70},
-        "98o": {"action": "Raise 2.5bb", "freq": 50}
+        "AA": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KK": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "JJ": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "TT": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "99": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "88": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "77": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "66": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "AKs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AQs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "ATs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A9s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "A5s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A4s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "A3s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "A2s": {
+          "action": "Raise 2.5bb",
+          "freq": 30
+        },
+        "KQs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K9s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "QJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q9s": {
+          "action": "Raise 2.5bb",
+          "freq": 30
+        },
+        "JTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "J9s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "T9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "98s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "87s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "76s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "65s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "54s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "AKo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AQo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AJo": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "ATo": {
+          "action": "Raise 2.5bb",
+          "freq": 30
+        },
+        "KQo": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        }
+      }
+    },
+    {
+      "id": "hj_open",
+      "category": "6-Max 100BB 오픈",
+      "name": "HJ 오픈 레이스 (20.0%)",
+      "description": "하이잭(HJ) 6-Max 100BB GTO 오픈 레인지. UTG보다 레인지를 5% 넓혀 수티드 에이스와 수티드 커넥터 비중을 확대합니다.",
+      "legend": [
+        {
+          "action": "Raise 2.5bb",
+          "color": "#ef4444",
+          "label": "레이스 (오픈)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드"
+        }
+      ],
+      "actions": {
+        "AA": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KK": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "JJ": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "TT": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "99": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "88": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "77": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "66": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AKs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AQs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "ATs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A5s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A4s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A3s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "A2s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "KQs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "JTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "J9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "T9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "98s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "87s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "76s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "65s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "54s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "AKo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AQo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AJo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "ATo": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "KQo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "55": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "44": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "A8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A7s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "A6s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "K8s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "K7s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "Q8s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "J8s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "T8s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "97s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "KJo": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "QJo": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        }
+      }
+    },
+    {
+      "id": "co_open",
+      "category": "6-Max 100BB 오픈",
+      "name": "CO 오픈 레이스 (27.8%)",
+      "description": "컷오프(CO) 6-Max 100BB GTO 오픈 레인지. 모든 포켓페어(22+)와 수티드 브로드웨이, A-x 수티드를 100% 오픈합니다.",
+      "legend": [
+        {
+          "action": "Raise 2.5bb",
+          "color": "#ef4444",
+          "label": "레이스 (오픈)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드"
+        }
+      ],
+      "actions": {
+        "AA": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KK": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "JJ": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "TT": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "99": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "88": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "77": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "66": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AKs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AQs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "ATs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A5s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A4s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A3s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A2s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KQs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "JTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "J9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "T9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "98s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "87s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "76s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "65s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "54s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "AKo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AQo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AJo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "ATo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KQo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "55": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "44": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A7s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A6s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K7s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "J8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "T8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "97s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KJo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QJo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "33": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "22": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K6s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "K5s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "K4s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "K3s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "K2s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "Q7s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "Q6s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "Q5s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "J7s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "J6s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "T7s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "96s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "86s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "75s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "64s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "53s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "43s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "A9o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "A8o": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "KTo": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "QTo": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "JTo": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        }
+      }
+    },
+    {
+      "id": "btn_open",
+      "category": "6-Max 100BB 오픈",
+      "name": "BTN 오픈 레이스 (43.5%)",
+      "description": "버튼(BTN) 6-Max 100BB GTO 오픈 레인지. 포스트플랍 절대적 포지션 우위를 바탕으로 상위 43.5%의 넓은 레인지를 공격적으로 오픈합니다.",
+      "legend": [
+        {
+          "action": "Raise 2.5bb",
+          "color": "#ef4444",
+          "label": "레이스 (오픈)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드"
+        }
+      ],
+      "actions": {
+        "AA": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KK": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "JJ": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "TT": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "99": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "88": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "77": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "66": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AKs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AQs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "ATs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A5s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A4s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A3s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A2s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KQs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "JTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "J9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "T9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "98s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "87s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "76s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "65s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "54s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "AKo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AQo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AJo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "ATo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KQo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "55": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "44": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A7s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A6s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K7s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "J8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "T8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "97s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KJo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QJo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "33": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "22": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K6s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "K5s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K4s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K3s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K2s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q7s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q6s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q5s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "J7s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "J6s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "T7s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "96s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "86s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "75s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "64s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "53s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "43s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "A9o": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A8o": {
+          "action": "Raise 2.5bb",
+          "freq": 90
+        },
+        "KTo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QTo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "JTo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q4s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "Q3s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "Q2s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "J5s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "J4s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "T6s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "T5s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "95s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "85s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "74s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "63s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "52s": {
+          "action": "Raise 2.5bb",
+          "freq": 30
+        },
+        "A7o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "A6o": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "A5o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "A4o": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "A3o": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "A2o": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "K9o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "K8o": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "K7o": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "Q9o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "Q8o": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "J9o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "J8o": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "T9o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "T8o": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "98o": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "87o": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "76o": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        }
+      }
+    },
+    {
+      "id": "sb_open",
+      "category": "6-Max 100BB 오픈",
+      "name": "SB 오픈 레이스 (47.5%)",
+      "description": "스몰 블라인드(SB) BvB(Blind vs Blind) GTO 오픈 레이스(3bb) 레인지. BB 단 한 명을 상대로 폴드 에퀴티를 극대화합니다.",
+      "legend": [
+        {
+          "action": "Raise 3.0bb",
+          "color": "#ef4444",
+          "label": "레이스 (오픈)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드"
+        }
+      ],
+      "actions": {
+        "AA": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KK": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "JJ": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "TT": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "99": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "88": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "77": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "66": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AKs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AQs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "ATs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A5s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A4s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A3s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A2s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KQs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QJs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "JTs": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "J9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "T9s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "98s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "87s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "76s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "65s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "54s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "AKo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AQo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "AJo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "ATo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KQo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "55": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "44": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A7s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A6s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K7s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "J8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "T8s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "97s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "KJo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QJo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "33": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "22": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K6s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "K5s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K4s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K3s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "K2s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q7s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q6s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q5s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "J7s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "J6s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "T7s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "96s": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "86s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "75s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "64s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "53s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "43s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "A9o": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A8o": {
+          "action": "Raise 2.5bb",
+          "freq": 90
+        },
+        "KTo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "QTo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "JTo": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "Q4s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "Q3s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "Q2s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "J5s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "J4s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "T6s": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "T5s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "95s": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "85s": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "74s": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "63s": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "52s": {
+          "action": "Raise 2.5bb",
+          "freq": 30
+        },
+        "A7o": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A6o": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A5o": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A4o": {
+          "action": "Raise 2.5bb",
+          "freq": 100
+        },
+        "A3o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "A2o": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "K9o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "K8o": {
+          "action": "Raise 2.5bb",
+          "freq": 90
+        },
+        "K7o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "Q9o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "Q8o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "J9o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "J8o": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "T9o": {
+          "action": "Raise 2.5bb",
+          "freq": 80
+        },
+        "T8o": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "98o": {
+          "action": "Raise 2.5bb",
+          "freq": 70
+        },
+        "87o": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "76o": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "K6o": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "K5o": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        },
+        "Q7o": {
+          "action": "Raise 2.5bb",
+          "freq": 60
+        },
+        "97o": {
+          "action": "Raise 2.5bb",
+          "freq": 50
+        },
+        "86o": {
+          "action": "Raise 2.5bb",
+          "freq": 40
+        }
       }
     },
     {
       "id": "bb_vs_btn",
+      "category": "3-Bet & 디펜스",
       "name": "BB 디펜드 vs BTN 2.5bb 오픈",
-      "description": "빅블라인드(BB)에서 버튼 오픈을 상대로 방어(3-Bet 또는 Call)하는 GTO 솔루션",
+      "description": "빅블라인드(BB)에서 버튼 오픈을 상대로 방어(3-Bet 12.5% 또는 Flat Call 38.5%)하는 솔버 솔루션.",
       "legend": [
-        {"action": "3-Bet", "color": "#ef4444", "label": "3-Bet (리레이스)"},
-        {"action": "Call", "color": "#10b981", "label": "콜 (디펜드)"},
-        {"action": "Fold", "color": "#1e293b", "label": "폴드"}
+        {
+          "action": "3-Bet",
+          "color": "#ef4444",
+          "label": "3-Bet (12.5%)"
+        },
+        {
+          "action": "Call",
+          "color": "#10b981",
+          "label": "콜 (38.5%)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드 (49.0%)"
+        }
       ],
       "actions": {
-        "AA": {"action": "3-Bet", "freq": 100},
-        "KK": {"action": "3-Bet", "freq": 100},
-        "QQ": {"action": "3-Bet", "freq": 100},
-        "JJ": {"action": "3-Bet", "freq": 100},
-        "TT": {"action": "3-Bet", "freq": 75},
-        "99": {"action": "Call", "freq": 100},
-        "88": {"action": "Call", "freq": 100},
-        "77": {"action": "Call", "freq": 100},
-        "66": {"action": "Call", "freq": 100},
-        "55": {"action": "Call", "freq": 100},
-        "44": {"action": "Call", "freq": 100},
-        "33": {"action": "Call", "freq": 100},
-        "22": {"action": "Call", "freq": 90},
-
-        "AKs": {"action": "3-Bet", "freq": 100},
-        "AQs": {"action": "3-Bet", "freq": 100},
-        "AJs": {"action": "3-Bet", "freq": 60},
-        "ATs": {"action": "Call", "freq": 100},
-        "A9s": {"action": "Call", "freq": 100},
-        "A8s": {"action": "Call", "freq": 100},
-        "A7s": {"action": "Call", "freq": 100},
-        "A6s": {"action": "Call", "freq": 100},
-        "A5s": {"action": "3-Bet", "freq": 85},
-        "A4s": {"action": "3-Bet", "freq": 75},
-        "A3s": {"action": "3-Bet", "freq": 60},
-        "A2s": {"action": "Call", "freq": 100},
-
-        "KQs": {"action": "3-Bet", "freq": 50},
-        "KJs": {"action": "Call", "freq": 100},
-        "KTs": {"action": "Call", "freq": 100},
-        "K9s": {"action": "Call", "freq": 100},
-        "K8s": {"action": "Call", "freq": 100},
-        "K7s": {"action": "Call", "freq": 90},
-        "K6s": {"action": "Call", "freq": 80},
-        "K5s": {"action": "Call", "freq": 70},
-
-        "QJs": {"action": "Call", "freq": 100},
-        "QTs": {"action": "Call", "freq": 100},
-        "Q9s": {"action": "Call", "freq": 100},
-        "Q8s": {"action": "Call", "freq": 90},
-        "Q7s": {"action": "Call", "freq": 70},
-
-        "JTs": {"action": "Call", "freq": 100},
-        "J9s": {"action": "Call", "freq": 100},
-        "J8s": {"action": "Call", "freq": 90},
-        "J7s": {"action": "Call", "freq": 70},
-
-        "T9s": {"action": "Call", "freq": 100},
-        "T8s": {"action": "Call", "freq": 100},
-        "T7s": {"action": "Call", "freq": 80},
-        "98s": {"action": "Call", "freq": 100},
-        "97s": {"action": "Call", "freq": 90},
-        "87s": {"action": "Call", "freq": 100},
-        "86s": {"action": "Call", "freq": 80},
-        "76s": {"action": "Call", "freq": 100},
-        "65s": {"action": "Call", "freq": 100},
-        "54s": {"action": "Call", "freq": 100},
-
-        "AKo": {"action": "3-Bet", "freq": 100},
-        "AQo": {"action": "3-Bet", "freq": 80},
-        "AJo": {"action": "Call", "freq": 100},
-        "ATo": {"action": "Call", "freq": 100},
-        "A9o": {"action": "Call", "freq": 80},
-        "KQo": {"action": "Call", "freq": 100},
-        "KJo": {"action": "Call", "freq": 100},
-        "KTo": {"action": "Call", "freq": 90},
-        "QJo": {"action": "Call", "freq": 100},
-        "QTo": {"action": "Call", "freq": 80},
-        "JTo": {"action": "Call", "freq": 80}
+        "99": {
+          "action": "Call",
+          "freq": 100
+        },
+        "88": {
+          "action": "Call",
+          "freq": 100
+        },
+        "77": {
+          "action": "Call",
+          "freq": 100
+        },
+        "66": {
+          "action": "Call",
+          "freq": 100
+        },
+        "55": {
+          "action": "Call",
+          "freq": 100
+        },
+        "44": {
+          "action": "Call",
+          "freq": 100
+        },
+        "33": {
+          "action": "Call",
+          "freq": 100
+        },
+        "22": {
+          "action": "Call",
+          "freq": 90
+        },
+        "ATs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "A9s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "A8s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "A7s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "A6s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "A2s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "KJs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "KTs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "K9s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "K8s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "K7s": {
+          "action": "Call",
+          "freq": 90
+        },
+        "K6s": {
+          "action": "Call",
+          "freq": 80
+        },
+        "K5s": {
+          "action": "Call",
+          "freq": 70
+        },
+        "QJs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "QTs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "Q9s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "Q8s": {
+          "action": "Call",
+          "freq": 90
+        },
+        "Q7s": {
+          "action": "Call",
+          "freq": 70
+        },
+        "JTs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "J9s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "J8s": {
+          "action": "Call",
+          "freq": 90
+        },
+        "J7s": {
+          "action": "Call",
+          "freq": 70
+        },
+        "T9s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "T8s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "T7s": {
+          "action": "Call",
+          "freq": 80
+        },
+        "98s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "97s": {
+          "action": "Call",
+          "freq": 90
+        },
+        "87s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "86s": {
+          "action": "Call",
+          "freq": 80
+        },
+        "76s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "65s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "54s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "AJo": {
+          "action": "Call",
+          "freq": 100
+        },
+        "ATo": {
+          "action": "Call",
+          "freq": 100
+        },
+        "A9o": {
+          "action": "Call",
+          "freq": 80
+        },
+        "KQo": {
+          "action": "Call",
+          "freq": 100
+        },
+        "KJo": {
+          "action": "Call",
+          "freq": 100
+        },
+        "KTo": {
+          "action": "Call",
+          "freq": 90
+        },
+        "QJo": {
+          "action": "Call",
+          "freq": 100
+        },
+        "QTo": {
+          "action": "Call",
+          "freq": 80
+        },
+        "JTo": {
+          "action": "Call",
+          "freq": 80
+        },
+        "AA": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "KK": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "JJ": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "TT": {
+          "action": "3-Bet",
+          "freq": 75
+        },
+        "AKs": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "AQs": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "AJs": {
+          "action": "3-Bet",
+          "freq": 60
+        },
+        "A5s": {
+          "action": "3-Bet",
+          "freq": 85
+        },
+        "A4s": {
+          "action": "3-Bet",
+          "freq": 75
+        },
+        "A3s": {
+          "action": "3-Bet",
+          "freq": 60
+        },
+        "KQs": {
+          "action": "3-Bet",
+          "freq": 50
+        },
+        "AKo": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "AQo": {
+          "action": "3-Bet",
+          "freq": 80
+        }
+      }
+    },
+    {
+      "id": "bb_vs_co",
+      "category": "3-Bet & 디펜스",
+      "name": "BB 디펜드 vs CO 2.5bb 오픈",
+      "description": "빅블라인드(BB)에서 컷오프(CO) 오픈을 상대로 방어(3-Bet 10.5% / Call 28.0%)하는 GTO 레인지.",
+      "legend": [
+        {
+          "action": "3-Bet",
+          "color": "#ef4444",
+          "label": "3-Bet (10.5%)"
+        },
+        {
+          "action": "Call",
+          "color": "#10b981",
+          "label": "콜 (28.0%)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드"
+        }
+      ],
+      "actions": {
+        "TT": {
+          "action": "3-Bet",
+          "freq": 60
+        },
+        "99": {
+          "action": "Call",
+          "freq": 100
+        },
+        "88": {
+          "action": "Call",
+          "freq": 100
+        },
+        "77": {
+          "action": "Call",
+          "freq": 100
+        },
+        "66": {
+          "action": "Call",
+          "freq": 100
+        },
+        "55": {
+          "action": "Call",
+          "freq": 100
+        },
+        "44": {
+          "action": "Call",
+          "freq": 80
+        },
+        "33": {
+          "action": "Call",
+          "freq": 60
+        },
+        "ATs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "A9s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "A8s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "A7s": {
+          "action": "Call",
+          "freq": 80
+        },
+        "A6s": {
+          "action": "Call",
+          "freq": 60
+        },
+        "KJs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "KTs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "K9s": {
+          "action": "Call",
+          "freq": 80
+        },
+        "K8s": {
+          "action": "Call",
+          "freq": 60
+        },
+        "QJs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "QTs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "Q9s": {
+          "action": "Call",
+          "freq": 80
+        },
+        "JTs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "J9s": {
+          "action": "Call",
+          "freq": 80
+        },
+        "T9s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "98s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "87s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "76s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "65s": {
+          "action": "Call",
+          "freq": 90
+        },
+        "54s": {
+          "action": "Call",
+          "freq": 80
+        },
+        "AJo": {
+          "action": "Call",
+          "freq": 80
+        },
+        "ATo": {
+          "action": "Call",
+          "freq": 70
+        },
+        "KQo": {
+          "action": "Call",
+          "freq": 90
+        },
+        "KJo": {
+          "action": "Call",
+          "freq": 80
+        },
+        "QJo": {
+          "action": "Call",
+          "freq": 70
+        },
+        "AA": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "KK": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "JJ": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "AKs": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "AQs": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "AJs": {
+          "action": "3-Bet",
+          "freq": 80
+        },
+        "A5s": {
+          "action": "3-Bet",
+          "freq": 90
+        },
+        "A4s": {
+          "action": "3-Bet",
+          "freq": 80
+        },
+        "A3s": {
+          "action": "3-Bet",
+          "freq": 60
+        },
+        "KQs": {
+          "action": "3-Bet",
+          "freq": 70
+        },
+        "AKo": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "AQo": {
+          "action": "3-Bet",
+          "freq": 90
+        }
+      }
+    },
+    {
+      "id": "sb_vs_btn",
+      "category": "3-Bet & 디펜스",
+      "name": "SB vs BTN 오픈 (3-Bet or Fold)",
+      "description": "스몰 블라인드(SB)에서 버튼 오픈에 대응하는 '콜 없는(No Flatting) 3-Bet or Fold' 전략 (14.5% 3-Bet).",
+      "legend": [
+        {
+          "action": "3-Bet 10bb",
+          "color": "#ef4444",
+          "label": "3-Bet (14.5%)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드 (85.5%)"
+        }
+      ],
+      "actions": {
+        "AA": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "KK": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "JJ": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "TT": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "99": {
+          "action": "3-Bet",
+          "freq": 90
+        },
+        "88": {
+          "action": "3-Bet",
+          "freq": 70
+        },
+        "77": {
+          "action": "3-Bet",
+          "freq": 50
+        },
+        "AKs": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "AQs": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "AJs": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "ATs": {
+          "action": "3-Bet",
+          "freq": 90
+        },
+        "A5s": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "A4s": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "A3s": {
+          "action": "3-Bet",
+          "freq": 80
+        },
+        "A2s": {
+          "action": "3-Bet",
+          "freq": 60
+        },
+        "KQs": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "KJs": {
+          "action": "3-Bet",
+          "freq": 90
+        },
+        "KTs": {
+          "action": "3-Bet",
+          "freq": 80
+        },
+        "K9s": {
+          "action": "3-Bet",
+          "freq": 50
+        },
+        "QJs": {
+          "action": "3-Bet",
+          "freq": 90
+        },
+        "QTs": {
+          "action": "3-Bet",
+          "freq": 80
+        },
+        "JTs": {
+          "action": "3-Bet",
+          "freq": 90
+        },
+        "T9s": {
+          "action": "3-Bet",
+          "freq": 80
+        },
+        "98s": {
+          "action": "3-Bet",
+          "freq": 70
+        },
+        "87s": {
+          "action": "3-Bet",
+          "freq": 60
+        },
+        "76s": {
+          "action": "3-Bet",
+          "freq": 50
+        },
+        "AKo": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "AQo": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "AJo": {
+          "action": "3-Bet",
+          "freq": 90
+        },
+        "ATo": {
+          "action": "3-Bet",
+          "freq": 50
+        },
+        "KQo": {
+          "action": "3-Bet",
+          "freq": 80
+        }
+      }
+    },
+    {
+      "id": "btn_vs_co",
+      "category": "3-Bet & 디펜스",
+      "name": "BTN vs CO 오픈 (3-Bet & Flat)",
+      "description": "버튼(BTN)에서 CO 오픈을 상대로 포지션을 점유하며 3-Bet(8.5%) 및 플랫 콜(7.5%)하는 솔루션.",
+      "legend": [
+        {
+          "action": "3-Bet 7.5bb",
+          "color": "#ef4444",
+          "label": "3-Bet (8.5%)"
+        },
+        {
+          "action": "Call",
+          "color": "#10b981",
+          "label": "플랫 콜 (7.5%)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드"
+        }
+      ],
+      "actions": {
+        "TT": {
+          "action": "3-Bet",
+          "freq": 60
+        },
+        "99": {
+          "action": "Call",
+          "freq": 80
+        },
+        "88": {
+          "action": "Call",
+          "freq": 80
+        },
+        "77": {
+          "action": "Call",
+          "freq": 70
+        },
+        "66": {
+          "action": "Call",
+          "freq": 60
+        },
+        "AQs": {
+          "action": "3-Bet",
+          "freq": 60
+        },
+        "AJs": {
+          "action": "Call",
+          "freq": 70
+        },
+        "ATs": {
+          "action": "Call",
+          "freq": 80
+        },
+        "KQs": {
+          "action": "3-Bet",
+          "freq": 40
+        },
+        "KJs": {
+          "action": "Call",
+          "freq": 70
+        },
+        "QJs": {
+          "action": "Call",
+          "freq": 80
+        },
+        "JTs": {
+          "action": "Call",
+          "freq": 80
+        },
+        "T9s": {
+          "action": "Call",
+          "freq": 80
+        },
+        "98s": {
+          "action": "Call",
+          "freq": 70
+        },
+        "AQo": {
+          "action": "3-Bet",
+          "freq": 70
+        },
+        "AA": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "KK": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "JJ": {
+          "action": "3-Bet",
+          "freq": 80
+        },
+        "AKs": {
+          "action": "3-Bet",
+          "freq": 100
+        },
+        "A5s": {
+          "action": "3-Bet",
+          "freq": 90
+        },
+        "A4s": {
+          "action": "3-Bet",
+          "freq": 80
+        },
+        "AKo": {
+          "action": "3-Bet",
+          "freq": 100
+        }
+      }
+    },
+    {
+      "id": "btn_vs_sb_3bet",
+      "category": "4-Bet & 방어",
+      "name": "BTN vs SB 3-Bet 대응 (4-Bet / Call)",
+      "description": "버튼(BTN) 2.5bb 오픈 후 SB의 10bb 3벳에 대응하는 GTO 4-Bet(2.2x) 및 콜 레인지.",
+      "legend": [
+        {
+          "action": "4-Bet 22bb",
+          "color": "#ef4444",
+          "label": "4-Bet (7.2%)"
+        },
+        {
+          "action": "Call",
+          "color": "#10b981",
+          "label": "콜 (11.5%)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드"
+        }
+      ],
+      "actions": {
+        "JJ": {
+          "action": "4-Bet / Shove",
+          "freq": 40
+        },
+        "TT": {
+          "action": "Call",
+          "freq": 90
+        },
+        "99": {
+          "action": "Call",
+          "freq": 90
+        },
+        "88": {
+          "action": "Call",
+          "freq": 80
+        },
+        "77": {
+          "action": "Call",
+          "freq": 60
+        },
+        "AQs": {
+          "action": "Call",
+          "freq": 80
+        },
+        "AJs": {
+          "action": "Call",
+          "freq": 90
+        },
+        "ATs": {
+          "action": "Call",
+          "freq": 80
+        },
+        "KQs": {
+          "action": "Call",
+          "freq": 90
+        },
+        "KJs": {
+          "action": "Call",
+          "freq": 80
+        },
+        "QJs": {
+          "action": "Call",
+          "freq": 80
+        },
+        "JTs": {
+          "action": "Call",
+          "freq": 70
+        },
+        "AQo": {
+          "action": "Call",
+          "freq": 80
+        },
+        "AA": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KK": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "AKs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A5s": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "A4s": {
+          "action": "4-Bet / Shove",
+          "freq": 70
+        },
+        "AKo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        }
+      }
+    },
+    {
+      "id": "push_btn_15bb",
+      "category": "15BB 토너먼트 푸시/폴드",
+      "name": "15BB BTN 올인 셔브 (35.8%)",
+      "description": "토너먼트 15BB 숏스택에서 버튼(BTN) 올인 셔브(Open Shove) GTO 내쉬 균형 레인지.",
+      "legend": [
+        {
+          "action": "All-in Shove",
+          "color": "#ef4444",
+          "label": "올인 셔브 (35.8%)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드 (64.2%)"
+        }
+      ],
+      "actions": {
+        "AA": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KK": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "JJ": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "TT": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "99": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "88": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "77": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "66": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "55": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "44": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "33": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "22": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "AKs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "AQs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "AJs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "ATs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A9s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A8s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A7s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A6s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A5s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A4s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A3s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A2s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KQs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KJs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KTs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "K9s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "K8s": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "K7s": {
+          "action": "4-Bet / Shove",
+          "freq": 70
+        },
+        "K6s": {
+          "action": "4-Bet / Shove",
+          "freq": 60
+        },
+        "K5s": {
+          "action": "4-Bet / Shove",
+          "freq": 50
+        },
+        "QJs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "QTs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "Q9s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "Q8s": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "JTs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "J9s": {
+          "action": "4-Bet / Shove",
+          "freq": 90
+        },
+        "T9s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "98s": {
+          "action": "4-Bet / Shove",
+          "freq": 90
+        },
+        "87s": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "76s": {
+          "action": "4-Bet / Shove",
+          "freq": 70
+        },
+        "AKo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "AQo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "AJo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "ATo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A9o": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A8o": {
+          "action": "4-Bet / Shove",
+          "freq": 90
+        },
+        "A7o": {
+          "action": "4-Bet / Shove",
+          "freq": 70
+        },
+        "A5o": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "KQo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KJo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KTo": {
+          "action": "4-Bet / Shove",
+          "freq": 90
+        },
+        "QJo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "QTo": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "JTo": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        }
+      }
+    },
+    {
+      "id": "push_sb_15bb",
+      "category": "15BB 토너먼트 푸시/폴드",
+      "name": "15BB SB vs BB 셔브 (42.5%)",
+      "description": "토너먼트 15BB 숏스택에서 SB의 블라인드 대결 올인 셔브(Open Shove) GTO 레인지.",
+      "legend": [
+        {
+          "action": "All-in Shove",
+          "color": "#ef4444",
+          "label": "올인 셔브 (42.5%)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드 (57.5%)"
+        }
+      ],
+      "actions": {
+        "AA": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KK": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "JJ": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "TT": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "99": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "88": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "77": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "66": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "55": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "44": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "33": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "22": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "AKs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "AQs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "AJs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "ATs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A9s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A8s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A7s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A6s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A5s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A4s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A3s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A2s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KQs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KJs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KTs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "K9s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "K8s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "K7s": {
+          "action": "4-Bet / Shove",
+          "freq": 90
+        },
+        "K6s": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "K5s": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "K4s": {
+          "action": "4-Bet / Shove",
+          "freq": 70
+        },
+        "QJs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "QTs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "Q9s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "Q8s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "Q7s": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "JTs": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "J9s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "J8s": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "T9s": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "T8s": {
+          "action": "4-Bet / Shove",
+          "freq": 90
+        },
+        "98s": {
+          "action": "4-Bet / Shove",
+          "freq": 90
+        },
+        "87s": {
+          "action": "4-Bet / Shove",
+          "freq": 90
+        },
+        "76s": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "AKo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "AQo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "AJo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "ATo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A9o": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A8o": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "A7o": {
+          "action": "4-Bet / Shove",
+          "freq": 90
+        },
+        "A6o": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "A5o": {
+          "action": "4-Bet / Shove",
+          "freq": 90
+        },
+        "A4o": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "A3o": {
+          "action": "4-Bet / Shove",
+          "freq": 70
+        },
+        "A2o": {
+          "action": "4-Bet / Shove",
+          "freq": 60
+        },
+        "KQo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KJo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "KTo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "K9o": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        },
+        "QJo": {
+          "action": "4-Bet / Shove",
+          "freq": 100
+        },
+        "QTo": {
+          "action": "4-Bet / Shove",
+          "freq": 90
+        },
+        "JTo": {
+          "action": "4-Bet / Shove",
+          "freq": 90
+        },
+        "T9o": {
+          "action": "4-Bet / Shove",
+          "freq": 80
+        }
+      }
+    },
+    {
+      "id": "call_bb_vs_btn_15bb",
+      "category": "15BB 토너먼트 푸시/폴드",
+      "name": "15BB BB vs BTN 셔브 콜 (19.8%)",
+      "description": "토너먼트 15BB 스택에서 버튼의 올인 셔브를 상대로 BB가 스택을 걸고 콜(Call All-in)해야 하는 방어선.",
+      "legend": [
+        {
+          "action": "Call All-in",
+          "color": "#10b981",
+          "label": "올인 콜 (19.8%)"
+        },
+        {
+          "action": "Fold",
+          "color": "#1e293b",
+          "label": "폴드 (80.2%)"
+        }
+      ],
+      "actions": {
+        "AA": {
+          "action": "Call",
+          "freq": 100
+        },
+        "KK": {
+          "action": "Call",
+          "freq": 100
+        },
+        "QQ": {
+          "action": "Call",
+          "freq": 100
+        },
+        "JJ": {
+          "action": "Call",
+          "freq": 100
+        },
+        "TT": {
+          "action": "Call",
+          "freq": 100
+        },
+        "99": {
+          "action": "Call",
+          "freq": 100
+        },
+        "88": {
+          "action": "Call",
+          "freq": 100
+        },
+        "77": {
+          "action": "Call",
+          "freq": 100
+        },
+        "66": {
+          "action": "Call",
+          "freq": 90
+        },
+        "55": {
+          "action": "Call",
+          "freq": 70
+        },
+        "AKs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "AQs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "AJs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "ATs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "A9s": {
+          "action": "Call",
+          "freq": 100
+        },
+        "A8s": {
+          "action": "Call",
+          "freq": 90
+        },
+        "A7s": {
+          "action": "Call",
+          "freq": 80
+        },
+        "A5s": {
+          "action": "Call",
+          "freq": 90
+        },
+        "A4s": {
+          "action": "Call",
+          "freq": 80
+        },
+        "KQs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "KJs": {
+          "action": "Call",
+          "freq": 100
+        },
+        "KTs": {
+          "action": "Call",
+          "freq": 90
+        },
+        "QJs": {
+          "action": "Call",
+          "freq": 90
+        },
+        "AKo": {
+          "action": "Call",
+          "freq": 100
+        },
+        "AQo": {
+          "action": "Call",
+          "freq": 100
+        },
+        "AJo": {
+          "action": "Call",
+          "freq": 100
+        },
+        "ATo": {
+          "action": "Call",
+          "freq": 90
+        },
+        "A9o": {
+          "action": "Call",
+          "freq": 70
+        },
+        "KQo": {
+          "action": "Call",
+          "freq": 90
+        },
+        "KJo": {
+          "action": "Call",
+          "freq": 80
+        }
       }
     }
   ]

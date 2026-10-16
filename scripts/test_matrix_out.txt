@@ -1,0 +1,50 @@
+CATEGORIES:
+  GTO 전략: 122
+  플랍 전략: 52
+  토너먼트/ICM: 42
+  턴/리버: 29
+  익스플로잇: 25
+  수학/기초: 22
+  PKO 바운티: 22
+  솔버 이론: 21
+  3벳 팟: 19
+  캐시/스트래들: 12
+  업데이트/소식: 3
+
+LEVELS:
+  Level 2 (초급): 230
+  Level 3 (중급): 63
+  Level 4 (고급): 58
+  Level 1 (입문): 18
+
+CROSS TABULATION:
+  3벳 팟 | Level 2 (초급): 1
+  3벳 팟 | Level 3 (중급): 15
+  3벳 팟 | Level 4 (고급): 3
+  GTO 전략 | Level 1 (입문): 8
+  GTO 전략 | Level 2 (초급): 111
+  GTO 전략 | Level 3 (중급): 1
+  GTO 전략 | Level 4 (고급): 2
+  PKO 바운티 | Level 2 (초급): 3
+  PKO 바운티 | Level 3 (중급): 15
+  PKO 바운티 | Level 4 (고급): 4
+  솔버 이론 | Level 2 (초급): 17
+  솔버 이론 | Level 4 (고급): 4
+  수학/기초 | Level 1 (입문): 2
+  수학/기초 | Level 2 (초급): 19
+  수학/기초 | Level 4 (고급): 1
+  업데이트/소식 | Level 1 (입문): 3
+  익스플로잇 | Level 1 (입문): 4
+  익스플로잇 | Level 2 (초급): 5
+  익스플로잇 | Level 3 (중급): 13
+  익스플로잇 | Level 4 (고급): 3
+  캐시/스트래들 | Level 2 (초급): 12
+  턴/리버 | Level 2 (초급): 11
+  턴/리버 | Level 3 (중급): 16
+  턴/리버 | Level 4 (고급): 2
+  토너먼트/ICM | Level 1 (입문): 1
+  토너먼트/ICM | Level 2 (초급): 14
+  토너먼트/ICM | Level 4 (고급): 27
+  플랍 전략 | Level 2 (초급): 37
+  플랍 전략 | Level 3 (중급): 3
+  플랍 전략 | Level 4 (고급): 12

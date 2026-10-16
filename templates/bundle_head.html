@@ -1,0 +1,2878 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>폴푸아의 GTO Playbook KR | 포커 이론 인터랙티브 학습 플랫폼 (369편 전체 수록)</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+  <style>
+:root {
+  --bg-main: #0b0f19;
+  --bg-card: #131b2e;
+  --bg-card-hover: #1c2742;
+  --bg-surface: #1e293b;
+  --border-color: #2a3754;
+  --border-glow: #38bdf8;
+  
+  --poker-green: #059669;
+  --poker-green-dark: #064e3b;
+  --poker-felt: #0d3824;
+  --poker-gold: #f59e0b;
+  --poker-red: #ef4444;
+  --poker-blue: #3b82f6;
+  --poker-purple: #8b5cf6;
+  
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  
+  --radius-lg: 16px;
+  --radius-md: 10px;
+  --radius-sm: 6px;
+  --shadow-poker: 0 10px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+}
+
+body.theme-light {
+  --bg-main: #f1f5f9;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8fafc;
+  --bg-surface: #e2e8f0;
+  --border-color: #cbd5e1;
+  --border-glow: #0284c7;
+  
+  --poker-felt: #0d3824;
+  --poker-gold: #d97706;
+  
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --text-dim: #64748b;
+  --shadow-poker: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+body.theme-light header {
+  background: rgba(255, 255, 255, 0.88);
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+body.theme-light .brand-title {
+  background: linear-gradient(to right, #0f172a, #2563eb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+body.theme-light .hero-banner {
+  background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+  border-color: #cbd5e1;
+}
+
+body.theme-light .hero-banner::after {
+  color: rgba(0, 0, 0, 0.04);
+}
+
+body.theme-light .hero-content h1 {
+  color: #0f172a;
+}
+
+body.theme-light .article-card {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+body.theme-light .article-card h3 {
+  color: #0f172a;
+}
+
+body.theme-light .reader-title-ko {
+  color: #0f172a;
+}
+
+body.theme-light .article-body {
+  color: #334155;
+}
+
+body.theme-light .article-lead {
+  background: #e0f2fe;
+  color: #0369a1;
+  border-left-color: #0284c7;
+}
+
+body.theme-light .article-body h2 {
+  color: #0f172a;
+  border-bottom-color: #e2e8f0;
+}
+
+body.theme-light .quote-box {
+  background: #f8fafc;
+  color: #1e3a8a;
+  border-left-color: #10b981;
+}
+
+body.theme-light .tldr-card {
+  background: linear-gradient(145deg, #ffffff, #f8fafc);
+  border-color: #e2e8f0;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+}
+
+body.theme-light .tldr-title {
+  color: #0f172a;
+}
+
+body.theme-light .feature-item {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+body.theme-light .poker-table-data th {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+body.theme-light .ai-modal {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+body.theme-light .ai-modal-header {
+  background: #f8fafc;
+  border-bottom-color: #e2e8f0;
+}
+
+body.theme-light .ai-modal-header h3 {
+  color: #0f172a !important;
+}
+
+body.theme-light .ai-msg.coach {
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+  color: #1e293b;
+}
+
+body.theme-light .ai-input-area {
+  background: #f8fafc;
+  border-top-color: #e2e8f0;
+}
+
+body.theme-light .ai-input-area input {
+  background: #ffffff;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+
+body.theme-light #term-popover {
+  background: #ffffff;
+  border-color: #0284c7;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+body.theme-light .popover-title {
+  color: #0f172a;
+}
+
+body.theme-light .popover-desc {
+  color: #334155;
+}
+
+body.theme-light .popover-analogy {
+  background: #f8fafc;
+  color: #1e293b;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* Header & Navigation */
+header {
+  background: rgba(19, 27, 46, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0.65rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.header-container::-webkit-scrollbar {
+  display: none;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.brand-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #10b981, #047857);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.35);
+  flex-shrink: 0;
+}
+
+.brand-title {
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: -0.5px;
+  background: linear-gradient(to right, #ffffff, #93c5fd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  white-space: nowrap;
+}
+
+.brand-badge {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 6px;
+  white-space: nowrap;
+}
+
+nav.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.nav-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  white-space: nowrap !important;
+  flex-shrink: 0;
+  height: 38px;
+  line-height: 1;
+}
+
+.nav-btn:hover {
+  color: var(--text-main);
+  background: var(--bg-surface);
+}
+
+.nav-btn.active {
+  color: #ffffff;
+  background: #1e3a8a;
+  border: 1px solid #3b82f6;
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
+}
+
+/* User Progress Widget */
+.user-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.streak-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: #fbbf24;
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 20px;
+  white-space: nowrap !important;
+  flex-shrink: 0;
+  height: 38px;
+  line-height: 1;
+}
+
+.xp-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  min-width: 125px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.xp-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.73rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.xp-bar {
+  height: 7px;
+  background: var(--bg-surface);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.xp-progress {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #06b6d4);
+  width: 60%;
+  transition: width 0.4s ease;
+}
+
+.ai-coach-btn {
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  color: #ffffff;
+  border: none;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  white-space: nowrap !important;
+  flex-shrink: 0;
+  height: 38px;
+  line-height: 1;
+  box-shadow: 0 4px 14px rgba(139, 92, 246, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ai-coach-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+}
+
+.theme-toggle-btn {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  font-weight: 600;
+  font-size: 0.82rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  white-space: nowrap !important;
+  flex-shrink: 0;
+  height: 38px;
+  line-height: 1;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+  background: var(--bg-card-hover);
+  border-color: #3b82f6;
+  transform: translateY(-1px);
+}
+
+/* Main Layout */
+main {
+  flex: 1;
+  max-width: 1300px;
+  margin: 1.5rem auto;
+  padding: 0 1.5rem;
+  width: 100%;
+}
+
+.view-section {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.view-section.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Banner / Hero Section */
+.hero-banner {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-banner::after {
+  content: "♠ ♥ ♦ ♣";
+  position: absolute;
+  right: -20px;
+  bottom: -20px;
+  font-size: 7rem;
+  color: rgba(255, 255, 255, 0.03);
+  font-weight: 900;
+  pointer-events: none;
+  letter-spacing: 15px;
+}
+
+.hero-content h1 {
+  font-size: 1.85rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.hero-content p {
+  color: var(--text-muted);
+  font-size: 1rem;
+  max-width: 650px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-primary {
+  background: #10b981;
+  color: #ffffff;
+  border: none;
+  padding: 0.65rem 1.25rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: #059669;
+}
+
+.btn-secondary {
+  background: var(--bg-surface);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  padding: 0.65rem 1.25rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: var(--bg-card-hover);
+}
+
+/* Articles Grid */
+.filter-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.filter-pills {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-pill {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  padding: 0.4rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-pill.active, .filter-pill:hover {
+  background: var(--poker-green);
+  color: #ffffff;
+  border-color: var(--poker-green);
+}
+
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 1.5rem;
+}
+
+.article-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.article-card:hover {
+  transform: translateY(-4px);
+  border-color: #3b82f6;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+}
+
+.article-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.badge-level {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.35);
+}
+
+.btn-original-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: #60a5fa;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-original-link:hover {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+}
+
+.read-time {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+.article-card h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+  color: #ffffff;
+}
+
+.article-card p.subtitle-en {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-bottom: 1rem;
+}
+
+.article-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.author-info {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.completed-check {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+}
+
+/* Smart Reader View */
+.reader-container {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.reader-sidebar {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  position: sticky;
+  top: 80px;
+}
+
+.reader-sidebar h4 {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.reader-sidebar ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.reader-sidebar li a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: block;
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s ease;
+}
+
+.reader-sidebar li a:hover {
+  color: #ffffff;
+  background: var(--bg-surface);
+}
+
+.reader-content-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+}
+
+.reader-header {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.reader-header-meta {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.reader-title-ko {
+  font-size: 1.85rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  line-height: 1.35;
+}
+
+.reader-title-en {
+  font-size: 1rem;
+  color: var(--text-dim);
+}
+
+/* TL;DR Summary Cards Carousel/Grid */
+.tldr-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0 2.5rem;
+}
+
+.tldr-card {
+  background: linear-gradient(145deg, #1a253c, #131b2e);
+  border: 1px solid #2d3f66;
+  border-radius: var(--radius-md);
+  padding: 1.2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.tldr-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--poker-gold);
+}
+
+.tldr-badge {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--poker-gold);
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.tldr-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  color: #ffffff;
+}
+
+.tldr-text {
+  font-size: 0.87rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Article Body Typography & Components */
+.article-body {
+  font-size: 1.05rem;
+  color: #cbd5e1;
+  line-height: 1.8;
+}
+
+.article-lead {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #f1f5f9;
+  background: rgba(30, 41, 59, 0.6);
+  border-left: 4px solid #3b82f6;
+  padding: 1.25rem;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  margin-bottom: 2rem;
+}
+
+.article-body h2 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 2.25rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.article-body p {
+  margin-bottom: 1.25rem;
+}
+
+.article-body ul, .article-body ol {
+  margin: 1rem 0 1.5rem 1.5rem;
+}
+
+.article-body li {
+  margin-bottom: 0.5rem;
+}
+
+.quote-box {
+  background: #1e293b;
+  border-left: 3px solid #10b981;
+  padding: 1rem 1.25rem;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin: 1.25rem 0;
+  color: #93c5fd;
+  font-size: 1rem;
+}
+
+.callout-card {
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+}
+
+.callout-card.tip {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.callout-card.tip h4 {
+  color: #34d399;
+  margin-bottom: 0.4rem;
+}
+
+.callout-card.warning {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+.callout-card.warning h4 {
+  color: #f87171;
+  margin-bottom: 0.4rem;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.feature-item {
+  background: #182238;
+  border: 1px solid var(--border-color);
+  padding: 1.2rem;
+  border-radius: var(--radius-md);
+}
+
+.feature-item h4 {
+  font-size: 1rem;
+  color: #60a5fa;
+  margin-bottom: 0.5rem;
+}
+
+.poker-table-data {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.95rem;
+}
+
+.poker-table-data th, .poker-table-data td {
+  border: 1px solid var(--border-color);
+  padding: 0.85rem 1rem;
+  text-align: left;
+}
+
+.poker-table-data th {
+  background: #1e293b;
+  color: #ffffff;
+}
+
+.poker-table-data tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Interactive Term Popover Tag */
+.gto-term {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.15);
+  border-bottom: 1.5px dashed #38bdf8;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-block;
+}
+
+.gto-term:hover {
+  background: #38bdf8;
+  color: #0b0f19;
+  border-bottom-style: solid;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+}
+
+/* Floating Term Popover Modal */
+#term-popover {
+  position: fixed;
+  z-index: 1000;
+  background: #182238;
+  border: 1px solid #3b82f6;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.65), 0 0 15px rgba(59, 130, 246, 0.3);
+  border-radius: var(--radius-lg);
+  width: 340px;
+  padding: 1.25rem;
+  display: none;
+  pointer-events: auto;
+  animation: popIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.popover-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.popover-category {
+  font-size: 0.7rem;
+  background: rgba(59, 130, 246, 0.25);
+  color: #93c5fd;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.popover-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 0.4rem;
+}
+
+.popover-desc {
+  font-size: 0.85rem;
+  color: #e2e8f0;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+.popover-analogy {
+  background: #0f172a;
+  border-left: 3px solid #f59e0b;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.8rem;
+  color: #cbd5e1;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin-bottom: 0.75rem;
+}
+
+.popover-tip {
+  font-size: 0.78rem;
+  color: #34d399;
+}
+
+/* Spot Quiz & Simulator View */
+.trainer-container {
+  max-width: 950px;
+  margin: 0 auto;
+}
+
+.poker-table-felt {
+  background: radial-gradient(ellipse at center, #0f4b30 0%, #062618 80%, #02120b 100%);
+  border: 14px solid #332211;
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.8), 0 15px 35px rgba(0, 0, 0, 0.6);
+  border-radius: 200px;
+  padding: 3rem 2rem;
+  min-height: 420px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.table-pot-info {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid #d97706;
+  border-radius: 30px;
+  padding: 6px 18px;
+  color: #fde68a;
+  font-weight: 800;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.board-cards-container {
+  display: flex;
+  gap: 0.6rem;
+  margin: 1.5rem 0;
+}
+
+/* Poker Card Component */
+.poker-card {
+  width: 60px;
+  height: 86px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 5px 7px;
+  font-weight: 800;
+  user-select: none;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.poker-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-suit-heart, .card-suit-diamond {
+  color: #dc2626;
+}
+
+.card-suit-spade, .card-suit-club {
+  color: #1e293b;
+}
+
+.card-top {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1;
+}
+
+.card-rank {
+  font-size: 1.15rem;
+  font-weight: 900;
+}
+
+.card-center-suit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.8rem;
+}
+
+.card-bottom {
+  transform: rotate(180deg);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1;
+}
+
+.hero-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hero-hand-cards {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.hero-label {
+  background: rgba(0, 0, 0, 0.75);
+  border: 1px solid #10b981;
+  color: #6ee7b7;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 12px;
+}
+
+/* Quiz Controls */
+.quiz-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+}
+
+.quiz-situation {
+  font-size: 1.05rem;
+  color: #93c5fd;
+  margin-bottom: 1rem;
+  background: rgba(59, 130, 246, 0.1);
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  border-left: 4px solid #3b82f6;
+}
+
+.quiz-question {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-bottom: 1.25rem;
+}
+
+.quiz-options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.quiz-opt-btn {
+  background: var(--bg-surface);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.1rem;
+  color: var(--text-main);
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.quiz-opt-btn:hover:not(:disabled) {
+  border-color: #3b82f6;
+  background: var(--bg-card-hover);
+  transform: translateY(-2px);
+}
+
+.quiz-opt-btn.correct {
+  background: rgba(16, 185, 129, 0.2) !important;
+  border-color: #10b981 !important;
+  color: #34d399 !important;
+}
+
+.quiz-opt-btn.wrong {
+  background: rgba(239, 68, 68, 0.2) !important;
+  border-color: #ef4444 !important;
+  color: #f87171 !important;
+}
+
+/* Quiz Result Explanation Box */
+.quiz-feedback-box {
+  margin-top: 1.5rem;
+  background: #1a253c;
+  border: 1px solid #3b82f6;
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.feedback-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+}
+
+.feedback-status.correct {
+  color: #34d399;
+}
+
+.feedback-status.wrong {
+  color: #f87171;
+}
+
+.feedback-concept {
+  font-size: 0.85rem;
+  background: rgba(59, 130, 246, 0.2);
+  color: #93c5fd;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+  display: inline-block;
+  margin-bottom: 0.75rem;
+}
+
+.feedback-text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #e2e8f0;
+  white-space: pre-line;
+}
+
+/* 13x13 Range Matrix View */
+.matrix-container {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 2rem;
+  align-items: start;
+}
+
+.matrix-grid-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+}
+
+.matrix-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.poker-matrix {
+  display: grid;
+  grid-template-columns: repeat(13, 1fr);
+  gap: 3px;
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.matrix-cell {
+  aspect-ratio: 1;
+  background: #1e293b;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.matrix-cell:hover {
+  transform: scale(1.15);
+  z-index: 10;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+}
+
+.matrix-cell.action-raise {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.matrix-cell.action-call {
+  background: #10b981;
+  color: #ffffff;
+}
+
+.matrix-cell.action-3bet {
+  background: #f59e0b;
+  color: #000000;
+}
+
+.matrix-cell.action-shove {
+  background: #8b5cf6;
+  color: #ffffff;
+}
+
+.matrix-cell.action-fold {
+  background: #1e293b;
+  color: #64748b;
+}
+
+.matrix-sidebar {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+}
+
+.matrix-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.legend-color-box {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+}
+
+/* Roadmap & Skill Tree View */
+.roadmap-container {
+  max-width: 850px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.roadmap-level-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.roadmap-level-card.locked {
+  opacity: 0.55;
+  filter: grayscale(0.5);
+}
+
+.level-badge-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.level-badge {
+  font-size: 0.85rem;
+  font-weight: 800;
+  background: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.nodes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.node-item {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.node-item:hover {
+  background: var(--bg-card-hover);
+  border-color: #3b82f6;
+  transform: translateX(4px);
+}
+
+.node-item.completed {
+  border-color: #10b981;
+}
+
+/* AI Poker Coach Drawer / Modal */
+.ai-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.ai-modal {
+  background: #131b2e;
+  border: 1px solid #6366f1;
+  border-radius: var(--radius-lg);
+  width: 90%;
+  max-width: 600px;
+  height: 700px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(99, 102, 241, 0.35);
+  overflow: hidden;
+}
+
+.ai-modal-header {
+  padding: 1.25rem;
+  background: #182238;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ai-messages-area {
+  flex: 1;
+  padding: 1.25rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ai-msg {
+  max-width: 85%;
+  padding: 0.85rem 1.1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.ai-msg.coach {
+  align-self: flex-start;
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: #f1f5f9;
+  white-space: pre-line;
+}
+
+.ai-msg.user {
+  align-self: flex-end;
+  background: #4f46e5;
+  color: #ffffff;
+}
+
+.ai-suggestions-bar {
+  padding: 0.5rem 1rem;
+  background: #0f172a;
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+}
+
+.ai-suggest-chip {
+  background: #1e293b;
+  color: #94a3b8;
+  border: 1px solid var(--border-color);
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ai-suggest-chip:hover {
+  color: #ffffff;
+  border-color: #6366f1;
+}
+
+.ai-input-area {
+  padding: 1rem;
+  background: #182238;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  gap: 0.5rem;
+}
+
+.ai-input-area input {
+  flex: 1;
+  background: #0f172a;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.65rem 1rem;
+  color: #ffffff;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.ai-input-area input:focus {
+  border-color: #6366f1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .header-container {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+  .reader-container {
+    grid-template-columns: 1fr;
+  }
+  .reader-sidebar {
+    position: static;
+  }
+  .tldr-grid {
+    grid-template-columns: 1fr;
+  }
+  .matrix-container {
+    grid-template-columns: 1fr;
+  }
+  .quiz-options-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Korean Section Summary Box & Chart Enhancements */
+.korean-summary-box {
+  background: rgba(59, 130, 246, 0.08);
+  border-left: 4px solid #3b82f6;
+  padding: 1.1rem 1.35rem;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  margin: 1.25rem 0 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+body.theme-light .korean-summary-box {
+  background: #eff6ff;
+  border-left-color: #2563eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+body.theme-light .korean-summary-box div {
+  color: #1d4ed8 !important;
+}
+
+body.theme-light .korean-summary-box ul li {
+  color: #1e293b !important;
+}
+
+.article-chart-wrapper {
+  margin: 1.75rem 0;
+  text-align: center;
+}
+
+.article-chart-wrapper img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.article-chart-wrapper img:hover {
+  transform: scale(1.015);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.25);
+}
+
+
+  
+/* ==========================================================================
+   RPG Character Persona & Growth System Styles
+   ========================================================================== */
+
+/* Header Character Pill */
+.char-header-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-color);
+  border-radius: 24px;
+  padding: 0.2rem 0.85rem 0.2rem 0.35rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-main);
+  height: 38px;
+  white-space: nowrap;
+}
+.char-header-pill:hover {
+  border-color: #3b82f6;
+  background: var(--bg-card-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+}
+.char-avatar-icon {
+  font-size: 1.35rem;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(59, 130, 246, 0.15);
+  border-radius: 50%;
+}
+.char-header-info {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  line-height: 1.15;
+}
+.char-header-name {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+.char-header-tag {
+  font-size: 0.68rem;
+  color: #3b82f6;
+  font-weight: 700;
+}
+
+/* Character Dashboard Card */
+.character-dashboard {
+  margin-bottom: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.char-hero-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s ease;
+}
+
+.char-hero-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3b82f6, #10b981, #f59e0b, #ec4899);
+}
+
+.char-avatar-wrapper {
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+.char-avatar-wrapper:hover {
+  transform: scale(1.06);
+}
+.char-avatar-display {
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(16, 185, 129, 0.2));
+  border: 3px solid #3b82f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.2rem;
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+  user-select: none;
+}
+.char-avatar-edit-badge {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  background: #3b82f6;
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 12px;
+  border: 1.5px solid var(--bg-card);
+  white-space: nowrap;
+}
+
+.char-main-info {
+  flex: 1;
+  min-width: 0;
+}
+.char-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+.char-name-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.char-name-title {
+  font-size: 1.65rem;
+  font-weight: 900;
+  color: var(--text-main);
+  letter-spacing: -0.5px;
+  margin: 0;
+}
+.char-style-tag {
+  font-size: 0.8rem;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 14px;
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+.char-tier-badge {
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 14px;
+  background: rgba(245, 158, 11, 0.15);
+  color: #d97706;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+.btn-character-edit {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 0.45rem 0.95rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+}
+.btn-character-edit:hover {
+  border-color: #3b82f6;
+  background: var(--bg-card-hover);
+  color: #3b82f6;
+}
+
+.char-bio-text {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  margin-bottom: 1.15rem;
+  line-height: 1.5;
+}
+
+.char-level-progress-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+}
+.char-xp-stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-bottom: 0.45rem;
+}
+.char-xp-current {
+  color: #3b82f6;
+}
+.char-xp-remaining {
+  color: var(--text-dim);
+}
+.char-progress-track {
+  height: 10px;
+  background: var(--bg-card);
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+.char-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #10b981, #06b6d4);
+  border-radius: 6px;
+  transition: width 0.5s ease;
+}
+
+/* 4 Core RPG Stats Panel */
+.char-stats-panel {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+}
+.panel-subtitle {
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-bottom: 1.15rem;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+@media (max-width: 900px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 520px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stat-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.stat-card:hover {
+  transform: translateY(-2px);
+  border-color: #3b82f6;
+}
+.stat-icon-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.stat-emoji {
+  font-size: 1.6rem;
+}
+.stat-name {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+.stat-desc {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+}
+.stat-grade {
+  font-size: 1rem;
+  font-weight: 900;
+  padding: 2px 9px;
+  border-radius: 8px;
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+  border: 1.5px solid #3b82f6;
+}
+.stat-grade.grade-SS { background: rgba(236, 72, 153, 0.2); color: #ec4899; border-color: #ec4899; }
+.stat-grade.grade-S { background: rgba(245, 158, 11, 0.2); color: #f59e0b; border-color: #f59e0b; }
+.stat-grade.grade-A { background: rgba(16, 185, 129, 0.2); color: #10b981; border-color: #10b981; }
+.stat-grade.grade-B { background: rgba(59, 130, 246, 0.2); color: #3b82f6; border-color: #3b82f6; }
+.stat-grade.grade-C { background: rgba(100, 116, 139, 0.2); color: #94a3b8; border-color: #94a3b8; }
+.stat-grade.grade-D { background: rgba(148, 163, 184, 0.15); color: #64748b; border-color: #64748b; }
+
+.stat-bar-track {
+  height: 8px;
+  background: var(--bg-card);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+.stat-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+.stat-bar-fill.theory { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+.stat-bar-fill.decision { background: linear-gradient(90deg, #10b981, #34d399); }
+.stat-bar-fill.ranges { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+.stat-bar-fill.mental { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+.stat-val-text {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  text-align: right;
+  font-weight: 700;
+}
+
+/* Fast Action Quests Box */
+.char-quests-box {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+}
+.quest-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.quest-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.quest-item {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.9rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.2s ease;
+}
+.quest-item:hover {
+  border-color: #3b82f6;
+  background: var(--bg-card-hover);
+}
+.quest-info {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+.quest-check {
+  font-size: 1.4rem;
+}
+.quest-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-main);
+}
+.quest-reward {
+  font-size: 0.78rem;
+  color: #fbbf24;
+  font-weight: 700;
+}
+
+/* Character Creation / Edit Modal */
+.char-create-modal {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  width: 92%;
+  max-width: 680px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+  animation: modalScaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+@keyframes modalScaleUp {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.char-modal-header {
+  padding: 1.25rem 1.75rem;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background: var(--bg-card);
+  z-index: 10;
+}
+.char-modal-body {
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.char-modal-footer {
+  padding: 1rem 1.75rem;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  background: var(--bg-card);
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}
+
+.char-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+.char-form-label {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.avatar-select-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+@media (max-width: 500px) {
+  .avatar-select-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.avatar-option {
+  background: var(--bg-surface);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 0.75rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.avatar-option:hover {
+  border-color: #3b82f6;
+  transform: translateY(-2px);
+}
+.avatar-option.active {
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.12);
+  box-shadow: 0 0 14px rgba(59, 130, 246, 0.3);
+}
+.avatar-emoji {
+  font-size: 2.2rem;
+}
+.avatar-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.char-input {
+  flex: 1;
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
+  color: var(--text-main);
+  font-size: 0.95rem;
+  outline: none;
+  font-weight: 700;
+}
+.char-input:focus {
+  border-color: #3b82f6;
+}
+
+.nickname-chips {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+.chip-label {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  font-weight: 600;
+}
+.name-chip {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  border-radius: 14px;
+  padding: 3px 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.name-chip:hover {
+  background: #3b82f6;
+  color: #ffffff;
+  border-color: #3b82f6;
+}
+
+.style-select-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+.style-card {
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.style-card:hover {
+  border-color: #3b82f6;
+}
+.style-card.active {
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+}
+.style-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 0.2rem;
+}
+.style-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* Toast Notifications */
+.poker-toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: #1e293b;
+  color: #ffffff;
+  border: 1.5px solid #3b82f6;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+  font-weight: 700;
+  font-size: 0.95rem;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  animation: toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes toastSlideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+body.theme-light .poker-toast {
+  background: #ffffff;
+  color: #0f172a;
+  border-color: #3b82f6;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Light Mode Overrides for RPG System */
+body.theme-light .char-hero-card {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+body.theme-light .char-stats-panel {
+  background: #ffffff;
+  border-color: #cbd5e1;
+}
+body.theme-light .stat-card {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+body.theme-light .char-quests-box {
+  background: #ffffff;
+  border-color: #cbd5e1;
+}
+body.theme-light .quest-item {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+body.theme-light .char-create-modal {
+  background: #ffffff;
+  border-color: #cbd5e1;
+}
+body.theme-light .char-modal-header,
+body.theme-light .char-modal-footer {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+body.theme-light .avatar-option {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+body.theme-light .avatar-option.active {
+  background: #eff6ff;
+  border-color: #3b82f6;
+}
+body.theme-light .style-card {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+body.theme-light .style-card.active {
+  background: #eff6ff;
+  border-color: #3b82f6;
+}
+body.theme-light .char-input {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+</style>
+</head>
+<body class="theme-light">
+
+  <!-- Top Navigation Header -->
+  <header>
+    <div class="header-container">
+      <div class="brand" onclick="app.navigate('roadmap')">
+        <div class="brand-icon">♠</div>
+        <div>
+          <span class="brand-title">폴푸아의 GTO Playbook</span>
+          <span class="brand-badge">KR (369 아티클)</span>
+        </div>
+      </div>
+
+      <nav class="main-nav">
+        <button class="nav-btn active" data-target="roadmap" onclick="app.navigate('roadmap')">
+          <span>🗺️</span> 성장 로드맵
+        </button>
+        <button class="nav-btn" data-target="articles" onclick="app.navigate('articles')">
+          <span>📚</span> 아티클 도서관 (369)
+        </button>
+        <button class="nav-btn" data-target="trainer" onclick="app.navigate('trainer')">
+          <span>🎯</span> 스팟 퀴즈 (25)
+        </button>
+        <button class="nav-btn" data-target="matrix" onclick="app.navigate('matrix')">
+          <span>📊</span> 레인지 매트릭스
+        </button>
+        <button class="nav-btn" data-target="glossary" onclick="app.navigate('glossary')">
+          <span>📖</span> 용어 사전
+        </button>
+      </nav>
+
+      <div class="user-bar">
+        <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="themeManager.toggle()" title="화면 테마 변경">
+          <span id="theme-icon">🌙</span> <span id="theme-text">다크 모드</span>
+        </button>
+
+        <!-- Clickable Character Persona Header Pill -->
+        <button class="char-header-pill" id="char-header-pill" onclick="characterManager.openModal()" title="내 포커 캐릭터 프로필 및 커스텀">
+          <span class="char-avatar-icon" id="header-char-avatar">🦈</span>
+          <div class="char-header-info">
+            <span class="char-header-name" id="header-char-name">포커신동</span>
+            <span class="char-header-tag" id="header-char-style">TAG</span>
+          </div>
+        </button>
+
+        <div class="streak-pill" title="연속 출석 스트릭">
+          <span>🔥</span> <span id="user-streak">3</span>일 연속
+        </div>
+        
+        <div class="xp-container">
+          <div class="xp-header">
+            <span id="user-level-badge">Lv.1 피쉬 탈출</span>
+            <span id="user-xp-text">120 / 200 XP</span>
+          </div>
+          <div class="xp-bar">
+            <div class="xp-progress" id="user-xp-bar" style="width: 60%;"></div>
+          </div>
+        </div>
+
+        <button class="ai-coach-btn" onclick="aiCoach.open()">
+          <span>🤖</span> AI 코치
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main>
+
+    <!-- 5. Roadmap & Skill Tree View -->
+    <section id="view-roadmap" class="view-section active">
+      <div class="roadmap-container">
+
+        <!-- RPG Character Persona & Growth Dashboard -->
+        <div class="character-dashboard" id="character-dashboard-card">
+          <div class="char-hero-card">
+            <div class="char-avatar-wrapper" onclick="characterManager.openModal()" title="캐릭터 아바타 변경/커스텀">
+              <div class="char-avatar-display" id="dash-char-avatar">🦈</div>
+              <span class="char-avatar-edit-badge">✏️ 커스텀</span>
+            </div>
+            <div class="char-main-info">
+              <div class="char-header-row">
+                <div class="char-name-group">
+                  <h2 class="char-name-title" id="dash-char-name">포커신동</h2>
+                  <span class="char-style-tag" id="dash-char-style">⚡ TAG 스타일</span>
+                  <span class="char-tier-badge" id="dash-char-tier">Lv.1 동네 피쉬 탈출기 🐟</span>
+                </div>
+                <button class="btn-character-edit" onclick="characterManager.openModal()">
+                  <span>🎭</span> 캐릭터 설정
+                </button>
+              </div>
+              <p class="char-bio-text" id="dash-char-bio">
+                "엄선된 프리미엄 핸드로 강력하게 주도권을 잡는 정석적인 승리 공식"
+              </p>
+              
+              <!-- XP Bar with Level progress -->
+              <div class="char-level-progress-box">
+                <div class="char-xp-stats">
+                  <span class="char-xp-current" id="dash-xp-text">120 / 200 XP</span>
+                  <span class="char-xp-remaining" id="dash-xp-needed">다음 승급까지 80 XP 남음</span>
+                </div>
+                <div class="char-progress-track">
+                  <div class="char-progress-fill" id="dash-xp-fill" style="width: 60%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 Core RPG Poker Stats Grid -->
+          <div class="char-stats-panel">
+            <h3 class="panel-subtitle">📊 포커 RPG 4대 핵심 능력치</h3>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-icon-title">
+                  <span class="stat-emoji">📚</span>
+                  <div>
+                    <div class="stat-name">GTO 이론력</div>
+                    <div class="stat-desc">아티클 완독 시 상승</div>
+                  </div>
+                  <span class="stat-grade grade-C" id="stat-grade-theory">C</span>
+                </div>
+                <div class="stat-bar-track">
+                  <div class="stat-bar-fill theory" id="stat-bar-theory" style="width: 35%;"></div>
+                </div>
+                <div class="stat-val-text"><span id="stat-val-theory">35</span> / 100 PTS</div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon-title">
+                  <span class="stat-emoji">🎯</span>
+                  <div>
+                    <div class="stat-name">스팟 결단력</div>
+                    <div class="stat-desc">퀴즈 정답 시 상승</div>
+                  </div>
+                  <span class="stat-grade grade-B" id="stat-grade-decision">B</span>
+                </div>
+                <div class="stat-bar-track">
+                  <div class="stat-bar-fill decision" id="stat-bar-decision" style="width: 40%;"></div>
+                </div>
+                <div class="stat-val-text"><span id="stat-val-decision">40</span> / 100 PTS</div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon-title">
+                  <span class="stat-emoji">📊</span>
+                  <div>
+                    <div class="stat-name">레인지 이해도</div>
+                    <div class="stat-desc">매트릭스 탐색 시 상승</div>
+                  </div>
+                  <span class="stat-grade grade-C" id="stat-grade-ranges">C</span>
+                </div>
+                <div class="stat-bar-track">
+                  <div class="stat-bar-fill ranges" id="stat-bar-ranges" style="width: 25%;"></div>
+                </div>
+                <div class="stat-val-text"><span id="stat-val-ranges">25</span> / 100 PTS</div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon-title">
+                  <span class="stat-emoji">🧠</span>
+                  <div>
+                    <div class="stat-name">멘탈 & 뱅크롤</div>
+                    <div class="stat-desc">연속 출석 시 상승</div>
+                  </div>
+                  <span class="stat-grade grade-B" id="stat-grade-mental">B</span>
+                </div>
+                <div class="stat-bar-track">
+                  <div class="stat-bar-fill mental" id="stat-bar-mental" style="width: 50%;"></div>
+                </div>
+                <div class="stat-val-text"><span id="stat-val-mental">50</span> / 100 PTS</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fast Action Quest Quick Links -->
+          <div class="char-quests-box">
+            <div class="quest-title-row">
+              <span style="font-size: 1.1rem; font-weight: 800; color: var(--text-main);">⚡ 오늘의 캐릭터 고속 육성 퀘스트</span>
+              <span style="font-size: 0.8rem; color: var(--text-dim);">매일 훈련하여 레벨업 달성</span>
+            </div>
+            <div class="quest-items-list">
+              <div class="quest-item">
+                <div class="quest-info">
+                  <span class="quest-check" id="quest-check-article">📖</span>
+                  <div>
+                    <div class="quest-name">GTO 아티클 1편 정독하고 완독 버튼 누르기</div>
+                    <div class="quest-reward">+50 XP • GTO 이론력 +10</div>
+                  </div>
+                </div>
+                <button class="btn-primary" style="padding: 0.45rem 1rem; font-size: 0.85rem;" onclick="app.navigate('articles')">도서관 가기 ↗</button>
+              </div>
+
+              <div class="quest-item">
+                <div class="quest-info">
+                  <span class="quest-check" id="quest-check-quiz">🎯</span>
+                  <div>
+                    <div class="quest-name">GTO 실전 스팟 퀴즈 풀고 정답 맞히기</div>
+                    <div class="quest-reward">+50 XP • 스팟 결단력 +15</div>
+                  </div>
+                </div>
+                <button class="btn-primary" style="padding: 0.45rem 1rem; font-size: 0.85rem;" onclick="app.navigate('trainer')">퀴즈 풀기 ↗</button>
+              </div>
+
+              <div class="quest-item">
+                <div class="quest-info">
+                  <span class="quest-check" id="quest-check-matrix">📊</span>
+                  <div>
+                    <div class="quest-name">13x13 레인지 매트릭스 프리셋 탐색하기</div>
+                    <div class="quest-reward">+20 XP • 레인지 이해도 +10</div>
+                  </div>
+                </div>
+                <button class="btn-primary" style="padding: 0.45rem 1rem; font-size: 0.85rem;" onclick="app.navigate('matrix')">매트릭스 보기 ↗</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+          <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem;">🗺️ GTO 마스터 스킬 트리</h2>
+          <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">
+            피쉬에서 시작하여 GTO 마스터까지! 아티클을 정독하고 퀴즈를 맞혀 XP를 획득하고 다음 단계 스킬을 해금하세요.
+          </p>
+        </div>
+
+        <div id="roadmap-levels-container"></div>
+
+        <div style="margin-top: 3rem;">
+          <h3 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 1.25rem;">🏆 달성 뱃지 컬렉션</h3>
+          <div class="feature-grid" id="roadmap-achievements-container"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1. Articles Hub View -->
+    <section id="view-articles" class="view-section">
+      <div class="hero-banner">
+        <div class="hero-content">
+          <h1>GTO Wizard 369편 전체 수록 포커 도서관</h1>
+          <p>세계 최정상 GTO Wizard 전략 아티클 369편을 모두 담았습니다. 실시간 검색, 레벨별 분류, 3분 요약 카드 및 영문 원문 링크로 깊이 있게 공부하세요.</p>
+        </div>
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="app.navigate('trainer')">🎯 바로 스팟 퀴즈 풀기</button>
+          <button class="btn-secondary" onclick="app.navigate('roadmap')">🗺️ 학습 로드맵 보기</button>
+        </div>
+      </div>
+
+      <!-- Real-time Search Box -->
+      <div style="margin-bottom: 1.25rem;">
+        <input type="text" id="article-search-input" placeholder="🔍 369개 아티클 검색 (예: ICM, 3-bet, 블로커, C-bet, 스택, 바운티, EV, LAG...)"
+          style="width: 100%; background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 12px; padding: 0.85rem 1.25rem; color: var(--text-main); font-size: 1rem; outline: none; box-shadow: 0 4px 12px rgba(0,0,0,0.06);"
+          oninput="reader.searchArticles(this.value)">
+      </div>
+
+      <!-- Category Filter Bar -->
+      <div class="filter-bar" style="margin-bottom: 0.75rem;">
+        <div class="filter-pills" id="article-category-filters">
+          <button class="filter-pill active" data-cat="all" onclick="reader.filterCategory('all')">전체 주제 (369)</button>
+          <button class="filter-pill" data-cat="GTO 전략" onclick="reader.filterCategory('GTO 전략')">GTO 전략 (103)</button>
+          <button class="filter-pill" data-cat="토너먼트/ICM" onclick="reader.filterCategory('토너먼트/ICM')">토너먼트/ICM (102)</button>
+          <button class="filter-pill" data-cat="턴/리버" onclick="reader.filterCategory('턴/리버')">턴/리버 (28)</button>
+          <button class="filter-pill" data-cat="솔버 이론" onclick="reader.filterCategory('솔버 이론')">솔버 이론 (27)</button>
+          <button class="filter-pill" data-cat="익스플로잇" onclick="reader.filterCategory('익스플로잇')">익스플로잇 (25)</button>
+          <button class="filter-pill" data-cat="플랍 전략" onclick="reader.filterCategory('플랍 전략')">플랍 전략 (20)</button>
+          <button class="filter-pill" data-cat="수학/기초" onclick="reader.filterCategory('수학/기초')">수학/기초 (17)</button>
+          <button class="filter-pill" data-cat="PKO 바운티" onclick="reader.filterCategory('PKO 바운티')">PKO 바운티 (15)</button>
+          <button class="filter-pill" data-cat="3벳 팟" onclick="reader.filterCategory('3벳 팟')">3벳 팟 (14)</button>
+          <button class="filter-pill" data-cat="캐시/스트래들" onclick="reader.filterCategory('캐시/스트래들')">캐시/스트래들 (14)</button>
+          <button class="filter-pill" data-cat="업데이트/소식" onclick="reader.filterCategory('업데이트/소식')">업데이트/소식 (4)</button>
+        </div>
+      </div>
+
+      <!-- Level Filter Bar -->
+      <div class="filter-bar" style="margin-bottom: 1.5rem; justify-content: space-between;">
+        <div class="filter-pills" id="article-level-filters">
+          <span style="font-size: 0.85rem; color: var(--text-muted); align-self: center; margin-right: 0.4rem; font-weight: 600;">난이도:</span>
+          <button class="filter-pill active" data-lvl="all" onclick="reader.filterLevel('all')">전체 난이도 (369)</button>
+          <button class="filter-pill" data-lvl="Level 1" onclick="reader.filterLevel('Level 1')">Lv.1 입문 (21)</button>
+          <button class="filter-pill" data-lvl="Level 2" onclick="reader.filterLevel('Level 2')">Lv.2 초급 (248)</button>
+          <button class="filter-pill" data-lvl="Level 3" onclick="reader.filterLevel('Level 3')">Lv.3 중급 (68)</button>
+          <button class="filter-pill" data-lvl="Level 4" onclick="reader.filterLevel('Level 4')">Lv.4 고급 (32)</button>
+        </div>
+        <div class="article-count-label" id="article-count-label" style="color: var(--text-dim); font-size: 0.9rem;">
+          총 369편
+        </div>
+      </div>
+
+      <!-- Articles Grid -->
+      <div class="articles-grid" id="articles-grid-container"></div>
+
+      <!-- Load More Button -->
+      <div id="articles-load-more-container" style="text-align: center; margin: 2.5rem 0 1rem; display: none;">
+        <button class="btn-primary" style="padding: 0.85rem 2.5rem; font-size: 1rem; border-radius: 30px;" onclick="reader.loadMore()">
+          ⬇️ <span id="btn-load-more-count">더 보기 (+24)</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 2. Smart Reader View -->
+    <section id="view-reader" class="view-section">
+      <div style="margin-bottom: 1.5rem;">
+        <button class="btn-secondary" onclick="app.navigate('articles')">← 아티클 목록으로 돌아가기</button>
+      </div>
+
+      <div class="reader-container">
+        <aside class="reader-sidebar">
+          <h4>📖 목차 (Index)</h4>
+          <ul id="reader-toc-list"></ul>
+          
+          <div style="margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--border-color);">
+            <h4>💡 인터랙티브 기능</h4>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+              파란색 밑줄 단어(<span class="gto-term" style="font-size: 0.75rem;">용어</span>)에 마우스를 올리거나 터치하면 쉬운 비유와 공식 팝업이 뜹니다.
+            </p>
+            <button class="btn-primary" id="btn-complete-article" style="width: 100%; font-size: 0.85rem;" onclick="reader.markCompleted()">
+              ✓ 완독 완료 (+50 XP)
+            </button>
+          </div>
+        </aside>
+
+        <article class="reader-content-card">
+          <div class="reader-header">
+            <div class="reader-header-meta">
+              <span class="badge-level" id="reader-level">Level 1</span>
+              <span class="read-time" id="reader-time">⏱️ 5분 소요</span>
+              <a id="reader-original-link" href="#" target="_blank" rel="noopener noreferrer" class="btn-original-link" style="margin-left: auto;">
+                <span>🌐</span> GTO Wizard 원문 읽기 (English) ↗
+              </a>
+            </div>
+            <h1 class="reader-title-ko" id="reader-title-ko">아티클 제목</h1>
+            <p class="reader-title-en" id="reader-title-en">Original English Title</p>
+          </div>
+
+          <div style="margin-bottom: 1rem;">
+            <h3 style="font-size: 1.1rem; color: #fbbf24; display: flex; align-items: center; gap: 0.4rem;">
+              <span>⚡</span> 3분 핵심 요약 (Key Takeaways)
+            </h3>
+          </div>
+          <div class="tldr-grid" id="reader-tldr-grid"></div>
+
+          <div class="article-body" id="reader-body"></div>
+
+          <!-- Original Article Callout Footer -->
+          <div style="margin-top: 2.5rem; padding: 1.25rem; background: var(--bg-surface); border-radius: 10px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <span style="font-size: 0.8rem; color: var(--text-dim); display: block;">공식 출처 (Original Source)</span>
+              <strong style="color: var(--text-main); font-size: 0.95rem;">GTO Wizard Official Strategy Blog</strong>
+            </div>
+            <a id="reader-footer-original-link" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary" style="font-size: 0.85rem; text-decoration: none; padding: 0.45rem 0.95rem;">
+              🌐 GTO Wizard 원문 아티클 열기 ↗
+            </a>
+          </div>
+
+          <div id="reader-quiz-container" style="margin-top: 3rem; padding-top: 2rem; border-top: 2px dashed var(--border-color);"></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 3. Spot Quiz / Trainer View -->
+    <section id="view-trainer" class="view-section">
+      <div class="trainer-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <div>
+            <h2 style="font-size: 1.6rem; font-weight: 800;">🎯 GTO 스팟 트레이너</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">실전 스팟에서 GTO 솔루션의 의사결정을 훈련하고 해설을 확인하세요.</p>
+          </div>
+          <div style="display: flex; gap: 0.5rem;" id="quiz-nav-controls">
+            <button class="btn-secondary" onclick="trainer.prevQuiz()">◀ 이전</button>
+            <span id="quiz-counter" style="padding: 0.6rem 1rem; background: var(--bg-card); border-radius: 8px; font-weight: 700;">1 / 25</span>
+            <button class="btn-secondary" onclick="trainer.nextQuiz()">다음 ▶</button>
+          </div>
+        </div>
+
+        <div class="poker-table-felt">
+          <div class="table-pot-info">
+            <span>🪙 POT:</span> <span id="trainer-pot-display">16.5 BB</span>
+          </div>
+
+          <div class="board-cards-container" id="trainer-board-cards"></div>
+
+          <div class="hero-area">
+            <div class="hero-hand-cards" id="trainer-hero-cards"></div>
+            <div class="hero-label" id="trainer-hero-label">
+              HERO (BTN) • Effective: 92.5 BB
+            </div>
+          </div>
+        </div>
+
+        <div class="quiz-box">
+          <div class="quiz-situation" id="trainer-situation-desc"></div>
+          <div class="quiz-question" id="trainer-question-text"></div>
+          <div class="quiz-options-grid" id="trainer-options-grid"></div>
+
+          <div class="quiz-feedback-box" id="trainer-feedback-box">
+            <div class="feedback-status" id="feedback-status-title"></div>
+            <div class="feedback-concept" id="feedback-concept-tag"></div>
+            <div class="feedback-text" id="feedback-explanation-text"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 13x13 Range Matrix View -->
+    <!-- 4. 13x13 Range Matrix View -->
+    <section id="view-matrix" class="view-section">
+      <div style="margin-bottom: 1.5rem;">
+        <h2 style="font-size: 1.6rem; font-weight: 800;">📊 13x13 GTO 프리플랍 레인지 매트릭스</h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">6-Max 100BB 오픈, 3-Bet 및 방어, 4-Bet, 15BB 토너먼트 푸시/폴드까지 전 포지션 솔루션을 인터랙티브하게 탐색하세요.</p>
+      </div>
+
+      <div class="matrix-container">
+        <div class="matrix-grid-wrapper">
+          <div class="matrix-header" style="flex-direction: column; align-items: stretch; gap: 0.85rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+              <div style="flex: 1; min-width: 260px;">
+                <label style="font-size: 0.82rem; color: var(--text-muted); display: block; margin-bottom: 4px; font-weight: 600;">상황별 GTO 솔버 프리셋 선택</label>
+                <select id="matrix-preset-select" onchange="matrix.loadPreset(this.value)" style="width: 100%; background: var(--bg-surface); color: var(--text-main); border: 1.5px solid var(--border-color); padding: 0.65rem 1rem; border-radius: 8px; font-weight: 700; outline: none; font-size: 0.95rem; cursor: pointer;">
+                  <optgroup label="🎯 6-Max 100BB 오픈 레이스">
+                    <option value="utg_open">UTG 오픈 레이스 (15.5%)</option>
+                    <option value="hj_open">HJ 오픈 레이스 (20.0%)</option>
+                    <option value="co_open">CO 오픈 레이스 (27.8%)</option>
+                    <option value="btn_open" selected>BTN 오픈 레이스 (43.5%)</option>
+                    <option value="sb_open">SB 오픈 레이스 (47.5%)</option>
+                  </optgroup>
+                  <optgroup label="⚔️ 3-Bet & 블라인드 디펜스">
+                    <option value="bb_vs_btn">BB 디펜드 vs BTN 2.5bb 오픈</option>
+                    <option value="bb_vs_co">BB 디펜드 vs CO 2.5bb 오픈</option>
+                    <option value="sb_vs_btn">SB vs BTN 오픈 (3-Bet or Fold)</option>
+                    <option value="btn_vs_co">BTN vs CO 오픈 (3-Bet & Flat)</option>
+                  </optgroup>
+                  <optgroup label="🛡️ 4-Bet 및 3-Bet 대응">
+                    <option value="btn_vs_sb_3bet">BTN vs SB 3-Bet 대응 (4-Bet / Call)</option>
+                  </optgroup>
+                  <optgroup label="🏆 15BB 토너먼트 푸시/폴드 (Push/Fold)">
+                    <option value="push_btn_15bb">15BB BTN 올인 셔브 (35.8%)</option>
+                    <option value="push_sb_15bb">15BB SB vs BB 셔브 (42.5%)</option>
+                    <option value="call_bb_vs_btn_15bb">15BB BB vs BTN 셔브 콜 (19.8%)</option>
+                  </optgroup>
+                </select>
+              </div>
+            </div>
+
+            <!-- Quick Position Filter Chips -->
+            <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;" id="matrix-quick-chips">
+              <button class="filter-pill" data-pid="utg_open" onclick="matrix.loadPreset('utg_open')">UTG</button>
+              <button class="filter-pill" data-pid="hj_open" onclick="matrix.loadPreset('hj_open')">HJ</button>
+              <button class="filter-pill" data-pid="co_open" onclick="matrix.loadPreset('co_open')">CO</button>
+              <button class="filter-pill active" data-pid="btn_open" onclick="matrix.loadPreset('btn_open')">BTN</button>
+              <button class="filter-pill" data-pid="sb_open" onclick="matrix.loadPreset('sb_open')">SB</button>
+              <button class="filter-pill" data-pid="bb_vs_btn" onclick="matrix.loadPreset('bb_vs_btn')">BB vs BTN</button>
+              <button class="filter-pill" data-pid="sb_vs_btn" onclick="matrix.loadPreset('sb_vs_btn')">SB 3-Bet</button>
+              <button class="filter-pill" data-pid="push_btn_15bb" onclick="matrix.loadPreset('push_btn_15bb')">15BB 셔브</button>
+            </div>
+
+            <!-- Description & Live Range Stats Bar -->
+            <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.75rem 1rem;">
+              <div id="matrix-preset-desc" style="font-size: 0.88rem; color: var(--text-main); margin-bottom: 0.5rem; line-height: 1.5;"></div>
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; border-top: 1px dashed var(--border-color); padding-top: 0.5rem;">
+                <div style="font-size: 0.85rem; color: var(--text-muted);">
+                  참여 볼륨: <strong id="matrix-stats-combos" style="color: #60a5fa; font-size: 0.95rem;">-</strong>
+                </div>
+                <div id="matrix-stats-bar" style="display: flex; gap: 0.75rem; font-size: 0.8rem; font-weight: 700;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="poker-matrix" id="poker-matrix-grid"></div>
+        </div>
+
+        <div class="matrix-sidebar">
+          <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 1rem;">🔍 핸드 인스펙터</h3>
+          <div id="matrix-hover-inspector" style="background: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: 12px; padding: 1.25rem; min-height: 200px;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.35rem;">
+              <div style="font-size: 1.7rem; font-weight: 900; color: #ffffff;" id="inspect-hand-name">AKs</div>
+              <div style="font-size: 0.85rem; color: var(--text-dim);" id="inspect-combos">4 combos (수티드)</div>
+            </div>
+            <div style="font-size: 1.15rem; font-weight: 800; margin-bottom: 0.75rem;" id="inspect-action-desc">
+              <span style="color: #ef4444;">Raise 2.5bb (100%)</span>
+            </div>
+            <div id="inspect-tip" style="font-size: 0.85rem; color: var(--text-main); line-height: 1.55; padding: 0.75rem; background: var(--bg-card); border-radius: 8px; border-left: 3.5px solid #3b82f6;">
+              💡 프리미엄 너츠 핸드: 100% 빈도로 강력하게 오픈 레이스합니다.
+            </div>
+          </div>
+
+          <h4 style="margin: 1.5rem 0 0.5rem; font-size: 0.95rem; color: var(--text-muted); font-weight: 700;">액션 범례 (Legend)</h4>
+          <div class="matrix-legend" id="matrix-legend-container"></div>
+        </div>
+      </div>
+    </section>
+
+    
+
+    <!-- 6. Glossary View -->
+    <section id="view-glossary" class="view-section">
+      <div style="margin-bottom: 1.5rem;">
+        <h2 style="font-size: 1.6rem; font-weight: 800;">📖 GTO 포커 용어 사전</h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">헷갈리는 포커 전문 용어를 쉬운 비유와 실전 팁으로 검색해 보세요.</p>
+      </div>
+
+      <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+        <input type="text" id="glossary-search-input" placeholder="용어 검색 (예: EV, 블로커, MDF, EQR...)" 
+          style="flex: 1; min-width: 280px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.75rem 1rem; color: var(--text-main); outline: none; font-size: 0.95rem;"
+          oninput="glossary.filterTerms(this.value)">
+      </div>
+
+      <div class="articles-grid" id="glossary-grid-container"></div>
+    </section>
+
+  </main>
+
+  <!-- Interactive Term Hover Popover Element -->
+  <div id="term-popover">
+    <div class="popover-header">
+      <span class="popover-category" id="pop-category">수학/기초</span>
+      <button onclick="termPopover.hide()" style="background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 1rem;">✕</button>
+    </div>
+    <div class="popover-title" id="pop-title">EV (Expected Value)</div>
+    <div class="popover-desc" id="pop-desc">용어 설명</div>
+    <div class="popover-analogy" id="pop-analogy">💡 쉬운 비유</div>
+    <div class="popover-tip" id="pop-tip">⚡ 프로 팁</div>
+  </div>
+
+  <!-- AI Poker Coach Modal -->
+  <div class="ai-modal-overlay" id="ai-modal-overlay" onclick="if(event.target === this) aiCoach.close()">
+    <div class="ai-modal">
+      <div class="ai-modal-header">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-size: 1.3rem;">🤖</span>
+          <div>
+            <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--text-main);">AI 포커 코치</h3>
+            <span style="font-size: 0.75rem; color: #34d399;">● GTO Wizard 온라인 튜터</span>
+          </div>
+        </div>
+        <button onclick="aiCoach.close()" style="background: none; border: none; color: #94a3b8; font-size: 1.2rem; cursor: pointer;">✕</button>
+      </div>
+
+      <div class="ai-messages-area" id="ai-messages-area">
+        <div class="ai-msg coach">
+          안녕하세요! GTO Wizard 기반 <strong>AI 포커 코치</strong>입니다. 🃏
+          
+          369개 아티클 중 이해되지 않는 스팟이나 용어, 실전에서의 딜레마를 무엇이든 질문해 주세요!
+        </div>
+      </div>
+
+      <div class="ai-suggestions-bar">
+        <button class="ai-suggest-chip" onclick="aiCoach.sendPreset('A72r 보드에서 왜 1/3 작은 벳을 많이 하나요?')">A72r 작은 C-bet 이유</button>
+        <button class="ai-suggest-chip" onclick="aiCoach.sendPreset('블로커와 언블로커의 차이를 쉽게 알려줘')">블로커 vs 언블로커</button>
+        <button class="ai-suggest-chip" onclick="aiCoach.sendPreset('MDF 개념과 공식 쉽게 설명해줘')">MDF 공식이란?</button>
+        <button class="ai-suggest-chip" onclick="aiCoach.sendPreset('토너먼트 ICM이 캐시게임과 어떻게 다른가요?')">토너먼트 ICM 기초</button>
+      </div>
+
+      <div class="ai-input-area">
+        <input type="text" id="ai-user-input" placeholder="질문을 입력하세요..." onkeydown="if(event.key==='Enter') aiCoach.sendMessage()">
+        <button class="btn-primary" onclick="aiCoach.sendMessage()">전송</button>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- Character Creation / Customization Modal -->
+  <div class="ai-modal-overlay" id="char-modal-overlay" style="display: none;" onclick="if(event.target === this) characterManager.closeModal()">
+    <div class="char-create-modal">
+      <div class="char-modal-header">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <span style="font-size: 1.5rem;">🎭</span>
+          <div>
+            <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-main); margin: 0;">포커 페르소나 캐릭터 생성 / 커스텀</h3>
+            <p style="font-size: 0.8rem; color: var(--text-dim); margin: 0;">나만의 포커 플레이어 캐릭터를 만들고 GTO 마스터로 육성하세요.</p>
+          </div>
+        </div>
+        <button onclick="characterManager.closeModal()" style="background: none; border: none; color: #94a3b8; font-size: 1.3rem; cursor: pointer;">✕</button>
+      </div>
+
+      <div class="char-modal-body">
+        <!-- 1. Avatar Picker -->
+        <div class="char-form-group">
+          <label class="char-form-label">1. 캐릭터 아바타 선택</label>
+          <div class="avatar-select-grid" id="avatar-picker-grid">
+            <div class="avatar-option active" data-avatar="🦈" onclick="characterManager.selectAvatar('🦈')">
+              <span class="avatar-emoji">🦈</span>
+              <span class="avatar-name">샤크</span>
+            </div>
+            <div class="avatar-option" data-avatar="🦊" onclick="characterManager.selectAvatar('🦊')">
+              <span class="avatar-emoji">🦊</span>
+              <span class="avatar-name">여우</span>
+            </div>
+            <div class="avatar-option" data-avatar="🦁" onclick="characterManager.selectAvatar('🦁')">
+              <span class="avatar-emoji">🦁</span>
+              <span class="avatar-name">사자</span>
+            </div>
+            <div class="avatar-option" data-avatar="🦉" onclick="characterManager.selectAvatar('🦉')">
+              <span class="avatar-emoji">🦉</span>
+              <span class="avatar-name">부엉이</span>
+            </div>
+            <div class="avatar-option" data-avatar="👑" onclick="characterManager.selectAvatar('👑')">
+              <span class="avatar-emoji">👑</span>
+              <span class="avatar-name">황제</span>
+            </div>
+            <div class="avatar-option" data-avatar="🥷" onclick="characterManager.selectAvatar('🥷')">
+              <span class="avatar-emoji">🥷</span>
+              <span class="avatar-name">닌자</span>
+            </div>
+            <div class="avatar-option" data-avatar="🤖" onclick="characterManager.selectAvatar('🤖')">
+              <span class="avatar-emoji">🤖</span>
+              <span class="avatar-name">사이보그</span>
+            </div>
+            <div class="avatar-option" data-avatar="🐟" onclick="characterManager.selectAvatar('🐟')">
+              <span class="avatar-emoji">🐟</span>
+              <span class="avatar-name">피쉬</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Nickname Input -->
+        <div class="char-form-group">
+          <label class="char-form-label">2. 플레이어 닉네임 설정</label>
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <input type="text" id="char-name-input" maxlength="12" placeholder="닉네임 입력 (최대 12자)" class="char-input" value="포커신동">
+            <button class="btn-secondary" style="white-space: nowrap;" onclick="characterManager.randomizeName()">🎲 추천 닉네임</button>
+          </div>
+          <div class="nickname-chips">
+            <span class="chip-label">추천:</span>
+            <button class="name-chip" onclick="characterManager.setName('강남샤크')">강남샤크</button>
+            <button class="name-chip" onclick="characterManager.setName('GTO마법사')">GTO마법사</button>
+            <button class="name-chip" onclick="characterManager.setName('체크레이즈달인')">체크레이즈달인</button>
+            <button class="name-chip" onclick="characterManager.setName('리버원샷')">리버원샷</button>
+            <button class="name-chip" onclick="characterManager.setName('폴푸아수제자')">폴푸아수제자</button>
+          </div>
+        </div>
+
+        <!-- 3. Playstyle Selection -->
+        <div class="char-form-group">
+          <label class="char-form-label">3. 선호 플레이 스타일</label>
+          <div class="style-select-grid" id="style-picker-grid">
+            <div class="style-card active" data-style="TAG" onclick="characterManager.selectStyle('TAG')">
+              <div class="style-title">⚡ TAG (타이트 어그레시브)</div>
+              <div class="style-desc">엄선된 프리미엄 핸드로 강력하게 주도권을 잡는 정석적인 승리 공식</div>
+            </div>
+            <div class="style-card" data-style="LAG" onclick="characterManager.selectStyle('LAG')">
+              <div class="style-title">🔥 LAG (루즈 어그레시브)</div>
+              <div class="style-desc">넓은 레인지와 포스트플랍 공격성으로 상대에게 끊임없는 압박 부여</div>
+            </div>
+            <div class="style-card" data-style="GTO" onclick="characterManager.selectStyle('GTO')">
+              <div class="style-title">🧠 GTO Solved (솔버 밸런스)</div>
+              <div class="style-desc">수학적 균형과 빈도 밸런싱으로 상대의 익스플로잇을 완벽 차단</div>
+            </div>
+            <div class="style-card" data-style="EXPLOIT" onclick="characterManager.selectStyle('EXPLOIT')">
+              <div class="style-title">🎯 Exploitative (익스플로잇)</div>
+              <div class="style-desc">상대의 성향적 약점과 릭(Leak)을 파악하여 최대 EV를 추출</div>
+            </div>
+            <div class="style-card" data-style="HUNTER" onclick="characterManager.selectStyle('HUNTER')">
+              <div class="style-title">🦈 Fish Hunter (피쉬 헌터)</div>
+              <div class="style-desc">불필요한 블러프를 배제하고 탄탄한 밸류 벳으로 스택을 빨아들이는 스타일</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="char-modal-footer">
+        <button class="btn-secondary" onclick="characterManager.closeModal()">취소</button>
+        <button class="btn-primary" style="padding: 0.65rem 1.8rem; font-weight: 800;" onclick="characterManager.saveCharacter()">
+          ✨ 캐릭터 저장 및 육성 시작
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>

@@ -1,0 +1,264 @@
+"""
+Updates data/roadmap.json with complete 6-Tier RPG Character progression levels
+and rewarding milestones.
+"""
+
+import json
+import os
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ROADMAP_FILE = os.path.join(BASE_DIR, 'data', 'roadmap.json')
+
+ROADMAP = {
+  "levels": [
+    {
+      "level": 1,
+      "title": "Lv.1 동네 피쉬 탈출기 🐟",
+      "subtitle": "Fundamentals & Pot Odds Mastery",
+      "badge": "🐣 피쉬 탈출",
+      "description": "기대값(EV)과 팟 오즈의 기본 원리를 깨우치고, 단순한 운 게임에서 벗어나 포커 수학의 기초를 다집니다.",
+      "required_xp": 0,
+      "nodes": [
+        {
+          "id": "node-1-1",
+          "article_id": "what-is-expected-value-in-poker",
+          "title": "기대값(EV)의 정석: 포커는 수학 게임이다",
+          "xp": 50,
+          "category": "수학 기초",
+          "status": "unlocked"
+        },
+        {
+          "id": "node-1-2",
+          "article_id": "equity-realization",
+          "title": "에퀴티 실현(EQR): 50% 승률의 치명적인 함정",
+          "xp": 50,
+          "category": "레인지 수학",
+          "status": "unlocked"
+        },
+        {
+          "id": "node-1-3",
+          "article_id": "common-poker-sayings-that-ruin-your-winrate",
+          "title": "승률을 망치는 잘못된 포커 격언들과 진실",
+          "xp": 50,
+          "category": "마인드셋",
+          "status": "unlocked"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Lv.2 홀덤펍 로컬 레귤러 ⚔️",
+      "subtitle": "Flop Mechanics & C-Bet Strategy",
+      "badge": "⚔️ 펍 레귤러",
+      "description": "A-하이 드라이 보드와 웻 보드의 C-bet 차이를 이해하고, 3벳 팟 주도권을 제어하기 시작합니다.",
+      "required_xp": 200,
+      "nodes": [
+        {
+          "id": "node-2-1",
+          "article_id": "the-right-way-to-think-about-protection",
+          "title": "프로텍션 벳의 오해와 진실: 상대 에퀴티 끊어내기",
+          "xp": 60,
+          "category": "플랍 전략",
+          "status": "locked"
+        },
+        {
+          "id": "node-2-2",
+          "article_id": "c-betting-ip-in-3-bet-pots",
+          "title": "3벳 팟 IP C-bet 가이드: 1/3벳과 첵백의 기준",
+          "xp": 60,
+          "category": "3벳 팟",
+          "status": "locked"
+        },
+        {
+          "id": "node-2-3",
+          "article_id": "how-to-play-monotone-boards-in-single-raised-pots",
+          "title": "모노톤(같은 무늬 3장) 플랍에서의 솔버 운영법",
+          "xp": 60,
+          "category": "보드 텍스처",
+          "status": "locked"
+        }
+      ]
+    },
+    {
+      "level": 3,
+      "title": "Lv.3 마이크로 그라인더 🔥",
+      "subtitle": "Turn Barreling & Blocker Selection",
+      "badge": "🔥 온라인 그라인더",
+      "description": "블로커/언블로커 콤보 수학을 실전에 적용하고, 턴/리버에서 폴라라이즈드 배럴을 감행합니다.",
+      "required_xp": 500,
+      "nodes": [
+        {
+          "id": "node-3-1",
+          "article_id": "understanding-blockers-in-poker",
+          "title": "블로커(Blockers) 완벽 마스터: 최상의 블러프와 콜",
+          "xp": 75,
+          "category": "고급 이론",
+          "status": "locked"
+        },
+        {
+          "id": "node-3-2",
+          "article_id": "the-four-point-checklist-for-calling-turn-barrels",
+          "title": "턴 배럴에 콜하기 전 확인해야 할 4가지 체크리스트",
+          "xp": 75,
+          "category": "턴 전략",
+          "status": "locked"
+        },
+        {
+          "id": "node-3-3",
+          "article_id": "mdf-and-alpha-the-math-behind-defense-offense",
+          "title": "MDF와 Alpha: 방어와 공격의 수학적 균형선",
+          "xp": 75,
+          "category": "게임 이론",
+          "status": "locked"
+        }
+      ]
+    },
+    {
+      "level": 4,
+      "title": "Lv.4 온라인 세미프로 🦊",
+      "subtitle": "ICM Pressure & Node Locking",
+      "badge": "🦊 세미프로",
+      "description": "토너먼트 파이널 테이블의 상금 점프(ICM)와 리스크 프리미엄을 통제하며 솔버로 상대를 응징합니다.",
+      "required_xp": 1000,
+      "nodes": [
+        {
+          "id": "node-4-1",
+          "article_id": "icm-fundamentals-risk-premium-explained",
+          "title": "토너먼트의 심장, ICM 기초와 리스크 프리미엄",
+          "xp": 100,
+          "category": "토너먼트/ICM",
+          "status": "locked"
+        },
+        {
+          "id": "node-4-2",
+          "article_id": "punish-the-unstudied-capped-ranges-bluffing-imbalances",
+          "title": "캡된(Capped) 레인지 응징하기: 상대의 릭 박살내기",
+          "xp": 100,
+          "category": "익스플로잇",
+          "status": "locked"
+        },
+        {
+          "id": "node-4-3",
+          "article_id": "crush-calling-stations-with-these-3-solver-approved-strategies",
+          "title": "솔버가 검증한 콜링 스테이션 격파 3대 비책",
+          "xp": 100,
+          "category": "익스플로잇",
+          "status": "locked"
+        }
+      ]
+    },
+    {
+      "level": 5,
+      "title": "Lv.5 하이롤러 토너 크러셔 🦁",
+      "subtitle": "High Stakes Exploits & Deep Stack Solving",
+      "badge": "🦁 하이롤러",
+      "description": "200bb+ 딥스택, PKO 바운티 팩터, 고난도 노드락 익스플로잇으로 필드의 칩을 지배합니다.",
+      "required_xp": 2000,
+      "nodes": [
+        {
+          "id": "node-5-1",
+          "article_id": "mastering-pkos-with-custom-aggregated-reports",
+          "title": "어그리게이티드 리포트로 PKO 바운티 토너 완전 정복",
+          "xp": 120,
+          "category": "PKO 바운티",
+          "status": "locked"
+        },
+        {
+          "id": "node-5-2",
+          "article_id": "exploiting-profiles-episode-v-the-lag",
+          "title": "상대 성향별 익스플로잇: 루즈 어그레시브(LAG) 파훼법",
+          "xp": 120,
+          "category": "익스플로잇",
+          "status": "locked"
+        },
+        {
+          "id": "node-5-3",
+          "article_id": "how-pros-use-solvers-to-crush-pool-leaks",
+          "title": "프로들이 솔버로 필드(Pool)의 집단적 릭을 응징하는 법",
+          "xp": 120,
+          "category": "솔버 이론",
+          "status": "locked"
+        }
+      ]
+    },
+    {
+      "level": 6,
+      "title": "Lv.6 WSOP 챔피언 👑",
+      "subtitle": "The God of Poker Theory & Balance",
+      "badge": "👑 WSOP 챔피언",
+      "description": "멀티웨이 내쉬 균형, 휴먼 솔버 경지의 완벽한 직관으로 세계 챔피언의 반열에 등극합니다.",
+      "required_xp": 4000,
+      "nodes": [
+        {
+          "id": "node-6-1",
+          "article_id": "introducing-multiway-preflop-solving",
+          "title": "멀티웨이 프리플랍 솔빙과 3웨이 내쉬 균형의 신비",
+          "xp": 200,
+          "category": "솔버 이론",
+          "status": "locked"
+        },
+        {
+          "id": "node-6-2",
+          "article_id": "quirks-of-nash-equilibrium-in-multiway",
+          "title": "멀티웨이 내쉬 균형의 독특한 특성과 변수",
+          "xp": 200,
+          "category": "솔버 이론",
+          "status": "locked"
+        }
+      ]
+    }
+  ],
+  "achievements": [
+    {
+      "id": "char_created",
+      "title": "모험의 시작",
+      "desc": "나만의 포커 캐릭터 생성 및 첫 발걸음",
+      "icon": "🦈",
+      "unlocked": True
+    },
+    {
+      "id": "first_read",
+      "title": "첫 페이지를 넘기다",
+      "desc": "첫 번째 GTO 아티클 완독 (+50 XP)",
+      "icon": "📖",
+      "unlocked": True
+    },
+    {
+      "id": "quiz_ace",
+      "title": "솔버적 뇌지컬",
+      "desc": "스팟 퀴즈 정답 맞히기 (+50 XP)",
+      "icon": "🎯",
+      "unlocked": False
+    },
+    {
+      "id": "streak_3",
+      "title": "3일 연속 그라인딩",
+      "desc": "3일 연속 학습 스트릭 유지",
+      "icon": "🔥",
+      "unlocked": True
+    },
+    {
+      "id": "level_up",
+      "title": "로컬 레귤러 달성",
+      "desc": "200 XP 달성 및 Lv.2 진화",
+      "icon": "⚔️",
+      "unlocked": False
+    },
+    {
+      "id": "matrix_explorer",
+      "title": "레인지의 지배자",
+      "desc": "13x13 매트릭스 전 포지션 탐색",
+      "icon": "📊",
+      "unlocked": False
+    }
+  ]
+}
+
+def main():
+    print("Writing 6-tier RPG character roadmap to data/roadmap.json...")
+    with open(ROADMAP_FILE, 'w', encoding='utf-8') as f:
+        json.dump(ROADMAP, f, ensure_ascii=False, indent=2)
+    print("Roadmap successfully updated!")
+
+if __name__ == '__main__':
+    main()
