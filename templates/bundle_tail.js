@@ -4208,44 +4208,43 @@ var rankingManager = window.rankingManager = {
         const p1 = all[0];
         championSpotlight.innerHTML = `
           <div class="champion-spotlight-banner">
-            <div style="display: flex; align-items: center; gap: 0.9rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
               <div style="position: relative; flex-shrink: 0;">
-                <div style="font-size: 2.2rem; width: 56px; height: 56px; border-radius: 50%; background: var(--bg-surface); border: 2px solid #f59e0b; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(245, 158, 11, 0.35);">
+                <div style="font-size: 2rem; width: 50px; height: 50px; border-radius: 50%; background: var(--bg-surface); border: 2px solid #f59e0b; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 12px rgba(245, 158, 11, 0.35);">
                   ${p1.avatar}
                 </div>
-                <span style="position: absolute; top: -10px; right: -6px; font-size: 1.25rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));" title="시즌 챔피언">👑</span>
+                <span style="position: absolute; top: -8px; right: -6px; font-size: 1.15rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));" title="시즌 챔피언">👑</span>
               </div>
               <div>
-                <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.25rem;">
-                  <span style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; font-weight: 900; font-size: 0.75rem; padding: 2px 8px; border-radius: 12px; letter-spacing: 0.02em; box-shadow: 0 2px 6px rgba(245, 158, 11, 0.4);">
+                <div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.2rem;">
+                  <span style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; font-weight: 900; font-size: 0.74rem; padding: 2px 7px; border-radius: 10px; box-shadow: 0 2px 6px rgba(245, 158, 11, 0.35);">
                     🥇 1위 • 시즌 챔피언
                   </span>
-                  ${p1.isMe ? '<span class="my-rank-indicator-pill">👤 나 (MY RANK)</span>' : ''}
-                  ${p1.isCertified ? '<span style="font-size: 0.68rem; background: rgba(16, 185, 129, 0.2); color: #047857; border: 1px solid rgba(16, 185, 129, 0.4); padding: 1px 5px; border-radius: 4px; font-weight: 800; white-space: nowrap;">⭐ 인증회원</span>' : ''}
+                  ${p1.isMe ? '<span class="rank-me-tag">나 (MY RANK)</span>' : ''}
                 </div>
-                <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                  <strong style="font-size: 1.15rem; color: var(--text-main); font-weight: 800;">${p1.name}</strong>
-                  ${p1.kakao_nickname ? `<span style="font-size: 0.72rem; color: #b45309; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 4px; padding: 1px 5px; font-weight: 600; white-space: nowrap;">💬 ${p1.kakao_nickname}</span>` : ''}
-                  <span class="rank-badge ${p1.badgeClass}" style="font-size: 0.75rem;">${p1.tierBadge}</span>
-                  <span style="font-size: 0.78rem; color: var(--text-dim);">${p1.style} 스타일</span>
+                <div style="display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;">
+                  <strong style="font-size: 1.05rem; color: var(--text-main); font-weight: 800;">${p1.name}</strong>
+                  ${p1.kakao_nickname ? `<span class="rank-kakao-tag">💬 ${p1.kakao_nickname}</span>` : ''}
+                  <span class="rank-badge ${p1.badgeClass}" style="font-size: 0.72rem; padding: 1px 6px;">${p1.tierBadge}</span>
+                  <span style="font-size: 0.76rem; color: var(--text-dim);">${p1.style} 스타일</span>
                 </div>
               </div>
             </div>
 
-            <div style="display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; margin-left: auto;">
+            <div style="display: flex; align-items: center; gap: 0.85rem; flex-wrap: wrap; margin-left: auto;">
               <div style="text-align: right;">
-                <div style="font-size: 0.75rem; color: var(--text-dim);">누적 획득 경험치</div>
-                <div style="font-size: 1.25rem; font-weight: 900; color: var(--accent-gold); white-space: nowrap;">
-                  ${p1.xp.toLocaleString()} <span style="font-size: 0.82rem; font-weight: 700;">XP</span>
+                <div style="font-size: 0.7rem; color: var(--text-dim);">누적 획득 경험치</div>
+                <div style="font-size: 1.15rem; font-weight: 900; color: var(--accent-gold); white-space: nowrap;">
+                  ${p1.xp.toLocaleString()} <span style="font-size: 0.78rem; font-weight: 700;">XP</span>
                 </div>
               </div>
-              <div style="background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 10px; padding: 0.45rem 0.85rem; text-align: center; white-space: nowrap;">
-                <div style="font-size: 0.72rem; color: var(--text-muted);">현재 레벨</div>
-                <div style="font-size: 1.1rem; font-weight: 900; color: var(--accent-blue-title);">Lv.${p1.level}</div>
+              <div style="background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 8px; padding: 0.35rem 0.7rem; text-align: center; white-space: nowrap;">
+                <div style="font-size: 0.68rem; color: var(--text-muted);">현재 레벨</div>
+                <div style="font-size: 1.05rem; font-weight: 900; color: var(--accent-blue-title);">Lv.${p1.level}</div>
               </div>
-              <div class="col-hide-mobile" style="background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 10px; padding: 0.45rem 0.85rem; text-align: center; white-space: nowrap;">
-                <div style="font-size: 0.72rem; color: var(--text-muted);">마스터 기록</div>
-                <div style="font-size: 0.88rem; font-weight: 800; color: #10b981;">📖 ${p1.articles}편 • 🎯 ${p1.quizzes}개</div>
+              <div class="col-hide-mobile" style="background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 8px; padding: 0.35rem 0.7rem; text-align: center; white-space: nowrap;">
+                <div style="font-size: 0.68rem; color: var(--text-muted);">마스터 기록</div>
+                <div style="font-size: 0.82rem; font-weight: 800; color: #10b981;">📖 ${p1.articles}편 • 🎯 ${p1.quizzes}개</div>
               </div>
             </div>
           </div>
@@ -4275,36 +4274,34 @@ var rankingManager = window.rankingManager = {
 
         return `
           <tr class="${p.isMe ? 'ranking-row-me' : ''}" style="border-bottom: 1px solid var(--border-color); transition: background 0.15s ease;">
-            <td style="padding: 1rem 1.25rem; text-align: center; font-weight: 800; color: ${p.rank <= 3 ? 'var(--accent-gold)' : (p.isMe ? '#2563eb' : 'var(--text-dim)')}; font-size: 1.05rem; white-space: nowrap;">
-              <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <td style="padding: 0.65rem 0.85rem; text-align: center; font-weight: 800; color: ${p.rank <= 3 ? 'var(--accent-gold)' : (p.isMe ? '#2563eb' : 'var(--text-dim)')}; font-size: 0.98rem; white-space: nowrap;">
+              <div style="display: flex; align-items: center; justify-content: center; font-weight: 900;">
                 <span>${rankBadge}</span>
-                ${p.isMe ? '<span style="font-size: 0.65rem; background: #2563eb; color: #fff; border-radius: 4px; padding: 1px 4px; font-weight: 800; margin-top: 2px; white-space: nowrap;">내 순위</span>' : ''}
               </div>
             </td>
-            <td style="padding: 1rem 1.25rem;">
-              <div style="display: flex; align-items: center; gap: 0.65rem;">
-                <span style="font-size: 1.5rem; flex-shrink: 0;">${p.avatar}</span>
+            <td style="padding: 0.65rem 0.85rem;">
+              <div style="display: flex; align-items: center; gap: 0.55rem;">
+                <span style="font-size: 1.45rem; flex-shrink: 0; line-height: 1;">${p.avatar}</span>
                 <div style="min-width: 0;">
-                  <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
-                    <strong style="color: var(--text-main); font-size: 0.95rem; word-break: keep-all;">${p.name}</strong>
-                    ${p.kakao_nickname ? `<span style="font-size: 0.72rem; color: #b45309; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 4px; padding: 1px 5px; font-weight: 600; white-space: nowrap;">💬 카톡: ${p.kakao_nickname}</span>` : ''}
-                    ${p.isCertified ? `<span style="font-size: 0.68rem; background: rgba(16, 185, 129, 0.2); color: #047857; border: 1px solid rgba(16, 185, 129, 0.4); padding: 1px 5px; border-radius: 4px; font-weight: 800; white-space: nowrap;">⭐ 인증회원</span>` : ''}
-                    ${p.isMe ? '<span class="my-rank-indicator-pill">👤 나 (MY RANK)</span>' : ''}
+                  <div class="rank-player-row">
+                    <strong class="rank-player-name">${p.name}</strong>
+                    ${p.kakao_nickname ? `<span class="rank-kakao-tag" title="카카오톡 단톡방 닉네임">💬 ${p.kakao_nickname}</span>` : ''}
+                    ${p.isMe ? '<span class="rank-me-tag">나</span>' : ''}
                   </div>
-                  <span style="font-size: 0.75rem; color: var(--text-dim); word-break: keep-all;">${p.style} 스타일</span>
+                  <div class="rank-player-sub">${p.style} 스타일</div>
                 </div>
               </div>
             </td>
-            <td class="col-hide-mobile" style="padding: 1rem 1.25rem; white-space: nowrap;">
+            <td class="col-hide-mobile" style="padding: 0.65rem 0.85rem; white-space: nowrap;">
               <span class="rank-badge ${p.badgeClass}">${p.tierBadge}</span>
             </td>
-            <td style="padding: 1rem 1.25rem; text-align: center; white-space: nowrap;">
-              <strong style="color: var(--accent-blue-title); font-size: 1rem;">Lv.${p.level}</strong>
+            <td style="padding: 0.65rem 0.85rem; text-align: center; white-space: nowrap;">
+              <strong style="color: var(--accent-blue-title); font-size: 0.95rem;">Lv.${p.level}</strong>
             </td>
-            <td style="padding: 1rem 1.25rem; text-align: right; font-weight: 800; color: var(--accent-gold); font-size: 0.95rem; white-space: nowrap;">
+            <td style="padding: 0.65rem 0.85rem; text-align: right; font-weight: 800; color: var(--accent-gold); font-size: 0.95rem; white-space: nowrap;">
               ${p.xp.toLocaleString()} XP
             </td>
-            <td class="col-hide-mobile" style="padding: 1rem 1.25rem; text-align: center; font-size: 0.8rem; color: var(--text-muted); white-space: nowrap;">
+            <td class="col-hide-mobile" style="padding: 0.65rem 0.85rem; text-align: center; font-size: 0.78rem; color: var(--text-muted); white-space: nowrap;">
               📖 ${p.articles}편 완독
             </td>
           </tr>

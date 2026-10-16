@@ -2942,14 +2942,15 @@ body.theme-light .btn-original-link {
     padding: 1.15rem 1rem !important;
   }
   .champion-spotlight-banner {
-    padding: 0.85rem 1rem !important;
-    gap: 0.75rem !important;
+    padding: 0.75rem 0.85rem !important;
+    gap: 0.65rem !important;
+    margin-bottom: 1rem !important;
   }
   .col-hide-mobile {
     display: none !important;
   }
   .ranking-table th, .ranking-table td {
-    padding: 0.75rem 0.5rem !important;
+    padding: 0.55rem 0.45rem !important;
     font-size: 0.82rem !important;
   }
   .hero-banner {
@@ -3388,27 +3389,70 @@ body.theme-light .article-card.locked {
   gap: 0.2rem;
 }
 .ranking-row-me td {
-  background: rgba(59, 130, 246, 0.16) !important;
-  border-top: 2.5px solid #3b82f6 !important;
-  border-bottom: 2.5px solid #3b82f6 !important;
+  background: rgba(59, 130, 246, 0.08) !important;
+  border-top: 1px solid rgba(59, 130, 246, 0.35) !important;
+  border-bottom: 1px solid rgba(59, 130, 246, 0.35) !important;
   font-weight: 700;
 }
 .ranking-row-me td:first-child {
-  border-left: 6px solid #2563eb !important;
-}
-.ranking-row-me td:last-child {
-  border-right: 2.5px solid #3b82f6 !important;
+  border-left: 4px solid #3b82f6 !important;
 }
 body.theme-light .ranking-row-me td {
-  background: rgba(37, 99, 235, 0.1) !important;
-  border-top: 2.5px solid #2563eb !important;
-  border-bottom: 2.5px solid #2563eb !important;
+  background: rgba(37, 99, 235, 0.06) !important;
+  border-top: 1px solid rgba(37, 99, 235, 0.28) !important;
+  border-bottom: 1px solid rgba(37, 99, 235, 0.28) !important;
 }
 body.theme-light .ranking-row-me td:first-child {
-  border-left: 6px solid #1d4ed8 !important;
+  border-left: 4px solid #2563eb !important;
 }
-body.theme-light .ranking-row-me td:last-child {
-  border-right: 2.5px solid #2563eb !important;
+
+.rank-player-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+.rank-player-name {
+  color: var(--text-main);
+  font-size: 0.93rem;
+  font-weight: 800;
+  word-break: keep-all;
+}
+.rank-kakao-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #b45309;
+  background: rgba(245, 158, 11, 0.14);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 4px;
+  padding: 1px 6px;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+body:not(.theme-light) .rank-kakao-tag {
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.16);
+  border-color: rgba(245, 158, 11, 0.4);
+}
+.rank-me-tag {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  border-radius: 4px;
+  padding: 1px 5px;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.3);
+}
+.rank-player-sub {
+  font-size: 0.73rem;
+  color: var(--text-dim);
+  margin-top: 1px;
+  word-break: keep-all;
 }
 @keyframes pulseMe {
   0% { transform: scale(1); }
@@ -4268,17 +4312,17 @@ body.authenticated #auth-gate-screen {
 
     <!-- 7. Global Leaderboard & Ranking View -->
     <section id="view-ranking" class="view-section">
-      <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
+      <div style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 0.75rem;">
         <div>
-          <h2 style="font-size: 1.6rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem;">
-            <span>🏆</span> GTO 포커 플레이어 실시간 랭킹보드
+          <h2 style="font-size: 1.45rem; font-weight: 800; display: flex; align-items: center; gap: 0.45rem; margin-bottom: 0.2rem;">
+            <span>🏆</span> GTO 실시간 랭킹보드
           </h2>
-          <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.25rem;">
+          <p style="color: var(--text-muted); font-size: 0.86rem; margin: 0;">
             레벨(Lv.1~100) 및 누적 경험치(XP) 기준 전체 순위 • 실시간 반영
           </p>
         </div>
-        <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-          <div style="display: flex; gap: 0.4rem; background: var(--bg-card); padding: 0.3rem; border-radius: 10px; border: 1px solid var(--border-color);">
+        <div style="display: flex; gap: 0.45rem; align-items: center; flex-wrap: wrap;">
+          <div style="display: flex; gap: 0.35rem; background: var(--bg-card); padding: 0.25rem; border-radius: 10px; border: 1px solid var(--border-color);">
             <button class="filter-pill active" id="rank-filter-all" onclick="rankingManager.setFilter('all')">전체 랭킹</button>
             <button class="filter-pill" id="rank-filter-top10" onclick="rankingManager.setFilter('top10')">TOP 10</button>
             <button class="filter-pill" id="rank-filter-near" onclick="rankingManager.setFilter('near')">내 순위 주변</button>
@@ -4300,12 +4344,12 @@ body.authenticated #auth-gate-screen {
           <table class="ranking-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.92rem;">
             <thead>
               <tr style="background: var(--bg-surface); border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em;">
-                <th style="padding: 1rem 1.25rem; width: 80px; text-align: center; white-space: nowrap;">순위</th>
-                <th style="padding: 1rem 1.25rem; white-space: nowrap;">플레이어</th>
-                <th class="col-hide-mobile" style="padding: 1rem 1.25rem; white-space: nowrap;">전직 칭호</th>
-                <th style="padding: 1rem 1.25rem; text-align: center; white-space: nowrap;">레벨</th>
-                <th style="padding: 1rem 1.25rem; text-align: right; white-space: nowrap;">누적 경험치 (XP)</th>
-                <th class="col-hide-mobile" style="padding: 1rem 1.25rem; text-align: center; white-space: nowrap;">학습 성과</th>
+                <th style="padding: 0.65rem 0.85rem; width: 70px; text-align: center; white-space: nowrap;">순위</th>
+                <th style="padding: 0.65rem 0.85rem; white-space: nowrap;">플레이어</th>
+                <th class="col-hide-mobile" style="padding: 0.65rem 0.85rem; white-space: nowrap;">전직 칭호</th>
+                <th style="padding: 0.65rem 0.85rem; text-align: center; white-space: nowrap;">레벨</th>
+                <th style="padding: 0.65rem 0.85rem; text-align: right; white-space: nowrap;">누적 경험치 (XP)</th>
+                <th class="col-hide-mobile" style="padding: 0.65rem 0.85rem; text-align: center; white-space: nowrap;">학습 성과</th>
               </tr>
             </thead>
             <tbody id="ranking-table-body">
