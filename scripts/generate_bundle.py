@@ -18,7 +18,7 @@ with open(os.path.join(BASE_DIR, 'templates', 'bundle_tail.js'), encoding='utf-8
 def write_bundle(target_path):
     with open(target_path, 'w', encoding='utf-8') as out:
         out.write(head_content)
-        out.write("const DB = {\n  articles: ")
+        out.write("var DB = window.DB = {\n  articles: ")
         with open(os.path.join(BASE_DIR, 'data', 'articles.json'), 'r', encoding='utf-8') as af:
             shutil.copyfileobj(af, out)
         out.write(",\n  glossary: ")

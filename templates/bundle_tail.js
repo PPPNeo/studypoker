@@ -1,3 +1,8 @@
+// Ensure global DB is attached to window
+if (typeof DB !== 'undefined') {
+  window.DB = DB;
+}
+
 // Global Auth Manager reference
 var authManager;
 
@@ -272,7 +277,7 @@ const PLAYSTYLES = {
 };
 
 // RPG Character Manager
-const characterManager = {
+var characterManager = window.characterManager = {
   selectedAvatar: '🦈',
   selectedStyle: 'TAG',
   _toastTimer: null,
@@ -655,7 +660,7 @@ const characterManager = {
   }
 };
 
-const app = {
+var app = window.app = {
   userState: storage.get(),
   currentView: 'roadmap',
 
@@ -751,8 +756,49 @@ const app = {
   // 📚 레벨별 지정 필수 학습 커리큘럼 (아티클 & 퀴즈 순차 지정)
   getCurriculumForLevel(lvl) {
     lvl = Math.max(1, Math.min(100, parseInt(lvl, 10) || 1));
-    const allArticles = (window.DB && DB.articles) ? DB.articles : [];
-    const allQuizzes = (window.DB && DB.quizzes) ? DB.quizzes : [];
+    const allArticles = (typeof DB !== 'undefined' && DB.articles) ? DB.articles : (window.DB ? window.DB.articles : []);
+    const allQuizzes = (typeof DB !== 'undefined' && DB.quizzes) ? DB.quizzes : (window.DB ? window.DB.quizzes : []);
+
+    // 한국어 타이틀 100% 보장 매핑
+    const fallbackTitles = {
+      'what-is-expected-value-in-poker': '기대값(EV)의 정석: 포커는 수학 게임이다',
+      'equity-realization': '에퀴티 실현(EQR): 50% 승률의 치명적인 함정',
+      'common_poker_sayings_that_ruin_your_winrate': '승률을 망치는 잘못된 포커 격언들과 진실',
+      'what-are-pot-odds-in-poker': '팟 오즈(Pot Odds) 계산법과 콜 기준 완벽 정리',
+      'the-trouble-with-implied-odds': '임플라이드 오즈(Implied Odds)의 함정과 한계',
+      'what-is-equity-in-poker': '에퀴티(Equity)란 무엇인가: 핸드 승률의 진실',
+      'understanding_domination_the_hidden_logic_behind_every_bet': '도미네이션(Domination)의 이해: 모든 벳 뒤의 숨은 수학',
+      'the_3_biggest_leaks_killing_your_winrate': '승률을 갉아먹는 가장 치명적인 3대 릭(Leak)',
+      'a-beginners-guide-to-poker-combinatorics': '초보자를 위한 포커 콤비나토리얼(콤보 계산법) 입문',
+      'mdf-alpha': 'MDF(최소 방어 빈도)와 Alpha: 방어와 공격의 수학적 균형선',
+      'protect-equity-and-prosper': '에퀴티 프로텍션(Protection)과 밸류 극대화 전략',
+      'visualizing-implied-odds': '임플라이드 오즈 시각화: 잠재적 배당률 계산법',
+      'what-is-leverage-in-poker': '포커에서의 레버리지(Leverage) 원리와 스택 압박',
+      'what-is-valor-in-poker': '포커에서의 밸러(Valor)와 쇼다운 가치의 상관관계',
+      'the-magic-of-equity-buckets': '에퀴티 버킷(Equity Buckets) 분류법의 마법',
+      'what-is-gto-in-poker': 'GTO(Game Theory Optimal)의 진정한 정의와 목적',
+      'what-does-gto-aim-to-achieve': 'GTO 솔버가 도달하려는 최종 목표와 이론적 배경',
+      'interpreting-equity-distributions': '에퀴티 분포 곡선(Distribution) 완벽 해석법',
+      'understanding-which-mistakes-cost-you-the-most-money': '가장 큰 돈을 잃게 만드는 치명적 실수 분석',
+      'mathematical-misconceptions-in-poker': '포커 플레이어들이 흔히 범하는 수학적 오해',
+      'the-value-of-fold-equity-experiment': '폴드 에퀴티(Fold Equity)의 실제 가치 실험',
+      'top-5-mistakes-in-spin-gos': '스핀앤고(Spin & Go)에서 자주 하는 5가지 실수',
+      'fixing-a-poker-leak-part-1-spotting-and-correcting-errors': '포커 릭(Leak) 교정 1부: 오류 발견 및 수정법',
+      'fixing-a-poker-leak-part-2-the-mental-game': '포커 릭(Leak) 교정 2부: 멘탈 게임 강화 전략',
+      'how_pros_use_solvers_to_crush_pool_leaks': '프로들이 솔버로 필드(Pool)의 집단적 릭을 응징하는 법',
+      'how-to-leverage-gto-wizards-ev-comparison-tool': 'GTO Wizard의 EV 비교 도구 200% 활용법',
+      'plo-just-changed-forever': '오마하(PLO) 솔버 분석과 게임의 대격변'
+    };
+
+    const fallbackQuizTitles = {
+      'quiz-16': '미시시피 스트래들 게임: 림퍼를 응징하는 아이솔레이션',
+      'quiz-17': '로우 커넥티드 보드에서의 첵-콜 vs 폴드',
+      'quiz-20': '스퀴즈(Squeeze) 스팟: 루즈한 오픈과 콜 응징',
+      'quiz-22': '토너먼트 15bb 숏스택에서의 리스틸(Resteal) 셔브',
+      'quiz-7': '페어드 보드(Paired Board)에서의 1/4팟 극소형 벳',
+      'quiz-1': '3벳 팟 플랍 C-bet 사이징: A-하이 보드',
+      'quiz-11': 'BvB (블라인드 vs 블라인드) SB의 림프-레이즈 전략'
+    };
 
     // Lv.1 ~ Lv.9: 기초 입문 구간 정밀 큐레이션 트랙
     const curatedTracks = {
@@ -837,12 +883,14 @@ const app = {
     // 메타데이터 보강
     const requiredArticles = track.articleIds.map(id => {
       const found = allArticles.find(a => a.id === id || a.slug === id);
-      return found || { id: id, slug: id, title_ko: id, category: '이론 학습', read_time: '5분' };
+      const titleKo = (found && (found.title_ko || found.title)) || fallbackTitles[id] || id;
+      return found ? { ...found, title_ko: titleKo } : { id: id, slug: id, title_ko: titleKo, category: '이론 학습', read_time: '5분' };
     });
 
     const requiredQuizzes = track.quizIds.map(qid => {
       const found = allQuizzes.find(q => q.id === qid);
-      return found || { id: qid, title: qid, category: '실전 스팟', situation: '의사결정' };
+      const titleKo = (found && (found.title || found.title_ko)) || fallbackQuizTitles[qid] || qid;
+      return found ? { ...found, title: titleKo } : { id: qid, title: titleKo, category: '실전 스팟', situation: '의사결정' };
     });
 
     return {
@@ -2116,7 +2164,7 @@ const matrix = {
   }
 };
 
-const roadmap = {
+var roadmap = window.roadmap = {
   data: DB.roadmap,
 
   load() {
@@ -2718,7 +2766,7 @@ const EXAM_DATABASE = {
 // ==========================================
 // 📜 퀘스트 매니저 (성장 미션 & 6구간 전직 현황)
 // ==========================================
-const questManager = {
+var questManager = window.questManager = {
   openModal() {
     this.render();
     const modal = document.getElementById('quest-modal-overlay');
@@ -3196,7 +3244,7 @@ const promotionManager = {
 // ==========================================
 // 🏆 실시간 전체 이용자 랭킹보드 매니저 (Leaderboard)
 // ==========================================
-const rankingManager = {
+var rankingManager = window.rankingManager = {
   currentFilter: 'all', // 'all', 'top10', 'near'
   cloudPlayers: [],
 
