@@ -2803,13 +2803,10 @@ body.authenticated #auth-gate-screen {
       </nav>
 
       <div class="user-bar">
-        <!-- Clickable Character Persona Header Pill (Profile & All Tools Hub) -->
-        <button class="char-header-pill" id="char-header-pill" onclick="characterManager.openModal()" title="내 포커 캐릭터 프로필 및 설정 메뉴 센터">
-          <span class="char-avatar-icon" id="header-char-avatar">🦈</span>
-          <div class="char-header-info">
-            <span class="char-header-name" id="header-char-name"></span>
-            <span class="char-header-tag" id="header-char-style">TAG</span>
-          </div>
+        <!-- Settings (환경설정) Header Pill -->
+        <button class="char-header-pill settings-header-pill" id="header-settings-btn" onclick="settingsManager.openModal()" title="환경설정 및 계정/캐릭터 관리">
+          <span style="font-size: 1.15rem;">⚙️</span>
+          <span style="font-weight: 800; font-size: 0.85rem;">환경설정</span>
         </button>
 
         <div class="streak-pill" title="연속 출석 스트릭">
@@ -2855,26 +2852,17 @@ body.authenticated #auth-gate-screen {
                   <span class="char-kakao-tag" id="dash-kakao-tag" style="background: rgba(250, 204, 21, 0.12); color: #fbbf24; border: 1px solid rgba(250, 204, 21, 0.35); padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.25rem;">💬 단톡방 닉네임: 미등록</span>
                   <span class="char-style-tag" id="dash-char-style">⚡ TAG 스타일</span>
                   <span class="char-tier-badge" id="dash-char-tier">[입문] 동네 피쉬 (Lv.1~9) 🐟</span>
+                  <span class="char-rank-badge" id="dash-char-rank" onclick="app.navigate('ranking')" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.25)); border: 1.5px solid #f59e0b; color: #fbbf24; padding: 3px 10px; border-radius: 12px; font-size: 0.78rem; font-weight: 800; display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer; transition: all 0.2s ease;" title="전체 실시간 랭킹보드 바로가기">🏆 실시간 랭킹: #1위</span>
                 </div>
                 <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-                  <button class="btn-character-auth" id="dash-auth-btn" onclick="authManager.openModal('login')" title="클라우드 회원 계정" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.25)); border: 1.5px solid #f59e0b; color: #fbbf24; padding: 0.45rem 0.9rem; border-radius: 8px; font-size: 0.82rem; font-weight: 800; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 0.35rem;">
-                    <span>👤</span> 회원가입/로그인
+                  <button class="btn-character-quest" onclick="questManager.openModal()" title="레벨업 퀘스트 및 6구간 전직 현황 확인" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.25)); border: 1.5px solid #f59e0b; color: #fbbf24; padding: 0.45rem 0.9rem; border-radius: 8px; font-size: 0.82rem; font-weight: 800; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 0.35rem;">
+                    <span>📜</span> 퀘스트 정보
                   </button>
                   <button class="btn-character-guide" onclick="guidebookManager.openModal()" title="레벨 및 6구간 전직 시스템 공식 가이드북" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.25)); border: 1.5px solid #3b82f6; color: #60a5fa; padding: 0.45rem 0.9rem; border-radius: 8px; font-size: 0.82rem; font-weight: 800; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 0.35rem;">
                     <span>📖</span> 가이드북
                   </button>
-                  <button class="btn-character-quest" onclick="questManager.openModal()" title="레벨업 퀘스트 및 6구간 전직 현황 확인" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.25)); border: 1.5px solid #f59e0b; color: #fbbf24; padding: 0.45rem 0.9rem; border-radius: 8px; font-size: 0.82rem; font-weight: 800; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 0.35rem;">
-                    <span>📜</span> 퀘스트 정보
-                  </button>
-
                   <button class="btn-character-stats" id="btn-toggle-stats" onclick="characterManager.toggleStats()" title="4대 핵심 능력치 접기/펼치기">
                     <span>📊</span> 4대 능력치 <span id="stats-toggle-arrow">▼</span>
-                  </button>
-                  <button class="btn-character-edit" onclick="characterManager.openModal()">
-                    <span>🎭</span> 캐릭터 설정
-                  </button>
-                  <button class="btn-character-reset" onclick="characterManager.resetCharacter()" title="캐릭터 학습 데이터 초기화" style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.35); color: #ef4444; padding: 0.45rem 0.8rem; border-radius: 8px; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;">
-                    <span>🔄</span> 초기화
                   </button>
                 </div>
               </div>
@@ -3738,6 +3726,28 @@ body.authenticated #auth-gate-screen {
     </div>
   </div>
 
-  
+  <!-- ⚙️ Global Settings Modal (환경설정) -->
+  <div class="ai-modal-overlay" id="settings-modal-overlay" style="display: none;" onclick="if(event.target === this) settingsManager.closeModal()">
+    <div class="char-create-modal" style="max-width: 580px; width: 95%;">
+      <div class="char-modal-header" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(30, 41, 59, 0.9));">
+        <div style="display: flex; align-items: center; gap: 0.65rem;">
+          <span style="font-size: 1.6rem;">⚙️</span>
+          <div>
+            <h3 style="font-size: 1.2rem; font-weight: 800; color: #60a5fa; margin: 0;">환경설정 및 시스템 관리</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">계정, 캐릭터, 화면 테마 및 시스템을 설정합니다.</p>
+          </div>
+        </div>
+        <button onclick="settingsManager.closeModal()" style="background: none; border: none; color: #94a3b8; font-size: 1.3rem; cursor: pointer;">✕</button>
+      </div>
+
+      <div class="char-modal-body" id="settings-modal-body" style="padding: 1.5rem; max-height: 75vh; overflow-y: auto;">
+        <!-- Injected dynamically by settingsManager.render() -->
+      </div>
+
+      <div class="char-modal-footer" style="display: flex; justify-content: flex-end; width: 100%;">
+        <button class="btn-primary" onclick="settingsManager.closeModal()">닫기</button>
+      </div>
+    </div>
+  </div>
 
   <script>

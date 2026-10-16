@@ -574,15 +574,16 @@ var characterManager = window.characterManager = {
       }
     }
 
-    const dAuthBtn = document.getElementById('dash-auth-btn');
-    if (dAuthBtn && window.authManager) {
-      const isAuth = authManager.isLoggedIn();
-      dAuthBtn.innerHTML = isAuth ? '<span>⚙️</span> 내 계정' : '<span>👤</span> 회원가입/로그인';
-    }
-    
     const styleInfo = PLAYSTYLES[u.playstyle] || PLAYSTYLES.TAG;
     if (dSt) dSt.innerText = styleInfo.title;
     if (dTr) dTr.innerText = lvlInfo.title;
+
+    const dRank = document.getElementById('dash-char-rank');
+    if (dRank && window.rankingManager && rankingManager.getUserRank) {
+      const rInfo = rankingManager.getUserRank();
+      dRank.innerHTML = `🏆 실시간 랭킹: <strong>#${rInfo.rank}위</strong> <span style="font-size: 0.72rem; opacity: 0.75;">(${rInfo.total}명 중)</span>`;
+    }
+
     if (dBio) dBio.innerText = `"${styleInfo.bio}"`;
 
     if (dXpText) dXpText.innerText = `${u.xp} / ${lvlInfo.maxXp} XP`;
@@ -2388,21 +2389,51 @@ var roadmap = window.roadmap = {
     `;
 
     // 2. 전체 6구간 전직 마스터 로드맵
-    const careerHtml = rm.levels.map(lvl => {
+    const careerHtml = rm.levels.map((lvl, lvlIdx) => {
       const isLocked = (userState.xp < lvl.required_xp);
+      const tierLvlKey = `Level ${lvlIdx + 1}`;
+      const tierArticles = (window.DB && DB.articles) ? DB.articles.filter(a => a.level && a.level.startsWith(tierLvlKey)) : [];
+      const tierTotalCount = tierArticles.length;
+      const tierCompletedCount = tierArticles.filter(a => (userState.completed_articles || []).includes(a.id || a.slug)).length;
+      const tierProgressPct = tierTotalCount > 0 ? Math.round((tierCompletedCount / tierTotalCount) * 100) : 0;
+
+      const tierReqDescs = [
+        "Lv.1~9 기초 수료 시 1차 전직 심사 시험(5문항) 응시 가능",
+        "Lv.10~24 도달 시 2차 전직 심사 시험(5문항) 응시 가능",
+        "Lv.25~44 도달 시 3차 전직 심사 시험(5문항) 응시 가능",
+        "Lv.45~64 도달 시 4차 전직 심사 시험(5문항) 응시 가능",
+        "Lv.65~84 도달 시 5차 전직 최종 챔피언 심사 응시 가능",
+        "최고 영예: WSOP 하이롤러 챔피언 마스터 레벨"
+      ];
+      const tierReqDesc = tierReqDescs[lvlIdx] || "전직 심사 시험 통과 필요";
+
       return `
-        <div class="roadmap-level-card ${isLocked ? 'locked' : ''}">
+        <div class="roadmap-level-card ${isLocked ? 'locked' : ''}" style="margin-bottom: 2rem;">
           <div class="level-badge-header">
             <div>
-              <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main);">${lvl.title}</h3>
-              <p style="font-size: 0.85rem; color: var(--text-dim);">${lvl.subtitle}</p>
+              <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin: 0;">${lvl.title}</h3>
+                <span style="font-size: 0.72rem; padding: 2px 8px; border-radius: 10px; font-weight: 800; ${isLocked ? 'background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3);' : 'background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3);'}">
+                  ${isLocked ? '🔒 잠금됨' : '🔓 해금됨'}
+                </span>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 4px;">${lvl.subtitle}</p>
             </div>
             <span class="level-badge">${lvl.badge}</span>
           </div>
 
-          <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1rem;">
+          <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 0.75rem;">
             ${lvl.description}
           </p>
+
+          <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 10px; padding: 0.75rem 1rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+            <div style="font-size: 0.82rem; color: var(--text-main);">
+              <span style="color: #fbbf24; font-weight: 700;">🎖️ 전직 요건:</span> ${tierReqDesc}
+            </div>
+            <div style="font-size: 0.82rem; color: #60a5fa; font-weight: 700;">
+              티어 정복도: ${tierCompletedCount}/${tierTotalCount}편 (${tierProgressPct}%)
+            </div>
+          </div>
 
           ${isLocked ? `
             <div style="background: rgba(0,0,0,0.2); padding: 0.75rem; border-radius: 8px; font-size: 0.85rem; color: #f59e0b; font-weight: 700;">
@@ -2412,30 +2443,35 @@ var roadmap = window.roadmap = {
             <div class="nodes-list">
               ${lvl.nodes.map((n, idx) => {
                 const isCompleted = userState.completed_articles.includes(n.article_id);
-                const isFirstPending = !isCompleted && lvl.nodes.slice(0, idx).every(prev => userState.completed_articles.includes(prev.article_id));
                 const foundArt = (window.DB && DB.articles) ? DB.articles.find(a => a.id === n.article_id || a.slug === n.article_id) : null;
                 const nodeTitle = (foundArt && (foundArt.title_ko || foundArt.title)) || n.title;
                 return `
-                  <div class="node-item ${isCompleted ? 'completed' : ''}" onclick="reader.openArticle('${n.article_id}')" style="${isFirstPending ? 'border: 1.5px solid #3b82f6; background: rgba(59, 130, 246, 0.05);' : ''}">
+                  <div class="node-item ${isCompleted ? 'completed' : ''}" onclick="reader.openArticle('${n.article_id}')">
                     <div style="display: flex; align-items: center; gap: 0.75rem;">
-                      <span style="font-size: 1.2rem;">${isCompleted ? '✅' : (isFirstPending ? '👉' : '📖')}</span>
+                      <span style="font-size: 1.2rem;">${isCompleted ? '✅' : '📖'}</span>
                       <div>
                         <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
                           <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">${nodeTitle}</div>
-                          ${isFirstPending ? '<span style="font-size: 0.68rem; background: #3b82f6; color: #fff; padding: 1px 6px; border-radius: 10px; font-weight: 800;">추천 다음 스팟</span>' : ''}
+                          <span style="font-size: 0.68rem; background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); padding: 1px 6px; border-radius: 10px; font-weight: 700;">커리어 핵심</span>
                         </div>
                         <span style="font-size: 0.75rem; color: var(--text-dim);">${n.category}</span>
                       </div>
                     </div>
                     <div style="display: flex; align-items: center; gap: 0.75rem;">
                       <span style="font-size: 0.8rem; color: #fbbf24; font-weight: 700;">+${n.xp} XP</span>
-                      <button class="${isFirstPending ? 'btn-primary' : 'btn-secondary'}" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
-                        ${isCompleted ? '다시 읽기' : (isFirstPending ? '지금 학습 시작 →' : '학습 시작')}
+                      <button class="btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
+                        ${isCompleted ? '✓ 완독 (다시읽기)' : '📖 아티클 열람'}
                       </button>
                     </div>
                   </div>
                 `;
               }).join('')}
+            </div>
+
+            <div style="margin-top: 1rem; text-align: center;">
+              <button onclick="reader.filterLevel('${tierLvlKey}'); app.navigate('articles');" class="btn-secondary" style="font-size: 0.82rem; font-weight: 700; padding: 0.45rem 1.2rem; border-color: rgba(59, 130, 246, 0.4); color: #60a5fa; background: rgba(59, 130, 246, 0.08); border-radius: 8px;">
+                📚 [${lvl.badge}] 티어 도서관 아티클 전체보기 (${tierTotalCount}편) ➔
+              </button>
             </div>
           `}
         </div>
@@ -3369,6 +3405,9 @@ var rankingManager = window.rankingManager = {
         const data = await res.json();
         this.cloudPlayers = data || [];
         this.render();
+        if (window.characterManager && characterManager.renderDashboard) {
+          characterManager.renderDashboard();
+        }
       }
     } catch (e) {
       console.warn("Failed to fetch cloud ranking players:", e);
@@ -3377,6 +3416,21 @@ var rankingManager = window.rankingManager = {
 
   // 임의의 가상 봇/라이벌을 완전히 제거하고 실제 클라우드 가입 회원들만 표시
   rivals: [],
+
+  getUserRank() {
+    const list = this.getAllPlayers();
+    list.sort((a, b) => {
+      if (b.level !== a.level) return b.level - a.level;
+      if (b.xp !== a.xp) return b.xp - a.xp;
+      if (b.quizzes !== a.quizzes) return b.quizzes - a.quizzes;
+      return (b.articles || 0) - (a.articles || 0);
+    });
+    const myIndex = list.findIndex(p => p.isMe);
+    return {
+      rank: myIndex >= 0 ? myIndex + 1 : 1,
+      total: Math.max(1, list.length)
+    };
+  },
 
   setFilter(filter) {
     this.currentFilter = filter;
@@ -4775,6 +4829,132 @@ authManager = window.authManager = {
   }
 };
 
+const settingsManager = window.settingsManager = {
+  openModal() {
+    this.render();
+    const modal = document.getElementById('settings-modal-overlay');
+    if (modal) modal.style.display = 'flex';
+    if (window.app && app.playAudioEffect) app.playAudioEffect('click');
+  },
+
+  closeModal() {
+    const modal = document.getElementById('settings-modal-overlay');
+    if (modal) modal.style.display = 'none';
+  },
+
+  render() {
+    const body = document.getElementById('settings-modal-body');
+    if (!body) return;
+    const u = app.userState;
+    const auth = (window.authManager && authManager.isLoggedIn()) ? authManager.getAuthUser() : null;
+    const lvlInfo = app.getLevelInfo(u.xp || 0);
+    const rankInfo = (window.rankingManager && rankingManager.getUserRank) ? rankingManager.getUserRank() : { rank: 1, total: 1 };
+    const isDark = document.body.classList.contains('dark-theme') || (window.themeManager && themeManager.currentTheme === 'dark');
+
+    body.innerHTML = `
+      <div style="display: flex; flex-direction: column; gap: 1.15rem;">
+        <!-- User Profile Card -->
+        <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(37, 99, 235, 0.18)); border: 1.5px solid rgba(59, 130, 246, 0.35); border-radius: 12px; padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+          <div style="display: flex; align-items: center; gap: 0.85rem;">
+            <div style="font-size: 2.2rem; background: var(--bg-surface); width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1.5px solid #3b82f6;">
+              ${u.avatar || '🦈'}
+            </div>
+            <div>
+              <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+                <span style="font-size: 1.1rem; font-weight: 800; color: var(--text-main);">${u.name || '포커신동'}</span>
+                <span style="font-size: 0.72rem; background: #3b82f6; color: #fff; padding: 1px 6px; border-radius: 10px; font-weight: 700;">${lvlInfo.title}</span>
+              </div>
+              <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 2px;">
+                ${u.kakao_name ? `💬 카톡: ${u.kakao_name}` : '💬 카톡 미연동'} • 🏆 랭킹 #${rankInfo.rank}위 (${rankInfo.total}명 중)
+              </div>
+            </div>
+          </div>
+          <button onclick="settingsManager.closeModal(); characterManager.openModal();" style="background: var(--bg-surface); border: 1px solid #3b82f6; color: #60a5fa; padding: 0.4rem 0.85rem; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer;">
+            ✏️ 프로필 변경
+          </button>
+        </div>
+
+        <!-- 1. 계정 및 로그인 관리 -->
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.15rem;">
+          <div style="display: flex; align-items: gap: 0.45rem; font-size: 0.95rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.85rem;">
+            <span>👤</span> 내 계정 및 로그인
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; padding: 0.4rem 0; border-bottom: 1px solid var(--border-color);">
+              <span style="color: var(--text-muted);">로그인 계정</span>
+              <span style="font-weight: 700; color: var(--text-main);">${auth ? auth.email || auth.game_nickname : '로그인됨'}</span>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; padding: 0.4rem 0; border-bottom: 1px solid var(--border-color);">
+              <span style="color: var(--text-muted);">카카오톡 단톡방 닉네임</span>
+              <span style="font-weight: 700; color: #fbbf24;">${(auth && auth.kakao_nickname) || u.kakao_name || '미등록'}</span>
+            </div>
+            <div style="display: flex; gap: 0.5rem; margin-top: 0.4rem; flex-wrap: wrap;">
+              <button onclick="settingsManager.closeModal(); authManager.openModal('profile');" class="btn-secondary" style="flex: 1; padding: 0.5rem; font-size: 0.82rem; font-weight: 700;">
+                🔑 비밀번호/카톡 변경
+              </button>
+              <button onclick="authManager.logout()" style="flex: 1; padding: 0.5rem; font-size: 0.82rem; font-weight: 700; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.4); color: #ef4444; border-radius: 8px; cursor: pointer;">
+                🚪 로그아웃
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. 캐릭터 & 플레이스타일 -->
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.15rem;">
+          <div style="display: flex; align-items: center; gap: 0.45rem; font-size: 0.95rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.85rem;">
+            <span>🎭</span> 캐릭터 & 플레이 스타일
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+            <div>
+              <div style="font-size: 0.88rem; font-weight: 700; color: var(--text-main);">
+                현재 스타일: ${(PLAYSTYLES[u.playstyle] || PLAYSTYLES.TAG).title}
+              </div>
+              <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">
+                ${(PLAYSTYLES[u.playstyle] || PLAYSTYLES.TAG).bio}
+              </div>
+            </div>
+            <button onclick="settingsManager.closeModal(); characterManager.openModal();" class="btn-primary" style="padding: 0.45rem 0.9rem; font-size: 0.82rem; font-weight: 700;">
+              🎭 스타일/아바타 변경
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. 화면 테마 & 시스템 설정 -->
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.15rem;">
+          <div style="display: flex; align-items: center; gap: 0.45rem; font-size: 0.95rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.85rem;">
+            <span>🎨</span> 화면 테마 & 사운드
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div>
+                <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-main);">화면 테마 모드</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">다크 모드 또는 라이트 모드로 전환합니다.</div>
+              </div>
+              <button onclick="themeManager.toggle(); settingsManager.render();" class="btn-secondary" style="padding: 0.4rem 0.85rem; font-size: 0.8rem; font-weight: 700;">
+                ${isDark ? '☀️ 라이트 모드로 전환' : '🌙 다크 모드로 전환'}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. 위험 구역: 학습 데이터 초기화 -->
+        <div style="background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: 12px; padding: 1.15rem;">
+          <div style="display: flex; align-items: center; gap: 0.45rem; font-size: 0.95rem; font-weight: 800; color: #ef4444; margin-bottom: 0.4rem;">
+            <span>⚠️</span> 데이터 관리
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+            <div style="font-size: 0.78rem; color: var(--text-muted);">
+              캐릭터 레벨, 획득 경험치(XP) 및 아티클/퀴즈 정독 기록을 0으로 초기화합니다.
+            </div>
+            <button onclick="settingsManager.closeModal(); characterManager.resetCharacter();" style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; padding: 0.45rem 0.85rem; border-radius: 8px; font-size: 0.8rem; font-weight: 800; cursor: pointer;">
+              🔄 학습 데이터 초기화
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+};
 
 window.addEventListener('DOMContentLoaded', () => {
   app.init();
