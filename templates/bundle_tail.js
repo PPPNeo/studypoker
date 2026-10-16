@@ -315,6 +315,46 @@ var characterManager = window.characterManager = {
   selectedStyle: 'TAG',
   _toastTimer: null,
 
+  getCooldownInfo() {
+    const u = app.userState;
+    const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+    const lastChangeStr = u.last_nickname_changed_at || localStorage.getItem('studypoker_nick_changed_at');
+    if (!lastChangeStr) {
+      return { canChange: true, remainingMs: 0, nextDate: null, dateText: '', remainText: '' };
+    }
+    const lastTime = new Date(lastChangeStr).getTime();
+    if (isNaN(lastTime)) {
+      return { canChange: true, remainingMs: 0, nextDate: null, dateText: '', remainText: '' };
+    }
+    const now = Date.now();
+    const nextTime = lastTime + SEVEN_DAYS_MS;
+    const remainingMs = nextTime - now;
+
+    if (remainingMs <= 0) {
+      return { canChange: true, remainingMs: 0, nextDate: new Date(nextTime), dateText: '', remainText: '' };
+    }
+
+    const nextDate = new Date(nextTime);
+    const days = Math.floor(remainingMs / (24 * 60 * 60 * 1000));
+    const hours = Math.floor((remainingMs % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+    const mins = Math.max(1, Math.floor((remainingMs % (60 * 60 * 1000)) / (60 * 1000)));
+
+    let remainText = '';
+    if (days > 0) remainText += `${days}일 `;
+    if (hours > 0 || days > 0) remainText += `${hours}시간 `;
+    remainText += `${mins}분`;
+
+    const dateText = `${nextDate.getFullYear()}-${String(nextDate.getMonth() + 1).padStart(2, '0')}-${String(nextDate.getDate()).padStart(2, '0')} ${String(nextDate.getHours()).padStart(2, '0')}:${String(nextDate.getMinutes()).padStart(2, '0')}`;
+
+    return {
+      canChange: false,
+      remainingMs,
+      nextDate,
+      dateText,
+      remainText
+    };
+  },
+
   init() {
     const u = app.userState;
     this.selectedAvatar = u.avatar || '🦈';
@@ -339,6 +379,9 @@ var characterManager = window.characterManager = {
     const nameInput = document.getElementById('char-name-input');
     if (nameInput) nameInput.value = u.name || '포커신동';
 
+    const kakaoInput = document.getElementById('char-kakao-input');
+    if (kakaoInput) kakaoInput.value = u.kakao_name || '';
+
     const titleEl = document.getElementById('char-modal-title');
     const subEl = document.getElementById('char-modal-subtitle');
     const saveBtn = document.getElementById('btn-save-character');
@@ -349,8 +392,65 @@ var characterManager = window.characterManager = {
       if (saveBtn) saveBtn.innerText = '🚀 캐릭터 생성 완료하고 모험 시작하기';
     } else {
       if (titleEl) titleEl.innerText = '🎭 포커 페르소나 캐릭터 커스텀';
-      if (subEl) subEl.innerText = '플레이 스타일과 닉네임, 아바타를 언제든 변경할 수 있습니다.';
+      if (subEl) subEl.innerText = '플레이 스타일과 닉네임, 아바타를 언제든 변경하고 관리할 수 있습니다.';
       if (saveBtn) saveBtn.innerText = '✨ 캐릭터 설정 저장';
+    }
+
+    // 1-Week Cooldown verification
+    const cd = this.getCooldownInfo();
+    const badge = document.getElementById('char-nick-cooldown-badge');
+    const alertBox = document.getElementById('char-nick-cooldown-alert');
+    const rndBtn = document.getElementById('btn-random-name');
+
+    if (isFirstTime || cd.canChange) {
+      if (badge) {
+        badge.className = 'nick-cooldown-badge available';
+        badge.innerHTML = '🟢 닉네임 변경 가능 (주 1회)';
+      }
+      if (alertBox) {
+        alertBox.style.display = 'none';
+        alertBox.innerHTML = '';
+      }
+      if (nameInput) {
+        nameInput.readOnly = false;
+        nameInput.style.opacity = '1';
+        nameInput.style.cursor = 'text';
+        nameInput.title = '게임 닉네임 입력 (2~14자)';
+      }
+      if (kakaoInput) {
+        kakaoInput.readOnly = false;
+        kakaoInput.style.opacity = '1';
+        kakaoInput.style.cursor = 'text';
+        kakaoInput.title = '카카오톡 단톡방 닉네임 입력';
+      }
+      if (rndBtn) rndBtn.style.display = '';
+    } else {
+      if (badge) {
+        badge.className = 'nick-cooldown-badge locked';
+        badge.innerHTML = `🔒 변경 쿨타임 (${cd.remainText} 남음)`;
+      }
+      if (alertBox) {
+        alertBox.style.display = 'block';
+        alertBox.innerHTML = `
+          <strong>⏳ 닉네임 변경 쿨타임 안내 (1주일에 1회 제한)</strong><br>
+          무분별한 닉네임 변경 방지를 위해 변경 후 7일 동안 수정이 제한됩니다.<br>
+          • 다음 변경 가능 일시: <strong>${cd.dateText}</strong> (약 <strong>${cd.remainText}</strong> 뒤 해금)<br>
+          <span style="font-size: 0.74rem; opacity: 0.9;">※ 아바타 및 플레이 스타일은 쿨타임 없이 언제든 자유롭게 변경할 수 있습니다.</span>
+        `;
+      }
+      if (nameInput) {
+        nameInput.readOnly = true;
+        nameInput.style.opacity = '0.7';
+        nameInput.style.cursor = 'not-allowed';
+        nameInput.title = `1주일에 1회만 변경 가능합니다. (다음 가능: ${cd.dateText})`;
+      }
+      if (kakaoInput) {
+        kakaoInput.readOnly = true;
+        kakaoInput.style.opacity = '0.7';
+        kakaoInput.style.cursor = 'not-allowed';
+        kakaoInput.title = `1주일에 1회만 변경 가능합니다. (다음 가능: ${cd.dateText})`;
+      }
+      if (rndBtn) rndBtn.style.display = 'none';
     }
 
     this.updateModalSelections();
@@ -450,6 +550,11 @@ var characterManager = window.characterManager = {
   },
 
   setName(name) {
+    const cd = this.getCooldownInfo();
+    if (!cd.canChange && localStorage.getItem('studypoker_char_created')) {
+      this.showToast(`🔒 닉네임 변경 쿨타임 중입니다. (${cd.remainText} 후 변경 가능)`);
+      return;
+    }
     const nameInput = document.getElementById('char-name-input');
     if (nameInput) {
       nameInput.value = name;
@@ -458,6 +563,11 @@ var characterManager = window.characterManager = {
   },
 
   randomizeName() {
+    const cd = this.getCooldownInfo();
+    if (!cd.canChange && localStorage.getItem('studypoker_char_created')) {
+      this.showToast(`🔒 닉네임 변경 쿨타임 중입니다. (${cd.remainText} 후 변경 가능)`);
+      return;
+    }
     const names = [
       '강남샤크', 'GTO마법사', '체크레이즈달인', '리버원샷', '필아이비후계자',
       '폴푸아수제자', '마카오크러셔', '넛츠빌런', '블라인드도둑', '팟스틸러',
@@ -542,12 +652,62 @@ var characterManager = window.characterManager = {
   },
 
   saveCharacter() {
-    const nameInput = document.getElementById('char-name-input');
-    const newName = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : '포커신동';
-
     const isFirstTime = !localStorage.getItem('studypoker_char_created');
+    const oldName = (app.userState.name || '').trim();
+    const oldKakao = (app.userState.kakao_name || '').trim();
 
-    app.userState.name = newName;
+    const nameInput = document.getElementById('char-name-input');
+    const kakaoInput = document.getElementById('char-kakao-input');
+    const newName = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : (oldName || '포커신동');
+    const newKakao = (kakaoInput && kakaoInput.value.trim()) ? kakaoInput.value.trim() : oldKakao;
+
+    const nameChanged = (newName !== oldName);
+    const kakaoChanged = (newKakao !== oldKakao);
+    const anyNickChanged = (nameChanged || kakaoChanged);
+
+    if (!isFirstTime && anyNickChanged) {
+      const cd = this.getCooldownInfo();
+      if (!cd.canChange) {
+        this.showToast(`⚠️ 닉네임 수정 불가: 일주일에 1회만 변경할 수 있습니다.<br>(다음 가능: <strong>${cd.dateText}</strong>, 약 <strong>${cd.remainText}</strong> 남음)`);
+        if (nameInput) nameInput.value = oldName;
+        if (kakaoInput) kakaoInput.value = oldKakao;
+        // Still allow avatar and playstyle update below without changing nicknames
+      } else {
+        // Cooldown passed: Update both nicknames!
+        app.userState.name = newName;
+        app.userState.kakao_name = newKakao;
+        const nowIso = new Date().toISOString();
+        app.userState.last_nickname_changed_at = nowIso;
+        localStorage.setItem('studypoker_nick_changed_at', nowIso);
+
+        // Update auth session cache if logged in
+        try {
+          const auth = JSON.parse(localStorage.getItem('studypoker_auth') || '{}');
+          if (auth && auth.id) {
+            auth.game_nickname = newName;
+            auth.kakao_nickname = newKakao;
+            localStorage.setItem('studypoker_auth', JSON.stringify(auth));
+          }
+        } catch (e) {}
+
+        // Update ranking memory cache if loaded
+        if (window.rankingManager && rankingManager.cloudPlayers) {
+          const authUser = (window.authManager && authManager.getAuthUser()) ? authManager.getAuthUser() : null;
+          const myEntry = rankingManager.cloudPlayers.find(p => (authUser && p.id === authUser.id) || p.game_nickname === oldName);
+          if (myEntry) {
+            myEntry.game_nickname = newName;
+            myEntry.kakao_nickname = newKakao;
+          }
+        }
+      }
+    } else if (isFirstTime) {
+      app.userState.name = newName;
+      app.userState.kakao_name = newKakao;
+      const nowIso = new Date().toISOString();
+      app.userState.last_nickname_changed_at = nowIso;
+      localStorage.setItem('studypoker_nick_changed_at', nowIso);
+    }
+
     app.userState.avatar = this.selectedAvatar;
     app.userState.playstyle = this.selectedStyle;
 
@@ -566,10 +726,24 @@ var characterManager = window.characterManager = {
     app.updateUserBar();
     this.renderHeader();
     this.renderDashboard();
+    if (window.rankingManager && rankingManager.render) rankingManager.render();
+    if (window.settingsManager && settingsManager.render) settingsManager.render();
+    if (window.authManager && authManager.renderAuthButton) authManager.renderAuthButton();
     this.closeModal();
 
     if (window.app && app.playAudioEffect) app.playAudioEffect('correct');
-    this.showToast(`🎉 <strong>[${newName}]</strong> 님, 환영합니다! 0 XP에서 시작하여 Lv.1 피쉬 탈출 퀘스트를 완수해보세요!`);
+    if (isFirstTime) {
+      this.showToast(`🎉 <strong>[${newName}]</strong> 님, 환영합니다! 0 XP에서 시작하여 Lv.1 피쉬 탈출 퀘스트를 완수해보세요!`);
+    } else if (anyNickChanged) {
+      this.showToast(`✨ 닉네임이 성공적으로 변경되었습니다! (다음 변경은 7일 후부터 가능합니다)`);
+    } else {
+      this.showToast(`✨ 캐릭터 설정(아바타/스타일)이 성공적으로 저장되었습니다.`);
+    }
+
+    // Trigger cloud sync if auth exists
+    if (window.authManager && authManager.syncToCloud) {
+      authManager.syncToCloud(true);
+    }
   },
 
   renderHeader() {
@@ -4949,11 +5123,17 @@ authManager = window.authManager = {
 
         <div id="auth-profile-status" style="display: none; padding: 0.6rem; border-radius: 6px; font-size: 0.83rem; text-align: center; margin-bottom: 0.75rem;"></div>
 
-        <div style="display: flex; gap: 0.75rem;">
-          <button onclick="authManager.forcePushToCloud()" class="btn-primary" style="flex: 1; padding: 0.75rem; font-size: 0.9rem; font-weight: 800; border-radius: 8px;">
-            🔄 지금 즉시 클라우드 백업
+        <div style="display: flex; gap: 0.6rem; margin-bottom: 0.6rem;">
+          <button onclick="authManager.closeModal(); characterManager.openModal();" class="btn-primary" style="flex: 1; padding: 0.7rem; font-size: 0.88rem; font-weight: 800; border-radius: 8px;">
+            ✏️ 게임 & 단톡방 닉네임 변경 (주 1회)
           </button>
-          <button onclick="authManager.handleSignOut()" class="btn-secondary" style="flex: 1; padding: 0.75rem; font-size: 0.9rem; font-weight: 800; border-radius: 8px; border-color: #ef444455; color: #f87171;">
+        </div>
+
+        <div style="display: flex; gap: 0.75rem;">
+          <button onclick="authManager.forcePushToCloud()" class="btn-secondary" style="flex: 1; padding: 0.75rem; font-size: 0.85rem; font-weight: 800; border-radius: 8px;">
+            🔄 즉시 클라우드 백업
+          </button>
+          <button onclick="authManager.handleSignOut()" class="btn-secondary" style="flex: 1; padding: 0.75rem; font-size: 0.85rem; font-weight: 800; border-radius: 8px; border-color: #ef444455; color: #f87171;">
             🚪 로그아웃
           </button>
         </div>
@@ -5159,6 +5339,7 @@ const settingsManager = window.settingsManager = {
     const lvlInfo = app.getLevelInfo(u.xp || 0);
     const rankInfo = (window.rankingManager && rankingManager.getUserRank) ? rankingManager.getUserRank() : { rank: 1, total: 1 };
     const isDark = document.body.classList.contains('dark-theme') || (window.themeManager && themeManager.currentTheme === 'dark');
+    const cd = (window.characterManager && characterManager.getCooldownInfo) ? characterManager.getCooldownInfo() : { canChange: true };
 
     body.innerHTML = `
       <div style="display: flex; flex-direction: column; gap: 1.15rem;">
@@ -5174,7 +5355,7 @@ const settingsManager = window.settingsManager = {
                 <span style="font-size: 0.72rem; background: #3b82f6; color: #fff; padding: 1px 6px; border-radius: 10px; font-weight: 700;">${lvlInfo.title}</span>
               </div>
               <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 2px;">
-                ${u.kakao_name ? `💬 카톡: ${u.kakao_name}` : '💬 카톡 미연동'} • 🏆 랭킹 #${rankInfo.rank}위 (${rankInfo.total}명 중)
+                ${u.kakao_name ? `💬 단톡방: ${u.kakao_name}` : '💬 단톡방 미연동'} • 🏆 랭킹 #${rankInfo.rank}위 (${rankInfo.total}명 중)
               </div>
             </div>
           </div>
@@ -5185,23 +5366,32 @@ const settingsManager = window.settingsManager = {
 
         <!-- 1. 계정 및 로그인 관리 -->
         <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.15rem;">
-          <div style="display: flex; align-items: gap: 0.45rem; font-size: 0.95rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.85rem;">
-            <span>👤</span> 내 계정 및 로그인
+          <div style="display: flex; align-items: center; gap: 0.45rem; font-size: 0.95rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.85rem;">
+            <span>👤</span> 내 계정 및 닉네임 관리
           </div>
           <div style="display: flex; flex-direction: column; gap: 0.6rem;">
             <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; padding: 0.4rem 0; border-bottom: 1px solid var(--border-color);">
-              <span style="color: var(--text-muted);">로그인 계정</span>
-              <span style="font-weight: 700; color: var(--text-main);">${auth ? auth.email || auth.game_nickname : '로그인됨'}</span>
+              <span style="color: var(--text-muted);">게임 닉네임 (캐릭터명)</span>
+              <span style="font-weight: 700; color: var(--text-main);">${u.name || '포커신동'}</span>
             </div>
             <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; padding: 0.4rem 0; border-bottom: 1px solid var(--border-color);">
               <span style="color: var(--text-muted);">카카오톡 단톡방 닉네임</span>
-              <span style="font-weight: 700; color: #fbbf24;">${(auth && auth.kakao_nickname) || u.kakao_name || '미등록'}</span>
+              <span style="font-weight: 700; color: #fbbf24;">${u.kakao_name || (auth && auth.kakao_nickname) || '미등록'}</span>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.82rem; padding: 0.4rem 0; border-bottom: 1px solid var(--border-color);">
+              <span style="color: var(--text-muted);">닉네임 변경 가능 여부</span>
+              <span style="font-weight: 700; color: ${cd.canChange ? '#10b981' : '#b45309'};">
+                ${cd.canChange ? '🟢 지금 변경 가능 (주 1회)' : `🔒 쿨타임 (${cd.remainText} 남음)`}
+              </span>
             </div>
             <div style="display: flex; gap: 0.5rem; margin-top: 0.4rem; flex-wrap: wrap;">
-              <button onclick="settingsManager.closeModal(); authManager.openModal('profile');" class="btn-secondary" style="flex: 1; padding: 0.5rem; font-size: 0.82rem; font-weight: 700;">
-                🔑 비밀번호/카톡 변경
+              <button onclick="settingsManager.closeModal(); characterManager.openModal();" class="btn-primary" style="flex: 1; padding: 0.5rem; font-size: 0.82rem; font-weight: 700;">
+                ✏️ 닉네임 / 프로필 변경
               </button>
-              <button onclick="authManager.logout()" style="flex: 1; padding: 0.5rem; font-size: 0.82rem; font-weight: 700; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.4); color: #ef4444; border-radius: 8px; cursor: pointer;">
+              <button onclick="settingsManager.closeModal(); authManager.openModal('profile');" class="btn-secondary" style="padding: 0.5rem 0.85rem; font-size: 0.82rem; font-weight: 700;">
+                🔑 계정/비번
+              </button>
+              <button onclick="authManager.logout()" style="padding: 0.5rem 0.85rem; font-size: 0.82rem; font-weight: 700; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.4); color: #ef4444; border-radius: 8px; cursor: pointer;">
                 🚪 로그아웃
               </button>
             </div>
