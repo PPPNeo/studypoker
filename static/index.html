@@ -2479,6 +2479,191 @@ body.theme-light .article-card.locked {
   }
 }
 
+/* 🏆 Leaderboard & Ranking System Styles */
+.podium-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.podium-card:hover {
+  transform: translateY(-4px);
+}
+.podium-rank-1 {
+  border: 2px solid #f59e0b;
+  background: linear-gradient(180deg, rgba(245, 158, 11, 0.15), var(--bg-card));
+  box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.25);
+}
+.podium-rank-2 {
+  border: 1.5px solid #94a3b8;
+  background: linear-gradient(180deg, rgba(148, 163, 184, 0.12), var(--bg-card));
+}
+.podium-rank-3 {
+  border: 1.5px solid #b45309;
+  background: linear-gradient(180deg, rgba(180, 83, 9, 0.12), var(--bg-card));
+}
+.podium-crown {
+  font-size: 1.8rem;
+  margin-bottom: -0.4rem;
+}
+.podium-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--bg-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.ranking-row-me {
+  background: rgba(59, 130, 246, 0.12) !important;
+  font-weight: 700;
+  border-left: 3px solid #3b82f6 !important;
+}
+.ranking-table tr:hover {
+  background: var(--bg-card-hover);
+}
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.rank-badge-0 { background: rgba(100, 116, 139, 0.2); color: #94a3b8; border: 1px solid rgba(100, 116, 139, 0.3); }
+.rank-badge-1 { background: rgba(5, 150, 105, 0.2); color: #34d399; border: 1px solid rgba(5, 150, 105, 0.35); }
+.rank-badge-2 { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.35); }
+.rank-badge-3 { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.35); }
+.rank-badge-4 { background: rgba(139, 92, 246, 0.2); color: #a78bfa; border: 1px solid rgba(139, 92, 246, 0.35); }
+.rank-badge-5 { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); }
+.rank-badge-6 { background: linear-gradient(135deg, rgba(245, 158, 11, 0.35), rgba(239, 68, 68, 0.35)); color: #fef08a; border: 1px solid #f59e0b; box-shadow: 0 0 10px rgba(245, 158, 11, 0.4); }
+
+/* 📜 Quest & Promotion Styles */
+.quest-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 1rem 1.15rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  transition: all 0.2s ease;
+}
+.quest-card.completed {
+  border-color: #059669;
+  background: rgba(5, 150, 105, 0.08);
+}
+.quest-info-group {
+  flex: 1;
+  min-width: 200px;
+}
+.quest-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  margin-bottom: 0.35rem;
+}
+.quest-progress-track {
+  width: 100%;
+  height: 8px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 0.4rem;
+}
+.quest-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #38bdf8);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+.quest-card.completed .quest-progress-fill {
+  background: linear-gradient(90deg, #059669, #34d399);
+}
+
+.promotion-step-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.promo-step-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.85rem;
+  text-align: center;
+  position: relative;
+  transition: all 0.2s ease;
+}
+.promo-step-card.unlocked {
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.06);
+}
+.promo-step-card.active-target {
+  border-color: #f59e0b;
+  background: rgba(245, 158, 11, 0.12);
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.3);
+}
+
+/* Exam Interactive UI */
+.exam-option-btn {
+  width: 100%;
+  text-align: left;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.9rem 1.15rem;
+  color: var(--text-main);
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+}
+.exam-option-btn:hover:not(:disabled) {
+  border-color: #38bdf8;
+  background: var(--bg-card-hover);
+  transform: translateX(4px);
+}
+.exam-option-btn.correct {
+  border-color: #10b981 !important;
+  background: rgba(16, 185, 129, 0.2) !important;
+  color: #34d399 !important;
+}
+.exam-option-btn.wrong {
+  border-color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.2) !important;
+  color: #f87171 !important;
+}
+
+@keyframes pulseGlow {
+  0% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.4)); }
+  50% { transform: scale(1.08); filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.8)); }
+  100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.4)); }
+}
+
 </style>
 </head>
 <body class="theme-light">
@@ -2509,6 +2694,9 @@ body.theme-light .article-card.locked {
         </button>
         <button class="nav-btn" data-target="glossary" onclick="app.navigate('glossary')">
           <span>📖</span> 용어 사전
+        </button>
+        <button class="nav-btn" data-target="ranking" onclick="app.navigate('ranking')">
+          <span>🏆</span> 랭킹보드
         </button>
       </nav>
 
@@ -2569,6 +2757,9 @@ body.theme-light .article-card.locked {
                   <span class="char-tier-badge" id="dash-char-tier">Lv.1 동네 피쉬 탈출기 🐟</span>
                 </div>
                 <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                  <button class="btn-character-quest" onclick="questManager.openModal()" title="레벨업 퀘스트 및 6구간 전직 현황 확인" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.25)); border: 1.5px solid #f59e0b; color: #fbbf24; padding: 0.45rem 0.9rem; border-radius: 8px; font-size: 0.82rem; font-weight: 800; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 0.35rem;">
+                    <span>📜</span> 퀘스트 정보
+                  </button>
                   <button class="btn-character-stats" id="btn-toggle-stats" onclick="characterManager.toggleStats()" title="4대 핵심 능력치 접기/펼치기">
                     <span>📊</span> 4대 능력치 <span id="stats-toggle-arrow">▼</span>
                   </button>
@@ -2593,6 +2784,20 @@ body.theme-light .article-card.locked {
                 <div class="char-progress-track">
                   <div class="char-progress-fill" id="dash-xp-fill" style="width: 0%;"></div>
                 </div>
+              </div>
+
+              <!-- Promotion Exam Alert Banner (Shown dynamically when promotion condition met) -->
+              <div id="promotion-alert-banner" style="display: none; margin-top: 0.85rem; background: linear-gradient(90deg, rgba(245, 158, 11, 0.2), rgba(234, 88, 12, 0.25)); border: 1.5px solid #f59e0b; border-radius: 10px; padding: 0.85rem 1.1rem; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 0.65rem;">
+                  <span style="font-size: 1.6rem; animation: pulseGlow 1.5s infinite ease-in-out;">⚡</span>
+                  <div>
+                    <div id="promo-banner-title" style="font-size: 0.95rem; font-weight: 800; color: #fbbf24;">1차 전직 심사 시험 자격 획득!</div>
+                    <div id="promo-banner-desc" style="font-size: 0.8rem; color: var(--text-main);">심사 테스트(5문항)를 통과하면 전직 칭호와 대량의 특전 보너스를 획득합니다!</div>
+                  </div>
+                </div>
+                <button onclick="promotionManager.openExamModal()" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; border: none; padding: 0.55rem 1.2rem; border-radius: 8px; font-weight: 800; font-size: 0.85rem; cursor: pointer; white-space: nowrap; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);">
+                  📝 심사 시험 응시하기 ➔
+                </button>
               </div>
             </div>
           </div>
@@ -2992,6 +3197,56 @@ body.theme-light .article-card.locked {
       <div class="articles-grid" id="glossary-grid-container"></div>
     </section>
 
+    <!-- 7. Global Leaderboard & Ranking View -->
+    <section id="view-ranking" class="view-section">
+      <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-size: 1.6rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem;">
+            <span>🏆</span> GTO 포커 플레이어 실시간 랭킹보드
+          </h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.25rem;">
+            레벨(Lv.1~100) 및 누적 경험치(XP) 기준 전체 순위 • 실시간 반영
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; background: var(--bg-card); padding: 0.3rem; border-radius: 10px; border: 1px solid var(--border-color);">
+          <button class="filter-pill active" id="rank-filter-all" onclick="rankingManager.setFilter('all')">전체 랭킹</button>
+          <button class="filter-pill" id="rank-filter-top10" onclick="rankingManager.setFilter('top10')">TOP 10</button>
+          <button class="filter-pill" id="rank-filter-near" onclick="rankingManager.setFilter('near')">내 순위 주변</button>
+        </div>
+      </div>
+
+      <!-- My Rank Highlight Card -->
+      <div id="my-ranking-summary-card" style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95)); border: 1.5px solid #3b82f6; border-radius: 14px; padding: 1.25rem 1.5rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.2);">
+        <!-- Injected dynamically by rankingManager -->
+      </div>
+
+      <!-- TOP 3 Podium Showcase -->
+      <div class="podium-container" id="ranking-podium-showcase" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-bottom: 2rem;">
+        <!-- Injected dynamically by rankingManager -->
+      </div>
+
+      <!-- Full Ranking Table -->
+      <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow-poker);">
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.92rem;">
+            <thead>
+              <tr style="background: var(--bg-surface); border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                <th style="padding: 1rem 1.25rem; width: 80px; text-align: center;">순위</th>
+                <th style="padding: 1rem 1.25rem;">플레이어</th>
+                <th style="padding: 1rem 1.25rem;">전직 칭호</th>
+                <th style="padding: 1rem 1.25rem; text-align: center;">레벨</th>
+                <th style="padding: 1rem 1.25rem; text-align: right;">누적 경험치 (XP)</th>
+                <th style="padding: 1rem 1.25rem; text-align: center;">학습 성과</th>
+              </tr>
+            </thead>
+            <tbody id="ranking-table-body">
+              <!-- Injected dynamically by rankingManager -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <!-- Mobile Bottom Navigation Bar (App-Style Dock) -->
@@ -3015,6 +3270,10 @@ body.theme-light .article-card.locked {
     <button class="mobile-nav-btn" data-target="glossary" onclick="app.navigate('glossary')">
       <span class="mobile-nav-icon">📖</span>
       <span class="mobile-nav-label">용어사전</span>
+    </button>
+    <button class="mobile-nav-btn" data-target="ranking" onclick="app.navigate('ranking')">
+      <span class="mobile-nav-icon">🏆</span>
+      <span class="mobile-nav-label">랭킹</span>
     </button>
   </nav>
 
@@ -3203,6 +3462,48 @@ body.theme-light .article-card.locked {
         <button class="btn-primary" id="lock-modal-action-btn" onclick="characterManager.handleLockAction()">
           🔓 해금된 기초 아티클 보기
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 📜 Quest & Growth Guide Modal -->
+  <div class="ai-modal-overlay" id="quest-modal-overlay" style="display: none;" onclick="if(event.target === this) questManager.closeModal()">
+    <div class="char-create-modal" style="max-width: 680px; width: 95%;">
+      <div class="char-modal-header" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(30, 41, 59, 0.8));">
+        <div style="display: flex; align-items: center; gap: 0.65rem;">
+          <span style="font-size: 1.6rem;">📜</span>
+          <div>
+            <h3 style="font-size: 1.2rem; font-weight: 800; color: #fbbf24; margin: 0;">나의 레벨업 퀘스트 & 6구간 전직 현황</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">레벨 1부터 100까지! 단계별 미션을 수행하고 전직 심사에 도전하세요.</p>
+          </div>
+        </div>
+        <button onclick="questManager.closeModal()" style="background: none; border: none; color: #94a3b8; font-size: 1.3rem; cursor: pointer;">✕</button>
+      </div>
+      <div class="char-modal-body" id="quest-modal-body" style="padding: 1.5rem; max-height: 75vh; overflow-y: auto;">
+        <!-- Injected dynamically by questManager -->
+      </div>
+      <div class="char-modal-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+        <span style="font-size: 0.8rem; color: var(--text-dim);">💡 아티클 정독과 퀴즈 풀이로 실력을 증명하세요.</span>
+        <button class="btn-primary" onclick="questManager.closeModal()">확인</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⚡ Promotion Test / Exam Modal -->
+  <div class="ai-modal-overlay" id="promotion-modal-overlay" style="display: none;" onclick="if(event.target === this) promotionManager.closeModal()">
+    <div class="char-create-modal" style="max-width: 680px; width: 95%;">
+      <div class="char-modal-header" style="background: linear-gradient(135deg, rgba(234, 88, 12, 0.2), rgba(245, 158, 11, 0.25)); border-bottom-color: rgba(245, 158, 11, 0.4);">
+        <div style="display: flex; align-items: center; gap: 0.65rem;">
+          <span style="font-size: 1.6rem; animation: pulseGlow 1.5s infinite ease-in-out;">⚡</span>
+          <div>
+            <h3 id="promo-modal-title" style="font-size: 1.2rem; font-weight: 800; color: #fbbf24; margin: 0;">1차 전직 심사 시험</h3>
+            <p id="promo-modal-subtitle" style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">실전 포커 스팟 테스트 5문항 중 4문항 이상 정답 시 승급 통과</p>
+          </div>
+        </div>
+        <button onclick="promotionManager.closeModal()" style="background: none; border: none; color: #94a3b8; font-size: 1.3rem; cursor: pointer;">✕</button>
+      </div>
+      <div class="char-modal-body" id="promo-modal-body" style="padding: 1.5rem; max-height: 75vh; overflow-y: auto;">
+        <!-- Injected dynamically by promotionManager -->
       </div>
     </div>
   </div>
@@ -19442,7 +19743,9 @@ const storage = {
         stats: { theory: 0, decision: 0, ranges: 0, mental: 0 },
         completed_articles: [],
         completed_quizzes: [],
-        explored_ranges: []
+        explored_ranges: [],
+        promotions_passed: [],
+        ai_queries_count: 0
       };
       this.save(resetState);
       setTimeout(() => {
@@ -19464,6 +19767,8 @@ const storage = {
         if (!parsed.completed_articles) parsed.completed_articles = [];
         if (!parsed.completed_quizzes) parsed.completed_quizzes = [];
         if (!parsed.explored_ranges) parsed.explored_ranges = [];
+        if (!parsed.promotions_passed) parsed.promotions_passed = [];
+        if (parsed.ai_queries_count === undefined) parsed.ai_queries_count = 0;
         return parsed;
       } catch(e) {}
     }
@@ -19482,7 +19787,9 @@ const storage = {
       },
       completed_articles: [],
       completed_quizzes: [],
-      explored_ranges: []
+      explored_ranges: [],
+      promotions_passed: [],
+      ai_queries_count: 0
     };
   },
   save(state) {
@@ -19490,16 +19797,129 @@ const storage = {
   }
 };
 
-
-// 6-Tier RPG Level System (Deep Long-Term Mastery Curve)
-const LEVEL_TIERS = [
-  { level: 1, title: "Lv.1 동네 피쉬 탈출기 🐟", badge: "🐣 피쉬 탈출", minXp: 0, maxXp: 600, tierName: "동네 피쉬" },
-  { level: 2, title: "Lv.2 홀덤펍 로컬 레귤러 ⚔️", badge: "⚔️ 펍 레귤러", minXp: 600, maxXp: 2000, tierName: "로컬 레귤러" },
-  { level: 3, title: "Lv.3 마이크로 그라인더 🔥", badge: "🔥 온라인 그라인더", minXp: 2000, maxXp: 5000, tierName: "마이크로 그라인더" },
-  { level: 4, title: "Lv.4 온라인 세미프로 🦊", badge: "🦊 세미프로", minXp: 5000, maxXp: 10000, tierName: "온라인 세미프로" },
-  { level: 5, title: "Lv.5 하이롤러 토너 크러셔 🦁", badge: "🦁 하이롤러", minXp: 10000, maxXp: 18000, tierName: "토너 크러셔" },
-  { level: 6, title: "Lv.6 WSOP 챔피언 👑", badge: "👑 WSOP 챔피언", minXp: 18000, maxXp: 99999, tierName: "세계 챔피언" }
+// 🌟 6개 전직 구간 시스템 (Lv.1 ~ Lv.100)
+const PROMOTION_TIERS = [
+  {
+    tier: 0,
+    targetLevel: 0,
+    name: "동네 피쉬",
+    title: "동네 피쉬 🐟",
+    badge: "🐣 동네 피쉬",
+    icon: "🐟",
+    desc: "기본 족보와 팟오즈를 배우는 포커 입문 단계",
+    color: "#94a3b8",
+    badgeClass: "rank-badge-0",
+    reqArticles: 3,
+    reqQuizzes: 3,
+    bonusXP: 0
+  },
+  {
+    tier: 1,
+    targetLevel: 10,
+    name: "홀덤펍 레귤러",
+    title: "홀덤펍 레귤러 ⚔️",
+    badge: "⚔️ 펍 레귤러",
+    icon: "⚔️",
+    desc: "포지션과 프리플랍 레인지의 힘을 깨달은 로컬 강자",
+    examTitle: "1차 전직 심사: 프리플랍 포지션 & 팟오즈 기초",
+    color: "#34d399",
+    badgeClass: "rank-badge-1",
+    reqArticles: 8,
+    reqQuizzes: 8,
+    bonusXP: 500
+  },
+  {
+    tier: 2,
+    targetLevel: 25,
+    name: "마이크로 그라인더",
+    title: "마이크로 그라인더 ⚙️",
+    badge: "⚙️ 마이크로 그라인더",
+    icon: "⚙️",
+    desc: "플랍 텍스처와 C-bet 빈도를 솔버 기반으로 다루는 그라인더",
+    examTitle: "2차 전직 심사: 플랍 C-bet & 보드 텍스처 분석",
+    color: "#60a5fa",
+    badgeClass: "rank-badge-2",
+    reqArticles: 20,
+    reqQuizzes: 15,
+    bonusXP: 1000
+  },
+  {
+    tier: 3,
+    targetLevel: 45,
+    name: "로우스테이크 크러셔",
+    title: "로우스테이크 크러셔 🔥",
+    badge: "🔥 로우스테이크 크러셔",
+    icon: "🔥",
+    desc: "턴 더블배럴과 MDF 방어선으로 상대를 압살하는 크러셔",
+    examTitle: "3차 전직 심사: 턴 배럴링 & MDF 수학 공식",
+    color: "#f87171",
+    badgeClass: "rank-badge-3",
+    reqArticles: 45,
+    reqQuizzes: 20,
+    bonusXP: 1500
+  },
+  {
+    tier: 4,
+    targetLevel: 65,
+    name: "미드스테이크 프로",
+    title: "미드스테이크 프로 🦊",
+    badge: "🦊 미드스테이크 프로",
+    icon: "🦊",
+    desc: "블로커/언블로커 콤보와 리버 블러프 캐칭의 고수",
+    examTitle: "4차 전직 심사: 블로커 콤보 & 리버 블러프 캐치",
+    color: "#a78bfa",
+    badgeClass: "rank-badge-4",
+    reqArticles: 75,
+    reqQuizzes: 25,
+    bonusXP: 2000
+  },
+  {
+    tier: 5,
+    targetLevel: 85,
+    name: "하이롤러 위저드",
+    title: "하이롤러 위저드 🦁",
+    badge: "🦁 하이롤러 위저드",
+    icon: "🦁",
+    desc: "지오메트릭 사이징과 폴라라이즈드 레인지를 자유자재로 구사",
+    examTitle: "5차 전직 심사: 지오메트릭 사이징 & 믹스드 솔루션",
+    color: "#fbbf24",
+    badgeClass: "rank-badge-5",
+    reqArticles: 110,
+    reqQuizzes: 25,
+    bonusXP: 3000
+  },
+  {
+    tier: 6,
+    targetLevel: 100,
+    name: "WSOP 레전드 챔피언",
+    title: "WSOP 레전드 챔피언 👑",
+    badge: "👑 WSOP 레전드 챔피언",
+    icon: "👑",
+    desc: "ICM 토너먼트의 극한과 헤즈업 GTO를 완성한 불멸의 챔피언",
+    examTitle: "최종 6차 승급 심사: 극강의 ICM 토너먼트 & WSOP 파이널",
+    color: "#fef08a",
+    badgeClass: "rank-badge-6",
+    reqArticles: 150,
+    reqQuizzes: 25,
+    bonusXP: 5000
+  }
 ];
+
+// 1~100 레벨 경험치 공식 (Lv.1: 0 XP, Lv.10: 2,308 XP, Lv.25: 9,600 XP, Lv.45: 23,800 XP, Lv.65: 42,600 XP, Lv.85: 65,500 XP, Lv.100: 85,200 XP)
+function getLevelThreshold(lvl) {
+  if (lvl <= 1) return 0;
+  return Math.floor(68 * Math.pow(lvl, 1.55));
+}
+
+// 레거시 호환용 LEVEL_TIERS 매핑
+const LEVEL_TIERS = PROMOTION_TIERS.map(pt => ({
+  level: pt.tier === 0 ? 1 : pt.targetLevel,
+  title: pt.title,
+  badge: pt.badge,
+  minXp: getLevelThreshold(pt.tier === 0 ? 1 : pt.targetLevel),
+  maxXp: getLevelThreshold(pt.tier === 6 ? 100 : PROMOTION_TIERS[pt.tier + 1].targetLevel),
+  tierName: pt.name
+}));
 
 const PLAYSTYLES = {
   TAG: { title: "⚡ TAG (타이트 어그레시브)", tag: "TAG", bio: "엄선된 프리미엄 핸드로 강력하게 주도권을 잡는 정석적인 승리 공식" },
@@ -19808,6 +20228,21 @@ const characterManager = {
     this.updateStatCard('decision', stats.decision);
     this.updateStatCard('ranges', stats.ranges);
     this.updateStatCard('mental', stats.mental);
+
+    // Promotion Alert Banner Update
+    const promoBanner = document.getElementById('promotion-alert-banner');
+    if (promoBanner) {
+      if (lvlInfo.needsExam) {
+        promoBanner.style.display = 'flex';
+        const pTitle = document.getElementById('promo-banner-title');
+        const pDesc = document.getElementById('promo-banner-desc');
+        const tier = PROMOTION_TIERS[lvlInfo.needsExam];
+        if (pTitle) pTitle.innerText = `⚡ ${tier.examTitle} 응시 가능!`;
+        if (pDesc) pDesc.innerText = `Lv.${tier.targetLevel} 달성! 5문제 중 4문제 이상 정답 시 [${tier.name}] 칭호 및 +${tier.bonusXP} XP 획득!`;
+      } else {
+        promoBanner.style.display = 'none';
+      }
+    }
   },
 
   updateStatCard(statKey, score) {
@@ -19914,26 +20349,80 @@ const app = {
       roadmap.load();
     } else if (viewId === 'glossary') {
       glossary.load();
+    } else if (viewId === 'ranking') {
+      if (window.rankingManager && rankingManager.render) {
+        rankingManager.render();
+      }
     }
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   },
 
   getLevelInfo(xp) {
-    for (let i = LEVEL_TIERS.length - 1; i >= 0; i--) {
-      if (xp >= LEVEL_TIERS[i].minXp) {
-        const cur = LEVEL_TIERS[i];
-        const curXpInLevel = xp - cur.minXp;
-        const neededForNext = cur.maxXp - cur.minXp;
-        const pct = Math.min(100, Math.round((curXpInLevel / neededForNext) * 100));
-        return {
-          ...cur,
-          progressPct: pct,
-          remainingXp: Math.max(0, cur.maxXp - xp)
-        };
+    const passed = (this.userState && this.userState.promotions_passed) || [];
+    
+    // 1~100 레벨 계산
+    let rawLevel = 1;
+    for (let l = 1; l <= 100; l++) {
+      if (xp >= getLevelThreshold(l)) {
+        rawLevel = l;
+      } else {
+        break;
       }
     }
-    return { level: 1, title: "Lv.1 동네 피쉬 탈출기 🐟", badge: "🐣 피쉬 탈출", minXp: 0, maxXp: 600, progressPct: 0, remainingXp: 600, tierName: "동네 피쉬" };
+
+    // 6구간 전직 게이트웨이 체크 (Lv.10, Lv.25, Lv.45, Lv.65, Lv.85, Lv.100)
+    let effectiveLevel = rawLevel;
+    let needsExam = null;
+
+    const gateways = [
+      { tier: 1, reqLevel: 10 },
+      { tier: 2, reqLevel: 25 },
+      { tier: 3, reqLevel: 45 },
+      { tier: 4, reqLevel: 65 },
+      { tier: 5, reqLevel: 85 },
+      { tier: 6, reqLevel: 100 }
+    ];
+
+    for (const g of gateways) {
+      if (rawLevel >= g.reqLevel && !passed.includes(g.tier)) {
+        effectiveLevel = g.reqLevel;
+        needsExam = g.tier;
+        break;
+      }
+    }
+
+    // 현재 유저의 최고 전직 티어 결정
+    let currentTierNum = 0;
+    for (let t = 6; t >= 1; t--) {
+      if (passed.includes(t)) {
+        currentTierNum = t;
+        break;
+      }
+    }
+    const currentTier = PROMOTION_TIERS[currentTierNum];
+
+    // 현재 레벨 내 XP 진행도 계산
+    const curLvlMinXp = getLevelThreshold(effectiveLevel);
+    const nextLvlXp = (effectiveLevel >= 100) ? curLvlMinXp : getLevelThreshold(effectiveLevel + 1);
+    const curXpInLevel = Math.max(0, xp - curLvlMinXp);
+    const neededForNext = Math.max(1, nextLvlXp - curLvlMinXp);
+    const progressPct = (effectiveLevel >= 100) ? 100 : Math.min(100, Math.round((curXpInLevel / neededForNext) * 100));
+
+    return {
+      level: effectiveLevel,
+      rawLevel: rawLevel,
+      tier: currentTier,
+      tierNum: currentTierNum,
+      title: `Lv.${effectiveLevel} ${currentTier.title}`,
+      badge: currentTier.badge,
+      minXp: curLvlMinXp,
+      maxXp: nextLvlXp,
+      progressPct: progressPct,
+      remainingXp: (effectiveLevel >= 100) ? 0 : Math.max(0, nextLvlXp - xp),
+      needsExam: needsExam,
+      passedPromotions: passed
+    };
   },
 
   updateUserBar() {
@@ -19983,8 +20472,12 @@ const app = {
     }
 
     const newLvlInfo = this.getLevelInfo(this.userState.xp);
-    if (newLvlInfo.level > prevLvl) {
-      characterManager.showToast(`🎉 축하합니다! <strong>${newLvlInfo.title}</strong> 등급으로 승급하셨습니다!`);
+    if (newLvlInfo.needsExam && (!prevLvl || newLvlInfo.level > prevLvl)) {
+      const tier = PROMOTION_TIERS[newLvlInfo.needsExam];
+      characterManager.showToast(`⚡ 축하합니다! <strong>[${tier.examTitle}]</strong> 자격을 획득하셨습니다! 시험을 통과하고 전직하세요!`);
+      this.playAudioEffect('correct');
+    } else if (newLvlInfo.level > prevLvl) {
+      characterManager.showToast(`🎉 레벨업! <strong>Lv.${newLvlInfo.level}</strong> 달성!`);
       this.playAudioEffect('correct');
     } else {
       this.playAudioEffect('xp');
@@ -20357,15 +20850,35 @@ const reader = {
       this.readTimer = null;
     }
 
+    this.hasScrolledBottom = false;
+
+    // Attach scroll listener to check bottom reach
+    if (!this._scrollListenerAttached) {
+      this._scrollListenerAttached = true;
+      window.addEventListener('scroll', () => {
+        if (app.currentView !== 'reader' || !this.currentArticle) return;
+        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+        if (totalHeight <= 0 || (window.scrollY / totalHeight) >= 0.75) {
+          this.hasScrolledBottom = true;
+        }
+      }, { passive: true });
+    }
+
     const isCompleted = app.userState.completed_articles.includes(data.id);
     if (isCompleted) {
       this.secondsRemaining = 0;
+      this.hasScrolledBottom = true;
       this.updateCompletionUI(true, 0);
     } else {
-      this.secondsRemaining = 45;
-      this.updateCompletionUI(false, 45);
+      this.secondsRemaining = 35; // 정독 필수 35초
+      this.updateCompletionUI(false, 35);
 
       this.readTimer = setInterval(() => {
+        // 편법 방지: 화면이 비활성화(다른 탭 등)되어 있으면 타이머 일시정지
+        if (document.hidden || document.visibilityState !== 'visible') {
+          return;
+        }
+
         this.secondsRemaining--;
         if (this.secondsRemaining > 0) {
           this.updateCompletionUI(false, this.secondsRemaining);
@@ -20510,9 +21023,24 @@ const reader = {
 
   markCompleted() {
     if (!this.currentArticle) return;
-    if (this.secondsRemaining > 0 && !app.userState.completed_articles.includes(this.currentArticle.id)) {
-      characterManager.showToast(`⏱️ 아티클을 깊이 있게 정독해주세요! (${this.secondsRemaining}초 남음)`);
-      return;
+
+    // 편법 방지: 스크롤 및 체류 시간 검증
+    if (!app.userState.completed_articles.includes(this.currentArticle.id)) {
+      if (this.secondsRemaining > 0 && !this.hasScrolledBottom) {
+        characterManager.showToast(`📜 본문을 끝까지 스크롤하여 정독하고, 타이머(${this.secondsRemaining}초)를 채워주세요!`);
+        if (window.app && app.playAudioEffect) app.playAudioEffect('wrong');
+        return;
+      }
+      if (this.secondsRemaining > 0) {
+        characterManager.showToast(`⏱️ 아티클을 깊이 있게 정독해주세요! (${this.secondsRemaining}초 남음)`);
+        if (window.app && app.playAudioEffect) app.playAudioEffect('wrong');
+        return;
+      }
+      if (!this.hasScrolledBottom) {
+        characterManager.showToast(`📜 아티클 본문을 끝까지 스크롤하여 읽어주세요! (체크업 퀴즈와 결론 확인 필수)`);
+        if (window.app && app.playAudioEffect) app.playAudioEffect('wrong');
+        return;
+      }
     }
 
     if (this.readTimer) {
@@ -21245,6 +21773,9 @@ const aiCoach = {
     this.appendMessage('user', text);
     this.scrollToBottom();
 
+    app.userState.ai_queries_count = (app.userState.ai_queries_count || 0) + 1;
+    storage.save(app.userState);
+
     const loadingId = 'loading-' + Date.now();
     this.appendMessage('coach', '코치가 369개 포커 솔버 데이터를 분석 중입니다... 🧠', loadingId);
     this.scrollToBottom();
@@ -21285,6 +21816,887 @@ const aiCoach = {
 
   scrollToBottom() {
     this.messagesArea.scrollTop = this.messagesArea.scrollHeight;
+  }
+};
+
+// ==========================================
+// 📝 6개 차수 전직 심사 시험 문제 데이터베이스 (총 30문항)
+// ==========================================
+const EXAM_DATABASE = {
+  1: [ // 1차 전직: 홀덤펍 레귤러 (프리플랍 포지션 & 팟오즈)
+    {
+      question: "6-Max 캐시게임에서 장기적으로 가장 많은 수익을 창출하는 '절대적인 인포지션(IP)' 포지션은?",
+      context: "6-Max 테이블: UTG - MP - CO - BTN - SB - BB",
+      options: ["UTG (언더더건)", "MP (미들포지션)", "BTN (버튼)", "SB (스몰블라인드)"],
+      correct: 2,
+      explanation: "버튼(BTN)은 플랍, 턴, 리버의 모든 스트리트에서 가장 마지막으로 액션하므로 정보 우위를 극대화할 수 있는 최고의 자리입니다."
+    },
+    {
+      question: "현재 팟에 100칩이 있고, 상대가 50칩을 베팅했습니다. 콜(50칩)하기 위해 필요한 최소한의 승률(팟 오즈)은 얼마인가요?",
+      context: "팟: 100 | 상대 베팅: 50 | 내 콜 필요액: 50",
+      options: ["20.0%", "25.0%", "33.3%", "50.0%"],
+      correct: 1,
+      explanation: "팟 오즈 = 콜 금액 / (최종 팟 총합) = 50 / (100 + 50 + 50) = 50 / 200 = 25%입니다. 즉 4번 중 1번 이상 승리하면 본전 이상의 콜입니다."
+    },
+    {
+      question: "UTG에서 포켓 에이스(AA)를 받았습니다. 현대 GTO 전략에서 가장 권장되는 기본 오픈 액션은 무엇인가요?",
+      context: "핸드: A♠ A♦ | 포지션: UTG | 스택: 100bb",
+      options: ["상대를 속이기 위해 1bb로 림프(체크)한다.", "표준 사이즈인 2~2.5bb로 정상 오픈 레이즈한다.", "팟의 10배로 거대하게 레이즈하여 팟을 즉시 먹는다.", "프리플랍 100bb 올인을 박는다."],
+      correct: 1,
+      explanation: "솔버는 림프를 거의 사용하지 않습니다. AA와 같은 몬스터 핸드도 다른 오픈 레인지와 밸런스를 맞추어 표준 사이징(2~2.5bb)으로 오픈하여 팟을 빌딩합니다."
+    },
+    {
+      question: "앞선 루즈한 플레이어 2명이 1bb씩 림프(Limp)하고 지나갔습니다. BTN에서 강력한 핸드로 취해야 할 정석 플레이는?",
+      context: "상황: UTG 림프, MP 림프 | 내 포지션: BTN | 핸드: A♠ Q♣",
+      options: ["나도 1bb만 내고 편안하게 같이 림프한다.", "약한 림퍼들을 격리(Isolation)하기 위해 4~5bb로 레이즈한다.", "림프가 나왔으므로 안전하게 폴드한다.", "상대의 패를 보고 결정한다."],
+      correct: 1,
+      explanation: "림퍼들의 캡된 약한 레인지를 상대로 인포지션에서 주도권을 잡고 팟을 독점하기 위해 3bb + (림퍼당 1bb) = 약 5bb 수준의 아이솔레이션 레이즈가 필수입니다."
+    },
+    {
+      question: "플랍에서 넛 플러시 드로우(스페이드 4장 완성 대기)가 있습니다. 턴이나 리버에서 플러시를 완성시킬 수 있는 아웃츠(Outs)는 몇 장인가요?",
+      context: "보드: K♠ 7♠ 2♦ | 내 핸드: A♠ 5♠",
+      options: ["4장", "8장", "9장", "11장"],
+      correct: 2,
+      explanation: "한 무늬는 총 13장이며, 내 손의 2장과 플랍의 2장을 제외한 덱 속 9장의 스페이드가 플러시 아웃츠가 됩니다."
+    }
+  ],
+  2: [ // 2차 전직: 마이크로 그라인더 (플랍 C-bet & 보드 텍스처)
+    {
+      question: "A♠ 7♦ 2♣ 드라이(Dry) 보드에서 BTN 오픈 레이저가 BB를 상대로 가장 선호하는 GTO C-bet 전략은?",
+      context: "보드: A♠ 7♦ 2♣ (레인보우) | BTN 오픈 vs BB 디펜스",
+      options: ["전체 레인지로 첵백한다.", "1/3팟의 작은 사이징으로 레인지 전체(80~100%) 고빈도 C-bet을 한다.", "팟의 200% 오버벳을 감행한다.", "상대가 체크했으므로 무조건 팟사이즈 벳을 한다."],
+      correct: 1,
+      explanation: "드라이한 A-high 보드는 프리플랍 레이저(PFR)에게 압도적인 레인지 우위가 있습니다. 1/3팟 작은 베팅만으로도 상대의 수많은 에어 핸드를 효율적으로 폴드시킬 수 있습니다."
+    },
+    {
+      question: "T♠ 9♠ 8♦ 처럼 스트레이트와 플러시 드로우가 가득한 웻(Wet) 보드에서 PFR이 체크백 빈도를 높여야 하는 주된 이유는?",
+      context: "보드: T♠ 9♠ 8♦ | 프리플랍 레이저 vs BB 콜러",
+      options: ["레이크가 높아서 팟을 줄이려고", "BB의 디펜스 레인지가 보드와 강력하게 맞물려 너트 우위를 위협하기 때문에", "웻 보드에서는 블러프를 절대 칠 수 없어서", "상대가 플랍에 무조건 올인하기 때문에"],
+      correct: 1,
+      explanation: "수티드 커넥터와 미들 콤보가 많은 BB의 콜링 레인지가 웻 보드에서 스트레이트, 투페어, 강한 드로우를 대거 완성하므로, PFR은 첵백으로 팟을 컨트롤해야 합니다."
+    },
+    {
+      question: "'레인지 우위(Range Advantage)'와 '너트 우위(Nut Advantage)'의 올바른 설명은?",
+      context: "GTO 핵심 보드 분석 이론",
+      options: ["두 개념은 사실상 동일한 포커 용어이다.", "레인지 우위는 전체 에퀴티(평균 승률)의 우세이고, 너트 우위는 최상위 몬스터 핸드 콤보의 우세이다.", "너트 우위가 있으면 무조건 작은 벳만 해야 한다.", "레인지 우위는 칩 스택이 많은 사람이 가진다."],
+      correct: 1,
+      explanation: "레인지 우위는 작은 벳을 자주 칠 수 있는 근거가 되며, 너트 우위는 큰 벳이나 오버벳을 감행할 수 있는 이론적 기반이 됩니다."
+    },
+    {
+      question: "플랍 C-bet에 직면했을 때, 첵-콜(Check-Call) 라인을 타는 플레이어의 레인지는 일반적으로 어떻게 평가되나요?",
+      context: "포스트플랍 레인지 구조 분석",
+      options: ["절대적으로 무적의 너트만 있는 레인지", "몬스터 핸드가 상당수 배제된 '캡(Capped)된 미디엄 스트렝스' 레인지", "100% 아무것도 없는 순수 블러프 에어 핸드", "아무런 규칙성이 없는 랜덤 레인지"],
+      correct: 1,
+      explanation: "플랍에서 레이즈를 하지 않고 첵콜만 했다는 것은 강한 핸드(투페어, 셋)를 뺐을 확률이 높아 레인지의 상한선이 제한(Capped)되었다고 봅니다."
+    },
+    {
+      question: "BB에서 플랍 1/3 C-bet을 맞았을 때, 언더페어(예: 88 on K-7-3r)나 백도어 드로우가 있는 핸드로 올바른 대처는?",
+      context: "보드: K♦ 7♣ 3♠ | 상대 베팅: 1/3팟 | 내 핸드: 8♠ 8♥",
+      options: ["즉시 올인으로 상대를 밀어낸다.", "좋은 팟오즈(1:4)와 쇼다운 밸류를 고려해 콜로 디펜스하며 턴을 본다.", "K이 깔렸으므로 1초의 망설임도 없이 폴드한다.", "딜러에게 카드를 바꿔달라고 요청한다."],
+      correct: 1,
+      explanation: "1/3팟 베팅에는 80% 이상의 MDF 방어가 필요하며, 상대의 플랍 블러프를 이기고 있는 포켓 페어는 안정적인 콜 디펜스 핸드입니다."
+    }
+  ],
+  3: [ // 3차 전직: 로우스테이크 크러셔 (턴 배럴링 & MDF 공식)
+    {
+      question: "MDF(Minimum Defense Frequency, 최소 방어 빈도)의 올바른 수학 공식은?",
+      context: "게임 이론적 최적 방어 수식",
+      options: ["베팅 금액 / 팟 사이즈", "팟 사이즈 / (팟 사이즈 + 베팅 금액)", "베팅 금액 / (팟 사이즈 + 베팅 금액)", "(팟 사이즈 - 베팅 금액) / 팟 사이즈"],
+      correct: 1,
+      explanation: "MDF = Pot / (Pot + Bet) 입니다. 상대가 아무 카드로나 블러프를 쳐서 즉각적인 무위험 수익을 내지 못하도록 차단하는 최소 방어 빈도입니다."
+    },
+    {
+      question: "팟이 100칩인 상황에서 상대가 50칩(하프 팟)을 베팅했습니다. 이론상 내가 방어(콜 또는 레이즈)해야 하는 최소 빈도(MDF)는?",
+      context: "팟: 100 | 베팅: 50 | MDF 계산",
+      options: ["50.0%", "66.7%", "75.0%", "80.0%"],
+      correct: 1,
+      explanation: "MDF = 100 / (100 + 50) = 100 / 150 = 약 66.7%입니다. 최소 66.7%의 핸드로 방어해야 상대의 100% 빈도 블러프를 차단합니다."
+    },
+    {
+      question: "플랍 C-bet 이후, 턴에서 더블 배럴 블러프를 날리기에 가장 이상적인 스케어 카드는?",
+      context: "플랍: J♠ 8♦ 3♣ | 턴 카드 출현",
+      options: ["상대의 미들페어와 투페어를 완성시켜주는 8 무늬", "PFR의 레인지를 강력하게 강화하는 A♠ 또는 K♦", "아무 영향이 없는 블랭크 2♥", "상대방의 셋을 만드는 3♦"],
+      correct: 1,
+      explanation: "A나 K 같은 하이 오버카드는 프리플랍 레이저의 오픈 레인지에 압도적으로 많이 포함되어 있어, 상대방의 플랍 첵콜 레인지(J, 8 페어)를 강하게 얼어붙게 만듭니다."
+    },
+    {
+      question: "플랍에 첵백한 뒤 턴에서 상대가 다시 체크했을 때, 인포지션에서 베팅하는 전략을 무엇이라 부르나요?",
+      context: "포스트플랍 턴 전략 용어",
+      options: ["슬로우 플레이 (Slow Play)", "딜레이드 C-bet (Delayed C-bet)", "동크 벳 (Donk Bet)", "스퀴즈 (Squeeze)"],
+      correct: 1,
+      explanation: "플랍 첵백 후 턴에서 베팅하는 것을 Delayed C-bet이라고 하며, 상대의 패시브함을 공략하고 마지널 핸드의 밸류를 추출하는 강력한 무기입니다."
+    },
+    {
+      question: "턴 보드에 서드 플러시나 4스트레이트가 완성되었습니다. 탑페어 위크키커를 쥔 인포지션 플레이어의 올바른 행동은?",
+      context: "보드: Q♠ J♠ T♦ 9♣ | 내 핸드: Q♥ 6♥",
+      options: ["팟 전체 올인을 친다.", "첵백으로 팟을 컨트롤하며 쇼다운 밸류를 보존한다.", "무조건 즉시 카드를 오픈하고 포기한다.", "상대에게 칩을 레이즈한다."],
+      correct: 1,
+      explanation: "보드가 극단적으로 웻해져 수많은 핸드에게 역전당했을 때는 팟을 키우지 않고 첵백으로 저렴하게 쇼다운을 보는 팟 컨트롤이 필수입니다."
+    }
+  ],
+  4: [ // 4차 전직: 미드스테이크 프로 (블로커/언블로커 & 블러프 캐칭)
+    {
+      question: "리버에서 트리플 배럴 블러프를 시도할 때, 가장 이상적인 핸드의 블로커 조합은?",
+      context: "리버 블러프 콤보 선정 원리",
+      options: ["상대가 콜할 최강 핸드를 블락하고, 상대가 실패해서 폴드할 드로우 카드는 언블락(Unblock)함", "상대가 미스해서 무조건 폴드할 꽝 카드를 내가 잔뜩 쥐고 있음", "상대의 너트 플러시 카드를 전혀 블락하지 않음", "아무 무늬나 상관없이 가장 낮은 카드"],
+      correct: 0,
+      explanation: "상대가 폴드해야 할 카드(Busted Draw)를 내가 들고 있으면 상대가 폴드할 콤보가 사라집니다. 따라서 상대 콜링 레인지를 블락하고 폴드 레인지를 언블락해야 성공률이 극대화됩니다."
+    },
+    {
+      question: "리버에서 상대의 팟 사이즈 베팅을 상대로 블러프 캐칭(콜)할 때 가장 좋은 카드는?",
+      context: "블러프 캐쳐 핸드 인스펙션",
+      options: ["상대의 밸류 핸드(스트레이트/플러시)를 블락하고, 상대의 실패한 드로우를 언블락한 핸드", "상대의 미스한 드로우 카드를 내가 두 장 다 쥐고 있는 핸드", "보드에 없는 무늬의 2와 3", "상대의 에어 핸드만 블락한 핸드"],
+      correct: 0,
+      explanation: "상대가 밸류로 베팅할 조합을 내가 차단(Block)해야 상대가 블러프를 쳤을 확률이 통계적으로 높아지므로, 밸류 블락 + 드로우 언블락이 최적의 캐쳐입니다."
+    },
+    {
+      question: "리버에서 팟 사이즈(100% 팟) 베팅을 할 때, GTO 균형을 달성하기 위한 밸류 핸드와 블러프 핸드의 최적 비율은?",
+      context: "리버 내시 균형 벳 레인지 비율",
+      options: ["밸류 50% : 블러프 50% (1:1)", "밸류 67% : 블러프 33% (2:1)", "밸류 90% : 블러프 10% (9:1)", "블러프 75% : 밸류 25%"],
+      correct: 1,
+      explanation: "상대에게 100을 따기 위해 100을 콜해야 하는 2:1의 팟오즈(필요 승률 33.3%)를 줄 때, 내 레인지에 블러프가 정확히 33.3% 섞여 있어야 상대의 콜과 폴드 EV가 0으로 균형을 이룹니다."
+    },
+    {
+      question: "'씬 밸류 벳(Thin Value Bet)'을 감행할 수 있는 이론적 타당성의 기준은?",
+      context: "리버 밸류 베팅 마진",
+      options: ["상대가 100% 무조건 콜해줄 때만", "상대가 내 베팅에 '콜을 주는 레인지'에 대해 내가 50% 이상 이기고 있을 때", "상대가 폴드할 확률이 95% 이상일 때", "내 스택이 팟보다 적을 때"],
+      correct: 1,
+      explanation: "상대가 폴드하는 패는 고려하지 않고, '콜을 주는 레인지'를 상대로 50%를 초과하는 에퀴티가 있다면 첵백보다 베팅하는 것이 장기적으로 +EV입니다."
+    },
+    {
+      question: "BB의 캡된(Capped) 레인지를 상대로 인포지션 프로가 구사하는 가장 파괴적인 전술은?",
+      context: "레인지 비대칭성을 이용한 공격",
+      options: ["상대와 똑같이 첵-체크로 넘어간다.", "상대가 가질 수 없는 너트 우위를 바탕으로 턴과 리버에 걸쳐 큰 사이징과 오버벳으로 압박한다.", "무조건 스몰 벳(10%)만 친다.", "안전하게 쇼다운을 본다."],
+      correct: 1,
+      explanation: "상대의 레인지 상한선이 제한되어 몬스터 핸드가 없을 때, 공격자는 오버벳을 통해 상대의 미디엄 콤보들에게 극심한 인디퍼런트 고통을 강요할 수 있습니다."
+    }
+  ],
+  5: [ // 5차 전직: 하이롤러 위저드 (지오메트릭 사이징 & 믹스드 솔루션)
+    {
+      question: "플랍, 턴, 리버에 걸쳐 스택을 고른 팟 비율로 배분하여 리버 올인을 완성하는 수학적 사이징을 무엇이라 하나요?",
+      context: "스택-투-팟 비율(SPR) 최적화 이론",
+      options: ["아리스메틱(산술) 사이징", "지오메트릭(Geometric, 기하학적) 벳 사이징", "마틴게일 사이징", "하프팟 고정 사이징"],
+      correct: 1,
+      explanation: "지오메트릭 사이징은 각 스트리트마다 동일한 비율(예: 70% - 70% - 70%)로 팟을 키워 정확히 리버에 모든 스택을 투입하는 솔버의 대표적인 스택 소진 기법입니다."
+    },
+    {
+      question: "솔버 출력 결과에서 특정 핸드가 'Call 55%, Raise 45%'처럼 믹스드(혼합) 빈도를 보일 때의 정확한 이론적 의미는?",
+      context: "게임 이론 내시 균형(Nash Equilibrium)",
+      options: ["솔버가 어떤 패를 낼지 몰라 혼란에 빠졌다는 뜻이다.", "Call과 Raise 두 액션의 기대값(EV)이 정확하게 동일하다는 뜻이다.", "무조건 레이스가 유리하다는 뜻이다.", "카드의 무늬가 마음에 들지 않는다는 뜻이다."],
+      correct: 1,
+      explanation: "내시 균형에서 두 전략의 EV가 완전히 같을 때(Indifferent), 상대방이 한쪽으로 착취(Exploit)하지 못하도록 특정 빈도로 섞어서 플레이합니다."
+    },
+    {
+      question: "솔버가 플랍이나 턴에서 200% 이상의 극단적 오버벳(Overbet)을 감행하는 보드 조건은?",
+      context: "오버벳 노드 발생 원리",
+      options: ["내 레인지에 압도적인 '너트 우위(Nut Advantage)'가 있고 상대는 캡되어 있을 때", "양쪽 모두 강한 패가 전혀 없을 때", "보드에 A가 깔리지 않았을 때", "블라인드가 상승했을 때"],
+      correct: 0,
+      explanation: "오버벳은 내가 최강 너트 콤보를 독점하고 상대는 결코 너트를 가질 수 없을 때 발생하며, 상대의 블러프 캐쳐들에게 최대의 수학적 압박을 가합니다."
+    },
+    {
+      question: "포커 솔버에서 '노드 락킹(Node Locking)' 기능의 주요 용도는 무엇인가요?",
+      context: "GTO 솔버 심화 익스플로잇 기법",
+      options: ["솔버의 CPU 사용량을 100%로 고정하는 기능", "특정 상대의 릭(과도한 폴드, 부족한 블러프 등)을 고정하고 그에 대한 완벽한 극대화 착취(Exploit) 전략을 산출하는 기능", "포커 테이블 좌석을 예약하는 기능", "프리플랍 레인지를 잠그는 기능"],
+      correct: 1,
+      explanation: "완전한 GTO 대 GTO가 아닌, 실전 상대의 편향된 실수(Leak)를 한 노드에 고정하여 최대의 이익을 뽑아내는 실전 프로들의 필수 연구 도구입니다."
+    },
+    {
+      question: "플레이어 3명 이상이 참여한 멀티웨이(Multiway) 팟에서 솔버의 전반적인 전략 변화는?",
+      context: "Multiway GTO 전략 특성",
+      options: ["헤즈업보다 훨씬 공격적으로 변하며 블러프 빈도가 3배로 증가한다.", "에퀴티 실현의 방해와 블러프 성공률 급락으로 인해 베팅 빈도가 대폭 감소하고 패시브해진다.", "무조건 오버벳 올인을 날린다.", "헤즈업 솔루션과 100% 동일하게 진행한다."],
+      correct: 1,
+      explanation: "플레이어가 많아질수록 누군가 몬스터 핸드를 쥐었을 확률이 극적으로 높아지므로, 멀티웨이에서는 블러프가 줄어들고 퓨어한 밸류 위주로 정직하게 전환됩니다."
+    }
+  ],
+  6: [ // 6차 전직: WSOP 레전드 챔피언 (극강의 ICM & 토너먼트 마스터리)
+    {
+      question: "토너먼트 ICM에서 '버블 팩터(Bubble Factor)'의 근본적인 의미는 무엇인가요?",
+      context: "ICM(Independent Chip Model) 수학",
+      options: ["칩 스택이 거품처럼 늘어나는 비율", "칩을 획득할 때 증가하는 달러($EV) 가치 대비, 칩을 잃을 때 감소하는 달러($EV) 손실의 위험 배율", "토너먼트 토탈 참가자 수의 변동치", "파이널 테이블의 테이블 매너 지수"],
+      correct: 1,
+      explanation: "상금 계단과 탈락 리스크 때문에 토너먼트에서는 1칩을 딸 때의 상금 가치보다 1칩을 잃을 때 날아가는 상금 가치가 훨씬 큽니다. 이 비대칭 배율이 버블 팩터입니다."
+    },
+    {
+      question: "파이널 테이블 버블 상황에서 빅스택(칩리더)이 취해야 할 가장 지배적인 ICM 전략은?",
+      context: "WSOP 파이널 테이블 칩리더 전략",
+      options: ["탈락이 두려워 조용히 폴드만 한다.", "탈락 위험으로 인해 극도로 위축된 미들스택들을 상대로 무자비한 오픈과 3벳으로 블라인드를 난타 착취(Abuse)한다.", "숏스택에게 칩을 기부하여 버블을 길게 끈다.", "매 핸드마다 100% 올인을 박는다."],
+      correct: 1,
+      explanation: "미들스택은 뒤에 숏스택 탈락을 기다려 상금 점프를 노려야 하므로 빅스택에게 무조건 폴드해야 하는 극심한 ICM 족쇄에 묶여 있습니다. 빅스택은 이를 무자비하게 착취합니다."
+    },
+    {
+      question: "토너먼트 숏스택(10~12bb) 상황에서 '내시 균형 푸시/폴드(Push/Fold)' 차트의 핵심 목표는?",
+      context: "숏스택 수학적 생존 전략",
+      options: ["포스트플랍 복잡한 승부를 피하고, 폴드 에퀴티와 데드머니(블라인드+앤티)를 즉시 회수하여 상금 EV를 극대화함", "모든 승부를 순수 운에 맡김", "상대에게 유리한 팟오즈를 선물함", "토너먼트를 빨리 끝내기 위함"],
+      correct: 0,
+      explanation: "숏스택에서는 플랍 이후 마진이 없으므로, 프리플랍 올인을 통해 상대의 폴드를 이끌어내고 테이블의 데드머니를 회수하는 것이 유일한 수학적 최적해입니다."
+    },
+    {
+      question: "토너먼트 헤즈업(Heads-up)에서 BTN/SB 포지션의 이상적인 프리플랍 참여 빈도는?",
+      context: "헤즈업 GTO 마스터리",
+      options: ["타이트하게 상위 25% 핸드로만 참여한다.", "75~85% 이상의 광범위한 핸드로 미니레이즈와 림프를 믹싱하여 팟을 주도한다.", "100% 무조건 올인만 선택한다.", "BB에게 항상 양보한다."],
+      correct: 1,
+      explanation: "헤즈업에서는 버튼이 포스트플랍 절대적 인포지션을 가지므로, 80% 안팎의 극도로 넓은 레인지로 공격적으로 참여하는 것이 표준입니다."
+    },
+    {
+      question: "WSOP 파이널 3인 상황: 숏스택이 2bb로 다음 핸드 탈락 직전인데, 미들스택인 내가 빅스택의 올인을 상대로 AKs를 쥐었습니다. 올바른 ICM 판단은?",
+      context: "전설적인 WSOP ICM 수어사이드 방지 스팟",
+      options: ["AKs는 최강 핸드이므로 1초의 고민도 없이 스냅 콜한다.", "순수 칩으로는 콜이지만, 숏스택 탈락 시 확정되는 수억 원의 2위 보장 상금($EV)을 위해 눈물을 머금고 폴드할 수 있어야 한다.", "동전을 던져 결정한다.", "타임아웃으로 자동 폴드되길 기다린다."],
+      correct: 1,
+      explanation: "ChipEV로는 이길 확률이 높더라도, 콜해서 탈락하면 3위 상금에 그치지만 폴드하면 숏스택 탈락으로 확정 상금 점프가 보장되는 전형적인 ICM 스팟에서는 극단적 오버폴드가 정답입니다."
+    }
+  ]
+};
+
+// ==========================================
+// 📜 퀘스트 매니저 (성장 미션 & 6구간 전직 현황)
+// ==========================================
+const questManager = {
+  openModal() {
+    this.render();
+    const modal = document.getElementById('quest-modal-overlay');
+    if (modal) modal.style.display = 'flex';
+    if (window.app && app.playAudioEffect) app.playAudioEffect('click');
+  },
+
+  closeModal() {
+    const modal = document.getElementById('quest-modal-overlay');
+    if (modal) modal.style.display = 'none';
+  },
+
+  render() {
+    const u = app.userState;
+    const lvlInfo = app.getLevelInfo(u.xp);
+    const body = document.getElementById('quest-modal-body');
+    if (!body) return;
+
+    const curLvl = lvlInfo.level;
+    const nextLvl = Math.min(100, curLvl + 1);
+    const curXp = u.xp;
+
+    // 요구 실적 가이드
+    const targetArticles = Math.min(150, Math.max(3, Math.ceil(curLvl * 1.5)));
+    const targetQuizzes = Math.min(25, Math.max(3, Math.ceil(curLvl * 0.35)));
+    const targetRanges = Math.min(15, Math.max(2, Math.ceil(curLvl * 0.2)));
+    const targetAi = 1;
+
+    const completedArticlesCount = (u.completed_articles || []).length;
+    const completedQuizzesCount = (u.completed_quizzes || []).length;
+    const exploredRangesCount = (u.explored_ranges || []).length;
+    const aiQueriesCount = u.ai_queries_count || 0;
+
+    const artPct = Math.min(100, Math.round((completedArticlesCount / targetArticles) * 100));
+    const quizPct = Math.min(100, Math.round((completedQuizzesCount / targetQuizzes) * 100));
+    const rangePct = Math.min(100, Math.round((exploredRangesCount / targetRanges) * 100));
+    const aiPct = Math.min(100, Math.round((aiQueriesCount / targetAi) * 100));
+
+    const needsExam = lvlInfo.needsExam;
+
+    let promoBannerHtml = '';
+    if (needsExam) {
+      const examTier = PROMOTION_TIERS[needsExam];
+      promoBannerHtml = `
+        <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(234, 88, 12, 0.25)); border: 2px solid #f59e0b; border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem; text-align: center; box-shadow: 0 8px 20px rgba(245, 158, 11, 0.25);">
+          <div style="font-size: 2.2rem; margin-bottom: 0.25rem; animation: pulseGlow 1.5s infinite ease-in-out;">⚡</div>
+          <h3 style="font-size: 1.25rem; font-weight: 800; color: #fbbf24; margin-bottom: 0.4rem;">
+            ${examTier.examTitle} 자격 획득!
+          </h3>
+          <p style="font-size: 0.88rem; color: var(--text-main); margin-bottom: 1rem; line-height: 1.5;">
+            Lv.${examTier.targetLevel}에 도달하셨습니다! 5문항의 실전 스팟 테스트 중 4문항 이상 통과 시 <strong>[${examTier.name}]</strong> 칭호 승급 및 <strong>+${examTier.bonusXP} XP</strong> 특전을 획득합니다!
+          </p>
+          <button onclick="questManager.closeModal(); promotionManager.openExamModal(${needsExam})" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; font-weight: 800; font-size: 0.95rem; border: none; padding: 0.75rem 2rem; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);">
+            📝 지금 전직 심사 시험 응시하기 ➔
+          </button>
+        </div>
+      `;
+    }
+
+    body.innerHTML = `
+      <!-- User Current Status Card -->
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.75rem;">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div style="font-size: 2.2rem;">${u.avatar || '🦈'}</div>
+            <div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <strong style="font-size: 1.15rem; color: var(--text-main);">${u.name || '포커신동'}</strong>
+                <span class="rank-badge ${lvlInfo.tier.badgeClass}">${lvlInfo.tier.badge}</span>
+              </div>
+              <span style="font-size: 0.85rem; color: #60a5fa; font-weight: 700;">Lv.${curLvl} / 100</span>
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <span style="font-size: 0.8rem; color: var(--text-dim); display: block;">누적 경험치</span>
+            <strong style="font-size: 1.1rem; color: #fbbf24;">${curXp} XP</strong>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 0.35rem;">
+          <span>Lv.${curLvl} 진행도</span>
+          <span>${lvlInfo.remainingXp > 0 ? `다음 레벨까지 ${lvlInfo.remainingXp} XP 남음` : '만렙 달성 👑'}</span>
+        </div>
+        <div style="width: 100%; height: 8px; background: rgba(0,0,0,0.3); border-radius: 4px; overflow: hidden;">
+          <div style="width: ${lvlInfo.progressPct}%; height: 100%; background: linear-gradient(90deg, #3b82f6, #38bdf8); border-radius: 4px;"></div>
+        </div>
+      </div>
+
+      ${promoBannerHtml}
+
+      <!-- Quest Requirements Section -->
+      <div style="margin-bottom: 1.75rem;">
+        <h4 style="font-size: 1.05rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.85rem; display: flex; align-items: center; gap: 0.4rem;">
+          <span>🎯</span> Lv.${curLvl} ➔ Lv.${nextLvl} 레벨업 미션 진행도
+        </h4>
+
+        <!-- Quest 1: Articles -->
+        <div class="quest-card ${completedArticlesCount >= targetArticles ? 'completed' : ''}">
+          <div class="quest-info-group">
+            <div class="quest-title-row">
+              <span>📖 GTO 아티클 정독</span>
+              <span style="font-size: 0.78rem; color: ${completedArticlesCount >= targetArticles ? '#34d399' : 'var(--text-dim)'};">
+                ${completedArticlesCount} / ${targetArticles}편 (${artPct}%)
+              </span>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">
+              스크롤 끝까지 완독 + 35초 정독 타이머 완료 시 1회 인정 (+50 XP)
+            </p>
+            <div class="quest-progress-track">
+              <div class="quest-progress-fill" style="width: ${artPct}%;"></div>
+            </div>
+          </div>
+          <button onclick="questManager.closeModal(); app.navigate('articles')" class="btn-secondary" style="padding: 0.45rem 0.85rem; font-size: 0.8rem; font-weight: 700; white-space: nowrap;">
+            도서관 이동 ➔
+          </button>
+        </div>
+
+        <!-- Quest 2: Spot Quizzes -->
+        <div class="quest-card ${completedQuizzesCount >= targetQuizzes ? 'completed' : ''}">
+          <div class="quest-info-group">
+            <div class="quest-title-row">
+              <span>🎯 실전 스팟 퀴즈 정답</span>
+              <span style="font-size: 0.78rem; color: ${completedQuizzesCount >= targetQuizzes ? '#34d399' : 'var(--text-dim)'};">
+                ${completedQuizzesCount} / ${targetQuizzes}개 (${quizPct}%)
+              </span>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">
+              다양한 스트리트 의사결정 퀴즈 정답 맞히기 (+50 XP)
+            </p>
+            <div class="quest-progress-track">
+              <div class="quest-progress-fill" style="width: ${quizPct}%;"></div>
+            </div>
+          </div>
+          <button onclick="questManager.closeModal(); app.navigate('trainer')" class="btn-secondary" style="padding: 0.45rem 0.85rem; font-size: 0.8rem; font-weight: 700; white-space: nowrap;">
+            퀴즈 풀기 ➔
+          </button>
+        </div>
+
+        <!-- Quest 3: Matrix Range Exploration -->
+        <div class="quest-card ${exploredRangesCount >= targetRanges ? 'completed' : ''}">
+          <div class="quest-info-group">
+            <div class="quest-title-row">
+              <span>📊 13x13 매트릭스 레인지 탐색</span>
+              <span style="font-size: 0.78rem; color: ${exploredRangesCount >= targetRanges ? '#34d399' : 'var(--text-dim)'};">
+                ${exploredRangesCount} / ${targetRanges}개 (${rangePct}%)
+              </span>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">
+              포지션별 프리플랍/3벳 레인지 프리셋 인스펙션 (+20 XP)
+            </p>
+            <div class="quest-progress-track">
+              <div class="quest-progress-fill" style="width: ${rangePct}%;"></div>
+            </div>
+          </div>
+          <button onclick="questManager.closeModal(); app.navigate('matrix')" class="btn-secondary" style="padding: 0.45rem 0.85rem; font-size: 0.8rem; font-weight: 700; white-space: nowrap;">
+            매트릭스 보기 ➔
+          </button>
+        </div>
+
+        <!-- Quest 4: AI Coach Question -->
+        <div class="quest-card ${aiQueriesCount >= targetAi ? 'completed' : ''}">
+          <div class="quest-info-group">
+            <div class="quest-title-row">
+              <span>🤖 AI 포커 코치 전략 질의</span>
+              <span style="font-size: 0.78rem; color: ${aiQueriesCount >= targetAi ? '#34d399' : 'var(--text-dim)'};">
+                ${aiQueriesCount} / ${targetAi}회 (${aiPct}%)
+              </span>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">
+              궁금한 포커 핸드나 GTO 개념 질문하기
+            </p>
+            <div class="quest-progress-track">
+              <div class="quest-progress-fill" style="width: ${aiPct}%;"></div>
+            </div>
+          </div>
+          <button onclick="questManager.closeModal(); aiCoach.open()" class="btn-secondary" style="padding: 0.45rem 0.85rem; font-size: 0.8rem; font-weight: 700; white-space: nowrap;">
+            코치 질문 ➔
+          </button>
+        </div>
+      </div>
+
+      <!-- 6-Stage Promotion Career Overview -->
+      <div>
+        <h4 style="font-size: 1.05rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.85rem; display: flex; align-items: center; gap: 0.4rem;">
+          <span>⚔️</span> 6구간 전직 로드맵 현황
+        </h4>
+
+        <div class="promotion-step-grid">
+          ${PROMOTION_TIERS.slice(1).map(pt => {
+            const isPassed = (u.promotions_passed || []).includes(pt.tier);
+            const isTarget = (needsExam === pt.tier);
+            const isLocked = !isPassed && !isTarget;
+
+            return `
+              <div class="promo-step-card ${isPassed ? 'unlocked' : ''} ${isTarget ? 'active-target' : ''}">
+                <div style="font-size: 1.8rem; margin-bottom: 0.35rem;">${pt.icon}</div>
+                <div style="font-size: 0.9rem; font-weight: 800; color: ${pt.color}; margin-bottom: 0.2rem;">
+                  ${pt.name}
+                </div>
+                <span style="font-size: 0.72rem; color: var(--text-dim); display: block; margin-bottom: 0.4rem;">
+                  목표: Lv.${pt.targetLevel}
+                </span>
+                <div style="font-size: 0.78rem; font-weight: 700; color: ${isPassed ? '#34d399' : (isTarget ? '#fbbf24' : '#64748b')};">
+                  ${isPassed ? '✅ 전직 완료' : (isTarget ? '⚡ 시험 응시 가능!' : '🔒 레벨 미달')}
+                </div>
+                ${isTarget ? `
+                  <button onclick="questManager.closeModal(); promotionManager.openExamModal(${pt.tier})" style="margin-top: 0.5rem; width: 100%; background: #f59e0b; color: #000; font-weight: 800; font-size: 0.75rem; border: none; padding: 0.35rem 0.5rem; border-radius: 6px; cursor: pointer;">
+                    응시하기 ➔
+                  </button>
+                ` : ''}
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  }
+};
+
+// ==========================================
+// ⚡ 전직 심사 시험 매니저 (Promotion Test Engine)
+// ==========================================
+const promotionManager = {
+  currentTier: null,
+  currentQuestionIndex: 0,
+  score: 0,
+  selectedIdx: null,
+
+  openExamModal(tierNumber) {
+    if (!tierNumber) {
+      const info = app.getLevelInfo(app.userState.xp);
+      tierNumber = info.needsExam || 1;
+    }
+    this.currentTier = tierNumber;
+    this.currentQuestionIndex = 0;
+    this.score = 0;
+    this.selectedIdx = null;
+
+    const modal = document.getElementById('promotion-modal-overlay');
+    if (modal) modal.style.display = 'flex';
+    this.renderQuestion();
+    if (window.app && app.playAudioEffect) app.playAudioEffect('click');
+  },
+
+  closeModal() {
+    const modal = document.getElementById('promotion-modal-overlay');
+    if (modal) modal.style.display = 'none';
+  },
+
+  getQuestions(tier) {
+    return EXAM_DATABASE[tier] || EXAM_DATABASE[1];
+  },
+
+  renderQuestion() {
+    const tierInfo = PROMOTION_TIERS[this.currentTier];
+    const questions = this.getQuestions(this.currentTier);
+    const q = questions[this.currentQuestionIndex];
+    this.selectedIdx = null;
+
+    const titleEl = document.getElementById('promo-modal-title');
+    const subEl = document.getElementById('promo-modal-subtitle');
+    const body = document.getElementById('promo-modal-body');
+
+    if (titleEl) titleEl.innerText = `⚡ ${tierInfo.examTitle}`;
+    if (subEl) subEl.innerText = `문제 ${this.currentQuestionIndex + 1} / ${questions.length} (4문제 이상 정답 시 전직 성공)`;
+
+    body.innerHTML = `
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.25rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+          <span style="font-size: 0.8rem; font-weight: 800; color: #f59e0b; background: rgba(245, 158, 11, 0.15); padding: 2px 8px; border-radius: 6px;">
+            QUESTION ${this.currentQuestionIndex + 1} of 5
+          </span>
+          <span style="font-size: 0.8rem; color: var(--text-dim); font-weight: 700;">
+            현재 점수: ${this.score} / ${this.currentQuestionIndex}
+          </span>
+        </div>
+
+        <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.75rem; line-height: 1.45;">
+          ${q.question}
+        </h3>
+
+        ${q.context ? `
+          <div style="background: rgba(13, 56, 36, 0.4); border: 1px solid rgba(5, 150, 105, 0.3); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1rem; font-size: 0.9rem; color: #6ee7b7; font-family: monospace;">
+            🃏 ${q.context}
+          </div>
+        ` : ''}
+
+        <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem;" id="exam-options-container">
+          ${q.options.map((opt, i) => `
+            <button class="exam-option-btn" onclick="promotionManager.selectAnswer(${i})">
+              <span style="font-weight: 800; color: var(--text-dim); width: 20px;">${i + 1}.</span>
+              <span>${opt}</span>
+            </button>
+          `).join('')}
+        </div>
+
+        <div id="exam-feedback-box" style="display: none; margin-top: 1.25rem; padding: 1rem; border-radius: 8px;"></div>
+      </div>
+    `;
+  },
+
+  selectAnswer(index) {
+    if (this.selectedIdx !== null) return;
+    this.selectedIdx = index;
+
+    const questions = this.getQuestions(this.currentTier);
+    const q = questions[this.currentQuestionIndex];
+    const isCorrect = (index === q.correct);
+    if (isCorrect) this.score++;
+
+    const buttons = document.querySelectorAll('#exam-options-container .exam-option-btn');
+    buttons.forEach((btn, i) => {
+      btn.disabled = true;
+      if (i === index) {
+        btn.classList.add(isCorrect ? 'correct' : 'wrong');
+      } else if (i === q.correct) {
+        btn.classList.add('correct');
+      }
+    });
+
+    const feedbackBox = document.getElementById('exam-feedback-box');
+    if (feedbackBox) {
+      feedbackBox.style.display = 'block';
+      feedbackBox.style.background = isCorrect ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)';
+      feedbackBox.style.border = isCorrect ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid rgba(239, 68, 68, 0.4)';
+      feedbackBox.innerHTML = `
+        <div style="font-weight: 800; font-size: 0.95rem; color: ${isCorrect ? '#34d399' : '#f87171'}; margin-bottom: 0.4rem;">
+          ${isCorrect ? '🎉 정답입니다!' : '❌ 오답입니다.'}
+        </div>
+        <div style="font-size: 0.88rem; color: var(--text-main); line-height: 1.5; margin-bottom: 0.75rem;">
+          💡 <strong>해설:</strong> ${q.explanation}
+        </div>
+        <div style="text-align: right;">
+          <button onclick="promotionManager.nextQuestion()" class="btn-primary" style="padding: 0.5rem 1.25rem; font-weight: 800; font-size: 0.88rem;">
+            ${this.currentQuestionIndex < 4 ? '다음 문제 풀기 ➔' : '최종 심사 결과 보기 ➔'}
+          </button>
+        </div>
+      `;
+    }
+
+    if (window.app && app.playAudioEffect) {
+      app.playAudioEffect(isCorrect ? 'correct' : 'wrong');
+    }
+  },
+
+  nextQuestion() {
+    this.currentQuestionIndex++;
+    if (this.currentQuestionIndex < 5) {
+      this.renderQuestion();
+    } else {
+      this.showResult();
+    }
+  },
+
+  showResult() {
+    const tierInfo = PROMOTION_TIERS[this.currentTier];
+    const isPassed = (this.score >= 4);
+    const body = document.getElementById('promo-modal-body');
+    const u = app.userState;
+
+    if (isPassed) {
+      if (!u.promotions_passed) u.promotions_passed = [];
+      if (!u.promotions_passed.includes(this.currentTier)) {
+        u.promotions_passed.push(this.currentTier);
+        app.addXP(tierInfo.bonusXP, 'general');
+      }
+      storage.save(u);
+      app.updateUserBar();
+      if (window.rankingManager && rankingManager.render) rankingManager.render();
+      if (window.characterManager && characterManager.showToast) {
+        characterManager.showToast(`👑 축하합니다! [${tierInfo.name}] 전직에 성공하셨습니다! (+${tierInfo.bonusXP} XP)`);
+      }
+      if (window.app && app.playAudioEffect) app.playAudioEffect('correct');
+    }
+
+    body.innerHTML = `
+      <div style="text-align: center; padding: 2rem 1rem;">
+        <div style="font-size: 4rem; margin-bottom: 0.75rem;">
+          ${isPassed ? '🏆' : '📚'}
+        </div>
+        <h2 style="font-size: 1.6rem; font-weight: 800; color: ${isPassed ? '#fbbf24' : '#f87171'}; margin-bottom: 0.5rem;">
+          ${isPassed ? `🎉 [${tierInfo.name}] 전직 심사 통과!` : '아쉽습니다! 불합격'}
+        </h2>
+        <p style="font-size: 1rem; color: var(--text-main); margin-bottom: 1.5rem;">
+          최종 결과: 5문항 중 <strong>${this.score}문항</strong> 정답 (${Math.round((this.score / 5) * 100)}%)
+        </p>
+
+        ${isPassed ? `
+          <div style="background: rgba(245, 158, 11, 0.12); border: 1.5px solid #f59e0b; border-radius: 12px; padding: 1.25rem; max-width: 480px; margin: 0 auto 1.5rem; text-align: left;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+              <span style="font-size: 1.6rem;">${tierInfo.icon}</span>
+              <div>
+                <strong style="color: ${tierInfo.color}; font-size: 1.1rem;">${tierInfo.title}</strong>
+                <div style="font-size: 0.8rem; color: var(--text-dim);">${tierInfo.desc}</div>
+              </div>
+            </div>
+            <div style="font-size: 0.85rem; color: #34d399; font-weight: 700; border-top: 1px solid rgba(245, 158, 11, 0.2); padding-top: 0.5rem; margin-top: 0.5rem;">
+              ✨ 전직 특전: 칭호 해금 & 보너스 +${tierInfo.bonusXP} XP 즉시 지급 완료!
+            </div>
+          </div>
+          <button onclick="promotionManager.closeModal(); questManager.openModal()" class="btn-primary" style="padding: 0.75rem 2.2rem; font-weight: 800; font-size: 1rem;">
+            성장 퀘스트 현황 확인하기 ➔
+          </button>
+        ` : `
+          <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; max-width: 480px; margin: 0 auto 1.5rem; font-size: 0.88rem; color: var(--text-muted); line-height: 1.5;">
+            승급을 위해서는 5문항 중 4문항 이상 정답을 맞혀야 합니다. 아티클과 스팟 퀴즈를 복습한 후 언제든 다시 도전하세요!
+          </div>
+          <div style="display: flex; gap: 0.75rem; justify-content: center;">
+            <button onclick="promotionManager.openExamModal(${this.currentTier})" class="btn-primary" style="padding: 0.65rem 1.75rem; font-weight: 800;">
+              🔄 시험 다시 응시하기
+            </button>
+            <button onclick="promotionManager.closeModal()" class="btn-secondary" style="padding: 0.65rem 1.25rem;">
+              닫기
+            </button>
+          </div>
+        `}
+      </div>
+    `;
+  }
+};
+
+// ==========================================
+// 🏆 실시간 전체 이용자 랭킹보드 매니저 (Leaderboard)
+// ==========================================
+const rankingManager = {
+  currentFilter: 'all', // 'all', 'top10', 'near'
+
+  // 실존 포커 전설 및 가상 랭커 데이터 (내 계정과 함께 실시간 경쟁)
+  rivals: [
+    { name: "LinusLove", avatar: "🦁", style: "GTO", level: 98, xp: 82400, articles: 340, tierNum: 5 },
+    { name: "Phil_Ivey", avatar: "👑", style: "EXPLOIT", level: 96, xp: 78900, articles: 325, tierNum: 5 },
+    { name: "폴푸아 (Master)", avatar: "🦈", style: "TAG", level: 94, xp: 75100, articles: 369, tierNum: 5 },
+    { name: "Daniel_Negreanu", avatar: "🦊", style: "EXPLOIT", level: 91, xp: 71200, articles: 290, tierNum: 5 },
+    { name: "Fedor_Holz", avatar: "🧠", style: "GTO", level: 88, xp: 68400, articles: 260, tierNum: 5 },
+    { name: "압구정샤크", avatar: "🦈", style: "TAG", level: 82, xp: 60200, articles: 210, tierNum: 4 },
+    { name: "마카오레귤러", avatar: "🦁", style: "LAG", level: 78, xp: 55400, articles: 185, tierNum: 4 },
+    { name: "GTO솔버러", avatar: "🤖", style: "GTO", level: 73, xp: 49800, articles: 160, tierNum: 4 },
+    { name: "체크레이즈달인", avatar: "🥷", style: "LAG", level: 68, xp: 44200, articles: 135, tierNum: 4 },
+    { name: "홍대펍지배자", avatar: "⚔️", style: "TAG", level: 62, xp: 38600, articles: 110, tierNum: 3 },
+    { name: "온라인그라인더99", avatar: "⚙️", style: "TAG", level: 56, xp: 33100, articles: 95, tierNum: 3 },
+    { name: "강남너트장인", avatar: "🦊", style: "EXPLOIT", level: 50, xp: 27900, articles: 80, tierNum: 3 },
+    { name: "리버원샷", avatar: "🦉", style: "HUNTER", level: 46, xp: 24500, articles: 65, tierNum: 3 },
+    { name: "스몰블라인드킬러", avatar: "🥷", style: "LAG", level: 41, xp: 20800, articles: 55, tierNum: 2 },
+    { name: "팟스틸러", avatar: "🦊", style: "LAG", level: 36, xp: 17200, articles: 45, tierNum: 2 },
+    { name: "3벳마니아", avatar: "🦁", style: "LAG", level: 31, xp: 13900, articles: 38, tierNum: 2 },
+    { name: "에퀴티계산기", avatar: "🤖", style: "GTO", level: 27, xp: 10800, articles: 30, tierNum: 2 },
+    { name: "홀덤꿈나무", avatar: "🐣", style: "TAG", level: 23, xp: 8500, articles: 24, tierNum: 1 },
+    { name: "펍루키007", avatar: "⚔️", style: "HUNTER", level: 19, xp: 6200, articles: 18, tierNum: 1 },
+    { name: "포커새싹", avatar: "🌱", style: "TAG", level: 14, xp: 3900, articles: 12, tierNum: 1 },
+    { name: "마이크로도전자", avatar: "⚙️", style: "TAG", level: 11, xp: 2600, articles: 9, tierNum: 1 },
+    { name: "초보홀덤러", avatar: "🐟", style: "HUNTER", level: 7, xp: 1200, articles: 5, tierNum: 0 },
+    { name: "스타팅핸드공부중", avatar: "🐣", style: "TAG", level: 4, xp: 500, articles: 2, tierNum: 0 },
+    { name: "입문자A", avatar: "🐟", style: "TAG", level: 2, xp: 150, articles: 1, tierNum: 0 }
+  ],
+
+  setFilter(filter) {
+    this.currentFilter = filter;
+    document.querySelectorAll('#view-ranking .filter-pill').forEach(btn => {
+      if (btn.id === `rank-filter-${filter}`) btn.classList.add('active');
+      else btn.classList.remove('active');
+    });
+    this.render();
+  },
+
+  getAllPlayers() {
+    const u = app.userState;
+    const lvlInfo = app.getLevelInfo(u.xp);
+
+    // 내 캐릭터 객체 생성 (실시간 반영)
+    const me = {
+      isMe: true,
+      name: u.name || "포커신동",
+      avatar: u.avatar || "🦈",
+      style: u.playstyle || "TAG",
+      level: lvlInfo.level,
+      xp: u.xp,
+      articles: (u.completed_articles || []).length,
+      quizzes: (u.completed_quizzes || []).length,
+      tierNum: lvlInfo.tierNum,
+      tierBadge: lvlInfo.tier.badge,
+      badgeClass: lvlInfo.tier.badgeClass
+    };
+
+    // 라이벌 봇들과 합치기
+    const list = this.rivals.map(r => {
+      const tierObj = PROMOTION_TIERS[r.tierNum] || PROMOTION_TIERS[0];
+      return {
+        ...r,
+        isMe: false,
+        tierBadge: tierObj.badge,
+        badgeClass: tierObj.badgeClass,
+        quizzes: Math.floor(r.articles * 0.4)
+      };
+    });
+
+    list.push(me);
+
+    // 🏆 핵심 정렬 로직:
+    // 1순위: 레벨이 높은 순 (level DESC)
+    // 2순위: 레벨이 같으면 경험치가 높은 순 (xp DESC)
+    list.sort((a, b) => {
+      if (b.level !== a.level) {
+        return b.level - a.level;
+      }
+      return b.xp - a.xp;
+    });
+
+    // 랭킹 부여 (1-indexed)
+    list.forEach((p, idx) => {
+      p.rank = idx + 1;
+    });
+
+    return list;
+  },
+
+  render() {
+    const all = this.getAllPlayers();
+    const me = all.find(p => p.isMe);
+    const myRank = me ? me.rank : 1;
+    const totalCount = all.length;
+    const topPct = Math.max(1, Math.round((myRank / totalCount) * 100));
+
+    // 1. 내 랭킹 요약 카드 렌더링
+    const summaryCard = document.getElementById('my-ranking-summary-card');
+    if (summaryCard && me) {
+      const nextRival = all[myRank - 2]; // 내 바로 위 순위자
+      const xpToOvertake = nextRival ? Math.max(0, nextRival.xp - me.xp + 10) : 0;
+
+      summaryCard.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <div style="font-size: 2.8rem; background: var(--bg-surface); width: 68px; height: 68px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #3b82f6;">
+            ${me.avatar}
+          </div>
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+              <span style="font-size: 1.4rem; font-weight: 800; color: #fbbf24;">현재 나의 순위: #${myRank}위</span>
+              <span style="font-size: 0.78rem; background: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 2px 8px; border-radius: 12px; font-weight: 800;">
+                상위 ${topPct}%
+              </span>
+            </div>
+            <div style="font-size: 0.95rem; color: var(--text-main); margin-top: 0.25rem;">
+              <strong>${me.name}</strong> • <span class="rank-badge ${me.badgeClass}">${me.tierBadge}</span> • <span style="color: #60a5fa; font-weight: 700;">Lv.${me.level}</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align: right;">
+          <div style="font-size: 0.8rem; color: var(--text-dim);">누적 경험치</div>
+          <div style="font-size: 1.3rem; font-weight: 800; color: #fbbf24;">${me.xp.toLocaleString()} XP</div>
+          ${nextRival ? `
+            <div style="font-size: 0.78rem; color: #94a3b8; margin-top: 0.25rem;">
+              #${nextRival.rank}위(${nextRival.name}) 역전까지: <strong style="color: #38bdf8;">+${xpToOvertake} XP</strong>
+            </div>
+          ` : `
+            <div style="font-size: 0.78rem; color: #34d399; font-weight: 700; margin-top: 0.25rem;">
+              👑 전체 1위 독주 중!
+            </div>
+          `}
+        </div>
+      `;
+    }
+
+    // 2. TOP 3 포디움 렌더링
+    const podiumShowcase = document.getElementById('ranking-podium-showcase');
+    if (podiumShowcase) {
+      const top3 = all.slice(0, 3);
+      // 순서: 2위(은), 1위(금), 3위(동)
+      const order = [top3[1] || top3[0], top3[0], top3[2] || top3[0]];
+      const ranks = [2, 1, 3];
+
+      podiumShowcase.innerHTML = order.map((p, i) => {
+        const r = ranks[i];
+        const isGold = (r === 1);
+        const medal = r === 1 ? '🥇 1위' : (r === 2 ? '🥈 2위' : '🥉 3위');
+        const cardClass = r === 1 ? 'podium-rank-1' : (r === 2 ? 'podium-rank-2' : 'podium-rank-3');
+
+        return `
+          <div class="podium-card ${cardClass}" style="${isGold ? 'order: 2;' : (r === 2 ? 'order: 1;' : 'order: 3;')}">
+            ${isGold ? '<div class="podium-crown">👑</div>' : ''}
+            <div class="podium-avatar">${p.avatar}</div>
+            <div style="font-size: 1.1rem; font-weight: 800; color: ${isGold ? '#fbbf24' : 'var(--text-main)'}; margin-bottom: 0.2rem;">
+              ${medal}
+            </div>
+            <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.25rem;">
+              ${p.name} ${p.isMe ? '<span style="color: #3b82f6; font-size: 0.75rem;">(나)</span>' : ''}
+            </div>
+            <span class="rank-badge ${p.badgeClass}" style="margin-bottom: 0.5rem;">${p.tierBadge}</span>
+            <div style="font-size: 0.85rem; font-weight: 800; color: #60a5fa;">
+              Lv.${p.level} • ${p.xp.toLocaleString()} XP
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // 3. 필터 적용 및 테이블 렌더링
+    let displayList = all;
+    if (this.currentFilter === 'top10') {
+      displayList = all.slice(0, 10);
+    } else if (this.currentFilter === 'near') {
+      const start = Math.max(0, myRank - 6);
+      const end = Math.min(all.length, myRank + 5);
+      displayList = all.slice(start, end);
+    }
+
+    const tableBody = document.getElementById('ranking-table-body');
+    if (tableBody) {
+      tableBody.innerHTML = displayList.map(p => {
+        let rankBadge = `${p.rank}`;
+        if (p.rank === 1) rankBadge = '🥇 1';
+        else if (p.rank === 2) rankBadge = '🥈 2';
+        else if (p.rank === 3) rankBadge = '🥉 3';
+
+        return `
+          <tr class="${p.isMe ? 'ranking-row-me' : ''}" style="border-bottom: 1px solid var(--border-color); transition: background 0.15s ease;">
+            <td style="padding: 1rem 1.25rem; text-align: center; font-weight: 800; color: ${p.rank <= 3 ? '#fbbf24' : 'var(--text-dim)'}; font-size: 1.05rem;">
+              ${rankBadge}
+            </td>
+            <td style="padding: 1rem 1.25rem;">
+              <div style="display: flex; align-items: center; gap: 0.65rem;">
+                <span style="font-size: 1.5rem;">${p.avatar}</span>
+                <div>
+                  <div style="display: flex; align-items: center; gap: 0.4rem;">
+                    <strong style="color: var(--text-main); font-size: 0.95rem;">${p.name}</strong>
+                    ${p.isMe ? '<span style="background: #3b82f6; color: #fff; font-size: 0.68rem; font-weight: 800; padding: 1px 5px; border-radius: 4px;">나</span>' : ''}
+                  </div>
+                  <span style="font-size: 0.75rem; color: var(--text-dim);">${p.style} 스타일</span>
+                </div>
+              </div>
+            </td>
+            <td style="padding: 1rem 1.25rem;">
+              <span class="rank-badge ${p.badgeClass}">${p.tierBadge}</span>
+            </td>
+            <td style="padding: 1rem 1.25rem; text-align: center;">
+              <strong style="color: #60a5fa; font-size: 1rem;">Lv.${p.level}</strong>
+            </td>
+            <td style="padding: 1rem 1.25rem; text-align: right; font-weight: 800; color: #fbbf24; font-size: 0.95rem;">
+              ${p.xp.toLocaleString()} XP
+            </td>
+            <td style="padding: 1rem 1.25rem; text-align: center; font-size: 0.8rem; color: var(--text-muted);">
+              📖 ${p.articles}편 완독
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
   }
 };
 

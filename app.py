@@ -38,12 +38,17 @@ ranges_db = load_json("ranges.json")
 
 # In-memory User Session state (persists during server lifetime)
 user_state = {
-    "xp": 120,
+    "name": "포커신동",
+    "avatar": "🦈",
+    "playstyle": "TAG",
+    "xp": 0,
     "level": 1,
-    "streak": 3,
-    "completed_articles": ["what-is-expected-value-in-poker"],
+    "streak": 1,
+    "completed_articles": [],
     "completed_quizzes": [],
-    "recent_answers": []
+    "recent_answers": [],
+    "promotions_passed": [],
+    "ai_queries_count": 0
 }
 
 class QuizSubmission(BaseModel):
@@ -232,16 +237,98 @@ def ask_ai_coach(query: AIQuestion):
         "matched_terms": [t["term"] for t in matched_terms]
     }
 
+def get_level_threshold(lvl: int) -> int:
+    if lvl <= 1:
+        return 0
+    return int(68 * (lvl ** 1.55))
+
 def check_level_up():
     xp = user_state["xp"]
-    new_lvl = 1
-    if xp >= 800:
-        new_lvl = 4
-    elif xp >= 500:
-        new_lvl = 3
-    elif xp >= 200:
-        new_lvl = 2
-    user_state["level"] = new_lvl
+    promotions = user_state.get("promotions_passed", [])
+    raw_lvl = 1
+    for l in range(1, 101):
+        if xp >= get_level_threshold(l):
+            raw_lvl = l
+        else:
+            break
+            
+    # Gateways for 6 promotions (Lv.10, 25, 45, 65, 85, 100)
+    effective_lvl = raw_lvl
+    gateways = [(1, 10), (2, 25), (3, 45), (4, 65), (5, 85), (6, 100)]
+    for tier, req in gateways:
+        if raw_lvl >= req and tier not in promotions:
+            effective_lvl = req
+            break
+            
+    user_state["level"] = effective_lvl
+
+@app.get("/api/ranking")
+def get_ranking():
+    """
+    Returns global leaderboard sorted by Level (DESC) then XP (DESC)
+    """
+    rivals = [
+        {"name": "LinusLove", "avatar": "🦁", "style": "GTO", "level": 98, "xp": 82400, "articles": 340, "tier": "🦁 하이롤러 위저드"},
+        {"name": "Phil_Ivey", "avatar": "👑", "style": "EXPLOIT", "level": 96, "xp": 78900, "articles": 325, "tier": "🦁 하이롤러 위저드"},
+        {"name": "폴푸아 (Master)", "avatar": "🦈", "style": "TAG", "level": 94, "xp": 75100, "articles": 369, "tier": "🦁 하이롤러 위저드"},
+        {"name": "Daniel_Negreanu", "avatar": "🦊", "style": "EXPLOIT", "level": 91, "xp": 71200, "articles": 290, "tier": "🦁 하이롤러 위저드"},
+        {"name": "Fedor_Holz", "avatar": "🧠", "style": "GTO", "level": 88, "xp": 68400, "articles": 260, "tier": "🦁 하이롤러 위저드"},
+        {"name": "압구정샤크", "avatar": "🦈", "style": "TAG", "level": 82, "xp": 60200, "articles": 210, "tier": "🦊 미드스테이크 프로"},
+        {"name": "마카오레귤러", "avatar": "🦁", "style": "LAG", "level": 78, "xp": 55400, "articles": 185, "tier": "🦊 미드스테이크 프로"},
+        {"name": "GTO솔버러", "avatar": "🤖", "style": "GTO", "level": 73, "xp": 49800, "articles": 160, "tier": "🦊 미드스테이크 프로"},
+        {"name": "체크레이즈달인", "avatar": "🥷", "style": "LAG", "level": 68, "xp": 44200, "articles": 135, "tier": "🦊 미드스테이크 프로"},
+        {"name": "홍대펍지배자", "avatar": "⚔️", "style": "TAG", "level": 62, "xp": 38600, "articles": 110, "tier": "🔥 로우스테이크 크러셔"},
+        {"name": "온라인그라인더99", "avatar": "⚙️", "style": "TAG", "level": 56, "xp": 33100, "articles": 95, "tier": "🔥 로우스테이크 크러셔"},
+        {"name": "강남너트장인", "avatar": "🦊", "style": "EXPLOIT", "level": 50, "xp": 27900, "articles": 80, "tier": "🔥 로우스테이크 크러셔"},
+        {"name": "리버원샷", "avatar": "🦉", "style": "HUNTER", "level": 46, "xp": 24500, "articles": 65, "tier": "🔥 로우스테이크 크러셔"},
+        {"name": "스몰블라인드킬러", "avatar": "🥷", "style": "LAG", "level": 41, "xp": 20800, "articles": 55, "tier": "⚙️ 마이크로 그라인더"},
+        {"name": "팟스틸러", "avatar": "🦊", "style": "LAG", "level": 36, "xp": 17200, "articles": 45, "tier": "⚙️ 마이크로 그라인더"},
+        {"name": "3벳마니아", "avatar": "🦁", "style": "LAG", "level": 31, "xp": 13900, "articles": 38, "tier": "⚙️ 마이크로 그라인더"},
+        {"name": "에퀴티계산기", "avatar": "🤖", "style": "GTO", "level": 27, "xp": 10800, "articles": 30, "tier": "⚙️ 마이크로 그라인더"},
+        {"name": "홀덤꿈나무", "avatar": "🐣", "style": "TAG", "level": 23, "xp": 8500, "articles": 24, "tier": "⚔️ 펍 레귤러"},
+        {"name": "펍루키007", "avatar": "⚔️", "style": "HUNTER", "level": 19, "xp": 6200, "articles": 18, "tier": "⚔️ 펍 레귤러"},
+        {"name": "포커새싹", "avatar": "🌱", "style": "TAG", "level": 14, "xp": 3900, "articles": 12, "tier": "⚔️ 펍 레귤러"},
+        {"name": "마이크로도전자", "avatar": "⚙️", "style": "TAG", "level": 11, "xp": 2600, "articles": 9, "tier": "⚔️ 펍 레귤러"},
+        {"name": "초보홀덤러", "avatar": "🐟", "style": "HUNTER", "level": 7, "xp": 1200, "articles": 5, "tier": "🐣 동네 피쉬"},
+        {"name": "스타팅핸드공부중", "avatar": "🐣", "style": "TAG", "level": 4, "xp": 500, "articles": 2, "tier": "🐣 동네 피쉬"},
+        {"name": "입문자A", "avatar": "🐟", "style": "TAG", "level": 2, "xp": 150, "articles": 1, "tier": "🐣 동네 피쉬"}
+    ]
+    
+    # Calculate user tier title
+    tier_map = {
+        0: "🐣 동네 피쉬",
+        1: "⚔️ 펍 레귤러",
+        2: "⚙️ 마이크로 그라인더",
+        3: "🔥 로우스테이크 크러셔",
+        4: "🦊 미드스테이크 프로",
+        5: "🦁 하이롤러 위저드",
+        6: "👑 WSOP 레전드 챔피언"
+    }
+    highest_promo = max([0] + user_state.get("promotions_passed", []))
+    my_tier = tier_map.get(highest_promo, "🐣 동네 피쉬")
+    
+    me = {
+        "name": user_state.get("name", "포커신동"),
+        "avatar": user_state.get("avatar", "🦈"),
+        "style": user_state.get("playstyle", "TAG"),
+        "level": user_state["level"],
+        "xp": user_state["xp"],
+        "articles": len(user_state.get("completed_articles", [])),
+        "tier": my_tier,
+        "is_me": True
+    }
+    
+    all_players = rivals + [me]
+    # Sort: 1) Level DESC, 2) XP DESC
+    all_players.sort(key=lambda p: (p["level"], p["xp"]), reverse=True)
+    
+    for idx, p in enumerate(all_players, start=1):
+        p["rank"] = idx
+        
+    return {
+        "players": all_players,
+        "my_rank": next((p["rank"] for p in all_players if p.get("is_me")), 1)
+    }
 
 # ----------------- STATIC ASSETS & SPA ROUTE -----------------
 
