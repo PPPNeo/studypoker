@@ -4649,7 +4649,7 @@ body.authenticated #auth-gate-screen {
 
   <!-- 🎖️ Character Titles & Achievements Modal (칭호 도감) -->
   <div class="ai-modal-overlay" id="title-modal-overlay" style="display: none;" onclick="if(event.target === this) titleManager.closeModal()">
-    <div class="char-create-modal" style="max-width: 680px; width: 95%;">
+    <div class="char-create-modal" style="max-width: 820px; width: 95%;">
       <div class="char-modal-header" style="background: linear-gradient(135deg, rgba(234, 179, 8, 0.2), rgba(168, 85, 247, 0.2)); border-bottom: 1.5px solid rgba(234, 179, 8, 0.35);">
         <div style="display: flex; align-items: center; gap: 0.65rem;">
           <span style="font-size: 1.6rem;">🎖️</span>
@@ -26317,96 +26317,219 @@ const guidebookManager = {
 };
 
 // ==========================================
-// 🎖️ Title & Achievement Manager (칭호 도감 및 장착 관리)
+// ==========================================
+// 🎖️ Title & Achievement Manager (포커 칭호 도감 및 대표 칭호 장착)
 // ==========================================
 const titleManager = window.titleManager = {
+  currentCategory: 'all',
+  onlyUnlocked: false,
+
   TITLES: [
+    // --- 1. 전직 & 성장 커리어 (15종) ---
     {
       id: 'fish_escaped',
       name: '동네 피쉬 탈출자',
       icon: '🐟',
-      category: '전직 커리어',
+      category: '전직 & 성장',
       desc: '포커의 기본 룰과 팟오즈를 배우기 시작한 입문자',
       req: '기본 지급 (Lv.1 달성)',
       check: (u) => true
     },
     {
+      id: 'rookie_prospect',
+      name: '싹수 보이는 루키',
+      icon: '🐣',
+      category: '전직 & 성장',
+      desc: '기초를 다지며 포커의 재미를 알아가는 유망주',
+      req: 'Lv.5 달성',
+      check: (u) => (app.getLevelInfo(u.xp).level >= 5)
+    },
+    {
       id: 'pub_regular',
       name: '펍 레귤러 크러셔',
       icon: '🍺',
-      category: '전직 커리어',
+      category: '전직 & 성장',
       desc: '펍과 마이크로 판을 지배하며 주도권을 잡는 레귤러',
       req: '1차 전직 완료 (Lv.10 달성)',
       check: (u) => (app.getLevelInfo(u.xp).level >= 10) || (u.promotions_passed && u.promotions_passed.includes(1))
     },
     {
+      id: 'pub_champion',
+      name: '펍 토너먼트 챔피언',
+      icon: '⚔️',
+      category: '전직 & 성장',
+      desc: '동네 펍 토너먼트 파이널 테이블을 장악한 승부사',
+      req: 'Lv.20 달성',
+      check: (u) => (app.getLevelInfo(u.xp).level >= 20)
+    },
+    {
       id: 'micro_grinder',
       name: '마이크로 그라인더',
       icon: '🔬',
-      category: '전직 커리어',
+      category: '전직 & 성장',
       desc: '탄탄한 레인지와 빈도 계산으로 에퀴티를 쌓아가는 그라인더',
       req: '2차 전직 완료 (Lv.25 달성)',
       check: (u) => (app.getLevelInfo(u.xp).level >= 25) || (u.promotions_passed && u.promotions_passed.includes(2))
     },
     {
+      id: 'preflop_virtuoso',
+      name: '프리플랍 차트 장인',
+      icon: '📐',
+      category: '전직 & 성장',
+      desc: '포지션별 오픈 레인지와 3벳 방어를 오차 없이 구사하는 이론가',
+      req: 'Lv.35 달성',
+      check: (u) => (app.getLevelInfo(u.xp).level >= 35)
+    },
+    {
       id: 'lowstakes_breaker',
       name: '로우스테이크 브레이커',
       icon: '💥',
-      category: '전직 커리어',
+      category: '전직 & 성장',
       desc: '상대의 릭(Leak)을 파악하고 무자비하게 익스플로잇하는 타짜',
       req: '3차 전직 완료 (Lv.45 달성)',
       check: (u) => (app.getLevelInfo(u.xp).level >= 45) || (u.promotions_passed && u.promotions_passed.includes(3))
     },
     {
+      id: 'exploit_maestro',
+      name: '익스플로잇의 마에스트로',
+      icon: '🌪️',
+      category: '전직 & 성장',
+      desc: '피쉬를 집요하게 공략하고 레귤러의 헛점을 파고드는 전술가',
+      req: 'Lv.55 달성',
+      check: (u) => (app.getLevelInfo(u.xp).level >= 55)
+    },
+    {
       id: 'midstakes_shark',
       name: '미드스테이크 샤크',
       icon: '🦈',
-      category: '전직 커리어',
+      category: '전직 & 성장',
       desc: '피쉬를 사냥하고 솔버 밸런스를 자유자재로 다루는 포식자',
       req: '4차 전직 완료 (Lv.65 달성)',
       check: (u) => (app.getLevelInfo(u.xp).level >= 65) || (u.promotions_passed && u.promotions_passed.includes(4))
     },
     {
+      id: 'highroller_vip',
+      name: '하이롤러 VIP 라운지',
+      icon: '💎',
+      category: '전직 & 성장',
+      desc: '초고액 베팅과 거대한 팟 앞에서도 흔들림 없는 롤러',
+      req: 'Lv.75 달성',
+      check: (u) => (app.getLevelInfo(u.xp).level >= 75)
+    },
+    {
       id: 'highstakes_pro',
       name: '하이스테이크 프로',
       icon: '👑',
-      category: '전직 커리어',
+      category: '전직 & 성장',
       desc: 'ICM 압박과 하이스테이크 테이블을 제압하는 프로 마스터',
       req: '5차 전직 완료 (Lv.85 달성)',
       check: (u) => (app.getLevelInfo(u.xp).level >= 85) || (u.promotions_passed && u.promotions_passed.includes(5))
     },
     {
+      id: 'wsop_finalist',
+      name: 'WSOP 파이널리스트',
+      icon: '🏆',
+      category: '전직 & 성장',
+      desc: '세계 최고 무대의 파이널 테이블에 진출한 불굴의 승부사',
+      req: 'Lv.95 달성',
+      check: (u) => (app.getLevelInfo(u.xp).level >= 95)
+    },
+    {
       id: 'legend_champion',
       name: '포커 레전드 챔피언',
       icon: '🌌',
-      category: '전직 커리어',
+      category: '전직 & 성장',
       desc: '포커의 모든 수학과 심리를 통달한 전설적인 챔피언',
       req: '최종 6차 전직 완료 (Lv.100 달성)',
       check: (u) => (app.getLevelInfo(u.xp).level >= 100) || (u.promotions_passed && u.promotions_passed.includes(6))
     },
     {
-      id: 'omaha_sage',
-      name: '오마하의 현인',
-      icon: '🦉',
-      category: '외전 특전',
-      desc: '4장의 카드를 다루는 팟 리밋 오마하(PLO) 솔버 마스터',
-      req: '외전 PLO 오마하 3부작 완독',
-      check: (u) => u.plo_title_unlocked || ['plo-just-changed-forever', 'how-gto-wizard-solved-plo', 'plo-upgrades-custom-hu-solving-postflop-icm-nodelocking-more'].every(id => (u.completed_articles || []).includes(id))
+      id: 'exam_valedictorian',
+      name: '승급 시험 수석 통과자',
+      icon: '🎓',
+      category: '전직 & 성장',
+      desc: '까다로운 전직 승급 시험을 3회 이상 우수한 성적으로 돌파한 수재',
+      req: '승급 시험 3회 이상 통과',
+      check: (u) => (u.promotions_passed || []).length >= 3
+    },
+    {
+      id: 'grand_master_diploma',
+      name: '전직 마스터 그랜드슬램',
+      icon: '📜',
+      category: '전직 & 성장',
+      desc: '1차부터 5차까지 모든 전직 관문을 정복한 프로페셔널',
+      req: '승급 시험 5회 이상 통과',
+      check: (u) => (u.promotions_passed || []).length >= 5
+    },
+
+    // --- 2. 도서관 & 학구열 (6종) ---
+    {
+      id: 'avid_reader',
+      name: '열정적인 독서가',
+      icon: '📖',
+      category: '도서관 & 학구열',
+      desc: '이론 습득의 중요성을 깨닫고 아티클 읽기를 시작한 학구파',
+      req: '아티클 5편 이상 정독 완료',
+      check: (u) => (u.completed_articles || []).length >= 5
     },
     {
       id: 'library_scholar',
       name: '도서관의 사서',
       icon: '📚',
-      category: '학습 업적',
+      category: '도서관 & 학구열',
       desc: '포커 이론서와 아티클을 끊임없이 탐독한 지식의 수호자',
       req: '아티클 20편 이상 정독 완료',
       check: (u) => (u.completed_articles || []).length >= 20
     },
     {
+      id: 'poker_encyclopedia',
+      name: '걸어 다니는 백과사전',
+      icon: '🏛️',
+      category: '도서관 & 학구열',
+      desc: '방대한 홀덤 전략 데이터베이스를 머릿속에 구축한 지식인',
+      req: '아티클 50편 이상 정독 완료',
+      check: (u) => (u.completed_articles || []).length >= 50
+    },
+    {
+      id: 'theory_guru',
+      name: '전략 이론의 대현자',
+      icon: '🔮',
+      category: '도서관 & 학구열',
+      desc: '100편 이상의 고급 아티클을 마스터한 진정한 이론 구루',
+      req: '아티클 100편 이상 정독 완료',
+      check: (u) => (u.completed_articles || []).length >= 100
+    },
+    {
+      id: 'deep_researcher',
+      name: '심층 탐구 연구원',
+      icon: '⏳',
+      category: '도서관 & 학구열',
+      desc: '아티클을 대충 넘기지 않고 깊이 파고든 진지한 학자',
+      req: '아티클 누적 학습 시간 30분(1,800초) 이상',
+      check: (u) => {
+        const total = Object.values(u.article_read_times || {}).reduce((a, b) => a + (Number(b) || 0), 0);
+        return total >= 1800;
+      }
+    },
+    {
+      id: 'midnight_oil',
+      name: '학구열의 불침번',
+      icon: '🕯️',
+      category: '도서관 & 학구열',
+      desc: '시간을 잊고 깊은 새벽까지 솔버 차트와 아티클을 연구한 노력파',
+      req: '아티클 누적 학습 시간 1시간(3,600초) 이상',
+      check: (u) => {
+        const total = Object.values(u.article_read_times || {}).reduce((a, b) => a + (Number(b) || 0), 0);
+        return total >= 3600;
+      }
+    },
+
+    // --- 3. 전략 & 분석 (5종) ---
+    {
       id: 'gto_analyst',
       name: 'GTO 솔버 분석가',
       icon: '🧠',
-      category: '학습 업적',
+      category: '전략 & 분석',
       desc: '게임 이론 최적화(GTO) 솔버 전략을 집중 분석한 연구가',
       req: 'GTO 카테고리 아티클 10편 이상 완독',
       check: (u) => {
@@ -26418,43 +26541,252 @@ const titleManager = window.titleManager = {
       }
     },
     {
+      id: 'icm_wizard',
+      name: 'ICM 매스매티션',
+      icon: '⚖️',
+      category: '전략 & 분석',
+      desc: '토너먼트 머니점프와 버블 팩터 에퀴티를 한눈에 꿰뚫는 수학자',
+      req: '토너먼트/ICM 카테고리 10편 이상 완독',
+      check: (u) => {
+        const completed = u.completed_articles || [];
+        if (!window.reader || !reader.articles) return false;
+        const match = reader.articles.filter(a => a.category && (a.category.includes('토너먼트') || a.category.includes('ICM') || a.category.includes('바운티'))).map(a => a.id);
+        return completed.filter(id => match.includes(id)).length >= 10;
+      }
+    },
+    {
+      id: 'three_bet_sniper',
+      name: '3벳 팟 저격수',
+      icon: '💣',
+      category: '전략 & 분석',
+      desc: '3벳/4벳 팟에서 좁혀진 레인지의 스프레드를 파괴하는 저격수',
+      req: '3벳 팟 아티클 5편 이상 완독',
+      check: (u) => {
+        const completed = u.completed_articles || [];
+        if (!window.reader || !reader.articles) return false;
+        const match = reader.articles.filter(a => a.category && a.category.includes('3벳')).map(a => a.id);
+        return completed.filter(id => match.includes(id)).length >= 5;
+      }
+    },
+    {
+      id: 'postflop_commander',
+      name: '포스트플랍 사령관',
+      icon: '🌊',
+      category: '전략 & 분석',
+      desc: '플랍, 턴, 리버 3개 스트리트에서 폴라라이즈드 벳을 지휘하는 지휘관',
+      req: '플랍/턴/리버 아티클 15편 이상 완독',
+      check: (u) => {
+        const completed = u.completed_articles || [];
+        if (!window.reader || !reader.articles) return false;
+        const match = reader.articles.filter(a => a.category && (a.category.includes('플랍') || a.category.includes('턴/리버'))).map(a => a.id);
+        return completed.filter(id => match.includes(id)).length >= 15;
+      }
+    },
+    {
+      id: 'bankroll_economist',
+      name: '뱅크롤 이코노미스트',
+      icon: '💰',
+      category: '전략 & 분석',
+      desc: '포커 수학과 분산, 뱅크롤 관리의 기본을 완벽히 정복한 전략가',
+      req: '수학/기초 및 캐시 아티클 10편 이상 완독',
+      check: (u) => {
+        const completed = u.completed_articles || [];
+        if (!window.reader || !reader.articles) return false;
+        const match = reader.articles.filter(a => a.category && (a.category.includes('수학') || a.category.includes('캐시'))).map(a => a.id);
+        return completed.filter(id => match.includes(id)).length >= 10;
+      }
+    },
+
+    // --- 4. 실전 & 퀴즈 (5종) ---
+    {
+      id: 'quiz_initiate',
+      name: '스팟 퀴즈 도전자',
+      icon: '🎯',
+      category: '실전 & 퀴즈',
+      desc: '실전 핸드 상황 퀴즈를 풀며 의사결정력을 기르기 시작한 플레이어',
+      req: '스팟 퀴즈 3개 이상 완료',
+      check: (u) => (u.completed_quizzes || []).length >= 3
+    },
+    {
       id: 'quiz_master',
       name: '스팟 퀴즈 마스터',
-      icon: '🎯',
-      category: '실전 업적',
+      icon: '🏹',
+      category: '실전 & 퀴즈',
       desc: '실전 핸드 스팟 퀴즈에서 뛰어난 직관과 정답률을 증명한 달인',
       req: '스팟 퀴즈 10개 이상 완료',
       check: (u) => (u.completed_quizzes || []).length >= 10
     },
     {
-      id: 'flame_runner',
-      name: '스트릭 불꽃러너',
-      icon: '🔥',
-      category: '활동 업적',
-      desc: '쉬지 않고 매일 포커 전략을 연마하는 열정적인 그라인더',
-      req: '3일 연속 출석/학습 스트릭 달성',
-      check: (u) => (u.streak || 1) >= 3
+      id: 'quiz_champion',
+      name: '스팟 퀴즈 정점',
+      icon: '⚡',
+      category: '실전 & 퀴즈',
+      desc: '어떤 핸드 상황이 닥쳐도 솔버 수준의 결정을 내리는 실전 최강자',
+      req: '스팟 퀴즈 25개 이상 완료',
+      check: (u) => (u.completed_quizzes || []).length >= 25
+    },
+    {
+      id: 'range_cartographer',
+      name: '레인지 개척자',
+      icon: '🗺️',
+      category: '실전 & 퀴즈',
+      desc: '169개 핸드 매트릭스에서 포지션별 레인지를 탐색한 탐험가',
+      req: '레인지 매트릭스 5개 이상 탐색 완료',
+      check: (u) => (u.explored_ranges || []).length >= 5
+    },
+    {
+      id: 'range_navigator',
+      name: '169 매트릭스 마스터',
+      icon: '🧭',
+      category: '실전 & 퀴즈',
+      desc: '모든 포지션의 오픈, 3벳, 푸시/폴드 레인지를 꿰뚫어 보는 내비게이터',
+      req: '레인지 매트릭스 8개 이상 탐색 완료',
+      check: (u) => (u.explored_ranges || []).length >= 8
+    },
+
+    // --- 5. 능력치 & 멘탈 (6종) ---
+    {
+      id: 'theory_master',
+      name: '포커 이론의 사령관',
+      icon: '♟️',
+      category: '능력치 & 멘탈',
+      desc: '팟오즈와 솔버 원리를 완벽히 정립하여 이론력을 극대화한 전략가',
+      req: '이론력(Theory) 50 PTS 달성',
+      check: (u) => (u.stats && (u.stats.theory || 0) >= 50)
     },
     {
       id: 'bluff_catcher',
       name: '블러프 캐치 장인',
       icon: '🛡️',
-      category: '능력치 업적',
+      category: '능력치 & 멘탈',
       desc: '상대의 무모한 블러프를 날카롭게 꿰뚫어내는 심리전의 대가',
       req: '이론력 또는 결정력 30 PTS 이상 달성',
       check: (u) => (u.stats && ((u.stats.theory || 0) >= 30 || (u.stats.decision || 0) >= 30))
+    },
+    {
+      id: 'iron_will',
+      name: '강철의 멘탈 수호자',
+      icon: '🧘',
+      category: '능력치 & 멘탈',
+      desc: '배드비트와 쿨러에도 감정이 흔들리지 않는 얼음 같은 마인드셋',
+      req: '멘탈력(Mental) 50 PTS 달성',
+      check: (u) => (u.stats && (u.stats.mental || 0) >= 50)
+    },
+    {
+      id: 'lightning_decision',
+      name: '번개같은 승부사',
+      icon: '⚡',
+      category: '능력치 & 멘탈',
+      desc: '1초의 망설임도 없이 정확한 EV를 계산하고 벳하는 결정력의 화신',
+      req: '결정력(Decision) 50 PTS 달성',
+      check: (u) => (u.stats && (u.stats.decision || 0) >= 50)
+    },
+    {
+      id: 'eagle_eye',
+      name: '매의 눈 레인지 리더',
+      icon: '🦅',
+      category: '능력치 & 멘탈',
+      desc: '상대의 핸드 범위를 투시하듯 정확하게 압축해내는 투시자',
+      req: '레인지력(Ranges) 50 PTS 달성',
+      check: (u) => (u.stats && (u.stats.ranges || 0) >= 50)
+    },
+    {
+      id: 'hexagonal_pro',
+      name: '완벽한 육각형 프로',
+      icon: '⭐',
+      category: '능력치 & 멘탈',
+      desc: '이론, 결정, 레인지, 멘탈 4개 스탯이 빈틈없이 조화로운 완전체',
+      req: '4대 핵심 능력치 모두 30 PTS 이상',
+      check: (u) => (u.stats && (u.stats.theory || 0) >= 30 && (u.stats.decision || 0) >= 30 && (u.stats.ranges || 0) >= 30 && (u.stats.mental || 0) >= 30)
+    },
+
+    // --- 6. 활동 & 소통 (5종) ---
+    {
+      id: 'flame_runner',
+      name: '스트릭 불꽃러너',
+      icon: '🔥',
+      category: '활동 & 소통',
+      desc: '쉬지 않고 매일 포커 전략을 연마하는 열정적인 그라인더',
+      req: '3일 연속 출석/학습 스트릭 달성',
+      check: (u) => (u.streak || 1) >= 3
+    },
+    {
+      id: 'weekly_legend',
+      name: '일주일의 성실러',
+      icon: '🌟',
+      category: '활동 & 소통',
+      desc: '일주일 내내 하루도 빠짐없이 포커 서적과 퀴즈를 학습한 성실의 표본',
+      req: '7일 연속 출석/학습 스트릭 달성',
+      check: (u) => (u.streak || 1) >= 7
+    },
+    {
+      id: 'phoenix_grinder',
+      name: '불사조 그라인더',
+      icon: '🚀',
+      category: '활동 & 소통',
+      desc: '2주 동안 매일 공부를 지속하며 습관을 마스터한 진정한 프로',
+      req: '14일 연속 출석/학습 스트릭 달성',
+      check: (u) => (u.streak || 1) >= 14
+    },
+    {
+      id: 'community_insider',
+      name: '단톡방의 핵인싸',
+      icon: '💬',
+      category: '활동 & 소통',
+      desc: '단톡방 닉네임을 등록하고 동료들과 핸드 리뷰 및 토론을 나누는 소통가',
+      req: '단톡방 닉네임 등록 연동 완료',
+      check: (u) => !!(u.kakao_name && u.kakao_name.trim().length > 0)
+    },
+    {
+      id: 'persona_creator',
+      name: '개성 넘치는 승부사',
+      icon: '🎭',
+      category: '활동 & 소통',
+      desc: '자신만의 아바타와 닉네임을 설정하여 테이블 위 개성을 뽐낸 플레이어',
+      req: '기본 닉네임(포커신동)을 변경하거나 아바타 설정 완료',
+      check: (u) => (u.name && u.name !== '포커신동') || (u.avatar && u.avatar !== '🦈')
+    },
+
+    // --- 7. 외전 & 특전 (2종) ---
+    {
+      id: 'omaha_sage',
+      name: '오마하의 현인',
+      icon: '🦉',
+      category: '외전 & 특전',
+      desc: '4장의 카드를 다루는 팟 리밋 오마하(PLO) 솔버 마스터',
+      req: '외전 PLO 오마하 3부작 완독',
+      check: (u) => u.plo_title_unlocked || ['plo-just-changed-forever', 'how-gto-wizard-solved-plo', 'plo-upgrades-custom-hu-solving-postflop-icm-nodelocking-more'].every(id => (u.completed_articles || []).includes(id))
+    },
+    {
+      id: 'early_pioneer',
+      name: 'StudyPoker 얼리 파이오니어',
+      icon: '✨',
+      category: '외전 & 특전',
+      desc: 'StudyPoker 노리밋 홀덤 도서관의 탄생과 함께한 초기 개척자',
+      req: '계정 생성 및 로그인 완료',
+      check: (u) => true
     }
   ],
 
   getEquippedTitle() {
     const u = app.userState;
     if (u.equipped_title) return u.equipped_title;
-    // Check if omaha sage is unlocked
     const omahaTitle = this.TITLES.find(t => t.id === 'omaha_sage');
     if (omahaTitle && omahaTitle.check(u)) return '🦉 오마하의 현인';
-    // Else return highest unlocked career tier
     const lvlInfo = app.getLevelInfo(u.xp);
     return `🐟 ${lvlInfo.title}`;
+  },
+
+  setCategory(cat) {
+    this.currentCategory = cat;
+    this.render();
+    if (window.app && app.playAudioEffect) app.playAudioEffect('click');
+  },
+
+  toggleOnlyUnlocked() {
+    this.onlyUnlocked = !this.onlyUnlocked;
+    this.render();
+    if (window.app && app.playAudioEffect) app.playAudioEffect('click');
   },
 
   equipTitle(titleFull) {
@@ -26491,7 +26823,7 @@ const titleManager = window.titleManager = {
     const currentEquipped = this.getEquippedTitle();
 
     let unlockedCount = 0;
-    const titlesData = this.TITLES.map(t => {
+    const allTitlesData = this.TITLES.map(t => {
       const isUnlocked = t.check(u);
       if (isUnlocked) unlockedCount++;
       const fullTitle = `${t.icon} ${t.name}`;
@@ -26502,6 +26834,35 @@ const titleManager = window.titleManager = {
     if (headerTitle) {
       headerTitle.innerText = `포커 칭호 도감 (보유 ${unlockedCount}/${this.TITLES.length})`;
     }
+
+    const categories = [
+      { id: 'all', name: '전체' },
+      { id: '전직 & 성장', name: '전직 & 성장' },
+      { id: '도서관 & 학구열', name: '도서관 & 학구열' },
+      { id: '전략 & 분석', name: '전략 & 분석' },
+      { id: '실전 & 퀴즈', name: '실전 & 퀴즈' },
+      { id: '능력치 & 멘탈', name: '능력치 & 멘탈' },
+      { id: '활동 & 소통', name: '활동 & 소통' },
+      { id: '외전 & 특전', name: '외전 & 특전' }
+    ];
+
+    let filteredTitles = allTitlesData;
+    if (this.currentCategory !== 'all') {
+      filteredTitles = filteredTitles.filter(t => t.category === this.currentCategory);
+    }
+    if (this.onlyUnlocked) {
+      filteredTitles = filteredTitles.filter(t => t.isUnlocked);
+    }
+
+    const catBadgeStyles = {
+      '전직 & 성장': 'background: rgba(234, 179, 8, 0.15); color: #fbbf24; border: 1px solid rgba(234, 179, 8, 0.35);',
+      '도서관 & 학구열': 'background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.35);',
+      '전략 & 분석': 'background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35);',
+      '실전 & 퀴즈': 'background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.35);',
+      '능력치 & 멘탈': 'background: rgba(139, 92, 246, 0.15); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.35);',
+      '활동 & 소통': 'background: rgba(236, 72, 153, 0.15); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.35);',
+      '외전 & 특전': 'background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4);'
+    };
 
     body.innerHTML = `
       <div style="display: flex; flex-direction: column; gap: 1rem;">
@@ -26518,52 +26879,109 @@ const titleManager = window.titleManager = {
               게임 닉네임과 함께 프로필 및 랭킹보드에 표시되는 대표 칭호입니다.
             </div>
           </div>
-          <div style="font-size: 0.85rem; font-weight: 800; background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); padding: 5px 12px; border-radius: 20px;">
-            보유율 ${Math.round((unlockedCount / this.TITLES.length) * 100)}%
+          <div style="text-align: right;">
+            <div style="font-size: 0.85rem; font-weight: 800; background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); padding: 5px 12px; border-radius: 20px; display: inline-block;">
+              보유율 ${Math.round((unlockedCount / this.TITLES.length) * 100)}% (${unlockedCount}/${this.TITLES.length})
+            </div>
           </div>
         </div>
 
-        <!-- Titles List -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem;">
-          ${titlesData.map(t => `
-            <div style="background: ${t.isUnlocked ? 'var(--bg-surface)' : 'rgba(0,0,0,0.15)'}; border: 1.5px solid ${t.isEquipped ? '#f59e0b' : (t.isUnlocked ? 'var(--border-color)' : 'rgba(255,255,255,0.06)')}; border-radius: 10px; padding: 0.9rem; display: flex; flex-direction: column; justify-content: space-between; gap: 0.65rem; transition: all 0.2s ease; opacity: ${t.isUnlocked ? '1' : '0.65'};">
-              <div>
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
-                  <span style="font-size: 0.72rem; font-weight: 700; background: ${t.category === '외전 특전' ? 'rgba(168, 85, 247, 0.2)' : 'rgba(59, 130, 246, 0.15)'}; color: ${t.category === '외전 특전' ? '#c084fc' : '#60a5fa'}; padding: 2px 7px; border-radius: 4px;">
-                    ${t.category}
-                  </span>
-                  <span style="font-size: 0.75rem; font-weight: 700; color: ${t.isUnlocked ? '#10b981' : 'var(--text-dim)'};">
-                    ${t.isUnlocked ? '🔓 획득 완료' : '🔒 미획득'}
-                  </span>
-                </div>
-                <div style="font-size: 1.02rem; font-weight: 800; color: ${t.isUnlocked ? 'var(--text-main)' : 'var(--text-muted)'}; margin-bottom: 0.25rem;">
-                  ${t.icon} ${t.name}
-                </div>
-                <div style="font-size: 0.78rem; color: var(--text-dim); line-height: 1.4; margin-bottom: 0.4rem;">
-                  ${t.desc}
-                </div>
-                <div style="font-size: 0.74rem; color: ${t.isUnlocked ? '#10b981' : '#f59e0b'}; background: ${t.isUnlocked ? 'rgba(16, 185, 129, 0.08)' : 'rgba(245, 158, 11, 0.08)'}; padding: 3px 6px; border-radius: 4px; display: inline-block;">
-                  조건: ${t.req}
-                </div>
-              </div>
+        <!-- Filter Bar inside Title Modal -->
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+          <div style="display: flex; gap: 0.35rem; flex-wrap: wrap; align-items: center;">
+            ${categories.map(c => {
+              const isActive = this.currentCategory === c.id;
+              const countInCat = c.id === 'all' 
+                ? allTitlesData.length 
+                : allTitlesData.filter(t => t.category === c.id).length;
+              const unlInCat = c.id === 'all'
+                ? unlockedCount
+                : allTitlesData.filter(t => t.category === c.id && t.isUnlocked).length;
+              return `
+                <button onclick="titleManager.setCategory('${c.id}')" style="
+                  background: ${isActive ? '#3b82f6' : 'var(--bg-surface)'};
+                  color: ${isActive ? '#ffffff' : 'var(--text-muted)'};
+                  border: 1px solid ${isActive ? '#3b82f6' : 'var(--border-color)'};
+                  padding: 0.3rem 0.65rem;
+                  border-radius: 6px;
+                  font-size: 0.76rem;
+                  font-weight: 700;
+                  cursor: pointer;
+                  white-space: nowrap;
+                  transition: all 0.15s ease;
+                ">
+                  ${c.name} (${unlInCat}/${countInCat})
+                </button>
+              `;
+            }).join('')}
+          </div>
 
-              <div style="display: flex; justify-content: flex-end; margin-top: 0.25rem;">
-                ${t.isEquipped ? `
-                  <button disabled style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #f59e0b; padding: 0.35rem 0.85rem; border-radius: 6px; font-size: 0.78rem; font-weight: 800; cursor: default;">
-                    ⭐ 장착 중
-                  </button>
-                ` : t.isUnlocked ? `
-                  <button onclick="titleManager.equipTitle('${t.icon} ${t.name}')" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.35rem 0.85rem; border-radius: 6px; font-size: 0.78rem; font-weight: 800; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.borderColor='#3b82f6'; this.style.color='#60a5fa'" onmouseout="this.style.borderColor='var(--border-color)'; this.style.color='var(--text-main)'">
-                    장착하기 ➔
-                  </button>
-                ` : `
-                  <button disabled style="background: transparent; color: var(--text-dim); border: 1px dashed var(--border-color); padding: 0.35rem 0.85rem; border-radius: 6px; font-size: 0.75rem; cursor: not-allowed;">
-                    🔒 잠김
-                  </button>
-                `}
-              </div>
+          <div>
+            <button onclick="titleManager.toggleOnlyUnlocked()" style="
+              background: ${this.onlyUnlocked ? 'rgba(16, 185, 129, 0.15)' : 'transparent'};
+              color: ${this.onlyUnlocked ? '#10b981' : 'var(--text-dim)'};
+              border: 1px solid ${this.onlyUnlocked ? '#10b981' : 'var(--border-color)'};
+              padding: 0.3rem 0.75rem;
+              border-radius: 6px;
+              font-size: 0.76rem;
+              font-weight: 700;
+              cursor: pointer;
+              white-space: nowrap;
+              transition: all 0.15s ease;
+            ">
+              ${this.onlyUnlocked ? '✅ 획득한 칭호만 보는 중' : '🔓 획득한 칭호만 필터'}
+            </button>
+          </div>
+        </div>
+
+        <!-- Titles Grid (Responsive & High-contrast) -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem;">
+          ${filteredTitles.length === 0 ? `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem 1rem; color: var(--text-dim); font-size: 0.9rem;">
+              선택한 카테고리에 해당하는 칭호가 없습니다.
             </div>
-          `).join('')}
+          ` : filteredTitles.map(t => {
+            const bStyle = catBadgeStyles[t.category] || 'background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.35);';
+            return `
+              <div style="background: ${t.isUnlocked ? 'var(--bg-surface)' : 'rgba(0,0,0,0.15)'}; border: 1.5px solid ${t.isEquipped ? '#f59e0b' : (t.isUnlocked ? 'var(--border-color)' : 'rgba(255,255,255,0.06)')}; border-radius: 10px; padding: 0.9rem; display: flex; flex-direction: column; justify-content: space-between; gap: 0.65rem; transition: all 0.2s ease; opacity: ${t.isUnlocked ? '1' : '0.65'}; box-sizing: border-box;">
+                <div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; flex-wrap: wrap; gap: 0.25rem;">
+                    <span style="font-size: 0.7rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; ${bStyle}">
+                      ${t.category}
+                    </span>
+                    <span style="font-size: 0.74rem; font-weight: 700; color: ${t.isUnlocked ? '#10b981' : 'var(--text-dim)'};">
+                      ${t.isUnlocked ? '🔓 획득 완료' : '🔒 미획득'}
+                    </span>
+                  </div>
+                  <div style="font-size: 1.02rem; font-weight: 800; color: ${t.isUnlocked ? 'var(--text-main)' : 'var(--text-muted)'}; margin-bottom: 0.25rem;">
+                    ${t.icon} ${t.name}
+                  </div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); line-height: 1.4; margin-bottom: 0.4rem; word-break: keep-all;">
+                    ${t.desc}
+                  </div>
+                  <div style="font-size: 0.73rem; color: ${t.isUnlocked ? '#10b981' : '#f59e0b'}; background: ${t.isUnlocked ? 'rgba(16, 185, 129, 0.08)' : 'rgba(245, 158, 11, 0.08)'}; padding: 3px 6px; border-radius: 4px; display: inline-block; word-break: keep-all;">
+                    조건: ${t.req}
+                  </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; margin-top: 0.25rem;">
+                  ${t.isEquipped ? `
+                    <button disabled style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #f59e0b; padding: 0.35rem 0.85rem; border-radius: 6px; font-size: 0.78rem; font-weight: 800; cursor: default;">
+                      ⭐ 장착 중
+                    </button>
+                  ` : t.isUnlocked ? `
+                    <button onclick="titleManager.equipTitle('${t.icon} ${t.name}')" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.35rem 0.85rem; border-radius: 6px; font-size: 0.78rem; font-weight: 800; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.borderColor='#3b82f6'; this.style.color='#60a5fa'" onmouseout="this.style.borderColor='var(--border-color)'; this.style.color='var(--text-main)'">
+                      장착하기 ➔
+                    </button>
+                  ` : `
+                    <button disabled style="background: transparent; color: var(--text-dim); border: 1px dashed var(--border-color); padding: 0.35rem 0.85rem; border-radius: 6px; font-size: 0.75rem; cursor: not-allowed;">
+                      🔒 잠김
+                    </button>
+                  `}
+                </div>
+              </div>
+            `;
+          }).join('')}
         </div>
       </div>
     `;
