@@ -772,10 +772,15 @@ var characterManager = window.characterManager = {
     if (dAv) dAv.innerText = u.avatar || '🦈';
     if (dNm) dNm.innerText = u.name || '포커신동';
 
-    // 🎖️ 대표 칭호 뱃지 텍스트 반영
+    // 🎖️ 대표 칭호 뱃지 텍스트 반영 (사용자 요청: 대표칭호 : [칭호])
     const dEquipped = document.getElementById('dash-equipped-title-text');
     if (dEquipped && window.titleManager && titleManager.getEquippedTitle) {
-      dEquipped.innerText = titleManager.getEquippedTitle();
+      const rawTitle = titleManager.getEquippedTitle();
+      const cleanTitle = rawTitle.replace(/^[\p{Emoji}\s]+/u, '').trim() || rawTitle;
+      dEquipped.innerText = `🎖️ 대표칭호: ${cleanTitle}`;
+      if (dEquipped.parentElement) {
+        dEquipped.parentElement.title = `대표 칭호 [${cleanTitle}] (클릭하여 칭호 도감 열기)`;
+      }
     }
 
     const dKakao = document.getElementById('dash-kakao-tag');
@@ -794,26 +799,36 @@ var characterManager = window.characterManager = {
     if (dSt) dSt.innerText = `${styleEmoji} ${styleInfo.tag || 'TAG'} 스타일`;
     if (dTr) dTr.innerText = lvlInfo.title;
 
-    // 🦉 PLO 3부작 완독 특별 칭호 표시
-    const dSpecial = document.getElementById('dash-special-title');
-    const isPloComplete = ['plo-just-changed-forever', 'how-gto-wizard-solved-plo', 'plo-upgrades-custom-hu-solving-postflop-icm-nodelocking-more']
-      .every(id => (u.completed_articles || []).includes(id));
-    if (dSpecial) {
-      if (u.plo_title_unlocked || isPloComplete) {
-        dSpecial.style.display = 'inline-flex';
-        dSpecial.innerText = '🦉 오마하의 현인';
-        dSpecial.title = '4장 오마하(PLO) 3부작 완독자 전용 특별 칭호';
-      } else {
-        dSpecial.style.display = 'none';
-      }
-    }
-
+    // 🏆 실시간 랭킹 뱃지 텍스트 반영
     const dRank = document.getElementById('dash-char-rank');
     if (dRank && window.rankingManager && rankingManager.getUserRank) {
       const rInfo = rankingManager.getUserRank();
-      dRank.innerHTML = `🏆 랭킹: #${rInfo.rank}위`;
+      dRank.innerHTML = `🏆 실시간 랭킹: #${rInfo.rank}위`;
       dRank.title = `전체 플레이어 ${rInfo.total}명 중 실시간 #${rInfo.rank}위 (클릭하여 랭킹보드 이동)`;
     }
+
+    // 🎖️ 내 보유 칭호 뱃지들 렌더링 (아이콘만, 칭호 이름 없이 뱃지로만!)
+    const badgesContainer = document.getElementById('dash-unlocked-title-badges');
+    if (badgesContainer && window.titleManager && titleManager.getUnlockedTitles) {
+      const unlocked = titleManager.getUnlockedTitles();
+      if (unlocked && unlocked.length > 0) {
+        badgesContainer.innerHTML = unlocked.map(t => `
+          <span class="mini-title-badge ${t.isEquipped ? 'equipped' : ''}" 
+                title="${t.name} • ${t.desc} (클릭 시 칭호 도감)" 
+                onclick="titleManager.openModal()">
+            ${t.icon}
+          </span>
+        `).join('');
+        badgesContainer.style.display = 'inline-flex';
+      } else {
+        badgesContainer.innerHTML = '';
+        badgesContainer.style.display = 'none';
+      }
+    }
+
+    // 🦉 PLO 3부작 완독 특별 칭호 호환성 유지
+    const dSpecial = document.getElementById('dash-special-title');
+    if (dSpecial) dSpecial.style.display = 'none';
 
     if (dBio) dBio.innerText = `"${styleInfo.bio}"`;
 
@@ -5040,6 +5055,18 @@ const titleManager = window.titleManager = {
     if (omahaTitle && omahaTitle.check(u)) return '🦉 오마하의 현인';
     const lvlInfo = app.getLevelInfo(u.xp);
     return `🐟 ${lvlInfo.title}`;
+  },
+
+  getUnlockedTitles() {
+    const u = app.userState;
+    const currentEquipped = this.getEquippedTitle();
+    return this.TITLES
+      .filter(t => t.check(u))
+      .map(t => {
+        const fullTitle = `${t.icon} ${t.name}`;
+        const isEquipped = (currentEquipped === fullTitle || currentEquipped === t.name || currentEquipped.includes(t.name));
+        return { ...t, fullTitle, isEquipped };
+      });
   },
 
   setCategory(cat) {
