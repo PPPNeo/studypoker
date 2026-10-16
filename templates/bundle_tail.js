@@ -1,3 +1,6 @@
+// Global Auth Manager reference
+var authManager;
+
 // Theme Manager
 const themeManager = {
   theme: localStorage.getItem('studypoker_theme') || 'light',
@@ -635,11 +638,21 @@ const app = {
   currentView: 'roadmap',
 
   init() {
+    window.authManager = authManager;
+    authManager.init();
 
+    // 🔒 비로그인 상태일 때는 절대 게임 및 프로필을 초기화/표시하지 않음
+    if (!authManager.isLoggedIn()) {
+      return;
+    }
 
+    this.startAuthenticatedApp();
+  },
+
+  startAuthenticatedApp() {
+    this.userState = storage.get();
     themeManager.init();
     characterManager.init();
-    if (window.authManager) authManager.init();
     this.updateUserBar();
     roadmap.load();
     reader.loadArticles();
@@ -658,6 +671,10 @@ const app = {
   },
 
   navigate(viewId) {
+    if (window.authManager && !authManager.isLoggedIn()) {
+      authManager.showGate('login');
+      return;
+    }
     if (viewId !== 'reader' && window.reader && reader.readTimer) {
       clearInterval(reader.readTimer);
       reader.readTimer = null;
@@ -3428,7 +3445,7 @@ const SUPABASE_CONFIG = {
   key: 'sb_publishable_Wd1XDhi2nWMYib7M_2tS0A_Fxt-FtO_'
 };
 
-const authManager = {
+authManager = window.authManager = {
   gateMode: 'login', // 'login', 'signup', 'forgot'
   currentMode: 'profile', // modal mode: 'profile'
   _syncDebounceTimer: null,
@@ -3436,8 +3453,12 @@ const authManager = {
 
   init() {
     if (!this.isLoggedIn()) {
+      document.body.classList.remove('authenticated');
+      document.body.classList.add('not-authenticated');
       this.showGate('login');
     } else {
+      document.body.classList.remove('not-authenticated');
+      document.body.classList.add('authenticated');
       this.hideGate();
       this.renderAuthButton();
       this.syncFromCloudSilently();
@@ -3474,6 +3495,8 @@ const authManager = {
 
   showGate(mode = 'login') {
     this.gateMode = mode;
+    document.body.classList.remove('authenticated');
+    document.body.classList.add('not-authenticated');
     const gate = document.getElementById('auth-gate-screen');
     if (gate) gate.style.display = 'flex';
 
@@ -3489,6 +3512,8 @@ const authManager = {
   },
 
   hideGate() {
+    document.body.classList.remove('not-authenticated');
+    document.body.classList.add('authenticated');
     const gate = document.getElementById('auth-gate-screen');
     if (gate) gate.style.display = 'none';
 
@@ -3738,13 +3763,7 @@ const authManager = {
 
       this.hideGate();
       this.renderAuthButton();
-      characterManager.renderDashboard();
-      characterManager.renderHeader();
-      app.updateUserBar();
-      roadmap.load();
-      if (window.rankingManager && rankingManager.fetchCloudPlayers) {
-        rankingManager.fetchCloudPlayers();
-      }
+      app.startAuthenticatedApp();
 
       characterManager.showToast(`🎉 반갑습니다, ${result.game_nickname}님! 게임이 시작되었습니다.`);
     } catch (e) {
@@ -3854,13 +3873,7 @@ const authManager = {
 
       this.hideGate();
       this.renderAuthButton();
-      characterManager.renderDashboard();
-      characterManager.renderHeader();
-      app.updateUserBar();
-      roadmap.load();
-      if (window.rankingManager && rankingManager.fetchCloudPlayers) {
-        rankingManager.fetchCloudPlayers();
-      }
+      app.startAuthenticatedApp();
 
       characterManager.showToast(`🎉 ${gameNick}님, 환영합니다! 스터디포커가 시작되었습니다.`);
     } catch (e) {
@@ -4107,6 +4120,17 @@ const authManager = {
       return;
     }
     localStorage.removeItem('studypoker_auth');
+    localStorage.removeItem('studypoker_user');
+    app.userState = {
+      name: '',
+      avatar: '🦈',
+      playstyle: 'TAG',
+      xp: 0,
+      completed_articles: [],
+      completed_quizzes: [],
+      promotions_passed: [],
+      ai_queries_count: 0
+    };
     this.closeModal();
     this.showGate('login');
     characterManager.showToast("🚪 로그아웃 되었습니다.");
