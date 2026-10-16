@@ -60,7 +60,58 @@ class AIQuestion(BaseModel):
     context: Optional[str] = None
     article_id: Optional[str] = None
 
+class SyncSaveRequest(BaseModel):
+    nickname: str
+    pin: str
+    state: Dict[str, Any]
+
+class SyncLoadRequest(BaseModel):
+    nickname: str
+    pin: str
+
 # ----------------- API ROUTES -----------------
+
+@app.post("/api/sync/save")
+def sync_save(req: SyncSaveRequest):
+    users_file = os.path.join(DATA_DIR, "users_cloud.json")
+    users = {}
+    if os.path.exists(users_file):
+        try:
+            with open(users_file, "r", encoding="utf-8") as f:
+                users = json.load(f)
+        except Exception:
+            users = {}
+    
+    key = req.nickname.strip().lower()
+    if key in users and users[key].get("pin") != req.pin:
+        raise HTTPException(status_code=403, detail="PIN 번호가 일치하지 않습니다.")
+    
+    users[key] = {
+        "nickname": req.nickname.strip(),
+        "pin": req.pin,
+        "state": req.state
+    }
+    with open(users_file, "w", encoding="utf-8") as f:
+        json.dump(users, f, ensure_ascii=False, indent=2)
+    return {"success": True, "message": "클라우드 저장 완료"}
+
+@app.post("/api/sync/load")
+def sync_load(req: SyncLoadRequest):
+    users_file = os.path.join(DATA_DIR, "users_cloud.json")
+    if not os.path.exists(users_file):
+        raise HTTPException(status_code=404, detail="해당 닉네임의 저장 기록을 찾을 수 없습니다.")
+    try:
+        with open(users_file, "r", encoding="utf-8") as f:
+            users = json.load(f)
+    except Exception:
+        raise HTTPException(status_code=500, detail="데이터베이스 읽기 실패")
+
+    key = req.nickname.strip().lower()
+    if key not in users:
+        raise HTTPException(status_code=404, detail="해당 닉네임의 저장 기록을 찾을 수 없습니다.")
+    if users[key].get("pin") != req.pin:
+        raise HTTPException(status_code=403, detail="PIN 번호가 일치하지 않습니다.")
+    return {"success": True, "state": users[key]["state"]}
 
 @app.get("/api/articles")
 def get_articles(category: Optional[str] = None, level: Optional[str] = None):

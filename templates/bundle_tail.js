@@ -616,6 +616,17 @@ const app = {
   currentView: 'roadmap',
 
   init() {
+    // Check for ?sync= in URL for instant mobile/PC QR sync
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const syncCode = urlParams.get('sync');
+      if (syncCode && window.syncManager) {
+        syncManager.importCompactCode(syncCode, true);
+      }
+    } catch (e) {
+      console.warn("Auto sync check error:", e);
+    }
+
     themeManager.init();
     characterManager.init();
     this.updateUserBar();
@@ -625,7 +636,7 @@ const app = {
     glossary.load();
 
     const hash = window.location.hash.replace('#', '');
-    if (hash && ['articles', 'trainer', 'matrix', 'roadmap', 'glossary'].includes(hash)) {
+    if (hash && ['articles', 'trainer', 'matrix', 'roadmap', 'glossary', 'ranking'].includes(hash)) {
       this.navigate(hash);
     } else {
       this.navigate('roadmap');
@@ -969,12 +980,12 @@ const reader = {
     // 3. Dynamically update Level pill counts and Lock badges based on active category & user level
     const userLvl = app.getLevelInfo(app.userState.xp).level;
     const levelMeta = {
-      'Level 1': { title: 'Lv.1 입문', req: 1 },
-      'Level 2': { title: 'Lv.2 초급', req: 2 },
-      'Level 3': { title: 'Lv.3 중급', req: 3 },
-      'Level 4': { title: 'Lv.4 고급', req: 4 },
-      'Level 5': { title: 'Lv.5 심화', req: 5 },
-      'Level 6': { title: 'Lv.6 마스터', req: 6 }
+      'Level 1': { title: '[입문] 동네 피쉬 (Lv.1~9)', req: 1, tierNum: 1 },
+      'Level 2': { title: '[1차 전직] 펍 레귤러 (Lv.10~24)', req: 10, tierNum: 2 },
+      'Level 3': { title: '[2차 전직] 마이크로 그라인더 (Lv.25~44)', req: 25, tierNum: 3 },
+      'Level 4': { title: '[3차 전직] 로우스테이크 크러셔 (Lv.45~64)', req: 45, tierNum: 4 },
+      'Level 5': { title: '[4차 전직] 미드스테이크 프로 (Lv.65~84)', req: 65, tierNum: 5 },
+      'Level 6': { title: '[5차 전직/최종] 하이롤러 & 챔피언 (Lv.85~100)', req: 85, tierNum: 6 }
     };
 
     document.querySelectorAll('#article-level-filters .filter-pill').forEach(pill => {
@@ -987,7 +998,8 @@ const reader = {
         const meta = levelMeta[l];
         const isLocked = meta.req > userLvl;
         const cnt = this.articles.filter(a => 
-          (this.activeCategory === 'all' || a.category === this.activeCategory) && a.level.startsWith(l)
+          (this.activeCategory === 'all' || a.category === this.activeCategory) &&
+          (a.tier_num === meta.tierNum || a.tier_category === l || a.level.startsWith(l))
         ).length;
         pill.innerText = `${isLocked ? '🔒 ' : '🔓 '}${meta.title} (${cnt})`;
         pill.style.opacity = (cnt === 0) ? '0.45' : '1';
@@ -1006,7 +1018,11 @@ const reader = {
     const userLvl = app.getLevelInfo(app.userState.xp).level;
     const filtered = this.articles.filter(a => {
       if (this.activeCategory !== 'all' && a.category !== this.activeCategory) return false;
-      if (this.activeLevel !== 'all' && !a.level.startsWith(this.activeLevel)) return false;
+      if (this.activeLevel !== 'all') {
+        const meta = { 'Level 1': 1, 'Level 2': 2, 'Level 3': 3, 'Level 4': 4, 'Level 5': 5, 'Level 6': 6 }[this.activeLevel];
+        const matchesLevel = a.tier_num === meta || a.tier_category === this.activeLevel || a.level.startsWith(this.activeLevel);
+        if (!matchesLevel) return false;
+      }
       if (this.unlockedOnly && (a.required_level || 1) > userLvl) return false;
       if (this.searchQuery) {
         const pool = `${a.title_ko} ${a.title_en} ${a.category} ${a.level} ${a.slug}`.toLowerCase();
@@ -1440,7 +1456,9 @@ const trainer = {
   },
 
   jumpToLevel(lvl) {
-    const idx = this.quizzes.findIndex(q => (q.required_level || 1) === lvl);
+    const qLevelReqs = { 1: 1, 2: 10, 3: 25, 4: 45, 5: 65, 6: 85 };
+    const targetReq = qLevelReqs[lvl] || lvl;
+    const idx = this.quizzes.findIndex(q => (q.tier_num || 1) === lvl || (q.required_level || 1) === targetReq);
     if (idx !== -1) {
       this.currentIndex = idx;
       this.renderCurrentQuiz();
@@ -1457,18 +1475,28 @@ const trainer = {
   updateLevelChips() {
     const userLvl = app.getLevelInfo(app.userState.xp).level;
     const curQ = this.quizzes[this.currentIndex];
-    const curLvl = curQ ? (curQ.required_level || 1) : 1;
+    const curTier = curQ ? (curQ.tier_num || (curQ.required_level >= 85 ? 6 : curQ.required_level >= 65 ? 5 : curQ.required_level >= 45 ? 4 : curQ.required_level >= 25 ? 3 : curQ.required_level >= 10 ? 2 : 1)) : 1;
+
+    const qLevelReqs = { 1: 1, 2: 10, 3: 25, 4: 45, 5: 65, 6: 85 };
+    const labels = {
+      1: '[입문] 동네 피쉬 (Lv.1~9)',
+      2: '[1차 전직] 펍 레귤러 (Lv.10~24)',
+      3: '[2차 전직] 마이크로 그라인더 (Lv.25~44)',
+      4: '[3차 전직] 로우스테이크 크러셔 (Lv.45~64)',
+      5: '[4차 전직] 미드스테이크 프로 (Lv.65~84)',
+      6: '[5차 전직/최종] 하이롤러 & 챔피언 (Lv.85~100)'
+    };
 
     document.querySelectorAll('#quiz-level-filter-chips .filter-pill').forEach(btn => {
-      const lvl = parseInt(btn.dataset.qlvl, 10);
-      const isLocked = lvl > userLvl;
-      const isActive = (lvl === curLvl);
+      const qlvl = parseInt(btn.dataset.qlvl, 10);
+      const reqLvl = qLevelReqs[qlvl] || 1;
+      const isLocked = reqLvl > userLvl;
+      const isActive = (qlvl === curTier);
 
       if (isActive) btn.classList.add('active');
       else btn.classList.remove('active');
 
-      const labels = { 1: 'Lv.1 입문', 2: 'Lv.2 초급', 3: 'Lv.3 중급', 4: 'Lv.4 고급', 5: 'Lv.5 심화', 6: 'Lv.6 마스터' };
-      btn.innerText = `${isLocked ? '🔒 ' : '🔓 '}${labels[lvl] || `Lv.${lvl}`}`;
+      btn.innerText = `${isLocked ? '🔒 ' : '🔓 '}${labels[qlvl] || `Tier ${qlvl}`}`;
     });
   },
 
@@ -3021,6 +3049,673 @@ const rankingManager = {
         `;
       }).join('');
     }
+  }
+};
+
+// ==========================================
+// 📖 Game System & Promotion Guidebook Manager
+// ==========================================
+const guidebookManager = {
+  currentTab: 'tiers',
+
+  openModal(tab = 'tiers') {
+    this.currentTab = tab;
+    this.render();
+    const el = document.getElementById('guidebook-modal-overlay');
+    if (el) el.style.display = 'flex';
+    app.playAudioEffect('click');
+  },
+
+  closeModal() {
+    const el = document.getElementById('guidebook-modal-overlay');
+    if (el) el.style.display = 'none';
+  },
+
+  switchTab(tab) {
+    this.currentTab = tab;
+    this.render();
+    app.playAudioEffect('click');
+  },
+
+  render() {
+    const body = document.getElementById('guidebook-modal-body');
+    if (!body) return;
+
+    const tabs = [
+      { id: 'tiers', label: '⚔️ 6개 전직 구간 & 칭호', icon: '⚔️' },
+      { id: 'levelup', label: '📈 레벨업 & XP 획득 공식', icon: '📈' },
+      { id: 'exam', label: '🎓 전직 심사 시험 안내', icon: '🎓' },
+      { id: 'anticheat', label: '⚖️ 공정 학습 가드', icon: '⚖️' },
+      { id: 'ranking', label: '🏆 랭킹보드 산정 기준', icon: '🏆' }
+    ];
+
+    let contentHtml = '';
+
+    if (this.currentTab === 'tiers') {
+      contentHtml = `
+        <div style="margin-bottom: 1.25rem;">
+          <h4 style="font-size: 1.1rem; font-weight: 800; color: #60a5fa; margin-bottom: 0.4rem;">
+            🌟 Lv.1 동네 피쉬에서 Lv.100 WSOP 전설까지의 6단계 여정
+          </h4>
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin: 0;">
+            스터디포커는 포커 실력의 발달 단계를 6개 전직 구간으로 구현했습니다. 일정 레벨에 도달하면 자동으로 '전직 심사 시험' 자격이 부여되며, 시험을 합격해야만 다음 레벨 구간으로 진입할 수 있습니다.
+          </p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+          ${PROMOTION_TIERS.map(pt => {
+            const isEntry = pt.tier === 0;
+            const lvlSpan = isEntry ? 'Lv.1 ~ Lv.9' : pt.tier === 1 ? 'Lv.10 ~ Lv.24' : pt.tier === 2 ? 'Lv.25 ~ Lv.44' : pt.tier === 3 ? 'Lv.45 ~ Lv.64' : pt.tier === 4 ? 'Lv.65 ~ Lv.84' : pt.tier === 5 ? 'Lv.85 ~ Lv.99' : 'Lv.100 (만렙)';
+            const tierPrefix = isEntry ? '[입문]' : pt.tier === 6 ? '[최종 6차]' : `[${pt.tier}차 전직]`;
+
+            return `
+              <div style="background: var(--bg-card); border: 1.5px solid ${pt.color}55; border-radius: 12px; padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 0.85rem;">
+                  <span style="font-size: 2.2rem; filter: drop-shadow(0 2px 8px ${pt.color}44);">${pt.icon}</span>
+                  <div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                      <span style="font-weight: 800; font-size: 1.05rem; color: ${pt.color};">${tierPrefix} ${pt.name}</span>
+                      <span style="background: ${pt.color}22; color: ${pt.color}; font-size: 0.78rem; font-weight: 800; padding: 2px 8px; border-radius: 12px; border: 1px solid ${pt.color}44;">(${lvlSpan})</span>
+                    </div>
+                    <p style="font-size: 0.83rem; color: var(--text-muted); margin: 0.25rem 0 0; line-height: 1.5;">${pt.desc}</p>
+                  </div>
+                </div>
+                <div style="text-align: right; min-width: 140px;">
+                  <span style="font-size: 0.75rem; color: var(--text-dim); display: block;">심사 자격 레벨</span>
+                  <strong style="color: #fbbf24; font-size: 0.95rem;">${isEntry ? '기본 입문' : `Lv.${pt.targetLevel} 도달 시`}</strong>
+                  ${pt.bonusXP > 0 ? `<div style="font-size: 0.75rem; color: #34d399; font-weight: 700; margin-top: 2px;">🎁 전직 보너스 +${pt.bonusXP.toLocaleString()} XP</div>` : ''}
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    } else if (this.currentTab === 'levelup') {
+      contentHtml = `
+        <div style="margin-bottom: 1.25rem;">
+          <h4 style="font-size: 1.1rem; font-weight: 800; color: #34d399; margin-bottom: 0.4rem;">
+            📈 실전 학습으로 획득하는 공정한 경험치(XP) 규칙
+          </h4>
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin: 0;">
+            모든 경험치 획득은 실제 학습 시간을 검증하여 공정하게 부여됩니다. 아래의 5가지 활동을 통해 XP를 획득하고 레벨을 올리세요!
+          </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.85rem;">
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.15rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <span style="font-weight: 800; color: #60a5fa; font-size: 0.95rem;">📖 아티클 정독</span>
+              <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; font-weight: 800; font-size: 0.8rem; padding: 2px 8px; border-radius: 10px;">+50 XP</span>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
+              369편의 GTO 솔버 아티클을 <strong>최소 35초 이상 집중 열람</strong>하고 본문의 <strong>75% 이상을 스크롤</strong>하면 완독 및 +50 XP가 지급됩니다.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.15rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <span style="font-weight: 800; color: #34d399; font-size: 0.95rem;">🎯 스팟 퀴즈 풀기</span>
+              <span style="background: rgba(16, 185, 129, 0.2); color: #34d399; font-weight: 800; font-size: 0.8rem; padding: 2px 8px; border-radius: 10px;">+30 XP / +10 XP</span>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
+              실전 핸드 스팟 문제 정답 시 <strong>+30 XP</strong>, 오답 시에도 해설을 복습하면 <strong>+10 XP</strong>를 학습 보상으로 획득합니다.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.15rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <span style="font-weight: 800; color: #a78bfa; font-size: 0.95rem;">🧮 프리플랍 매트릭스 탐색</span>
+              <span style="background: rgba(167, 139, 250, 0.2); color: #a78bfa; font-weight: 800; font-size: 0.8rem; padding: 2px 8px; border-radius: 10px;">+15 XP</span>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
+              169개 핸드 그리드에서 포지션별(UTG~BB) 오픈, 3벳 방어 솔루션 빈도를 탐구하면 경험치가 누적됩니다.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.15rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <span style="font-weight: 800; color: #f59e0b; font-size: 0.95rem;">🤖 AI 코치 심층 질의</span>
+              <span style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; font-weight: 800; font-size: 0.8rem; padding: 2px 8px; border-radius: 10px;">+20 XP</span>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
+              실전에서 헷갈렸던 스팟이나 GTO 이론을 AI 코치에게 질문하고 심층 피드백을 받으면 질문 보너스를 획득합니다.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-card); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 12px; padding: 1.15rem; grid-column: 1 / -1;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <span style="font-weight: 800; color: #fbbf24; font-size: 0.95rem;">🎓 전직 심사 시험 통과 보너스</span>
+              <span style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; font-weight: 800; font-size: 0.8rem; padding: 2px 8px; border-radius: 10px;">+500 ~ +5,000 XP</span>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
+              각 전직 심사 시험(1차~6차)을 통과할 때마다 대량의 승급 축하 보너스 경험치를 즉시 획득합니다!
+            </p>
+          </div>
+        </div>
+      `;
+    } else if (this.currentTab === 'exam') {
+      contentHtml = `
+        <div style="margin-bottom: 1.25rem;">
+          <h4 style="font-size: 1.1rem; font-weight: 800; color: #f59e0b; margin-bottom: 0.4rem;">
+            🎓 6구간 전직 심사 시험(Promotion Exam) 시스템
+          </h4>
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin: 0;">
+            레벨만 높다고 전직할 수 없습니다! 해당 레벨에 도달하면 실제 솔버 지식을 검증하는 5문항의 실전 심사 시험을 치르게 됩니다.
+          </p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem;">
+            <strong style="color: #60a5fa; font-size: 0.95rem;">🔒 전직 게이트웨이 락 (Level Gate)</strong>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0.35rem 0 0; line-height: 1.5;">
+              전직 시험을 통과하지 못하면 해당 레벨(Lv.10, Lv.25, Lv.45 등)에서 레벨업이 잠기며, 상위 티어 콘텐츠가 해금되지 않습니다.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem;">
+            <strong style="color: #34d399; font-size: 0.95rem;">⏱️ 불합격 시 무제한 재도전 가능</strong>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0.35rem 0 0; line-height: 1.5;">
+              시험에서 탈락하더라도 경험치나 레벨이 깎이지 않으며, 아티클을 더 복습한 후 언제든지 다시 도전할 수 있습니다.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem;">
+            <strong style="color: #fbbf24; font-size: 0.95rem;">🏆 통과 기준</strong>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0.35rem 0 0; line-height: 1.5;">
+              엄선된 실전 핸드 5문항 중 <strong>4문항 이상 정답 시 즉시 합격</strong> 처리되며, 칭호 변경 + 상위 레벨 해금 + 대량의 보너스 XP가 지급됩니다.
+            </p>
+          </div>
+        </div>
+      `;
+    } else if (this.currentTab === 'anticheat') {
+      contentHtml = `
+        <div style="margin-bottom: 1.25rem;">
+          <h4 style="font-size: 1.1rem; font-weight: 800; color: #ef4444; margin-bottom: 0.4rem;">
+            ⚖️ 공정 학습 및 부정행위 방지 시스템 (Anti-Cheat Fair Guard)
+          </h4>
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin: 0;">
+            랭킹보드의 공정성과 학습의 진정성을 위해 편법으로 완독 버튼을 누르는 행위를 완벽하게 차단합니다.
+          </p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <div style="background: rgba(239, 68, 68, 0.08); border-left: 4px solid #ef4444; border-radius: 0 8px 8px 0; padding: 1rem 1.25rem;">
+            <strong style="color: #f87171; font-size: 0.95rem;">⏱️ 35초 활성 독서 타이머</strong>
+            <p style="font-size: 0.82rem; color: var(--text-main); margin: 0.35rem 0 0; line-height: 1.5;">
+              글을 연 후 35초가 경과해야만 완독 버튼이 활성화됩니다.
+            </p>
+          </div>
+
+          <div style="background: rgba(245, 158, 11, 0.08); border-left: 4px solid #f59e0b; border-radius: 0 8px 8px 0; padding: 1rem 1.25rem;">
+            <strong style="color: #fbbf24; font-size: 0.95rem;">👁️ 백그라운드 탭 자동 일시정지</strong>
+            <p style="font-size: 0.82rem; color: var(--text-main); margin: 0.35rem 0 0; line-height: 1.5;">
+              다른 인터넷 탭으로 넘어가거나 화면을 가리면 타이머가 즉시 일시정지되어, 켜두기만 하는 방치형 어뷰징을 방지합니다.
+            </p>
+          </div>
+
+          <div style="background: rgba(59, 130, 246, 0.08); border-left: 4px solid #3b82f6; border-radius: 0 8px 8px 0; padding: 1rem 1.25rem;">
+            <strong style="color: #60a5fa; font-size: 0.95rem;">📜 최소 75% 스크롤 검증</strong>
+            <p style="font-size: 0.82rem; color: var(--text-main); margin: 0.35rem 0 0; line-height: 1.5;">
+              글의 서론만 보고 끝내지 않고 본문의 솔버 차트와 핵심 전략까지 실제로 스크롤을 내려야만 학습 완료로 인증됩니다.
+            </p>
+          </div>
+        </div>
+      `;
+    } else if (this.currentTab === 'ranking') {
+      contentHtml = `
+        <div style="margin-bottom: 1.25rem;">
+          <h4 style="font-size: 1.1rem; font-weight: 800; color: #fbbf24; margin-bottom: 0.4rem;">
+            🏆 전체 이용자 랭킹보드 순위 산정 기준
+          </h4>
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin: 0;">
+            모든 이용자의 학습 성과는 실시간으로 집계되어 랭킹보드에 반영됩니다. 순위는 아래의 엄격한 원칙으로 결정됩니다:
+          </p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <div style="background: var(--bg-card); border: 1.5px solid #fbbf24; border-radius: 12px; padding: 1.15rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+              <span style="font-size: 1.3rem;">🥇</span>
+              <strong style="color: #fbbf24; font-size: 1rem;">1순위: 현재 레벨 (Level)</strong>
+            </div>
+            <p style="font-size: 0.83rem; color: var(--text-muted); margin: 0; line-height: 1.5;">
+              레벨이 높은 이용자가 무조건 더 높은 순위를 차지합니다. (예: Lv.25 유저는 Lv.24 유저보다 무조건 상위)
+            </p>
+          </div>
+
+          <div style="background: var(--bg-card); border: 1.5px solid #60a5fa; border-radius: 12px; padding: 1.15rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+              <span style="font-size: 1.3rem;">🥈</span>
+              <strong style="color: #60a5fa; font-size: 1rem;">2순위: 동일 레벨일 경우 누적 경험치 (Total XP)</strong>
+            </div>
+            <p style="font-size: 0.83rem; color: var(--text-muted); margin: 0; line-height: 1.5;">
+              동일한 레벨(예: 둘 다 Lv.15)인 경우, 누적 획득 경험치(XP)가 더 많은 유저가 상위 순위로 산정됩니다.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.15rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+              <span style="font-size: 1.3rem;">🥉</span>
+              <strong style="color: var(--text-main); font-size: 1rem;">3순위: 완독 아티클 수</strong>
+            </div>
+            <p style="font-size: 0.83rem; color: var(--text-muted); margin: 0; line-height: 1.5;">
+              레벨과 경험치가 모두 완벽히 동일할 경우, 완독한 아티클 편수가 더 많은 플레이어가 우선순위를 갖습니다.
+            </p>
+          </div>
+        </div>
+      `;
+    }
+
+    body.innerHTML = `
+      <div style="display: flex; gap: 0.4rem; margin-bottom: 1.25rem; overflow-x: auto; padding-bottom: 4px;">
+        ${tabs.map(t => `
+          <button onclick="guidebookManager.switchTab('${t.id}')" style="
+            background: ${this.currentTab === t.id ? '#3b82f6' : 'var(--bg-card)'};
+            color: ${this.currentTab === t.id ? '#fff' : 'var(--text-muted)'};
+            border: 1px solid ${this.currentTab === t.id ? '#3b82f6' : 'var(--border-color)'};
+            padding: 0.5rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.83rem;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.15s ease;
+          ">
+            ${t.label}
+          </button>
+        `).join('')}
+      </div>
+
+      <div style="animation: fadeIn 0.2s ease;">
+        ${contentHtml}
+      </div>
+    `;
+  }
+};
+
+// ==========================================
+// 📱 Cross-Device Account Sync Manager (Mobile ↔ PC)
+// ==========================================
+const syncManager = {
+  currentTab: 'qr',
+
+  openModal(tab = 'qr') {
+    this.currentTab = tab;
+    this.render();
+    const el = document.getElementById('sync-modal-overlay');
+    if (el) el.style.display = 'flex';
+    app.playAudioEffect('click');
+  },
+
+  closeModal() {
+    const el = document.getElementById('sync-modal-overlay');
+    if (el) el.style.display = 'none';
+  },
+
+  switchTab(tab) {
+    this.currentTab = tab;
+    this.render();
+    app.playAudioEffect('click');
+  },
+
+  exportCompactCode() {
+    const u = app.userState;
+    const compact = {
+      n: u.name || '포커신동',
+      a: u.avatar || '🦈',
+      p: u.playstyle || 'TAG',
+      x: u.xp || 0,
+      s: u.streak || 1,
+      ca: u.completed_articles || [],
+      cq: u.completed_quizzes || [],
+      pr: u.promotions_passed || [],
+      st: u.stats || {},
+      t: Date.now()
+    };
+    return btoa(unescape(encodeURIComponent(JSON.stringify(compact))));
+  },
+
+  importCompactCode(codeStr, isAuto = false) {
+    try {
+      const clean = codeStr.trim().replace(/^SPKR-/, '');
+      const jsonStr = decodeURIComponent(escape(atob(clean)));
+      const data = JSON.parse(jsonStr);
+      if (!data || typeof data.x === 'undefined') {
+        throw new Error('데이터 형식이 올바르지 않습니다.');
+      }
+
+      app.userState.name = data.n || app.userState.name;
+      app.userState.avatar = data.a || app.userState.avatar;
+      app.userState.playstyle = data.p || app.userState.playstyle;
+      app.userState.xp = data.x || 0;
+      app.userState.streak = data.s || 1;
+      app.userState.completed_articles = data.ca || [];
+      app.userState.completed_quizzes = data.cq || [];
+      app.userState.promotions_passed = data.pr || [];
+      if (data.st) app.userState.stats = data.st;
+
+      storage.save(app.userState);
+      app.updateUserBar();
+      if (window.rankingManager) rankingManager.init();
+
+      if (isAuto) {
+        history.replaceState(null, '', window.location.pathname);
+      }
+      characterManager.showToast(`🎉 <strong>[${app.userState.name}]</strong> 님의 계정이 성공적으로 연동되었습니다! (Lv.${app.getLevelInfo(app.userState.xp).level}, ${app.userState.xp.toLocaleString()} XP)`);
+      app.playAudioEffect('correct');
+      this.closeModal();
+      return true;
+    } catch (e) {
+      if (!isAuto) alert('⚠️ 동기화 코드 복원에 실패했습니다. 올바른 코드를 확인해주세요.');
+      return false;
+    }
+  },
+
+  copySyncCode() {
+    const code = 'SPKR-' + this.exportCompactCode();
+    navigator.clipboard.writeText(code).then(() => {
+      characterManager.showToast('📋 동기화 코드가 복사되었습니다! 모바일이나 다른 기기에 붙여넣기 하세요.');
+    }).catch(() => {
+      prompt('아래 동기화 코드를 복사하세요:', code);
+    });
+  },
+
+  copySyncUrl() {
+    const code = this.exportCompactCode();
+    const url = `${window.location.origin}${window.location.pathname}?sync=${encodeURIComponent(code)}`;
+    navigator.clipboard.writeText(url).then(() => {
+      characterManager.showToast('🔗 원클릭 연동 링크가 복사되었습니다! 카카오톡이나 메시지로 전송하세요.');
+    }).catch(() => {
+      prompt('아래 링크를 복사하세요:', url);
+    });
+  },
+
+  handlePasteRestore() {
+    const input = document.getElementById('sync-paste-input');
+    if (!input || !input.value.trim()) {
+      alert('동기화 코드를 입력해주세요.');
+      return;
+    }
+    this.importCompactCode(input.value.trim());
+  },
+
+  async saveToCloud() {
+    const nickEl = document.getElementById('sync-cloud-nick');
+    const pinEl = document.getElementById('sync-cloud-pin');
+    const statusEl = document.getElementById('sync-cloud-status');
+
+    const nickname = (nickEl ? nickEl.value : app.userState.name).trim();
+    const pin = (pinEl ? pinEl.value : '').trim();
+
+    if (!nickname) {
+      alert('닉네임을 입력해주세요.');
+      return;
+    }
+    if (!pin || pin.length < 4) {
+      alert('PIN 번호를 4자리 이상 입력해주세요.');
+      return;
+    }
+
+    if (statusEl) statusEl.innerHTML = '<span style="color: #60a5fa;">⏳ 클라우드에 저장 중...</span>';
+
+    try {
+      const res = await fetch('/api/sync/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nickname: nickname,
+          pin: pin,
+          state: app.userState
+        })
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.detail || '저장 실패');
+      }
+
+      localStorage.setItem(`studypoker_cloud_${nickname}`, JSON.stringify({
+        pin: pin,
+        state: app.userState,
+        updated_at: new Date().toISOString()
+      }));
+
+      if (statusEl) statusEl.innerHTML = '<span style="color: #34d399; font-weight: 700;">✅ 클라우드 저장 완료! 다른 기기에서 불러올 수 있습니다.</span>';
+      characterManager.showToast(`☁️ <strong>[${nickname}]</strong> 님의 데이터가 클라우드에 안전하게 저장되었습니다!`);
+      app.playAudioEffect('correct');
+    } catch (e) {
+      localStorage.setItem(`studypoker_cloud_${nickname}`, JSON.stringify({
+        pin: pin,
+        state: app.userState,
+        updated_at: new Date().toISOString()
+      }));
+      if (statusEl) statusEl.innerHTML = '<span style="color: #fbbf24;">✅ 로컬 클라우드 캐시에 저장되었습니다. (원클릭 QR 연동 권장)</span>';
+      characterManager.showToast('☁️ 데이터가 저장되었습니다!');
+    }
+  },
+
+  async loadFromCloud() {
+    const nickEl = document.getElementById('sync-cloud-nick');
+    const pinEl = document.getElementById('sync-cloud-pin');
+    const statusEl = document.getElementById('sync-cloud-status');
+
+    const nickname = (nickEl ? nickEl.value : '').trim();
+    const pin = (pinEl ? pinEl.value : '').trim();
+
+    if (!nickname) {
+      alert('닉네임을 입력해주세요.');
+      return;
+    }
+    if (!pin) {
+      alert('PIN 번호를 입력해주세요.');
+      return;
+    }
+
+    if (statusEl) statusEl.innerHTML = '<span style="color: #60a5fa;">⏳ 클라우드에서 불러오는 중...</span>';
+
+    try {
+      const res = await fetch('/api/sync/load', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nickname, pin })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.state) {
+          app.userState = data.state;
+          storage.save(app.userState);
+          app.updateUserBar();
+          if (window.rankingManager) rankingManager.init();
+          if (statusEl) statusEl.innerHTML = '<span style="color: #34d399; font-weight: 700;">✅ 성공적으로 불러왔습니다!</span>';
+          characterManager.showToast(`🎉 <strong>[${app.userState.name}]</strong> 님의 계정을 성공적으로 불러왔습니다! (Lv.${app.getLevelInfo(app.userState.xp).level})`);
+          app.playAudioEffect('correct');
+          setTimeout(() => this.closeModal(), 1200);
+          return;
+        }
+      }
+
+      const cached = localStorage.getItem(`studypoker_cloud_${nickname}`);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (parsed.pin === pin && parsed.state) {
+          app.userState = parsed.state;
+          storage.save(app.userState);
+          app.updateUserBar();
+          if (window.rankingManager) rankingManager.init();
+          if (statusEl) statusEl.innerHTML = '<span style="color: #34d399; font-weight: 700;">✅ 성공적으로 불러왔습니다!</span>';
+          characterManager.showToast(`🎉 <strong>[${app.userState.name}]</strong> 님의 계정을 성공적으로 불러왔습니다!`);
+          app.playAudioEffect('correct');
+          setTimeout(() => this.closeModal(), 1200);
+          return;
+        } else {
+          throw new Error('PIN 번호가 일치하지 않습니다.');
+        }
+      }
+
+      throw new Error('해당 닉네임의 저장 기록을 찾을 수 없습니다.');
+    } catch (e) {
+      if (statusEl) statusEl.innerHTML = `<span style="color: #ef4444;">⚠️ ${e.message || '불러오기 실패'}</span>`;
+      alert(`⚠️ ${e.message || '클라우드 불러오기에 실패했습니다.'}`);
+    }
+  },
+
+  render() {
+    const body = document.getElementById('sync-modal-body');
+    if (!body) return;
+
+    const u = app.userState;
+    const lvl = app.getLevelInfo(u.xp);
+    const compactCode = this.exportCompactCode();
+    const syncUrl = `${window.location.origin}${window.location.pathname}?sync=${encodeURIComponent(compactCode)}`;
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(syncUrl)}`;
+
+    const tabs = [
+      { id: 'qr', label: '📱 QR 코드 모바일 연동', icon: '📱' },
+      { id: 'code', label: '📋 동기화 코드 복사/붙여넣기', icon: '📋' },
+      { id: 'cloud', label: '☁️ 클라우드 백업 (닉네임+PIN)', icon: '☁️' }
+    ];
+
+    let contentHtml = '';
+
+    if (this.currentTab === 'qr') {
+      contentHtml = `
+        <div style="text-align: center; padding: 0.5rem 0 1rem;">
+          <h4 style="font-size: 1.1rem; font-weight: 800; color: #34d399; margin-bottom: 0.35rem;">
+            📷 스마트폰 카메라로 QR 코드를 비추세요!
+          </h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0 0 1.25rem;">
+            스마트폰 기본 카메라로 아래 QR 코드를 비추면 <strong>0.1초 만에 스마트폰으로 내 계정이 즉시 복제</strong>됩니다.
+          </p>
+
+          <div style="background: #ffffff; padding: 1rem; border-radius: 16px; display: inline-block; box-shadow: 0 8px 24px rgba(0,0,0,0.3); border: 2px solid #34d399;">
+            <img src="${qrUrl}" alt="스터디포커 모바일 동기화 QR 코드" style="width: 200px; height: 200px; display: block;" loading="eager">
+          </div>
+
+          <div style="margin-top: 1.25rem; display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap;">
+            <button onclick="syncManager.copySyncUrl()" class="btn-primary" style="padding: 0.65rem 1.25rem; font-size: 0.88rem; font-weight: 700; border-radius: 25px;">
+              🔗 원클릭 연동 링크 복사하기
+            </button>
+            <button onclick="syncManager.copySyncCode()" class="btn-secondary" style="padding: 0.65rem 1.25rem; font-size: 0.88rem; font-weight: 700; border-radius: 25px;">
+              📋 동기화 텍스트 코드 복사
+            </button>
+          </div>
+
+          <div style="margin-top: 1.25rem; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 0.85rem 1rem; font-size: 0.82rem; color: var(--text-dim); text-align: left; line-height: 1.5;">
+            💡 <strong>사용 방법:</strong><br>
+            1. 스마트폰의 기본 카메라 앱을 열어 화면의 QR 코드를 비춥니다.<br>
+            2. 노란색으로 뜨는 주소(studypoker)를 탭하면 스마트폰 브라우저에서 현재 레벨(Lv.${lvl.level})과 모든 완독 기록이 자동으로 연동됩니다!
+          </div>
+        </div>
+      `;
+    } else if (this.currentTab === 'code') {
+      contentHtml = `
+        <div style="padding: 0.5rem 0;">
+          <h4 style="font-size: 1.05rem; font-weight: 800; color: #60a5fa; margin-bottom: 0.4rem;">
+            📋 텍스트 동기화 코드 전송 (카카오톡 / 메모장)
+          </h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0 0 1.25rem;">
+            QR 코드를 스캔하기 어려운 환경이라면 코드를 복사하여 카카오톡 '나와의 채팅'에 붙여넣고 스마트폰에서 복구하세요.
+          </p>
+
+          <div style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <strong style="color: var(--text-main); font-size: 0.9rem;">내 캐릭터 동기화 코드</strong>
+              <button onclick="syncManager.copySyncCode()" class="btn-primary" style="padding: 0.35rem 0.85rem; font-size: 0.8rem; font-weight: 700;">
+                코드 복사
+              </button>
+            </div>
+            <textarea readonly style="width: 100%; height: 70px; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.5rem; color: #94a3b8; font-family: monospace; font-size: 0.78rem; resize: none; box-sizing: border-box;">SPKR-${compactCode}</textarea>
+          </div>
+
+          <div style="background: var(--bg-card); border: 1.5px solid #3b82f644; border-radius: 12px; padding: 1.25rem;">
+            <strong style="color: #60a5fa; font-size: 0.9rem; display: block; margin-bottom: 0.5rem;">
+              📥 다른 기기에서 가져온 코드 입력하기
+            </strong>
+            <textarea id="sync-paste-input" placeholder="SPKR- 로 시작하는 동기화 코드를 여기에 붙여넣으세요..." style="width: 100%; height: 70px; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.5rem; color: var(--text-main); font-family: monospace; font-size: 0.78rem; resize: none; box-sizing: border-box; margin-bottom: 0.75rem;"></textarea>
+            <button onclick="syncManager.handlePasteRestore()" class="btn-primary" style="width: 100%; padding: 0.75rem; font-size: 0.9rem; font-weight: 800; border-radius: 8px;">
+              ⚡ 이 코드로 캐릭터 데이터 즉시 복구하기
+            </button>
+          </div>
+        </div>
+      `;
+    } else if (this.currentTab === 'cloud') {
+      contentHtml = `
+        <div style="padding: 0.5rem 0;">
+          <h4 style="font-size: 1.05rem; font-weight: 800; color: #fbbf24; margin-bottom: 0.4rem;">
+            ☁️ 클라우드 간편 동기화 (닉네임 + PIN 4자리)
+          </h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0 0 1.25rem;">
+            기억하기 쉬운 닉네임과 4자리 비밀번호(PIN)를 설정해 두면 언제 어디서든 클라우드에서 바로 불러올 수 있습니다.
+          </p>
+
+          <div style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 12px; padding: 1.25rem;">
+            <div style="margin-bottom: 1rem;">
+              <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.4rem;">내 닉네임</label>
+              <input type="text" id="sync-cloud-nick" value="${u.name || '포커신동'}" style="width: 100%; padding: 0.65rem 0.85rem; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.9rem; box-sizing: border-box;">
+            </div>
+
+            <div style="margin-bottom: 1.25rem;">
+              <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.4rem;">4자리 PIN 비밀번호</label>
+              <input type="password" id="sync-cloud-pin" maxlength="8" placeholder="예: 1234" style="width: 100%; padding: 0.65rem 0.85rem; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.9rem; box-sizing: border-box;">
+            </div>
+
+            <div style="display: flex; gap: 0.75rem;">
+              <button onclick="syncManager.saveToCloud()" class="btn-primary" style="flex: 1; padding: 0.75rem; font-size: 0.9rem; font-weight: 800; border-radius: 8px;">
+                ☁️ 클라우드에 저장
+              </button>
+              <button onclick="syncManager.loadFromCloud()" class="btn-secondary" style="flex: 1; padding: 0.75rem; font-size: 0.9rem; font-weight: 800; border-radius: 8px; border-color: #3b82f6; color: #60a5fa;">
+                📥 클라우드에서 불러오기
+              </button>
+            </div>
+
+            <div id="sync-cloud-status" style="margin-top: 1rem; font-size: 0.85rem; text-align: center;"></div>
+          </div>
+        </div>
+      `;
+    }
+
+    body.innerHTML = `
+      <!-- User State Snapshot Pill -->
+      <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(59, 130, 246, 0.15)); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 0.85rem 1.25rem; margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+        <div style="display: flex; align-items: center; gap: 0.65rem;">
+          <span style="font-size: 1.8rem;">${u.avatar || '🦈'}</span>
+          <div>
+            <div style="font-weight: 800; color: var(--text-main); font-size: 1rem;">
+              ${u.name || '포커신동'} <span style="color: #60a5fa;">(Lv.${lvl.level})</span>
+            </div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">
+              누적 경험치: <strong style="color: #fbbf24;">${(u.xp || 0).toLocaleString()} XP</strong> • 완독 아티클: ${(u.completed_articles || []).length}편
+            </div>
+          </div>
+        </div>
+        <span class="rank-badge ${lvl.tier.badgeClass}">${lvl.tier.badge}</span>
+      </div>
+
+      <!-- Tab Switcher -->
+      <div style="display: flex; gap: 0.4rem; margin-bottom: 1.25rem; overflow-x: auto; padding-bottom: 4px;">
+        ${tabs.map(t => `
+          <button onclick="syncManager.switchTab('${t.id}')" style="
+            background: ${this.currentTab === t.id ? '#10b981' : 'var(--bg-card)'};
+            color: ${this.currentTab === t.id ? '#fff' : 'var(--text-muted)'};
+            border: 1px solid ${this.currentTab === t.id ? '#10b981' : 'var(--border-color)'};
+            padding: 0.5rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.83rem;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.15s ease;
+          ">
+            ${t.label}
+          </button>
+        `).join('')}
+      </div>
+
+      <div style="animation: fadeIn 0.2s ease;">
+        ${contentHtml}
+      </div>
+    `;
   }
 };
 
