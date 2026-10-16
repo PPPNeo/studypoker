@@ -2493,6 +2493,142 @@ body.theme-light .rank-badge-4 { background: rgba(139, 92, 246, 0.12); color: #5
 body.theme-light .rank-badge-5 { background: rgba(245, 158, 11, 0.15); color: #b45309; border-color: rgba(180, 83, 9, 0.35); }
 body.theme-light .rank-badge-6 { background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(239, 68, 68, 0.15)); color: #92400e; border: 1.5px solid #d97706; font-weight: 800; box-shadow: 0 1px 4px rgba(217, 119, 6, 0.15); }
 
+/* 🌐 Universal Typography & Anti-Orphan Layout Rules */
+button, h1, h2, h3, h4, h5, .filter-pill, .badge-level, .read-status-pill, .rank-badge, .btn-primary, .btn-secondary, .node-item {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* 🎨 Global Light Theme High-Contrast Text Fixes */
+body.theme-light [style*="color: #fbbf24"],
+body.theme-light [style*="color:#fbbf24"],
+body.theme-light [style*="color: #f59e0b"],
+body.theme-light [style*="color:#f59e0b"] {
+  color: #b45309 !important;
+}
+
+body.theme-light [style*="color: #60a5fa"],
+body.theme-light [style*="color:#60a5fa"],
+body.theme-light [style*="color: #38bdf8"],
+body.theme-light [style*="color:#38bdf8"],
+body.theme-light [style*="color: #93c5fd"],
+body.theme-light [style*="color:#93c5fd"] {
+  color: #1d4ed8 !important;
+}
+
+body.theme-light [style*="color: #34d399"],
+body.theme-light [style*="color:#34d399"] {
+  color: #047857 !important;
+}
+
+body.theme-light [style*="color: #94a3b8"],
+body.theme-light [style*="color:#94a3b8"] {
+  color: #475569 !important;
+}
+
+/* 🏆 Ranking Summary Card Theme Awareness */
+#my-ranking-summary-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+  border: 1.5px solid #3b82f6;
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.2);
+}
+
+body.theme-light #my-ranking-summary-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%) !important;
+  border: 1.5px solid #60a5fa !important;
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.12) !important;
+}
+
+body.theme-light .podium-rank-1 {
+  border: 2px solid #d97706 !important;
+  background: linear-gradient(180deg, #fffbeb, #ffffff) !important;
+  box-shadow: 0 8px 20px rgba(217, 119, 6, 0.15) !important;
+}
+body.theme-light .podium-rank-2 {
+  border: 1.5px solid #94a3b8 !important;
+  background: linear-gradient(180deg, #f8fafc, #ffffff) !important;
+}
+body.theme-light .podium-rank-3 {
+  border: 1.5px solid #d97706 !important;
+  background: linear-gradient(180deg, #fef3c7, #ffffff) !important;
+}
+
+body.theme-light .badge-level {
+  background: #eff6ff !important;
+  color: #1d4ed8 !important;
+  border-color: #93c5fd !important;
+}
+
+body.theme-light .btn-original-link {
+  background: #eff6ff !important;
+  border-color: #93c5fd !important;
+  color: #1d4ed8 !important;
+}
+
+/* 📱 Responsive Grid & Card Adjustments */
+@media (max-width: 680px) {
+  .articles-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  .article-card {
+    padding: 1.15rem 1rem !important;
+  }
+  #ranking-podium-showcase {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.85rem !important;
+  }
+  .podium-rank-1 {
+    order: 1 !important;
+  }
+  .podium-rank-2 {
+    order: 2 !important;
+  }
+  .podium-rank-3 {
+    order: 3 !important;
+  }
+  .col-hide-mobile {
+    display: none !important;
+  }
+  .ranking-table th, .ranking-table td {
+    padding: 0.75rem 0.5rem !important;
+    font-size: 0.82rem !important;
+  }
+  .hero-banner {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    padding: 1.25rem 1rem !important;
+    gap: 1rem !important;
+  }
+  .hero-actions {
+    width: 100% !important;
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+  .hero-actions button {
+    width: 100% !important;
+  }
+}
+
+.glossary-term-title {
+  color: var(--accent-blue-title);
+}
+.glossary-pro-tip {
+  color: #34d399;
+}
+body.theme-light .glossary-pro-tip {
+  color: #047857 !important;
+}
+
 /* 모바일 모달 헤더 여백 및 텍스트 줄바꿈 최적화 */
 @media (max-width: 640px) {
   .char-modal-header, .ai-modal-header {
@@ -3385,12 +3521,12 @@ body.authenticated #auth-gate-screen {
         <div class="filter-pills" id="article-level-filters">
           <span style="font-size: 0.85rem; color: var(--text-muted); align-self: center; margin-right: 0.4rem; font-weight: 600;">난이도:</span>
           <button class="filter-pill active" data-lvl="all" onclick="reader.filterLevel('all')">전체 난이도 (366)</button>
-          <button class="filter-pill" data-lvl="Level 1" onclick="reader.filterLevel('Level 1')">[입문] 동네 피쉬 (Lv.1~9) (33)</button>
-          <button class="filter-pill" data-lvl="Level 2" onclick="reader.filterLevel('Level 2')">[1차 전직] 펍 레귤러 (Lv.10~24) (201)</button>
-          <button class="filter-pill" data-lvl="Level 3" onclick="reader.filterLevel('Level 3')">[2차 전직] 마이크로 그라인더 (Lv.25~44) (47)</button>
-          <button class="filter-pill" data-lvl="Level 4" onclick="reader.filterLevel('Level 4')">[3차 전직] 로우스테이크 크러셔 (Lv.45~64) (65)</button>
-          <button class="filter-pill" data-lvl="Level 5" onclick="reader.filterLevel('Level 5')">[4차 전직] 미드스테이크 프로 (Lv.65~84) (15)</button>
-          <button class="filter-pill" data-lvl="Level 6" onclick="reader.filterLevel('Level 6')">[5차 전직/최종] 하이롤러 & 챔피언 (Lv.85~100) (8)</button>
+          <button class="filter-pill" data-lvl="Level 1" onclick="reader.filterLevel('Level 1')">Lv.1 동네 피쉬 (33)</button>
+          <button class="filter-pill" data-lvl="Level 2" onclick="reader.filterLevel('Level 2')">Lv.2 펍 레귤러 (201)</button>
+          <button class="filter-pill" data-lvl="Level 3" onclick="reader.filterLevel('Level 3')">Lv.3 마이크로 (47)</button>
+          <button class="filter-pill" data-lvl="Level 4" onclick="reader.filterLevel('Level 4')">Lv.4 로우스테이크 (65)</button>
+          <button class="filter-pill" data-lvl="Level 5" onclick="reader.filterLevel('Level 5')">Lv.5 미드스테이크 (15)</button>
+          <button class="filter-pill" data-lvl="Level 6" onclick="reader.filterLevel('Level 6')">Lv.6 하이롤러 (8)</button>
         </div>
         <div style="display: flex; align-items: center; gap: 0.75rem;">
           <button class="filter-pill" id="filter-unlocked-btn" onclick="reader.toggleUnlockedOnly()" style="border: 1.5px solid #3b82f6; font-weight: 700; white-space: nowrap;">
@@ -3634,15 +3770,34 @@ body.authenticated #auth-gate-screen {
 
     <!-- 6. Glossary View -->
     <section id="view-glossary" class="view-section">
-      <div style="margin-bottom: 1.5rem;">
-        <h2 style="font-size: 1.6rem; font-weight: 800;">📖 GTO 포커 용어 사전</h2>
-        <p style="color: var(--text-muted); font-size: 0.95rem;">헷갈리는 포커 전문 용어를 쉬운 비유와 실전 팁으로 검색해 보세요.</p>
+      <div style="margin-bottom: 1.25rem;">
+        <h2 style="font-size: 1.6rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem;">
+          <span>📖</span> GTO 포커 핵심 용어 백과사전
+        </h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.25rem;">
+          실전 승률을 바꾸는 핵심 GTO & 포커 수학 용어 67선 • 비유와 공식, 프로 팁 총정리
+        </p>
       </div>
 
-      <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-        <input type="text" id="glossary-search-input" placeholder="용어 검색 (예: EV, 블로커, MDF, EQR...)" 
-          style="flex: 1; min-width: 280px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.75rem 1rem; color: var(--text-main); outline: none; font-size: 0.95rem;"
+      <div style="margin-bottom: 1rem;">
+        <input type="text" id="glossary-search-input" placeholder="🔍 용어 검색 (예: EV, 에퀴티, 블로커, MDF, ICM, SPR, 오버벳, 3벳...)" 
+          style="width: 100%; background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 12px; padding: 0.85rem 1.25rem; color: var(--text-main); outline: none; font-size: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.06);"
           oninput="glossary.filterTerms(this.value)">
+      </div>
+
+      <!-- Glossary Category Filter Bar -->
+      <div class="filter-bar" style="margin-bottom: 1.5rem;">
+        <div class="filter-pills" id="glossary-category-filters">
+          <button class="filter-pill active" onclick="glossary.setCategory('all')">전체 용어 (67)</button>
+          <button class="filter-pill" onclick="glossary.setCategory('수학/기초')">수학/기초</button>
+          <button class="filter-pill" onclick="glossary.setCategory('GTO 이론')">GTO 이론</button>
+          <button class="filter-pill" onclick="glossary.setCategory('베팅/사이징')">베팅/사이징</button>
+          <button class="filter-pill" onclick="glossary.setCategory('레인지 분석')">레인지 분석</button>
+          <button class="filter-pill" onclick="glossary.setCategory('포지션/액션')">포지션/액션</button>
+          <button class="filter-pill" onclick="glossary.setCategory('고급 전략')">고급 전략</button>
+          <button class="filter-pill" onclick="glossary.setCategory('토너먼트/ICM')">토너먼트/ICM</button>
+          <button class="filter-pill" onclick="glossary.setCategory('멘탈/심리')">멘탈/심리</button>
+        </div>
       </div>
 
       <div class="articles-grid" id="glossary-grid-container"></div>
@@ -3667,7 +3822,7 @@ body.authenticated #auth-gate-screen {
       </div>
 
       <!-- My Rank Highlight Card -->
-      <div id="my-ranking-summary-card" style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95)); border: 1.5px solid #3b82f6; border-radius: 14px; padding: 1.25rem 1.5rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.2);">
+      <div id="my-ranking-summary-card">
         <!-- Injected dynamically by rankingManager -->
       </div>
 
@@ -3678,16 +3833,16 @@ body.authenticated #auth-gate-screen {
 
       <!-- Full Ranking Table -->
       <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow-poker);">
-        <div style="overflow-x: auto;">
-          <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.92rem;">
+        <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+          <table class="ranking-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.92rem;">
             <thead>
               <tr style="background: var(--bg-surface); border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em;">
-                <th style="padding: 1rem 1.25rem; width: 80px; text-align: center;">순위</th>
-                <th style="padding: 1rem 1.25rem;">플레이어</th>
-                <th style="padding: 1rem 1.25rem;">전직 칭호</th>
-                <th style="padding: 1rem 1.25rem; text-align: center;">레벨</th>
-                <th style="padding: 1rem 1.25rem; text-align: right;">누적 경험치 (XP)</th>
-                <th style="padding: 1rem 1.25rem; text-align: center;">학습 성과</th>
+                <th style="padding: 1rem 1.25rem; width: 80px; text-align: center; white-space: nowrap;">순위</th>
+                <th style="padding: 1rem 1.25rem; white-space: nowrap;">플레이어</th>
+                <th class="col-hide-mobile" style="padding: 1rem 1.25rem; white-space: nowrap;">전직 칭호</th>
+                <th style="padding: 1rem 1.25rem; text-align: center; white-space: nowrap;">레벨</th>
+                <th style="padding: 1rem 1.25rem; text-align: right; white-space: nowrap;">누적 경험치 (XP)</th>
+                <th class="col-hide-mobile" style="padding: 1rem 1.25rem; text-align: center; white-space: nowrap;">학습 성과</th>
               </tr>
             </thead>
             <tbody id="ranking-table-body">

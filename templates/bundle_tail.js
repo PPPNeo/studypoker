@@ -1300,12 +1300,12 @@ const reader = {
     const userLvl = app.getLevelInfo(app.userState.xp).level;
     const isPloCat = this.activeCategory === '외전: PLO 오마하';
     const levelMeta = {
-      'Level 1': { title: '[입문] 동네 피쉬 (Lv.1~9)', req: 1, tierNum: 1 },
-      'Level 2': { title: '[1차 전직] 펍 레귤러 (Lv.10~24)', req: 10, tierNum: 2 },
-      'Level 3': { title: '[2차 전직] 마이크로 그라인더 (Lv.25~44)', req: 25, tierNum: 3 },
-      'Level 4': { title: '[3차 전직] 로우스테이크 크러셔 (Lv.45~64)', req: 45, tierNum: 4 },
-      'Level 5': { title: '[4차 전직] 미드스테이크 프로 (Lv.65~84)', req: 65, tierNum: 5 },
-      'Level 6': { title: '[5차 전직/최종] 하이롤러 & 챔피언 (Lv.85~100)', req: 85, tierNum: 6 }
+      'Level 1': { title: 'Lv.1 동네 피쉬', req: 1, tierNum: 1 },
+      'Level 2': { title: 'Lv.2 펍 레귤러', req: 10, tierNum: 2 },
+      'Level 3': { title: 'Lv.3 마이크로', req: 25, tierNum: 3 },
+      'Level 4': { title: 'Lv.4 로우스테이크', req: 45, tierNum: 4 },
+      'Level 5': { title: 'Lv.5 미드스테이크', req: 65, tierNum: 5 },
+      'Level 6': { title: 'Lv.6 하이롤러', req: 85, tierNum: 6 }
     };
 
     document.querySelectorAll('#article-level-filters .filter-pill').forEach(pill => {
@@ -1434,26 +1434,26 @@ const reader = {
               ` : `
                 <span class="badge-level">${a.level}</span>
               `}
-              <span style="font-size: 0.75rem; background: var(--bg-surface); padding: 2px 7px; border-radius: 4px; color: var(--text-muted); font-weight: 600;">${a.category}</span>
-              <span class="read-time" style="margin-left: auto;">⏱️ ${a.read_time}</span>
+              <span style="font-size: 0.75rem; background: var(--bg-surface); padding: 2px 7px; border-radius: 4px; color: var(--text-muted); font-weight: 600; white-space: nowrap;">${a.category}</span>
+              <span class="read-time" style="margin-left: auto; white-space: nowrap;">⏱️ ${a.read_time}</span>
             </div>
-            <div style="margin-top: 0.4rem; margin-bottom: 0.35rem;">
+            <div style="margin-top: 0.4rem; margin-bottom: 0.45rem;">
               ${statusBadge}
             </div>
-            <h3 style="${isLocked ? 'color: var(--text-muted);' : ''}">${isCompleted ? '<span style="color: #10b981; margin-right: 4px; font-weight: 800;">✓</span>' : ''}${a.title_ko}</h3>
-            <p class="subtitle-en">${a.title_en}</p>
+            <h3 style="word-break: keep-all; line-height: 1.4; font-size: 1.1rem; margin-bottom: 0.35rem; ${isLocked ? 'color: var(--text-muted);' : ''}">${isCompleted ? '<span style="color: #10b981; margin-right: 4px; font-weight: 800;">✓</span>' : ''}${a.title_ko}</h3>
+            <p class="subtitle-en" style="word-break: keep-all; font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.85rem; line-height: 1.35;">${a.title_en}</p>
           </div>
           
-          <div class="article-card-footer">
-            <div class="author-info">✍️ ${a.author}</div>
-            <div style="display: flex; gap: 0.6rem; align-items: center;">
-              ${a.original_url ? `<a href="${a.original_url}" target="_blank" onclick="event.stopPropagation()" class="btn-original-link" style="padding: 2px 6px; font-size: 0.75rem;" title="GTO Wizard 공식 원문 열기">🌐 원문 ↗</a>` : ''}
+          <div class="article-card-footer" style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+            <div class="author-info" style="font-size: 0.78rem; color: var(--text-dim); white-space: nowrap;">✍️ ${a.author}</div>
+            <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+              ${a.original_url ? `<a href="${a.original_url}" target="_blank" onclick="event.stopPropagation()" class="btn-original-link" style="padding: 2px 7px; font-size: 0.75rem; white-space: nowrap;" title="GTO Wizard 공식 원문 열기">🌐 원문 ↗</a>` : ''}
               ${isLocked ? `
-                <span style="font-size: 0.8rem; color: #f59e0b; font-weight: 800;">🔒 잠김</span>
+                <span style="font-size: 0.8rem; color: #b45309; font-weight: 800; white-space: nowrap;">🔒 잠김</span>
               ` : isCompleted ? `
                 <span class="completed-check" title="학습 완료">✓</span>
               ` : `
-                <span style="font-size: 0.8rem; color: #3b82f6; font-weight: 700;">학습하기 →</span>
+                <span style="font-size: 0.8rem; color: var(--accent-blue-title); font-weight: 800; white-space: nowrap;">학습하기 →</span>
               `}
             </div>
           </div>
@@ -2817,42 +2817,77 @@ var roadmap = window.roadmap = {
 
 const glossary = {
   terms: DB.glossary,
+  activeCategory: 'all',
+  searchQuery: '',
 
   load() {
-    this.filterTerms('');
+    this.filterTerms(this.searchQuery);
+  },
+
+  setCategory(cat) {
+    this.activeCategory = cat;
+    document.querySelectorAll('#glossary-category-filters .filter-pill').forEach(btn => {
+      if (btn.innerText.startsWith(cat) || (cat === 'all' && btn.innerText.startsWith('전체'))) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+    this.filterTerms(this.searchQuery);
+    if (window.app && app.playAudioEffect) app.playAudioEffect('click');
   },
 
   filterTerms(query) {
-    const q = query.toLowerCase().trim();
+    this.searchQuery = (query !== undefined ? query : this.searchQuery).toLowerCase().trim();
+    const q = this.searchQuery;
+    const cat = this.activeCategory;
     const container = document.getElementById('glossary-grid-container');
+    if (!container) return;
 
     const filtered = Object.entries(this.terms).filter(([k, item]) => {
+      if (cat !== 'all' && item.category !== cat) return false;
       if (!q) return true;
-      const pool = `${k} ${item.term} ${item.korean_term} ${item.short_desc} ${item.analogy}`.toLowerCase();
+      const pool = `${k} ${item.term} ${item.korean_term} ${item.short_desc} ${item.analogy} ${item.category}`.toLowerCase();
       return pool.includes(q);
     });
 
     if (!filtered.length) {
-      container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-dim); padding: 3rem;">검색 결과가 없습니다.</div>`;
+      container.innerHTML = `
+        <div style="grid-column: 1/-1; text-align: center; color: var(--text-dim); padding: 3.5rem 1.5rem; background: var(--bg-card); border: 1.5px dashed var(--border-color); border-radius: 14px;">
+          <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">🔍</div>
+          <div style="font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">검색 결과가 없습니다</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">다른 키워드로 검색하거나 카테고리 필터를 변경해 보세요.</p>
+          <button class="btn-primary" onclick="glossary.setCategory('all'); document.getElementById('glossary-search-input').value=''; glossary.filterTerms('');" style="padding: 0.5rem 1.25rem; font-size: 0.85rem; border-radius: 20px;">
+            전체 용어 보기
+          </button>
+        </div>
+      `;
       return;
     }
 
     container.innerHTML = filtered.map(([k, item]) => `
-      <div class="article-card" style="cursor: default;">
+      <div class="article-card" style="cursor: default; padding: 1.25rem;">
         <div>
-          <div class="article-card-header">
-            <span class="badge-level">${item.category}</span>
+          <div class="article-card-header" style="margin-bottom: 0.5rem;">
+            <span class="badge-level" style="font-size: 0.75rem;">${item.category}</span>
+            <span style="font-size: 0.72rem; color: var(--text-dim); font-family: monospace;">#${k}</span>
           </div>
-          <h3 style="color: #60a5fa;">${item.term}</h3>
-          <p class="subtitle-en" style="font-weight: 700; color: var(--text-main); margin-bottom: 0.75rem;">${item.korean_term}</p>
-          <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.5;">${item.short_desc}</p>
+          <h3 class="glossary-term-title" style="margin: 0 0 0.2rem; font-size: 1.15rem; font-weight: 800; line-height: 1.35; word-break: keep-all;">${item.term}</h3>
+          <p class="subtitle-en" style="font-weight: 700; color: var(--text-main); margin-bottom: 0.75rem; font-size: 0.95rem;">${item.korean_term}</p>
+          <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.85rem; line-height: 1.5; word-break: keep-all;">${item.short_desc}</p>
           
-          <div style="background: rgba(0,0,0,0.06); border-left: 3px solid #f59e0b; padding: 0.65rem 0.85rem; font-size: 0.85rem; color: var(--text-main); border-radius: 0 6px 6px 0; margin-bottom: 0.75rem;">
-            💡 <strong>비유:</strong> ${item.analogy}
+          <div style="background: var(--bg-surface); border-left: 3.5px solid var(--poker-gold); padding: 0.65rem 0.85rem; font-size: 0.84rem; color: var(--text-main); border-radius: 0 8px 8px 0; margin-bottom: 0.75rem; line-height: 1.45; word-break: keep-all;">
+            💡 <strong style="color: var(--accent-gold);">쉬운 비유:</strong> ${item.analogy}
           </div>
+          
+          ${item.formula ? `
+            <div style="background: rgba(0,0,0,0.04); border: 1px solid var(--border-color); padding: 0.5rem 0.75rem; font-size: 0.78rem; color: var(--text-muted); border-radius: 6px; margin-bottom: 0.75rem; font-family: monospace; word-break: break-all;">
+              📐 <strong>공식/원칙:</strong> ${item.formula}
+            </div>
+          ` : ''}
         </div>
 
-        <div style="padding-top: 0.75rem; border-top: 1px solid var(--border-color); font-size: 0.8rem; color: #34d399;">
+        <div class="glossary-pro-tip" style="padding-top: 0.75rem; border-top: 1px solid var(--border-color); font-size: 0.8rem; line-height: 1.45; word-break: keep-all;">
           ⚡ <strong>Pro Tip:</strong> ${item.pro_tip}
         </div>
       </div>
@@ -3809,29 +3844,29 @@ var rankingManager = window.rankingManager = {
           </div>
           <div>
             <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
-              <span style="font-size: 1.4rem; font-weight: 800; color: #fbbf24;">현재 나의 순위: #${myRank}위</span>
-              <span style="font-size: 0.78rem; background: rgba(59, 130, 246, 0.25); color: #93c5fd; padding: 2px 8px; border-radius: 12px; font-weight: 800;">
+              <span style="font-size: 1.4rem; font-weight: 800; color: var(--accent-gold);">현재 나의 순위: #${myRank}위</span>
+              <span style="font-size: 0.78rem; background: rgba(59, 130, 246, 0.18); color: var(--accent-blue-title); padding: 2px 8px; border-radius: 12px; font-weight: 800; white-space: nowrap;">
                 상위 ${topPct}%
               </span>
             </div>
             <div style="font-size: 0.95rem; color: var(--text-main); margin-top: 0.25rem; display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
               <strong>${me.name}</strong>
-              ${me.kakao_nickname ? `<span style="font-size: 0.75rem; color: #f59e0b; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 4px; padding: 1px 6px; font-weight: 700;">💬 카톡: ${me.kakao_nickname}</span>` : ''}
-              ${me.isCertified ? `<span style="font-size: 0.68rem; background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); padding: 1px 5px; border-radius: 4px; font-weight: 800;">⭐ 인증회원</span>` : ''}
-              • <span class="rank-badge ${me.badgeClass}">${me.tierBadge}</span> • <span style="color: #60a5fa; font-weight: 700;">Lv.${me.level}</span>
+              ${me.kakao_nickname ? `<span style="font-size: 0.75rem; color: #b45309; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 4px; padding: 1px 6px; font-weight: 700; white-space: nowrap;">💬 카톡: ${me.kakao_nickname}</span>` : ''}
+              ${me.isCertified ? `<span style="font-size: 0.68rem; background: rgba(16, 185, 129, 0.2); color: #047857; border: 1px solid rgba(16, 185, 129, 0.4); padding: 1px 5px; border-radius: 4px; font-weight: 800; white-space: nowrap;">⭐ 인증회원</span>` : ''}
+              • <span class="rank-badge ${me.badgeClass}">${me.tierBadge}</span> • <span style="color: var(--accent-blue-title); font-weight: 700; white-space: nowrap;">Lv.${me.level}</span>
             </div>
           </div>
         </div>
 
         <div style="text-align: right;">
           <div style="font-size: 0.8rem; color: var(--text-dim);">누적 경험치</div>
-          <div style="font-size: 1.3rem; font-weight: 800; color: #fbbf24;">${me.xp.toLocaleString()} XP</div>
+          <div style="font-size: 1.3rem; font-weight: 800; color: var(--accent-gold); white-space: nowrap;">${me.xp.toLocaleString()} XP</div>
           ${nextRival ? `
-            <div style="font-size: 0.78rem; color: #94a3b8; margin-top: 0.25rem;">
-              #${nextRival.rank}위(${nextRival.name}) 역전까지: <strong style="color: #38bdf8;">+${xpToOvertake} XP</strong>
+            <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.25rem; white-space: nowrap;">
+              #${nextRival.rank}위(${nextRival.name}) 역전까지: <strong style="color: var(--accent-blue-title);">+${xpToOvertake} XP</strong>
             </div>
           ` : `
-            <div style="font-size: 0.78rem; color: #34d399; font-weight: 700; margin-top: 0.25rem;">
+            <div style="font-size: 0.78rem; color: #047857; font-weight: 800; margin-top: 0.25rem; white-space: nowrap;">
               👑 전체 1위 독주 중!
             </div>
           `}
@@ -3849,17 +3884,17 @@ var rankingManager = window.rankingManager = {
           <div class="podium-card podium-rank-1" style="max-width: 320px; margin: 0 auto; order: 1;">
             <div class="podium-crown">👑</div>
             <div class="podium-avatar">${p.avatar}</div>
-            <div style="font-size: 1.1rem; font-weight: 800; color: #fbbf24; margin-bottom: 0.2rem;">
+            <div style="font-size: 1.1rem; font-weight: 800; color: var(--accent-gold); margin-bottom: 0.2rem; white-space: nowrap;">
               🥇 1위 (챔피언)
             </div>
-            <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; gap: 0.3rem;">
+            <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; gap: 0.3rem; flex-wrap: wrap;">
               <span>${p.name}</span>
               ${p.isMe ? '<span style="color: #3b82f6; font-size: 0.75rem;">(나)</span>' : ''}
-              ${p.isCertified ? '<span style="color: #34d399; font-size: 0.72rem;" title="클라우드 정회원">⭐</span>' : ''}
+              ${p.isCertified ? '<span style="color: #047857; font-size: 0.72rem;" title="클라우드 정회원">⭐</span>' : ''}
             </div>
-            ${p.kakao_nickname ? `<div style="font-size: 0.72rem; color: #f59e0b; margin-bottom: 0.35rem; font-weight: 600;">💬 ${p.kakao_nickname}</div>` : ''}
+            ${p.kakao_nickname ? `<div style="font-size: 0.72rem; color: #b45309; margin-bottom: 0.35rem; font-weight: 600; white-space: nowrap;">💬 ${p.kakao_nickname}</div>` : ''}
             <span class="rank-badge ${p.badgeClass}" style="margin-bottom: 0.5rem;">${p.tierBadge}</span>
-            <div style="font-size: 0.85rem; font-weight: 800; color: #60a5fa;">
+            <div style="font-size: 0.85rem; font-weight: 800; color: var(--accent-blue-title); white-space: nowrap;">
               Lv.${p.level} • ${p.xp.toLocaleString()} XP
             </div>
           </div>
@@ -3870,28 +3905,28 @@ var rankingManager = window.rankingManager = {
         podiumShowcase.innerHTML = `
           <div class="podium-card podium-rank-2" style="order: 1;">
             <div class="podium-avatar">${p2.avatar}</div>
-            <div style="font-size: 1.1rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.2rem;">🥈 2위</div>
-            <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; gap: 0.3rem;">
+            <div style="font-size: 1.1rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.2rem; white-space: nowrap;">🥈 2위</div>
+            <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; gap: 0.3rem; flex-wrap: wrap;">
               <span>${p2.name}</span>
               ${p2.isMe ? '<span style="color: #3b82f6; font-size: 0.75rem;">(나)</span>' : ''}
-              ${p2.isCertified ? '<span style="color: #34d399; font-size: 0.72rem;">⭐</span>' : ''}
+              ${p2.isCertified ? '<span style="color: #047857; font-size: 0.72rem;">⭐</span>' : ''}
             </div>
-            ${p2.kakao_nickname ? `<div style="font-size: 0.72rem; color: #f59e0b; margin-bottom: 0.35rem; font-weight: 600;">💬 ${p2.kakao_nickname}</div>` : ''}
+            ${p2.kakao_nickname ? `<div style="font-size: 0.72rem; color: #b45309; margin-bottom: 0.35rem; font-weight: 600; white-space: nowrap;">💬 ${p2.kakao_nickname}</div>` : ''}
             <span class="rank-badge ${p2.badgeClass}" style="margin-bottom: 0.5rem;">${p2.tierBadge}</span>
-            <div style="font-size: 0.85rem; font-weight: 800; color: #60a5fa;">Lv.${p2.level} • ${p2.xp.toLocaleString()} XP</div>
+            <div style="font-size: 0.85rem; font-weight: 800; color: var(--accent-blue-title); white-space: nowrap;">Lv.${p2.level} • ${p2.xp.toLocaleString()} XP</div>
           </div>
           <div class="podium-card podium-rank-1" style="order: 2;">
             <div class="podium-crown">👑</div>
             <div class="podium-avatar">${p1.avatar}</div>
-            <div style="font-size: 1.1rem; font-weight: 800; color: #fbbf24; margin-bottom: 0.2rem;">🥇 1위</div>
-            <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; gap: 0.3rem;">
+            <div style="font-size: 1.1rem; font-weight: 800; color: var(--accent-gold); margin-bottom: 0.2rem; white-space: nowrap;">🥇 1위</div>
+            <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; gap: 0.3rem; flex-wrap: wrap;">
               <span>${p1.name}</span>
               ${p1.isMe ? '<span style="color: #3b82f6; font-size: 0.75rem;">(나)</span>' : ''}
-              ${p1.isCertified ? '<span style="color: #34d399; font-size: 0.72rem;">⭐</span>' : ''}
+              ${p1.isCertified ? '<span style="color: #047857; font-size: 0.72rem;">⭐</span>' : ''}
             </div>
-            ${p1.kakao_nickname ? `<div style="font-size: 0.72rem; color: #f59e0b; margin-bottom: 0.35rem; font-weight: 600;">💬 ${p1.kakao_nickname}</div>` : ''}
+            ${p1.kakao_nickname ? `<div style="font-size: 0.72rem; color: #b45309; margin-bottom: 0.35rem; font-weight: 600; white-space: nowrap;">💬 ${p1.kakao_nickname}</div>` : ''}
             <span class="rank-badge ${p1.badgeClass}" style="margin-bottom: 0.5rem;">${p1.tierBadge}</span>
-            <div style="font-size: 0.85rem; font-weight: 800; color: #60a5fa;">Lv.${p1.level} • ${p1.xp.toLocaleString()} XP</div>
+            <div style="font-size: 0.85rem; font-weight: 800; color: var(--accent-blue-title); white-space: nowrap;">Lv.${p1.level} • ${p1.xp.toLocaleString()} XP</div>
           </div>
         `;
       } else {
@@ -3909,17 +3944,17 @@ var rankingManager = window.rankingManager = {
             <div class="podium-card ${cardClass}" style="${isGold ? 'order: 2;' : (r === 2 ? 'order: 1;' : 'order: 3;')}">
               ${isGold ? '<div class="podium-crown">👑</div>' : ''}
               <div class="podium-avatar">${p.avatar}</div>
-              <div style="font-size: 1.1rem; font-weight: 800; color: ${isGold ? '#fbbf24' : 'var(--text-main)'}; margin-bottom: 0.2rem;">
+              <div style="font-size: 1.1rem; font-weight: 800; color: ${isGold ? 'var(--accent-gold)' : 'var(--text-main)'}; margin-bottom: 0.2rem; white-space: nowrap;">
                 ${medal}
               </div>
               <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; gap: 0.3rem; flex-wrap: wrap;">
                 <span>${p.name}</span>
                 ${p.isMe ? '<span style="color: #3b82f6; font-size: 0.75rem;">(나)</span>' : ''}
-                ${p.isCertified ? '<span style="color: #34d399; font-size: 0.72rem;" title="클라우드 정회원">⭐</span>' : ''}
+                ${p.isCertified ? '<span style="color: #047857; font-size: 0.72rem;" title="클라우드 정회원">⭐</span>' : ''}
               </div>
-              ${p.kakao_nickname ? `<div style="font-size: 0.72rem; color: #f59e0b; margin-bottom: 0.35rem; font-weight: 600;">💬 ${p.kakao_nickname}</div>` : ''}
+              ${p.kakao_nickname ? `<div style="font-size: 0.72rem; color: #b45309; margin-bottom: 0.35rem; font-weight: 600; white-space: nowrap;">💬 ${p.kakao_nickname}</div>` : ''}
               <span class="rank-badge ${p.badgeClass}" style="margin-bottom: 0.5rem;">${p.tierBadge}</span>
-              <div style="font-size: 0.85rem; font-weight: 800; color: #60a5fa;">
+              <div style="font-size: 0.85rem; font-weight: 800; color: var(--accent-blue-title); white-space: nowrap;">
                 Lv.${p.level} • ${p.xp.toLocaleString()} XP
               </div>
             </div>
@@ -3948,33 +3983,33 @@ var rankingManager = window.rankingManager = {
 
         return `
           <tr class="${p.isMe ? 'ranking-row-me' : ''}" style="border-bottom: 1px solid var(--border-color); transition: background 0.15s ease;">
-            <td style="padding: 1rem 1.25rem; text-align: center; font-weight: 800; color: ${p.rank <= 3 ? '#fbbf24' : 'var(--text-dim)'}; font-size: 1.05rem;">
+            <td style="padding: 1rem 1.25rem; text-align: center; font-weight: 800; color: ${p.rank <= 3 ? 'var(--accent-gold)' : 'var(--text-dim)'}; font-size: 1.05rem; white-space: nowrap;">
               ${rankBadge}
             </td>
             <td style="padding: 1rem 1.25rem;">
               <div style="display: flex; align-items: center; gap: 0.65rem;">
-                <span style="font-size: 1.5rem;">${p.avatar}</span>
-                <div>
+                <span style="font-size: 1.5rem; flex-shrink: 0;">${p.avatar}</span>
+                <div style="min-width: 0;">
                   <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
-                    <strong style="color: var(--text-main); font-size: 0.95rem;">${p.name}</strong>
-                    ${p.kakao_nickname ? `<span style="font-size: 0.72rem; color: #f59e0b; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 4px; padding: 1px 5px; font-weight: 600;">💬 카톡: ${p.kakao_nickname}</span>` : ''}
-                    ${p.isCertified ? `<span style="font-size: 0.68rem; background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); padding: 1px 5px; border-radius: 4px; font-weight: 800;">⭐ 인증회원</span>` : ''}
-                    ${p.isMe ? '<span style="background: #3b82f6; color: #fff; font-size: 0.68rem; font-weight: 800; padding: 1px 5px; border-radius: 4px;">나</span>' : ''}
+                    <strong style="color: var(--text-main); font-size: 0.95rem; word-break: keep-all;">${p.name}</strong>
+                    ${p.kakao_nickname ? `<span style="font-size: 0.72rem; color: #b45309; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 4px; padding: 1px 5px; font-weight: 600; white-space: nowrap;">💬 카톡: ${p.kakao_nickname}</span>` : ''}
+                    ${p.isCertified ? `<span style="font-size: 0.68rem; background: rgba(16, 185, 129, 0.2); color: #047857; border: 1px solid rgba(16, 185, 129, 0.4); padding: 1px 5px; border-radius: 4px; font-weight: 800; white-space: nowrap;">⭐ 인증회원</span>` : ''}
+                    ${p.isMe ? '<span style="background: #3b82f6; color: #fff; font-size: 0.68rem; font-weight: 800; padding: 1px 5px; border-radius: 4px; white-space: nowrap;">나</span>' : ''}
                   </div>
-                  <span style="font-size: 0.75rem; color: var(--text-dim);">${p.style} 스타일</span>
+                  <span style="font-size: 0.75rem; color: var(--text-dim); word-break: keep-all;">${p.style} 스타일</span>
                 </div>
               </div>
             </td>
-            <td style="padding: 1rem 1.25rem;">
+            <td class="col-hide-mobile" style="padding: 1rem 1.25rem; white-space: nowrap;">
               <span class="rank-badge ${p.badgeClass}">${p.tierBadge}</span>
             </td>
-            <td style="padding: 1rem 1.25rem; text-align: center;">
-              <strong style="color: #60a5fa; font-size: 1rem;">Lv.${p.level}</strong>
+            <td style="padding: 1rem 1.25rem; text-align: center; white-space: nowrap;">
+              <strong style="color: var(--accent-blue-title); font-size: 1rem;">Lv.${p.level}</strong>
             </td>
-            <td style="padding: 1rem 1.25rem; text-align: right; font-weight: 800; color: #fbbf24; font-size: 0.95rem;">
+            <td style="padding: 1rem 1.25rem; text-align: right; font-weight: 800; color: var(--accent-gold); font-size: 0.95rem; white-space: nowrap;">
               ${p.xp.toLocaleString()} XP
             </td>
-            <td style="padding: 1rem 1.25rem; text-align: center; font-size: 0.8rem; color: var(--text-muted);">
+            <td class="col-hide-mobile" style="padding: 1rem 1.25rem; text-align: center; font-size: 0.8rem; color: var(--text-muted); white-space: nowrap;">
               📖 ${p.articles}편 완독
             </td>
           </tr>
