@@ -2921,8 +2921,8 @@ body.theme-light .article-card.locked {
         <div style="display: flex; align-items: center; gap: 0.6rem;">
           <span style="font-size: 1.5rem;">🎭</span>
           <div>
-            <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-main); margin: 0;">포커 페르소나 캐릭터 생성 / 커스텀</h3>
-            <p style="font-size: 0.8rem; color: var(--text-dim); margin: 0;">나만의 포커 플레이어 캐릭터를 만들고 GTO 마스터로 육성하세요.</p>
+            <h3 id="char-modal-title" style="font-size: 1.2rem; font-weight: 800; color: var(--text-main); margin: 0;">포커 페르소나 캐릭터 생성 / 커스텀</h3>
+            <p id="char-modal-subtitle" style="font-size: 0.8rem; color: var(--text-dim); margin: 0;">나만의 포커 플레이어 캐릭터를 만들고 GTO 마스터로 육성하세요.</p>
           </div>
         </div>
         <button onclick="characterManager.closeModal()" style="background: none; border: none; color: #94a3b8; font-size: 1.3rem; cursor: pointer;">✕</button>
@@ -3015,7 +3015,7 @@ body.theme-light .article-card.locked {
 
       <div class="char-modal-footer">
         <button class="btn-secondary" onclick="characterManager.closeModal()">취소</button>
-        <button class="btn-primary" style="padding: 0.65rem 1.8rem; font-weight: 800;" onclick="characterManager.saveCharacter()">
+        <button id="btn-save-character" class="btn-primary" style="padding: 0.65rem 1.8rem; font-weight: 800;" onclick="characterManager.saveCharacter()">
           ✨ 캐릭터 저장 및 육성 시작
         </button>
       </div>

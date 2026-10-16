@@ -2921,8 +2921,8 @@ body.theme-light .article-card.locked {
         <div style="display: flex; align-items: center; gap: 0.6rem;">
           <span style="font-size: 1.5rem;">🎭</span>
           <div>
-            <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-main); margin: 0;">포커 페르소나 캐릭터 생성 / 커스텀</h3>
-            <p style="font-size: 0.8rem; color: var(--text-dim); margin: 0;">나만의 포커 플레이어 캐릭터를 만들고 GTO 마스터로 육성하세요.</p>
+            <h3 id="char-modal-title" style="font-size: 1.2rem; font-weight: 800; color: var(--text-main); margin: 0;">포커 페르소나 캐릭터 생성 / 커스텀</h3>
+            <p id="char-modal-subtitle" style="font-size: 0.8rem; color: var(--text-dim); margin: 0;">나만의 포커 플레이어 캐릭터를 만들고 GTO 마스터로 육성하세요.</p>
           </div>
         </div>
         <button onclick="characterManager.closeModal()" style="background: none; border: none; color: #94a3b8; font-size: 1.3rem; cursor: pointer;">✕</button>
@@ -3015,7 +3015,7 @@ body.theme-light .article-card.locked {
 
       <div class="char-modal-footer">
         <button class="btn-secondary" onclick="characterManager.closeModal()">취소</button>
-        <button class="btn-primary" style="padding: 0.65rem 1.8rem; font-weight: 800;" onclick="characterManager.saveCharacter()">
+        <button id="btn-save-character" class="btn-primary" style="padding: 0.65rem 1.8rem; font-weight: 800;" onclick="characterManager.saveCharacter()">
           ✨ 캐릭터 저장 및 육성 시작
         </button>
       </div>
@@ -19318,15 +19318,37 @@ const characterManager = {
     this.selectedStyle = u.playstyle || 'TAG';
     this.renderHeader();
     this.renderDashboard();
+
+    // If new user visiting for the first time, auto-open character setup popup!
+    const hasConfigured = localStorage.getItem('studypoker_char_created');
+    if (!hasConfigured) {
+      setTimeout(() => {
+        this.openModal(true); // isFirstTime = true
+      }, 400);
+    }
   },
 
-  openModal() {
+  openModal(isFirstTime = false) {
     const u = app.userState;
     this.selectedAvatar = u.avatar || '🦈';
     this.selectedStyle = u.playstyle || 'TAG';
 
     const nameInput = document.getElementById('char-name-input');
     if (nameInput) nameInput.value = u.name || '포커신동';
+
+    const titleEl = document.getElementById('char-modal-title');
+    const subEl = document.getElementById('char-modal-subtitle');
+    const saveBtn = document.getElementById('btn-save-character');
+
+    if (isFirstTime) {
+      if (titleEl) titleEl.innerText = '🃏 폴푸아의 GTO Playbook에 오신 것을 환영합니다!';
+      if (subEl) subEl.innerText = '나만의 포커 페르소나 캐릭터를 설정하고 Lv.1 피쉬 탈출기부터 시작하세요!';
+      if (saveBtn) saveBtn.innerText = '🚀 캐릭터 생성 완료하고 모험 시작하기';
+    } else {
+      if (titleEl) titleEl.innerText = '🎭 포커 페르소나 캐릭터 커스텀';
+      if (subEl) subEl.innerText = '플레이 스타일과 닉네임, 아바타를 언제든 변경할 수 있습니다.';
+      if (saveBtn) saveBtn.innerText = '✨ 캐릭터 설정 저장';
+    }
 
     this.updateModalSelections();
     const modal = document.getElementById('char-modal-overlay');
@@ -19450,13 +19472,14 @@ const characterManager = {
     app.userState.avatar = this.selectedAvatar;
     app.userState.playstyle = this.selectedStyle;
 
+    localStorage.setItem('studypoker_char_created', 'true');
     storage.save(app.userState);
     this.renderHeader();
     this.renderDashboard();
     this.closeModal();
 
     if (window.app && app.playAudioEffect) app.playAudioEffect('correct');
-    this.showToast(`🎉 캐릭터 [${newName}] 설정이 저장되었습니다!`);
+    this.showToast(`🎉 <strong>[${newName}]</strong> 님, 환영합니다! Lv.1 피쉬 탈출 퀘스트를 시작하세요.`);
   },
 
   renderHeader() {
