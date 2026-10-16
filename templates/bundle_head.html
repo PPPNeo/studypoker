@@ -1766,11 +1766,65 @@ body.theme-light .korean-summary-box ul li {
   flex-wrap: wrap;
 }
 
+.char-style-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+.char-style-title-row .char-style-tag {
+  flex-shrink: 0;
+}
+.char-style-title-row .char-title-pill {
+  flex-shrink: 1;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.char-style-title-row #dash-equipped-title-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .char-mini-badges-container {
   display: inline-flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 0.35rem;
+}
+
+.char-my-titles-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  padding: 2px 7px;
+  border-radius: 6px;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+.char-my-titles-label:hover {
+  border-color: #f59e0b;
+  color: #fbbf24;
+}
+body.theme-light .char-my-titles-label {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #475569;
+}
+body.theme-light .char-my-titles-label:hover {
+  border-color: #d97706;
+  color: #b45309;
 }
 
 .mini-title-badge {
@@ -3768,14 +3822,17 @@ body.authenticated #auth-gate-screen {
                     <span class="char-tier-badge" id="dash-char-tier" onclick="guidebookManager.openModal()" title="레벨 및 6구간 전직 가이드북 (클릭)">Lv.1 동네 피쉬 🐟</span>
                     <span class="char-rank-badge" id="dash-char-rank" onclick="app.navigate('ranking')" title="전체 랭킹보드 바로가기 (클릭)">🏆 실시간 랭킹: #1위</span>
                   </div>
-                  <!-- Row 2: Playstyle, Equipped Title, Kakao, and Title Mini Badges -->
-                  <div class="char-badge-row">
+                  <!-- Row 2: Playstyle & Equipped Title side-by-side -->
+                  <div class="char-badge-row char-style-title-row">
                     <span class="char-style-tag" id="dash-char-style" onclick="characterManager.openModal()" title="플레이 스타일 변경 (클릭)">⚡ TAG 스타일</span>
                     <span id="dash-equipped-title" class="char-title-pill" onclick="titleManager.openModal()" title="대표 칭호 변경하기 (클릭)">
                       <span id="dash-equipped-title-text">🎖️ 대표칭호: 초보 탐험가</span>
                     </span>
+                  </div>
+                  <!-- Row 3: Kakao Tag & My Title Badges -->
+                  <div class="char-badge-row">
                     <span class="char-kakao-tag" id="dash-kakao-tag" onclick="characterManager.openModal()" title="단톡방 닉네임 설정/확인 (클릭)">💬 카톡: 미등록</span>
-                    <div id="dash-unlocked-title-badges" class="char-mini-badges-container" title="내 보유 칭호 뱃지 모음 (클릭하여 칭호 도감 열기)"></div>
+                    <div id="dash-unlocked-title-badges" class="char-mini-badges-container" title="내 보유 칭호 뱃지 모음 (클릭 시 대표 칭호로 즉시 변경)"></div>
                     <span id="dash-special-title" class="special-title-badge" style="display: none;" onclick="titleManager.openModal()" title="4장 오마하(PLO) 3부작 완독자 전용 특별 칭호 (클릭)">🦉 오마하의 현인</span>
                   </div>
                 </div>
@@ -3801,11 +3858,11 @@ body.authenticated #auth-gate-screen {
               <button class="btn-character-guide" onclick="guidebookManager.openModal()" title="레벨 및 6구간 전직 시스템 공식 가이드북">
                 <span>📖</span> 가이드북
               </button>
-              <button class="btn-character-stats" id="btn-toggle-stats" onclick="characterManager.toggleStats()" title="4대 핵심 능력치 접기/펼치기">
-                <span>📊</span> 4대 능력치 <span id="stats-toggle-arrow">▼</span>
-              </button>
               <button class="btn-character-coach" onclick="aiCoach.open()" title="GTO 핸드 분석 & 포커 전략 AI 코치와 대화">
                 <span>🤖</span> AI 코치 대화
+              </button>
+              <button class="btn-character-stats" id="btn-toggle-stats" onclick="characterManager.toggleStats()" title="4대 핵심 능력치 접기/펼치기">
+                <span>📊</span> 4대 능력치 <span id="stats-toggle-arrow">▼</span>
               </button>
             </div>
 

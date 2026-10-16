@@ -807,18 +807,22 @@ var characterManager = window.characterManager = {
       dRank.title = `전체 플레이어 ${rInfo.total}명 중 실시간 #${rInfo.rank}위 (클릭하여 랭킹보드 이동)`;
     }
 
-    // 🎖️ 내 보유 칭호 뱃지들 렌더링 (아이콘만, 칭호 이름 없이 뱃지로만!)
+    // 🎖️ 내 보유 칭호 뱃지들 렌더링 (아이콘만, 칭호 이름 없이 뱃지로만! 클릭 시 즉시 대표 칭호로 변경)
     const badgesContainer = document.getElementById('dash-unlocked-title-badges');
     if (badgesContainer && window.titleManager && titleManager.getUnlockedTitles) {
       const unlocked = titleManager.getUnlockedTitles();
       if (unlocked && unlocked.length > 0) {
-        badgesContainer.innerHTML = unlocked.map(t => `
+        const badgesHtml = unlocked.map(t => `
           <span class="mini-title-badge ${t.isEquipped ? 'equipped' : ''}" 
-                title="${t.name} • ${t.desc} (클릭 시 칭호 도감)" 
-                onclick="titleManager.openModal()">
+                title="${t.name} • ${t.desc} (클릭 시 대표 칭호로 장착)" 
+                onclick="titleManager.equipTitle('${t.icon} ${t.name}')">
             ${t.icon}
           </span>
         `).join('');
+        badgesContainer.innerHTML = `
+          <span class="char-my-titles-label" onclick="titleManager.openModal()" title="보유 칭호 도감 전체보기 (클릭)">🏅 나의 칭호</span>
+          ${badgesHtml}
+        `;
         badgesContainer.style.display = 'inline-flex';
       } else {
         badgesContainer.innerHTML = '';
@@ -5089,7 +5093,8 @@ const titleManager = window.titleManager = {
     }
     this.render();
     if (window.app && app.playAudioEffect) app.playAudioEffect('correct');
-    characterManager.showToast(`✨ 대표 칭호가 <strong>[${titleFull}]</strong>(으)로 장착되었습니다!`);
+    const cleanName = titleFull.replace(/^[\p{Emoji}\s]+/u, '').trim() || titleFull;
+    characterManager.showToast(`✨ 대표 칭호가 <strong>[${cleanName}]</strong>(으)로 변경되었습니다!`);
   },
 
   openModal(onlyUnlocked = true) {
