@@ -581,7 +581,7 @@ var characterManager = window.characterManager = {
     const dRank = document.getElementById('dash-char-rank');
     if (dRank && window.rankingManager && rankingManager.getUserRank) {
       const rInfo = rankingManager.getUserRank();
-      dRank.innerHTML = `🏆 실시간 랭킹: <strong>#${rInfo.rank}위</strong> <span style="font-size: 0.72rem; opacity: 0.75;">(${rInfo.total}명 중)</span>`;
+      dRank.innerHTML = `🏆 랭킹: <strong>#${rInfo.rank}위</strong> <span style="font-size: 0.72rem; opacity: 0.85;">(${rInfo.total}명)</span>`;
     }
 
     if (dBio) dBio.innerText = `"${styleInfo.bio}"`;
@@ -2314,27 +2314,29 @@ var roadmap = window.roadmap = {
     // 1. 현재 레벨 실시간 퀘스트 연동 스킬트리 카드
     const curMissionsHtml = `
       <div class="roadmap-level-card active-quest-card" style="border: 2px solid #3b82f6; background: linear-gradient(180deg, rgba(59, 130, 246, 0.08) 0%, var(--bg-surface) 100%); box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15); margin-bottom: 2rem;">
-        <div class="level-badge-header">
-          <div>
-            <div style="display: inline-flex; align-items: center; gap: 0.35rem; background: #3b82f6; color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 12px; margin-bottom: 0.35rem;">
-              <span>🎯</span> 실시간 퀘스트 연동 마스터 코스
-            </div>
-            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main);">
-              Lv.${curLvl} ${lvlInfo.tier.name} 필수 성장 트리
-            </h3>
-            <p style="font-size: 0.85rem; color: #60a5fa; font-weight: 700;">
-              ✨ ${missions.title}
-            </p>
+        
+        <!-- Header Top Row: Category Tag on Left, Level Badge & Collapse Button on Right -->
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.65rem;">
+          <div style="display: inline-flex; align-items: center; gap: 0.35rem; background: #2563eb; color: #ffffff; font-size: 0.75rem; font-weight: 800; padding: 3px 10px; border-radius: 12px; box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);">
+            <span>🎯</span> 실시간 퀘스트 연동 마스터 코스
           </div>
-          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-            <button id="btn-toggle-active-quest" onclick="roadmap.toggleActiveQuest()" class="btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.78rem; font-weight: 800; border-radius: 8px; display: inline-flex; align-items: center; gap: 0.3rem; background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.4); color: #93c5fd; cursor: pointer;">
-              <span id="active-quest-arrow">${this.activeQuestCollapsed ? '▼ 펼치기' : '▲ 접기'}</span>
-            </button>
-            <span class="level-badge" style="background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0;">
+            <span class="level-badge" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #ffffff; font-weight: 800; padding: 3px 10px; border-radius: 12px; font-size: 0.8rem; border: none; box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);">
               Lv.${curLvl}
             </span>
+            <button id="btn-toggle-active-quest" onclick="roadmap.toggleActiveQuest()" class="btn-roadmap-toggle" title="퀘스트 코스 접기/펼치기">
+              <span id="active-quest-arrow">${this.activeQuestCollapsed ? '▼ 펼치기' : '▲ 접기'}</span>
+            </button>
           </div>
         </div>
+
+        <!-- Full-width Title & Subtitle without crowding -->
+        <h3 style="font-size: 1.3rem; font-weight: 800; color: var(--text-main); margin: 0 0 0.3rem; line-height: 1.35;">
+          Lv.${curLvl} ${lvlInfo.tier.name} 필수 성장 트리
+        </h3>
+        <p style="font-size: 0.88rem; color: #2563eb; font-weight: 700; margin: 0 0 0.85rem;">
+          ✨ ${missions.title}
+        </p>
 
         <div id="active-quest-body" style="${this.activeQuestCollapsed ? 'display: none;' : ''}">
 
@@ -2508,19 +2510,17 @@ var roadmap = window.roadmap = {
 
   levelsContainer.innerHTML = curMissionsHtml + `
     <div style="margin: 2.5rem 0 1.25rem;">
-      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.6rem;">
-        <div>
-          <h3 style="font-size: 1.3rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem; margin: 0;">
-            <span>⚔️</span> 전체 6구간 마스터 전직 커리어 로드맵
-          </h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0.25rem 0 0;">
-            레벨업과 전직 심사 시험을 통과할수록 상위 커리어 티어가 차례대로 열립니다.
-          </p>
-        </div>
-        <button id="btn-toggle-career-roadmap" onclick="roadmap.toggleCareerRoadmap()" class="btn-secondary" style="padding: 0.4rem 0.85rem; font-size: 0.8rem; font-weight: 800; border-radius: 8px; display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border-color); color: var(--text-main); cursor: pointer;">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; margin-bottom: 0.35rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 0.45rem; margin: 0;">
+          <span>⚔️</span> 전체 6구간 마스터 전직 커리어 로드맵
+        </h3>
+        <button id="btn-toggle-career-roadmap" onclick="roadmap.toggleCareerRoadmap()" class="btn-roadmap-toggle" style="flex-shrink: 0;" title="커리어 로드맵 접기/펼치기">
           <span id="career-roadmap-arrow">${this.careerRoadmapCollapsed ? '▼ 로드맵 펼치기' : '▲ 로드맵 접기'}</span>
         </button>
       </div>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">
+        레벨업과 전직 심사 시험을 통과할수록 상위 커리어 티어가 차례대로 열립니다.
+      </p>
     </div>
     <div id="career-roadmap-body" style="${this.careerRoadmapCollapsed ? 'display: none;' : ''}">
       ${careerHtml}
