@@ -3383,16 +3383,14 @@ body.theme-light .article-card.locked {
 
 /* 🏆 Leaderboard & Horizontal Champion Spotlight Styles */
 .champion-spotlight-banner {
-  background: linear-gradient(90deg, rgba(245, 158, 11, 0.12) 0%, rgba(30, 41, 59, 0.8) 40%, rgba(15, 23, 42, 0.95) 100%);
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0%, rgba(30, 41, 59, 0.85) 45%, rgba(15, 23, 42, 0.98) 100%);
   border: 1.5px solid #f59e0b;
   border-radius: 14px;
-  padding: 1rem 1.4rem;
+  padding: 1.1rem 1.4rem;
   margin-bottom: 1.5rem;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 0.85rem;
   box-shadow: 0 8px 24px -4px rgba(245, 158, 11, 0.25);
   position: relative;
   overflow: hidden;
@@ -3406,8 +3404,182 @@ body.theme-light .article-card.locked {
   height: 100%;
   background: linear-gradient(180deg, #fbbf24, #d97706);
 }
+body.theme-light .champion-spotlight-banner {
+  background: linear-gradient(135deg, #fffbeb 0%, #ffffff 50%, #fef3c7 100%) !important;
+  border: 1.5px solid #d97706 !important;
+  box-shadow: 0 6px 20px rgba(217, 119, 6, 0.15) !important;
+}
 
-/* 📍 Leaderboard My Row & Scroll-to-Me Styles */
+.champ-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+.champ-profile-group {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+.champ-avatar-box {
+  position: relative;
+  flex-shrink: 0;
+}
+.champ-avatar-circle {
+  font-size: 2.1rem;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--bg-surface);
+  border: 2px solid #f59e0b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.4);
+}
+.champ-crown {
+  position: absolute;
+  top: -9px;
+  right: -7px;
+  font-size: 1.25rem;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+}
+
+.champ-stats-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  margin-left: auto;
+}
+.champ-stat-box {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 0.35rem 0.75rem;
+  text-align: center;
+  white-space: nowrap;
+}
+body.theme-light .champ-stat-box {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+.champ-mid-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding-top: 0.5rem;
+  border-top: 1px dashed rgba(245, 158, 11, 0.25);
+}
+body.theme-light .champ-mid-row {
+  border-top-color: rgba(217, 119, 6, 0.25);
+}
+.champ-style-pill {
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 6px;
+  padding: 3px 9px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  white-space: nowrap;
+}
+body.theme-light .champ-style-pill {
+  color: #0284c7;
+  background: #e0f2fe;
+  border-color: #bae6fd;
+}
+.champ-title-pill-equipped {
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid #f59e0b;
+  border-radius: 6px;
+  padding: 3px 9px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  white-space: nowrap;
+}
+body.theme-light .champ-title-pill-equipped {
+  color: #b45309;
+  background: #fef3c7;
+  border-color: #f59e0b;
+}
+
+.champ-bottom-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed rgba(245, 158, 11, 0.2);
+}
+body.theme-light .champ-bottom-row {
+  border-top-color: rgba(217, 119, 6, 0.2);
+}
+.champ-titles-header {
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.champ-titles-flow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.champ-unlocked-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  padding: 2px 7px;
+  border-radius: 6px;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+.champ-unlocked-badge:hover {
+  border-color: #f59e0b;
+  color: #fbbf24;
+  transform: translateY(-1px);
+}
+.champ-unlocked-badge.equipped {
+  border-color: #f59e0b;
+  background: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+}
+body.theme-light .champ-unlocked-badge {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #475569;
+}
+body.theme-light .champ-unlocked-badge:hover {
+  border-color: #d97706;
+  color: #b45309;
+}
+body.theme-light .champ-unlocked-badge.equipped {
+  border-color: #d97706;
+  background: #fef3c7;
+  color: #b45309;
+}
+
+/* 📍 Leaderboard My Row & Scroll-to-Me Styles (통일된 3px 두께의 선명한 강조 테두리) */
 .btn-scroll-to-me {
   background: linear-gradient(135deg, #2563eb, #1d4ed8);
   color: #ffffff !important;
@@ -3442,22 +3614,59 @@ body.theme-light .article-card.locked {
   align-items: center;
   gap: 0.2rem;
 }
+
+/* 🎯 내 순위 행(Row): 사방 모두 동일하게 3px solid 굵은 테두리 및 일관된 강조 스타일 */
 .ranking-row-me td {
-  background: rgba(59, 130, 246, 0.08) !important;
-  border-top: 1px solid rgba(59, 130, 246, 0.35) !important;
-  border-bottom: 1px solid rgba(59, 130, 246, 0.35) !important;
+  background: rgba(59, 130, 246, 0.14) !important;
+  border-top: 3px solid #3b82f6 !important;
+  border-bottom: 3px solid #3b82f6 !important;
+  box-shadow: inset 0 0 0 1px rgba(59, 130, 246, 0.2);
   font-weight: 700;
 }
 .ranking-row-me td:first-child {
-  border-left: 4px solid #3b82f6 !important;
+  border-left: 3px solid #3b82f6 !important;
 }
+.ranking-row-me td:last-child,
+.ranking-row-me .rank-col-last-desktop {
+  border-right: 3px solid #3b82f6 !important;
+}
+@media (max-width: 680px) {
+  .ranking-row-me .rank-col-last-mobile {
+    border-right: 3px solid #3b82f6 !important;
+  }
+}
+.ranking-row-me .rank-player-name {
+  color: #60a5fa !important;
+  font-weight: 900;
+}
+.ranking-row-me:hover td {
+  background: rgba(59, 130, 246, 0.22) !important;
+}
+
 body.theme-light .ranking-row-me td {
-  background: rgba(37, 99, 235, 0.06) !important;
-  border-top: 1px solid rgba(37, 99, 235, 0.28) !important;
-  border-bottom: 1px solid rgba(37, 99, 235, 0.28) !important;
+  background: rgba(37, 99, 235, 0.09) !important;
+  border-top: 3px solid #2563eb !important;
+  border-bottom: 3px solid #2563eb !important;
+  box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.2);
 }
 body.theme-light .ranking-row-me td:first-child {
-  border-left: 4px solid #2563eb !important;
+  border-left: 3px solid #2563eb !important;
+}
+body.theme-light .ranking-row-me td:last-child,
+body.theme-light .ranking-row-me .rank-col-last-desktop {
+  border-right: 3px solid #2563eb !important;
+}
+@media (max-width: 680px) {
+  body.theme-light .ranking-row-me .rank-col-last-mobile {
+    border-right: 3px solid #2563eb !important;
+  }
+}
+body.theme-light .ranking-row-me .rank-player-name {
+  color: #1d4ed8 !important;
+  font-weight: 900;
+}
+body.theme-light .ranking-row-me:hover td {
+  background: rgba(37, 99, 235, 0.16) !important;
 }
 
 .rank-player-row {
@@ -26038,6 +26247,7 @@ var rankingManager = window.rankingManager = {
       xp: u.xp,
       articles: (u.completed_articles || []).length,
       quizzes: (u.completed_quizzes || []).length,
+      promotions_passed: u.promotions_passed || [],
       tierNum: lvlInfo.tierNum,
       tierBadge: lvlInfo.tier.badge,
       badgeClass: lvlInfo.tier.badgeClass
@@ -26071,6 +26281,7 @@ var rankingManager = window.rankingManager = {
           xp: p.xp || 0,
           articles: Array.isArray(p.completed_articles) ? p.completed_articles.length : 0,
           quizzes: Array.isArray(p.completed_quizzes) ? p.completed_quizzes.length : 0,
+          promotions_passed: p.promotions_passed || [],
           tierNum: tNum,
           tierBadge: tierObj.badge,
           badgeClass: tierObj.badgeClass
@@ -26094,6 +26305,48 @@ var rankingManager = window.rankingManager = {
     return list;
   },
 
+  getPlayerTitles(p) {
+    if (!p) return { equippedTitle: '동네 피쉬', unlockedTitles: [] };
+    if (p.isMe) {
+      const rawEquipped = (window.titleManager && titleManager.getEquippedTitle) ? titleManager.getEquippedTitle() : '초보 탐험가';
+      const cleanEquipped = rawEquipped.replace(/^[\p{Emoji}\s]+/u, '').trim() || rawEquipped;
+      const unlocked = (window.titleManager && titleManager.getUnlockedTitles) ? titleManager.getUnlockedTitles() : [];
+      return {
+        equippedTitle: cleanEquipped,
+        unlockedTitles: unlocked
+      };
+    }
+
+    // 클라우드 플레이어의 획득 칭호 계산
+    const pseudoUser = {
+      xp: p.xp || 0,
+      promotions_passed: p.promotions_passed || [],
+      completed_articles: p.articles ? Array(p.articles).fill(1) : [],
+      completed_quizzes: p.quizzes ? Array(p.quizzes).fill(1) : []
+    };
+    let unlocked = [];
+    if (window.titleManager && titleManager.TITLES) {
+      unlocked = titleManager.TITLES.filter(t => {
+        try { return t.check(pseudoUser); } catch(e) { return false; }
+      }).map(t => ({
+        ...t,
+        fullTitle: `${t.icon} ${t.name}`,
+        isEquipped: false
+      }));
+    }
+    let rep = p.tierBadge || '동네 피쉬 🐟';
+    if (unlocked.length > 0) {
+      const best = unlocked[unlocked.length - 1];
+      rep = `${best.icon} ${best.name}`;
+      best.isEquipped = true;
+    }
+    const cleanRep = rep.replace(/^[\p{Emoji}\s]+/u, '').trim() || rep;
+    return {
+      equippedTitle: cleanRep,
+      unlockedTitles: unlocked
+    };
+  },
+
   render() {
     const all = this.getAllPlayers();
     const me = all.find(p => p.isMe);
@@ -26107,50 +26360,90 @@ var rankingManager = window.rankingManager = {
       btnScrollToMe.innerHTML = `📍 내 위치 (#${myRank}위)`;
     }
 
-    // 1. Horizontal 1위 챔피언 스포트라이트 배너 렌더링 (가로 와이드형)
+    // 1. Horizontal 1위 챔피언 스포트라이트 배너 렌더링 (가로 와이드형 & 풍성하고 빈틈없는 레이아웃)
     const championSpotlight = document.getElementById('ranking-champion-spotlight');
     if (championSpotlight) {
       if (all.length > 0) {
         const p1 = all[0];
+        const tInfo = this.getPlayerTitles(p1);
+        const unlockedTitles = tInfo.unlockedTitles || [];
+        const equippedTitle = tInfo.equippedTitle;
+
+        // 모은 칭호들 뱃지 HTML 생성
+        const titlesHtml = unlockedTitles.map(t => `
+          <span class="champ-unlocked-badge ${t.isEquipped ? 'equipped' : ''}" 
+                title="${t.name} • ${t.desc} (획득 완료)"
+                ${p1.isMe ? `onclick="titleManager.equipTitle('${t.icon} ${t.name}')" style="cursor: pointer;"` : ''}>
+            <span>${t.icon}</span> ${t.name}
+          </span>
+        `).join('');
+
         championSpotlight.innerHTML = `
           <div class="champion-spotlight-banner">
-            <div style="display: flex; align-items: center; gap: 0.75rem;">
-              <div style="position: relative; flex-shrink: 0;">
-                <div style="font-size: 2rem; width: 50px; height: 50px; border-radius: 50%; background: var(--bg-surface); border: 2px solid #f59e0b; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 12px rgba(245, 158, 11, 0.35);">
-                  ${p1.avatar}
+            <!-- Row 1: Profile & Core Identity + Stats -->
+            <div class="champ-top-row">
+              <div class="champ-profile-group">
+                <div class="champ-avatar-box">
+                  <div class="champ-avatar-circle">
+                    ${p1.avatar}
+                  </div>
+                  <span class="champ-crown" title="시즌 챔피언">👑</span>
                 </div>
-                <span style="position: absolute; top: -8px; right: -6px; font-size: 1.15rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));" title="시즌 챔피언">👑</span>
+                <div>
+                  <div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.25rem;">
+                    <span style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; font-weight: 900; font-size: 0.74rem; padding: 2px 8px; border-radius: 10px; box-shadow: 0 2px 6px rgba(245, 158, 11, 0.35);">
+                      🥇 1위 • 시즌 챔피언
+                    </span>
+                    ${p1.isMe ? '<span class="rank-me-tag">나 (MY RANK)</span>' : ''}
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                    <strong style="font-size: 1.18rem; color: var(--text-main); font-weight: 900; letter-spacing: -0.01em;">${p1.name}</strong>
+                    ${p1.kakao_nickname ? `<span class="rank-kakao-tag" title="카카오톡 단톡방 닉네임">💬 ${p1.kakao_nickname}</span>` : ''}
+                    <span class="rank-badge ${p1.badgeClass}" style="font-size: 0.72rem; padding: 2px 7px;">${p1.tierBadge}</span>
+                  </div>
+                </div>
               </div>
-              <div>
-                <div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.2rem;">
-                  <span style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; font-weight: 900; font-size: 0.74rem; padding: 2px 7px; border-radius: 10px; box-shadow: 0 2px 6px rgba(245, 158, 11, 0.35);">
-                    🥇 1위 • 시즌 챔피언
-                  </span>
-                  ${p1.isMe ? '<span class="rank-me-tag">나 (MY RANK)</span>' : ''}
+
+              <!-- Stats group -->
+              <div class="champ-stats-row">
+                <div class="champ-stat-box" style="border-color: rgba(245, 158, 11, 0.35);">
+                  <div style="font-size: 0.68rem; color: var(--text-dim);">누적 획득 경험치</div>
+                  <div style="font-size: 1.15rem; font-weight: 900; color: var(--accent-gold); white-space: nowrap;">
+                    ${p1.xp.toLocaleString()} <span style="font-size: 0.76rem; font-weight: 700;">XP</span>
+                  </div>
                 </div>
-                <div style="display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;">
-                  <strong style="font-size: 1.05rem; color: var(--text-main); font-weight: 800;">${p1.name}</strong>
-                  ${p1.kakao_nickname ? `<span class="rank-kakao-tag">💬 ${p1.kakao_nickname}</span>` : ''}
-                  <span class="rank-badge ${p1.badgeClass}" style="font-size: 0.72rem; padding: 1px 6px;">${p1.tierBadge}</span>
-                  <span style="font-size: 0.76rem; color: var(--text-dim);">${p1.style} 스타일</span>
+                <div class="champ-stat-box" style="border-color: rgba(59, 130, 246, 0.35); background: rgba(59, 130, 246, 0.08);">
+                  <div style="font-size: 0.68rem; color: var(--text-muted);">현재 레벨</div>
+                  <div style="font-size: 1.1rem; font-weight: 900; color: var(--accent-blue-title);">Lv.${p1.level}</div>
+                </div>
+                <div class="champ-stat-box col-hide-mobile" style="border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.08);">
+                  <div style="font-size: 0.68rem; color: var(--text-muted);">마스터 기록</div>
+                  <div style="font-size: 0.88rem; font-weight: 800; color: #10b981;">📖 ${p1.articles}편 • 🎯 ${p1.quizzes}개</div>
                 </div>
               </div>
             </div>
 
-            <div style="display: flex; align-items: center; gap: 0.85rem; flex-wrap: wrap; margin-left: auto;">
-              <div style="text-align: right;">
-                <div style="font-size: 0.7rem; color: var(--text-dim);">누적 획득 경험치</div>
-                <div style="font-size: 1.15rem; font-weight: 900; color: var(--accent-gold); white-space: nowrap;">
-                  ${p1.xp.toLocaleString()} <span style="font-size: 0.78rem; font-weight: 700;">XP</span>
-                </div>
+            <!-- Row 2: Play Style & Representative Title & Recognition -->
+            <div class="champ-mid-row">
+              <span class="champ-style-pill" title="1위 챔피언의 플레이 스타일">
+                ⚡ ${p1.style} 플레이 스타일
+              </span>
+              <span class="champ-title-pill-equipped" title="1위 챔피언이 장착 중인 대표 칭호">
+                🎖️ 대표칭호: ${equippedTitle}
+              </span>
+              <span style="font-size: 0.74rem; color: var(--text-dim); margin-left: auto;" class="col-hide-mobile">
+                👑 시즌 최고 득점 챔피언
+              </span>
+            </div>
+
+            <!-- Row 3: Collected Titles Showcase (모은 칭호들) -->
+            <div class="champ-bottom-row">
+              <div class="champ-titles-header">
+                <span>🏅 챔피언 보유 칭호 (${unlockedTitles.length}개)</span>
+                ${p1.isMe ? '<span style="font-size: 0.68rem; color: var(--text-dim); font-weight: normal; margin-left: auto;">(클릭하여 대표 칭호 즉시 교체)</span>' : ''}
               </div>
-              <div style="background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 8px; padding: 0.35rem 0.7rem; text-align: center; white-space: nowrap;">
-                <div style="font-size: 0.68rem; color: var(--text-muted);">현재 레벨</div>
-                <div style="font-size: 1.05rem; font-weight: 900; color: var(--accent-blue-title);">Lv.${p1.level}</div>
-              </div>
-              <div class="col-hide-mobile" style="background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 8px; padding: 0.35rem 0.7rem; text-align: center; white-space: nowrap;">
-                <div style="font-size: 0.68rem; color: var(--text-muted);">마스터 기록</div>
-                <div style="font-size: 0.82rem; font-weight: 800; color: #10b981;">📖 ${p1.articles}편 • 🎯 ${p1.quizzes}개</div>
+              <div class="champ-titles-flow">
+                ${titlesHtml || '<span style="font-size: 0.75rem; color: var(--text-dim);">보유 칭호가 없습니다.</span>'}
               </div>
             </div>
           </div>
@@ -26179,7 +26472,7 @@ var rankingManager = window.rankingManager = {
         else if (p.rank === 3) rankBadge = '🥉 3';
 
         return `
-          <tr class="${p.isMe ? 'ranking-row-me' : ''}" style="border-bottom: 1px solid var(--border-color); transition: background 0.15s ease;">
+          <tr class="${p.isMe ? 'ranking-row-me' : ''}" style="${p.isMe ? '' : 'border-bottom: 1px solid var(--border-color); '}transition: background 0.15s ease;">
             <td style="padding: 0.65rem 0.85rem; text-align: center; font-weight: 800; color: ${p.rank <= 3 ? 'var(--accent-gold)' : (p.isMe ? '#2563eb' : 'var(--text-dim)')}; font-size: 0.98rem; white-space: nowrap;">
               <div style="display: flex; align-items: center; justify-content: center; font-weight: 900;">
                 <span>${rankBadge}</span>
@@ -26187,7 +26480,7 @@ var rankingManager = window.rankingManager = {
             </td>
             <td style="padding: 0.65rem 0.85rem;">
               <div style="display: flex; align-items: center; gap: 0.55rem;">
-                <span style="font-size: 1.45rem; flex-shrink: 0; line-height: 1;">${p.avatar}</span>
+                <span style="font-size: 1.45rem; flex-shrink: 0; line-height: 1; ${p.isMe ? 'filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.6));' : ''}">${p.avatar}</span>
                 <div style="min-width: 0;">
                   <div class="rank-player-row">
                     <strong class="rank-player-name">${p.name}</strong>
@@ -26204,10 +26497,10 @@ var rankingManager = window.rankingManager = {
             <td style="padding: 0.65rem 0.85rem; text-align: center; white-space: nowrap;">
               <strong style="color: var(--accent-blue-title); font-size: 0.95rem;">Lv.${p.level}</strong>
             </td>
-            <td style="padding: 0.65rem 0.85rem; text-align: right; font-weight: 800; color: var(--accent-gold); font-size: 0.95rem; white-space: nowrap;">
+            <td class="rank-col-last-mobile" style="padding: 0.65rem 0.85rem; text-align: right; font-weight: 800; color: var(--accent-gold); font-size: 0.95rem; white-space: nowrap;">
               ${p.xp.toLocaleString()} XP
             </td>
-            <td class="col-hide-mobile" style="padding: 0.65rem 0.85rem; text-align: center; font-size: 0.78rem; color: var(--text-muted); white-space: nowrap;">
+            <td class="col-hide-mobile rank-col-last-desktop" style="padding: 0.65rem 0.85rem; text-align: center; font-size: 0.78rem; color: var(--text-muted); white-space: nowrap;">
               📖 ${p.articles}편 완독
             </td>
           </tr>

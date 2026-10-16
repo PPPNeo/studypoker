@@ -4136,6 +4136,7 @@ var rankingManager = window.rankingManager = {
       xp: u.xp,
       articles: (u.completed_articles || []).length,
       quizzes: (u.completed_quizzes || []).length,
+      promotions_passed: u.promotions_passed || [],
       tierNum: lvlInfo.tierNum,
       tierBadge: lvlInfo.tier.badge,
       badgeClass: lvlInfo.tier.badgeClass
@@ -4169,6 +4170,7 @@ var rankingManager = window.rankingManager = {
           xp: p.xp || 0,
           articles: Array.isArray(p.completed_articles) ? p.completed_articles.length : 0,
           quizzes: Array.isArray(p.completed_quizzes) ? p.completed_quizzes.length : 0,
+          promotions_passed: p.promotions_passed || [],
           tierNum: tNum,
           tierBadge: tierObj.badge,
           badgeClass: tierObj.badgeClass
@@ -4192,6 +4194,48 @@ var rankingManager = window.rankingManager = {
     return list;
   },
 
+  getPlayerTitles(p) {
+    if (!p) return { equippedTitle: '동네 피쉬', unlockedTitles: [] };
+    if (p.isMe) {
+      const rawEquipped = (window.titleManager && titleManager.getEquippedTitle) ? titleManager.getEquippedTitle() : '초보 탐험가';
+      const cleanEquipped = rawEquipped.replace(/^[\p{Emoji}\s]+/u, '').trim() || rawEquipped;
+      const unlocked = (window.titleManager && titleManager.getUnlockedTitles) ? titleManager.getUnlockedTitles() : [];
+      return {
+        equippedTitle: cleanEquipped,
+        unlockedTitles: unlocked
+      };
+    }
+
+    // 클라우드 플레이어의 획득 칭호 계산
+    const pseudoUser = {
+      xp: p.xp || 0,
+      promotions_passed: p.promotions_passed || [],
+      completed_articles: p.articles ? Array(p.articles).fill(1) : [],
+      completed_quizzes: p.quizzes ? Array(p.quizzes).fill(1) : []
+    };
+    let unlocked = [];
+    if (window.titleManager && titleManager.TITLES) {
+      unlocked = titleManager.TITLES.filter(t => {
+        try { return t.check(pseudoUser); } catch(e) { return false; }
+      }).map(t => ({
+        ...t,
+        fullTitle: `${t.icon} ${t.name}`,
+        isEquipped: false
+      }));
+    }
+    let rep = p.tierBadge || '동네 피쉬 🐟';
+    if (unlocked.length > 0) {
+      const best = unlocked[unlocked.length - 1];
+      rep = `${best.icon} ${best.name}`;
+      best.isEquipped = true;
+    }
+    const cleanRep = rep.replace(/^[\p{Emoji}\s]+/u, '').trim() || rep;
+    return {
+      equippedTitle: cleanRep,
+      unlockedTitles: unlocked
+    };
+  },
+
   render() {
     const all = this.getAllPlayers();
     const me = all.find(p => p.isMe);
@@ -4205,50 +4249,90 @@ var rankingManager = window.rankingManager = {
       btnScrollToMe.innerHTML = `📍 내 위치 (#${myRank}위)`;
     }
 
-    // 1. Horizontal 1위 챔피언 스포트라이트 배너 렌더링 (가로 와이드형)
+    // 1. Horizontal 1위 챔피언 스포트라이트 배너 렌더링 (가로 와이드형 & 풍성하고 빈틈없는 레이아웃)
     const championSpotlight = document.getElementById('ranking-champion-spotlight');
     if (championSpotlight) {
       if (all.length > 0) {
         const p1 = all[0];
+        const tInfo = this.getPlayerTitles(p1);
+        const unlockedTitles = tInfo.unlockedTitles || [];
+        const equippedTitle = tInfo.equippedTitle;
+
+        // 모은 칭호들 뱃지 HTML 생성
+        const titlesHtml = unlockedTitles.map(t => `
+          <span class="champ-unlocked-badge ${t.isEquipped ? 'equipped' : ''}" 
+                title="${t.name} • ${t.desc} (획득 완료)"
+                ${p1.isMe ? `onclick="titleManager.equipTitle('${t.icon} ${t.name}')" style="cursor: pointer;"` : ''}>
+            <span>${t.icon}</span> ${t.name}
+          </span>
+        `).join('');
+
         championSpotlight.innerHTML = `
           <div class="champion-spotlight-banner">
-            <div style="display: flex; align-items: center; gap: 0.75rem;">
-              <div style="position: relative; flex-shrink: 0;">
-                <div style="font-size: 2rem; width: 50px; height: 50px; border-radius: 50%; background: var(--bg-surface); border: 2px solid #f59e0b; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 12px rgba(245, 158, 11, 0.35);">
-                  ${p1.avatar}
+            <!-- Row 1: Profile & Core Identity + Stats -->
+            <div class="champ-top-row">
+              <div class="champ-profile-group">
+                <div class="champ-avatar-box">
+                  <div class="champ-avatar-circle">
+                    ${p1.avatar}
+                  </div>
+                  <span class="champ-crown" title="시즌 챔피언">👑</span>
                 </div>
-                <span style="position: absolute; top: -8px; right: -6px; font-size: 1.15rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));" title="시즌 챔피언">👑</span>
+                <div>
+                  <div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.25rem;">
+                    <span style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; font-weight: 900; font-size: 0.74rem; padding: 2px 8px; border-radius: 10px; box-shadow: 0 2px 6px rgba(245, 158, 11, 0.35);">
+                      🥇 1위 • 시즌 챔피언
+                    </span>
+                    ${p1.isMe ? '<span class="rank-me-tag">나 (MY RANK)</span>' : ''}
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                    <strong style="font-size: 1.18rem; color: var(--text-main); font-weight: 900; letter-spacing: -0.01em;">${p1.name}</strong>
+                    ${p1.kakao_nickname ? `<span class="rank-kakao-tag" title="카카오톡 단톡방 닉네임">💬 ${p1.kakao_nickname}</span>` : ''}
+                    <span class="rank-badge ${p1.badgeClass}" style="font-size: 0.72rem; padding: 2px 7px;">${p1.tierBadge}</span>
+                  </div>
+                </div>
               </div>
-              <div>
-                <div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.2rem;">
-                  <span style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; font-weight: 900; font-size: 0.74rem; padding: 2px 7px; border-radius: 10px; box-shadow: 0 2px 6px rgba(245, 158, 11, 0.35);">
-                    🥇 1위 • 시즌 챔피언
-                  </span>
-                  ${p1.isMe ? '<span class="rank-me-tag">나 (MY RANK)</span>' : ''}
+
+              <!-- Stats group -->
+              <div class="champ-stats-row">
+                <div class="champ-stat-box" style="border-color: rgba(245, 158, 11, 0.35);">
+                  <div style="font-size: 0.68rem; color: var(--text-dim);">누적 획득 경험치</div>
+                  <div style="font-size: 1.15rem; font-weight: 900; color: var(--accent-gold); white-space: nowrap;">
+                    ${p1.xp.toLocaleString()} <span style="font-size: 0.76rem; font-weight: 700;">XP</span>
+                  </div>
                 </div>
-                <div style="display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;">
-                  <strong style="font-size: 1.05rem; color: var(--text-main); font-weight: 800;">${p1.name}</strong>
-                  ${p1.kakao_nickname ? `<span class="rank-kakao-tag">💬 ${p1.kakao_nickname}</span>` : ''}
-                  <span class="rank-badge ${p1.badgeClass}" style="font-size: 0.72rem; padding: 1px 6px;">${p1.tierBadge}</span>
-                  <span style="font-size: 0.76rem; color: var(--text-dim);">${p1.style} 스타일</span>
+                <div class="champ-stat-box" style="border-color: rgba(59, 130, 246, 0.35); background: rgba(59, 130, 246, 0.08);">
+                  <div style="font-size: 0.68rem; color: var(--text-muted);">현재 레벨</div>
+                  <div style="font-size: 1.1rem; font-weight: 900; color: var(--accent-blue-title);">Lv.${p1.level}</div>
+                </div>
+                <div class="champ-stat-box col-hide-mobile" style="border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.08);">
+                  <div style="font-size: 0.68rem; color: var(--text-muted);">마스터 기록</div>
+                  <div style="font-size: 0.88rem; font-weight: 800; color: #10b981;">📖 ${p1.articles}편 • 🎯 ${p1.quizzes}개</div>
                 </div>
               </div>
             </div>
 
-            <div style="display: flex; align-items: center; gap: 0.85rem; flex-wrap: wrap; margin-left: auto;">
-              <div style="text-align: right;">
-                <div style="font-size: 0.7rem; color: var(--text-dim);">누적 획득 경험치</div>
-                <div style="font-size: 1.15rem; font-weight: 900; color: var(--accent-gold); white-space: nowrap;">
-                  ${p1.xp.toLocaleString()} <span style="font-size: 0.78rem; font-weight: 700;">XP</span>
-                </div>
+            <!-- Row 2: Play Style & Representative Title & Recognition -->
+            <div class="champ-mid-row">
+              <span class="champ-style-pill" title="1위 챔피언의 플레이 스타일">
+                ⚡ ${p1.style} 플레이 스타일
+              </span>
+              <span class="champ-title-pill-equipped" title="1위 챔피언이 장착 중인 대표 칭호">
+                🎖️ 대표칭호: ${equippedTitle}
+              </span>
+              <span style="font-size: 0.74rem; color: var(--text-dim); margin-left: auto;" class="col-hide-mobile">
+                👑 시즌 최고 득점 챔피언
+              </span>
+            </div>
+
+            <!-- Row 3: Collected Titles Showcase (모은 칭호들) -->
+            <div class="champ-bottom-row">
+              <div class="champ-titles-header">
+                <span>🏅 챔피언 보유 칭호 (${unlockedTitles.length}개)</span>
+                ${p1.isMe ? '<span style="font-size: 0.68rem; color: var(--text-dim); font-weight: normal; margin-left: auto;">(클릭하여 대표 칭호 즉시 교체)</span>' : ''}
               </div>
-              <div style="background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 8px; padding: 0.35rem 0.7rem; text-align: center; white-space: nowrap;">
-                <div style="font-size: 0.68rem; color: var(--text-muted);">현재 레벨</div>
-                <div style="font-size: 1.05rem; font-weight: 900; color: var(--accent-blue-title);">Lv.${p1.level}</div>
-              </div>
-              <div class="col-hide-mobile" style="background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 8px; padding: 0.35rem 0.7rem; text-align: center; white-space: nowrap;">
-                <div style="font-size: 0.68rem; color: var(--text-muted);">마스터 기록</div>
-                <div style="font-size: 0.82rem; font-weight: 800; color: #10b981;">📖 ${p1.articles}편 • 🎯 ${p1.quizzes}개</div>
+              <div class="champ-titles-flow">
+                ${titlesHtml || '<span style="font-size: 0.75rem; color: var(--text-dim);">보유 칭호가 없습니다.</span>'}
               </div>
             </div>
           </div>
@@ -4277,7 +4361,7 @@ var rankingManager = window.rankingManager = {
         else if (p.rank === 3) rankBadge = '🥉 3';
 
         return `
-          <tr class="${p.isMe ? 'ranking-row-me' : ''}" style="border-bottom: 1px solid var(--border-color); transition: background 0.15s ease;">
+          <tr class="${p.isMe ? 'ranking-row-me' : ''}" style="${p.isMe ? '' : 'border-bottom: 1px solid var(--border-color); '}transition: background 0.15s ease;">
             <td style="padding: 0.65rem 0.85rem; text-align: center; font-weight: 800; color: ${p.rank <= 3 ? 'var(--accent-gold)' : (p.isMe ? '#2563eb' : 'var(--text-dim)')}; font-size: 0.98rem; white-space: nowrap;">
               <div style="display: flex; align-items: center; justify-content: center; font-weight: 900;">
                 <span>${rankBadge}</span>
@@ -4285,7 +4369,7 @@ var rankingManager = window.rankingManager = {
             </td>
             <td style="padding: 0.65rem 0.85rem;">
               <div style="display: flex; align-items: center; gap: 0.55rem;">
-                <span style="font-size: 1.45rem; flex-shrink: 0; line-height: 1;">${p.avatar}</span>
+                <span style="font-size: 1.45rem; flex-shrink: 0; line-height: 1; ${p.isMe ? 'filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.6));' : ''}">${p.avatar}</span>
                 <div style="min-width: 0;">
                   <div class="rank-player-row">
                     <strong class="rank-player-name">${p.name}</strong>
@@ -4302,10 +4386,10 @@ var rankingManager = window.rankingManager = {
             <td style="padding: 0.65rem 0.85rem; text-align: center; white-space: nowrap;">
               <strong style="color: var(--accent-blue-title); font-size: 0.95rem;">Lv.${p.level}</strong>
             </td>
-            <td style="padding: 0.65rem 0.85rem; text-align: right; font-weight: 800; color: var(--accent-gold); font-size: 0.95rem; white-space: nowrap;">
+            <td class="rank-col-last-mobile" style="padding: 0.65rem 0.85rem; text-align: right; font-weight: 800; color: var(--accent-gold); font-size: 0.95rem; white-space: nowrap;">
               ${p.xp.toLocaleString()} XP
             </td>
-            <td class="col-hide-mobile" style="padding: 0.65rem 0.85rem; text-align: center; font-size: 0.78rem; color: var(--text-muted); white-space: nowrap;">
+            <td class="col-hide-mobile rank-col-last-desktop" style="padding: 0.65rem 0.85rem; text-align: center; font-size: 0.78rem; color: var(--text-muted); white-space: nowrap;">
               📖 ${p.articles}편 완독
             </td>
           </tr>
