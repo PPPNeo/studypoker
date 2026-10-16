@@ -4584,7 +4584,7 @@ const guidebookManager = {
 // ==========================================
 const titleManager = window.titleManager = {
   currentCategory: 'all',
-  onlyUnlocked: false,
+  onlyUnlocked: true,
 
   TITLES: [
     // --- 1. 전직 & 성장 커리어 (15종) ---
@@ -5065,7 +5065,9 @@ const titleManager = window.titleManager = {
     characterManager.showToast(`✨ 대표 칭호가 <strong>[${titleFull}]</strong>(으)로 장착되었습니다!`);
   },
 
-  openModal() {
+  openModal(onlyUnlocked = true) {
+    this.onlyUnlocked = (onlyUnlocked !== false);
+    this.currentCategory = 'all';
     this.render();
     const modal = document.getElementById('title-modal-overlay');
     if (modal) modal.style.display = 'flex';
@@ -5094,7 +5096,9 @@ const titleManager = window.titleManager = {
     });
 
     if (headerTitle) {
-      headerTitle.innerText = `포커 칭호 도감 (보유 ${unlockedCount}/${this.TITLES.length})`;
+      headerTitle.innerText = this.onlyUnlocked 
+        ? `내 보유 칭호 목록 (보유 ${unlockedCount}개)` 
+        : `포커 플레이어 칭호 전체 도감 (보유 ${unlockedCount}/${this.TITLES.length})`;
     }
 
     const categories = [
@@ -5109,11 +5113,11 @@ const titleManager = window.titleManager = {
     ];
 
     let filteredTitles = allTitlesData;
-    if (this.currentCategory !== 'all') {
-      filteredTitles = filteredTitles.filter(t => t.category === this.currentCategory);
-    }
     if (this.onlyUnlocked) {
       filteredTitles = filteredTitles.filter(t => t.isUnlocked);
+    }
+    if (this.currentCategory !== 'all') {
+      filteredTitles = filteredTitles.filter(t => t.category === this.currentCategory);
     }
 
     const catBadgeStyles = {
@@ -5143,7 +5147,7 @@ const titleManager = window.titleManager = {
           </div>
           <div style="text-align: right;">
             <div style="font-size: 0.85rem; font-weight: 800; background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); padding: 5px 12px; border-radius: 20px; display: inline-block;">
-              보유율 ${Math.round((unlockedCount / this.TITLES.length) * 100)}% (${unlockedCount}/${this.TITLES.length})
+              보유한 칭호: ${unlockedCount}개 / 전체 ${this.TITLES.length}개
             </div>
           </div>
         </div>
@@ -5159,6 +5163,7 @@ const titleManager = window.titleManager = {
               const unlInCat = c.id === 'all'
                 ? unlockedCount
                 : allTitlesData.filter(t => t.category === c.id && t.isUnlocked).length;
+              const label = this.onlyUnlocked ? `${c.name} (${unlInCat})` : `${c.name} (${unlInCat}/${countInCat})`;
               return `
                 <button onclick="titleManager.setCategory('${c.id}')" style="
                   background: ${isActive ? '#3b82f6' : 'var(--bg-surface)'};
@@ -5172,7 +5177,7 @@ const titleManager = window.titleManager = {
                   white-space: nowrap;
                   transition: all 0.15s ease;
                 ">
-                  ${c.name} (${unlInCat}/${countInCat})
+                  ${label}
                 </button>
               `;
             }).join('')}
@@ -5180,9 +5185,9 @@ const titleManager = window.titleManager = {
 
           <div>
             <button onclick="titleManager.toggleOnlyUnlocked()" style="
-              background: ${this.onlyUnlocked ? 'rgba(16, 185, 129, 0.15)' : 'transparent'};
-              color: ${this.onlyUnlocked ? '#10b981' : 'var(--text-dim)'};
-              border: 1px solid ${this.onlyUnlocked ? '#10b981' : 'var(--border-color)'};
+              background: ${this.onlyUnlocked ? 'rgba(59, 130, 246, 0.12)' : 'rgba(16, 185, 129, 0.15)'};
+              color: ${this.onlyUnlocked ? 'var(--accent-blue-title)' : '#10b981'};
+              border: 1px solid ${this.onlyUnlocked ? 'rgba(59, 130, 246, 0.35)' : '#10b981'};
               padding: 0.3rem 0.75rem;
               border-radius: 6px;
               font-size: 0.76rem;
@@ -5191,7 +5196,7 @@ const titleManager = window.titleManager = {
               white-space: nowrap;
               transition: all 0.15s ease;
             ">
-              ${this.onlyUnlocked ? '✅ 획득한 칭호만 보는 중' : '🔓 획득한 칭호만 필터'}
+              ${this.onlyUnlocked ? '📖 미획득 칭호 도감도 함께 보기' : '✨ 획득한 칭호만 보기'}
             </button>
           </div>
         </div>
@@ -5200,7 +5205,7 @@ const titleManager = window.titleManager = {
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem;">
           ${filteredTitles.length === 0 ? `
             <div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem 1rem; color: var(--text-dim); font-size: 0.9rem;">
-              선택한 카테고리에 해당하는 칭호가 없습니다.
+              ${this.onlyUnlocked ? '선택한 카테고리에서 아직 획득한 칭호가 없습니다.<br><span style="font-size:0.8rem; color:var(--text-muted); margin-top:4px; display:inline-block;">아티클을 공부하고 승급 시험을 통과하여 새로운 칭호를 획득해보세요!</span>' : '선택한 카테고리에 해당하는 칭호가 없습니다.'}
             </div>
           ` : filteredTitles.map(t => {
             const bStyle = catBadgeStyles[t.category] || 'background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.35);';
@@ -5228,16 +5233,16 @@ const titleManager = window.titleManager = {
 
                 <div style="display: flex; justify-content: flex-end; margin-top: 0.25rem;">
                   ${t.isEquipped ? `
-                    <button disabled style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #f59e0b; padding: 0.35rem 0.85rem; border-radius: 6px; font-size: 0.78rem; font-weight: 800; cursor: default;">
-                      ⭐ 장착 중
+                    <button disabled style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1.5px solid #f59e0b; padding: 0.4rem 0.95rem; border-radius: 6px; font-size: 0.78rem; font-weight: 800; cursor: default;">
+                      ⭐ 대표 칭호 장착 중
                     </button>
                   ` : t.isUnlocked ? `
-                    <button onclick="titleManager.equipTitle('${t.icon} ${t.name}')" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.35rem 0.85rem; border-radius: 6px; font-size: 0.78rem; font-weight: 800; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.borderColor='#3b82f6'; this.style.color='#60a5fa'" onmouseout="this.style.borderColor='var(--border-color)'; this.style.color='var(--text-main)'">
-                      장착하기 ➔
+                    <button onclick="titleManager.equipTitle('${t.icon} ${t.name}')" class="btn-primary" style="padding: 0.4rem 0.95rem; border-radius: 6px; font-size: 0.78rem; font-weight: 800;">
+                      ✨ 대표 칭호로 장착
                     </button>
                   ` : `
                     <button disabled style="background: transparent; color: var(--text-dim); border: 1px dashed var(--border-color); padding: 0.35rem 0.85rem; border-radius: 6px; font-size: 0.75rem; cursor: not-allowed;">
-                      🔒 잠김
+                      🔒 미획득
                     </button>
                   `}
                 </div>

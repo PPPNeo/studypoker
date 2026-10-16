@@ -834,7 +834,7 @@
   {
     "id": "the-art-of-value-bluffing-from-the-button",
     "slug": "the-art-of-value-bluffing-from-the-button",
-    "title_ko": "버튼에서의 밸류 블러핑(Value 블러핑) 기술",
+    "title_ko": "버튼에서의 밸류 블러핑(Value Bluffing) 기술",
     "title_en": "The Art of Value Bluffing From the Button",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "턴/리버",
@@ -2626,7 +2626,7 @@
   {
     "id": "poker-the-battle-for-information",
     "slug": "poker-the-battle-for-information",
-    "title_ko": "Poker: The Battle for Information",
+    "title_ko": "포커: 정보의 전쟁과 불완전 정보 게임의 본질",
     "title_en": "Poker: The Battle for Information",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -2658,7 +2658,7 @@
   {
     "id": "ggmillion_x_gto_wizard_a_new_era_for_poker_broadcasting",
     "slug": "ggmillion_x_gto_wizard_a_new_era_for_poker_broadcasting",
-    "title_ko": "GGMillion$ x GTO Wizard: A New Era for Poker Broadcasting",
+    "title_ko": "GGMillion$ x GTO Wizard: 포커 방송 중계의 새로운 시대",
     "title_en": "GGMillion$ x GTO Wizard: A New Era for Poker Broadcasting",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -2690,7 +2690,7 @@
   {
     "id": "how-to-construct-a-squeezing-range",
     "slug": "how-to-construct-a-squeezing-range",
-    "title_ko": "공략법: Construct a 스퀴즈 전략 레인지",
+    "title_ko": "스퀴즈(Squeeze) 레인지 구축 가이드: 팟을 압도하는 법",
     "title_en": "How to Construct a Squeezing Range",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -2722,7 +2722,7 @@
   {
     "id": "opening-from-the-blinds-in-straddle-ante-games",
     "slug": "opening-from-the-blinds-in-straddle-ante-games",
-    "title_ko": "Opening From the Blinds in 스트래들 + 앤티 Games",
+    "title_ko": "스트래들+앤티 게임에서 블라인드 오픈 레이즈 전략",
     "title_en": "Opening From the Blinds in Straddle + Ante Games",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "캐시/스트래들",
@@ -2754,7 +2754,7 @@
   {
     "id": "introducing-quantal-response-equilibrium-the-next-evolution-of-gto",
     "slug": "introducing-quantal-response-equilibrium-the-next-evolution-of-gto",
-    "title_ko": "신규 공개: Quantal Response Equilibrium: The Next Evolution of GTO",
+    "title_ko": "QRE(Quantal Response Equilibrium) 소개: GTO의 다음 진화",
     "title_en": "Introducing Quantal Response Equilibrium: The Next Evolution of GTO",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "수학/기초",
@@ -2786,7 +2786,7 @@
   {
     "id": "when-to-just-shove-post-flop-in-icm-spots",
     "slug": "when-to-just-shove-post-flop-in-icm-spots",
-    "title_ko": "언제 ~해야 하는가: Just Shove 포스트플랍 in ICM Spots",
+    "title_ko": "ICM 스팟에서 포스트플랍 올인(Shove)을 감행해야 할 타이밍",
     "title_en": "When to Just Shove Postflop in ICM Spots",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -2818,7 +2818,7 @@
   {
     "id": "watch-learn-replay-legendary-final-tables",
     "slug": "watch-learn-replay-legendary-final-tables",
-    "title_ko": "Watch & Learn: Replay Legendary Final Tables!",
+    "title_ko": "전설적인 파이널 테이블 리플레이로 배우는 실전 포커",
     "title_en": "Watch & Learn: Replay Legendary Final Tables!",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -2850,7 +2850,7 @@
   {
     "id": "the-theory-of-bounty-tournaments-part-3-key-calculations",
     "slug": "the-theory-of-bounty-tournaments-part-3-key-calculations",
-    "title_ko": "The Theory of Bounty 토너먼트 – Part 3: Key Calculations",
+    "title_ko": "바운티 토너먼트 이론 3편: 핵심 계산 공식과 기대값 산출",
     "title_en": "The Theory of Bounty Tournaments – Part 3: Key Calculations",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "토너먼트/ICM",
@@ -2882,7 +2882,7 @@
   {
     "id": "the-learning-system-that-separates-the-best-from-the-rest",
     "slug": "the-learning-system-that-separates-the-best-from-the-rest",
-    "title_ko": "The Learning System That Separates the Best From the Rest",
+    "title_ko": "탑 프로와 일반 플레이어를 가르는 궁극의 포커 학습 시스템",
     "title_en": "The Learning System That Separates the Best From the Rest",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -2914,7 +2914,7 @@
   {
     "id": "the-fish-were-right-all-along",
     "slug": "the-fish-were-right-all-along",
-    "title_ko": "The Fish Were Right All Along",
+    "title_ko": "피쉬(Fish)의 플레이가 의외로 수학적으로 옳았던 순간들",
     "title_en": "The Fish Were Right All Along",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -2946,7 +2946,7 @@
   {
     "id": "how-to-use-practice-mode-in-gto-wizard-to-improve-your-game",
     "slug": "how-to-use-practice-mode-in-gto-wizard-to-improve-your-game",
-    "title_ko": "공략법: Use Practice Mode in GTO Wizard To Improve Your Game",
+    "title_ko": "GTO Wizard 연습 모드 200% 활용법: 실전 감각 극대화",
     "title_en": "How to Use Practice Mode in GTO Wizard To Improve Your Game",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -2978,7 +2978,7 @@
   {
     "id": "should-you-ever-bluff-with-a-pair",
     "slug": "should-you-ever-bluff-with-a-pair",
-    "title_ko": "Should You Ever 블러프 with a Pair?",
+    "title_ko": "페어(One Pair)를 들고 블러핑을 해야 할 때가 있을까?",
     "title_en": "Should You Ever Bluff with a Pair?",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "턴/리버",
@@ -3010,7 +3010,7 @@
   {
     "id": "major-upgrade-gto-reports-have-arrived-plus-tons-of-new-features",
     "slug": "major-upgrade-gto-reports-have-arrived-plus-tons-of-new-features",
-    "title_ko": "Major Upgrade: GTO Reports Have Arrived – Plus Tons of New Features!",
+    "title_ko": "GTO 리포트 대규모 업데이트 및 신규 분석 기능 가이드",
     "title_en": "Major Upgrade: GTO Reports Have Arrived – Plus Tons of New Features!",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -3042,7 +3042,7 @@
   {
     "id": "icm-strategy-playing-ip-against-the-chip-leader-on-the-final-table",
     "slug": "icm-strategy-playing-ip-against-the-chip-leader-on-the-final-table",
-    "title_ko": "ICM Strategy: Playing IP Against the Chip Leader on the 파이널 테이블",
+    "title_ko": "파이널 테이블 ICM 전략: 칩 리더를 상대로 인포지션(IP) 공략법",
     "title_en": "ICM Strategy: Playing IP Against the Chip Leader on the Final Table",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -3074,7 +3074,7 @@
   {
     "id": "icm-survival-guide-how-to-play-oop-vs-a-covering-stack-at-the-final-table",
     "slug": "icm-survival-guide-how-to-play-oop-vs-a-covering-stack-at-the-final-table",
-    "title_ko": "ICM Survival Guide: 플레이 가이드: OOP vs. a Covering Stack at the 파이널 테이블",
+    "title_ko": "파이널 테이블 ICM 생존 가이드: 빅스택 상대로 아웃포지션(OOP) 방어하기",
     "title_en": "ICM Survival Guide: How to Play OOP vs. a Covering Stack at the Final Table",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -3106,7 +3106,7 @@
   {
     "id": "were-at-the-river-our-hand-cant-win-now-what",
     "slug": "were-at-the-river-our-hand-cant-win-now-what",
-    "title_ko": "We’re At The 리버. Our Hand Can’t Win. Now What?",
+    "title_ko": "리버에 도달했으나 쇼다운으로 이길 수 없을 때: 포커 탈출 전략",
     "title_en": "We’re At The River. Our Hand Can’t Win. Now What?",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "턴/리버",
@@ -3138,7 +3138,7 @@
   {
     "id": "when-is-bluffing-profitable-the-key-factors-you-need-to-know",
     "slug": "when-is-bluffing-profitable-the-key-factors-you-need-to-know",
-    "title_ko": "When Is 블러핑 Profitable?",
+    "title_ko": "블러핑이 수익을 내는 조건: 반드시 알아야 할 핵심 팩터",
     "title_en": "When Is Bluffing Profitable?",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "턴/리버",
@@ -3170,7 +3170,7 @@
   {
     "id": "blockers-unblockers-the-secret-to-picking-great-bluffs",
     "slug": "blockers-unblockers-the-secret-to-picking-great-bluffs",
-    "title_ko": "블로커 & 언블로커: The Secret to Picking Great 블러프",
+    "title_ko": "블로커와 언블로커: 최적의 블러프 핸드를 고르는 비밀",
     "title_en": "Blockers & Unblockers: The Secret to Picking Great Bluffs",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "턴/리버",
@@ -3202,7 +3202,7 @@
   {
     "id": "the-art-of-game-selection-for-mtts-finding-soft-fields-extra-value",
     "slug": "the-art-of-game-selection-for-mtts-finding-soft-fields-extra-value",
-    "title_ko": "완벽 가이드: Game Selection for MTTs: Finding Soft Fields & Extra Value",
+    "title_ko": "MTT 게임 셀렉션의 미학: 소프트한 필드와 추가 밸류 찾기",
     "title_en": "The Art of Game Selection for MTTs: Finding Soft Fields & Extra Value",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -3234,7 +3234,7 @@
   {
     "id": "ai-and-the-future-of-poker",
     "slug": "ai-and-the-future-of-poker",
-    "title_ko": "AI and the Future of Poker",
+    "title_ko": "인공지능(AI)과 포커의 미래: 솔버가 바꾼 생태계",
     "title_en": "AI and the Future of Poker",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -3266,7 +3266,7 @@
   {
     "id": "how-to-get-the-most-out-of-your-hand-reviews",
     "slug": "how-to-get-the-most-out-of-your-hand-reviews",
-    "title_ko": "공략법: Get the Most out of Your Hand Reviews",
+    "title_ko": "핸드 리뷰 효과를 극대화하는 프로들의 복기 방법",
     "title_en": "How to Get the Most out of Your Hand Reviews",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -3298,7 +3298,7 @@
   {
     "id": "the-art-of-turn-probing-exploiting-checked-flops",
     "slug": "the-art-of-turn-probing-exploiting-checked-flops",
-    "title_ko": "완벽 가이드: 턴 Probing: 익스플로잇: Checked Flops",
+    "title_ko": "턴 프로브(Probe) 벳의 기술: 플랍 체크 백을 익스플로잇하는 법",
     "title_en": "The Art of Turn Probing: Exploiting Checked Flops",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "턴/리버",
@@ -3330,7 +3330,7 @@
   {
     "id": "how-to-respond-to-large-preflop-raises-in-poker",
     "slug": "how-to-respond-to-large-preflop-raises-in-poker",
-    "title_ko": "공략법: Respond to Large 프리플랍 Raises in Poker",
+    "title_ko": "프리플랍 대형 레이즈에 올바르게 대응하는 방법",
     "title_en": "How to Respond to Large Preflop Raises in Poker",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -3362,7 +3362,7 @@
   {
     "id": "mastering-postflop-icm-avoid-these-common-mistakes",
     "slug": "mastering-postflop-icm-avoid-these-common-mistakes",
-    "title_ko": "마스터하기: 포스트플랍 ICM: Avoid These Common Mistakes",
+    "title_ko": "포스트플랍 ICM 마스터: 흔히 범하는 치명적인 실수들",
     "title_en": "Mastering Postflop ICM: Avoid These Common Mistakes",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -3394,7 +3394,7 @@
   {
     "id": "what-happens-when-playing-chip-ev-and-icm-is-significant",
     "slug": "what-happens-when-playing-chip-ev-and-icm-is-significant",
-    "title_ko": "What Happens When Playing Chip EV and ICM Is Significant",
+    "title_ko": "ICM 압박이 극심할 때 칩EV(cEV) 플레이를 하면 벌어지는 일",
     "title_en": "What Happens When Playing Chip EV and ICM Is Significant",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -3426,7 +3426,7 @@
   {
     "id": "how-to-become-a-winning-poker-player-in-2025-part-2",
     "slug": "how-to-become-a-winning-poker-player-in-2025-part-2",
-    "title_ko": "공략법: Become a Winning Poker Player in 2025 – Part 2",
+    "title_ko": "위닝(Winning) 포커 플레이어 로드맵 2편: 실전 전략과 멘탈",
     "title_en": "How To Become a Winning Poker Player in 2025 – Part 2",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -3458,7 +3458,7 @@
   {
     "id": "how-to-become-a-winning-poker-player-in-2025-part-1",
     "slug": "how-to-become-a-winning-poker-player-in-2025-part-1",
-    "title_ko": "공략법: Become a Winning Poker Player in 2025 – Part 1",
+    "title_ko": "위닝(Winning) 포커 플레이어 로드맵 1편: 수학과 기초 레인지",
     "title_en": "How to Become a Winning Poker Player in 2025 – Part 1",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -3490,7 +3490,7 @@
   {
     "id": "ip-4-betting-in-deep-stacked-cash-games",
     "slug": "ip-4-betting-in-deep-stacked-cash-games",
-    "title_ko": "IP 4-Betting in Deep-Stacked 캐시 게임",
+    "title_ko": "딥스택 캐시게임에서 인포지션(IP) 4벳 운영 전략",
     "title_en": "IP 4-Betting in Deep-Stacked Cash Games",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "3벳 팟",
@@ -3522,7 +3522,7 @@
   {
     "id": "oop-4-betting-in-deep-stacked-cash-games",
     "slug": "oop-4-betting-in-deep-stacked-cash-games",
-    "title_ko": "OOP 4-Betting in Deep-Stacked 캐시 게임",
+    "title_ko": "딥스택 캐시게임에서 아웃포지션(OOP) 4벳 운영 전략",
     "title_en": "OOP 4-Betting in Deep-Stacked Cash Games",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "3벳 팟",
@@ -3618,7 +3618,7 @@
   {
     "id": "how-significant-is-icm-after-late-registering-a-tournament",
     "slug": "how-significant-is-icm-after-late-registering-a-tournament",
-    "title_ko": "How Significant Is ICM During Late Registration?",
+    "title_ko": "토너먼트 레이트 레지 시 ICM 영향력은 얼마나 클까?",
     "title_en": "How Significant Is ICM During Late Registration?",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -3650,7 +3650,7 @@
   {
     "id": "the-many-faces-of-balance-in-poker",
     "slug": "the-many-faces-of-balance-in-poker",
-    "title_ko": "The Many Faces of Balance in Poker",
+    "title_ko": "포커에서의 '밸런스(Balance)': 다양한 정의와 실전 적용",
     "title_en": "The Many Faces of Balance in Poker",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -3682,7 +3682,7 @@
   {
     "id": "unwrapping-gto-wizards-hidden-gems-for-2025",
     "slug": "unwrapping-gto-wizards-hidden-gems-for-2025",
-    "title_ko": "Unwrapping GTO Wizard’s Hidden Gems for 2025",
+    "title_ko": "GTO Wizard의 숨겨진 보석 같은 핵심 기능 총정리",
     "title_en": "Unwrapping GTO Wizard’s Hidden Gems for 2025",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -3714,7 +3714,7 @@
   {
     "id": "the-theory-of-bounty-tournaments-part-2-icm-and-equity-drops",
     "slug": "the-theory-of-bounty-tournaments-part-2-icm-and-equity-drops",
-    "title_ko": "The Theory of Bounty 토너먼트 – Part 2: ICM and 에퀴티 Drops",
+    "title_ko": "바운티 토너먼트 이론 2편: ICM 압박과 에퀴티 드롭(Drop)",
     "title_en": "The Theory of Bounty Tournaments – Part 2: ICM and Equity Drops",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -3746,7 +3746,7 @@
   {
     "id": "kick-off-2025-with-new-cash-and-icm-solutions",
     "slug": "kick-off-2025-with-new-cash-and-icm-solutions",
-    "title_ko": "Kick Off 2025 With New 캐시 게임 and ICM Solutions for MTTs",
+    "title_ko": "캐시게임 및 MTT ICM 신규 솔루션 업데이트 가이드",
     "title_en": "Kick Off 2025 With New Cash Game and ICM Solutions for MTTs",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -3778,7 +3778,7 @@
   {
     "id": "the-theory-of-bounty-tournaments-part-1-prize-pool-fundamentals",
     "slug": "the-theory-of-bounty-tournaments-part-1-prize-pool-fundamentals",
-    "title_ko": "The Theory of Bounty 토너먼트 – Part 1: Prize Pool Fundamentals",
+    "title_ko": "바운티 토너먼트 이론 1편: 프라이즈 풀 구조와 기본 원리",
     "title_en": "The Theory of Bounty Tournaments – Part 1: Prize Pool Fundamentals",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "토너먼트/ICM",
@@ -3810,7 +3810,7 @@
   {
     "id": "responding-to-donk-bets-at-final-tables",
     "slug": "responding-to-donk-bets-at-final-tables",
-    "title_ko": "Responding to Donk Bets at Final Tables",
+    "title_ko": "파이널 테이블에서 동크 벳(Donk Bet)에 대처하는 법",
     "title_en": "Responding to Donk Bets at Final Tables",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -3842,7 +3842,7 @@
   {
     "id": "donk-betting-as-the-covering-stack-in-mtts",
     "slug": "donk-betting-as-the-covering-stack-in-mtts",
-    "title_ko": "Donk Betting As the Covering Stack in MTTs",
+    "title_ko": "MTT에서 빅스택으로 동크 벳(Donk Bet)을 활용하는 전략",
     "title_en": "Donk Betting As the Covering Stack in MTTs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -3874,7 +3874,7 @@
   {
     "id": "dominate-the-river-in-3-bet-pots-oop",
     "slug": "dominate-the-river-in-3-bet-pots-oop",
-    "title_ko": "Dominate the 리버 in 3벳 Pots OOP",
+    "title_ko": "3벳 팟 아웃포지션(OOP)에서 리버를 지배하는 법",
     "title_en": "Dominate the River in 3-Bet Pots OOP",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "3벳 팟",
@@ -3906,7 +3906,7 @@
   {
     "id": "exploiting-bbs-who-never-donk-bet",
     "slug": "exploiting-bbs-who-never-donk-bet",
-    "title_ko": "익스플로잇: BBs Who Never Donk Bet",
+    "title_ko": "동크 벳을 전혀 하지 않는 빅블라인드(BB) 익스플로잇하기",
     "title_en": "Exploiting BBs Who Never Donk Bet",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "익스플로잇",
@@ -3938,7 +3938,7 @@
   {
     "id": "picking-the-right-semi-bluffs",
     "slug": "picking-the-right-semi-bluffs",
-    "title_ko": "Picking the Right Semi-블러프",
+    "title_ko": "최적의 세미 블러프(Semi-Bluff) 핸드를 선별하는 기준",
     "title_en": "Picking the Right Semi-Bluffs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "턴/리버",
@@ -3970,7 +3970,7 @@
   {
     "id": "playing-calls-from-the-button-in-cash-games",
     "slug": "playing-calls-from-the-button-in-cash-games",
-    "title_ko": "Playing Calls From the 버튼(BTN) in 캐시 게임",
+    "title_ko": "캐시게임에서 버튼(BTN) 플랫 콜 레인지 운용법",
     "title_en": "Playing Calls From the Button in Cash Games",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "캐시/스트래들",
@@ -4002,7 +4002,7 @@
   {
     "id": "redefining-precision-introducing-hh-analyzer-2-0-and-much-more",
     "slug": "redefining-precision-introducing-hh-analyzer-2-0-and-much-more",
-    "title_ko": "Redefining Precision: Introducing HH Analyzer 2.0 & Much More",
+    "title_ko": "정밀도의 재정의: 핸드 히스토리 분석기 2.0 및 신기능",
     "title_en": "Redefining Precision: Introducing HH Analyzer 2.0 & Much More",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -4034,7 +4034,7 @@
   {
     "id": "bringing-it-all-together-pko-review",
     "slug": "bringing-it-all-together-pko-review",
-    "title_ko": "Bringing It All Together: PKO Review",
+    "title_ko": "PKO 바운티 토너먼트 종합 복습: 핵심 이론 총망라",
     "title_en": "Bringing It All Together: PKO Review",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
     "category": "PKO 바운티",
@@ -4066,7 +4066,7 @@
   {
     "id": "what-factors-impact-ranges-the-most-in-pkos",
     "slug": "what-factors-impact-ranges-the-most-in-pkos",
-    "title_ko": "What Factors Impact 레인지 the Most in PKOs?",
+    "title_ko": "PKO 토너먼트에서 레인지에 가장 큰 영향을 미치는 요인들",
     "title_en": "What Factors Impact Ranges the Most in PKOs?",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
     "category": "PKO 바운티",
@@ -4098,7 +4098,7 @@
   {
     "id": "pko-vs-classic-postflop-play",
     "slug": "pko-vs-classic-postflop-play",
-    "title_ko": "PKO vs Classic: 포스트플랍 Play",
+    "title_ko": "PKO vs 클래식 MTT: 포스트플랍 플레이의 결정적 차이",
     "title_en": "PKO vs Classic: Postflop Play",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
     "category": "PKO 바운티",
@@ -4130,7 +4130,7 @@
   {
     "id": "how-do-bounties-impact-our-flop-ranges-when-covering",
     "slug": "how-do-bounties-impact-our-flop-ranges-when-covering",
-    "title_ko": "How Do Bounties Impact Our 플랍 레인지 When Covering?",
+    "title_ko": "상대를 커버할 때 바운티가 플랍 레인지에 미치는 영향",
     "title_en": "How Do Bounties Impact Our Flop Ranges When Covering?",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "PKO 바운티",
@@ -4162,7 +4162,7 @@
   {
     "id": "short-stack-stealing-on-the-bubble",
     "slug": "short-stack-stealing-on-the-bubble",
-    "title_ko": "숏스택 Stealing on the 버블",
+    "title_ko": "버블(Bubble) 단계에서 숏스택의 스틸(Steal) 전략",
     "title_en": "Short Stack Stealing on the Bubble",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -4194,7 +4194,7 @@
   {
     "id": "maximizing-monsters-in-deep-stacked-scenarios",
     "slug": "maximizing-monsters-in-deep-stacked-scenarios",
-    "title_ko": "Maximizing Monsters in Deep-Stacked Scenarios",
+    "title_ko": "딥스택 상황에서 몬스터 핸드로 밸류를 극대화하는 법",
     "title_en": "Maximizing Monsters in Deep-Stacked Scenarios",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -4226,7 +4226,7 @@
   {
     "id": "confronting-monsters-under-the-bed",
     "slug": "confronting-monsters-under-the-bed",
-    "title_ko": "Confronting Monsters Under the Bed in Poker",
+    "title_ko": "포커에서의 공포 극복: 침대 밑 괴물(상대 너츠)을 두려워 마라",
     "title_en": "Confronting Monsters Under the Bed in Poker",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -4258,7 +4258,7 @@
   {
     "id": "bullying-the-blinds-with-continuation-bets",
     "slug": "bullying-the-blinds-with-continuation-bets",
-    "title_ko": "Bullying the Blinds With Continuation Bets",
+    "title_ko": "C-bet(컨티뉴에이션 벳)으로 블라인드를 압박하는 전략",
     "title_en": "Bullying the Blinds With Continuation Bets",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -4290,7 +4290,7 @@
   {
     "id": "satellite-guide",
     "slug": "satellite-guide",
-    "title_ko": "A Comprehensive Guide to Playing Satellites",
+    "title_ko": "새틀라이트(위성 토너먼트) 완벽 공략 가이드: 티켓 획득 전략",
     "title_en": "A Comprehensive Guide to Playing Satellites",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -4322,7 +4322,7 @@
   {
     "id": "mystery-bounty-guide",
     "slug": "mystery-bounty-guide",
-    "title_ko": "A Comprehensive Guide to Playing Mystery Bounties",
+    "title_ko": "미스터리 바운티(Mystery Bounty) 완벽 공략 가이드",
     "title_en": "A Comprehensive Guide to Playing Mystery Bounties",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "PKO 바운티",
@@ -4354,7 +4354,7 @@
   {
     "id": "leading-hands-that-should-check-call",
     "slug": "leading-hands-that-should-check-call",
-    "title_ko": "Leading Hands That Should 체크-콜",
+    "title_ko": "동크 벳 대신 체크-콜을 해야 하는 강력한 핸드들",
     "title_en": "Leading Hands That Should Check-Call",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -4386,7 +4386,7 @@
   {
     "id": "mastering-turn-play-in-3-bet-pots-oop",
     "slug": "mastering-turn-play-in-3-bet-pots-oop",
-    "title_ko": "마스터하기: 턴 Play in 3벳 Pots OOP",
+    "title_ko": "3벳 팟 아웃포지션(OOP) 턴 플레이 마스터하기",
     "title_en": "Mastering Turn Play in 3-Bet Pots OOP",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "3벳 팟",
@@ -4418,7 +4418,7 @@
   {
     "id": "pko-versus-classic-responding-to-3-bets",
     "slug": "pko-versus-classic-responding-to-3-bets",
-    "title_ko": "PKO Versus Classic: Responding to 3벳",
+    "title_ko": "PKO vs 클래식: 3벳에 대응하는 올바른 레인지",
     "title_en": "PKO Versus Classic: Responding to 3-Bets",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
     "category": "PKO 바운티",
@@ -4450,7 +4450,7 @@
   {
     "id": "pko-versus-classic-responding-to-a-preflop-open",
     "slug": "pko-versus-classic-responding-to-a-preflop-open",
-    "title_ko": "PKO Versus Classic: Responding to a 프리플랍 Open",
+    "title_ko": "PKO vs 클래식: 프리플랍 오픈 레이즈 대응 전략",
     "title_en": "PKO Versus Classic: Responding to a Preflop Open",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
     "category": "PKO 바운티",
@@ -4482,7 +4482,7 @@
   {
     "id": "preflop-range-morphology",
     "slug": "preflop-range-morphology",
-    "title_ko": "프리플랍 레인지 Morphology",
+    "title_ko": "프리플랍 레인지 모폴로지(형태학): 포지션별 레인지 변화",
     "title_en": "Preflop Range Morphology",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -4514,7 +4514,7 @@
   {
     "id": "the-five-imbalances-of-exploitative-poker",
     "slug": "the-five-imbalances-of-exploitative-poker",
-    "title_ko": "The Five Imbalances of Exploitative Poker",
+    "title_ko": "익스플로잇 포커의 5대 불균형과 공략법",
     "title_en": "The Five Imbalances of Exploitative Poker",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "익스플로잇",
@@ -4546,7 +4546,7 @@
   {
     "id": "pko-versus-classic-preflop-rfi-range-comparisons",
     "slug": "pko-versus-classic-preflop-rfi-range-comparisons",
-    "title_ko": "PKO Versus Classic: 프리플랍 RFI 레인지 Comparisons",
+    "title_ko": "PKO vs 클래식: 프리플랍 RFI(오픈 레이즈) 레인지 비교",
     "title_en": "PKO Versus Classic: Preflop RFI Range Comparisons",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
     "category": "PKO 바운티",
@@ -4578,7 +4578,7 @@
   {
     "id": "introducing-gto-wizard-play-mode",
     "slug": "introducing-gto-wizard-play-mode",
-    "title_ko": "신규 공개: GTO Wizard Play Mode: Play Poker, Study Effortlessly",
+    "title_ko": "GTO Wizard 플레이 모드 출시: 실전 플레이하며 체득하기",
     "title_en": "Introducing GTO Wizard Play Mode: Play Poker, Study Effortlessly",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -4610,7 +4610,7 @@
   {
     "id": "why-so-much-an-exploration-of-larger-than-geometric-bet-sizing",
     "slug": "why-so-much-an-exploration-of-larger-than-geometric-bet-sizing",
-    "title_ko": "Why So Much? An Exploration of Larger-Than-Geometric Bet Sizing",
+    "title_ko": "지오메트릭(기하학적) 사이징보다 큰 초대형 벳의 수학적 이유",
     "title_en": "Why So Much? An Exploration of Larger-Than-Geometric Bet Sizing",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "플랍 전략",
@@ -4642,7 +4642,7 @@
   {
     "id": "slow-playing",
     "slug": "slow-playing",
-    "title_ko": "Slow-Playing",
+    "title_ko": "슬로우 플레이(Slow-playing): 몬스터 핸드를 감추는 타이밍",
     "title_en": "Slow-Playing",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -4674,7 +4674,7 @@
   {
     "id": "mdf-vs-icm-rethinking-bluffing-defense-strategies-in-mtts",
     "slug": "mdf-vs-icm-rethinking-bluffing-defense-strategies-in-mtts",
-    "title_ko": "MDF vs ICM: Rethinking 블러핑 & Defense Strategies in MTTs",
+    "title_ko": "MDF vs ICM: MTT에서 블러프 및 디펜스 전략 재정립하기",
     "title_en": "MDF vs ICM: Rethinking Bluffing & Defense Strategies in MTTs",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -4738,7 +4738,7 @@
   {
     "id": "preflop-strategy-in-straddled-pots",
     "slug": "preflop-strategy-in-straddled-pots",
-    "title_ko": "프리플랍 Strategy in Straddled Pots",
+    "title_ko": "스트래들 팟에서의 프리플랍 전략과 레인지 조정",
     "title_en": "Preflop Strategy in Straddled Pots",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "캐시/스트래들",
@@ -4770,7 +4770,7 @@
   {
     "id": "5-levels-of-trainer-mastery-for-mtts",
     "slug": "5-levels-of-trainer-mastery-for-mtts",
-    "title_ko": "The 5 Levels of Trainer Mastery for MTTs",
+    "title_ko": "MTT 트레이너 마스터를 위한 5단계 훈련법",
     "title_en": "The 5 Levels of Trainer Mastery for MTTs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -4802,7 +4802,7 @@
   {
     "id": "4-bet-pots-oop-as-the-preflop-caller",
     "slug": "4-bet-pots-oop-as-the-preflop-caller",
-    "title_ko": "4벳 Pots OOP as the 프리플랍 Caller",
+    "title_ko": "4벳 팟 아웃포지션(OOP)에서 프리플랍 콜러로 플레이하기",
     "title_en": "4-Bet Pots OOP as the Preflop Caller",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "3벳 팟",
@@ -4834,7 +4834,7 @@
   {
     "id": "bounty-models-explained-solving-knockout-tournaments",
     "slug": "bounty-models-explained-solving-knockout-tournaments",
-    "title_ko": "Bounty Models Explained: 솔빙 Knockout 토너먼트",
+    "title_ko": "바운티 수학 모델 완전 정복: 녹아웃 토너먼트 솔빙",
     "title_en": "Bounty Models Explained: Solving Knockout Tournaments",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -4866,7 +4866,7 @@
   {
     "id": "revolutionizing-mtts-the-ultimate-icm-solver-upgrade",
     "slug": "revolutionizing-mtts-the-ultimate-icm-solver-upgrade",
-    "title_ko": "Revolutionizing MTTs: The Ultimate ICM 솔버 Upgrade",
+    "title_ko": "MTT의 대혁신: 차세대 ICM 솔버 대규모 업그레이드",
     "title_en": "Revolutionizing MTTs: The Ultimate ICM Solver Upgrade",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -4898,7 +4898,7 @@
   {
     "id": "theoretical-breakthroughs-in-icm",
     "slug": "theoretical-breakthroughs-in-icm",
-    "title_ko": "Theoretical Breakthroughs in ICM",
+    "title_ko": "ICM 이론의 획기적 발전과 토너먼트 전략의 진화",
     "title_en": "Theoretical Breakthroughs in ICM",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -4930,7 +4930,7 @@
   {
     "id": "the-limitations-of-nash-equilibrium-in-icm-spots",
     "slug": "the-limitations-of-nash-equilibrium-in-icm-spots",
-    "title_ko": "The Limitations of Nash Equilibrium in ICM Spots",
+    "title_ko": "ICM 스팟에서 내쉬 균형(Nash Equilibrium)의 한계와 보완책",
     "title_en": "The Limitations of Nash Equilibrium in ICM Spots",
     "level": "[5차 전직/최종] 하이롤러 & 챔피언 (Lv.85~100)",
     "category": "토너먼트/ICM",
@@ -4962,7 +4962,7 @@
   {
     "id": "rake-rakeback-explained-optimize-your-poker-earnings",
     "slug": "rake-rakeback-explained-optimize-your-poker-earnings",
-    "title_ko": "Rake & Rakeback Explained: Optimize Your Poker Earnings",
+    "title_ko": "레이크(Rake)와 레이크백(Rakeback) 완벽 해설: 수익 최적화",
     "title_en": "Rake & Rakeback Explained: Optimize Your Poker Earnings",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "캐시/스트래들",
@@ -4994,7 +4994,7 @@
   {
     "id": "from-gutshots-to-airballs-choosing-your-bluffs",
     "slug": "from-gutshots-to-airballs-choosing-your-bluffs",
-    "title_ko": "From Gutshots to Airballs: Choosing Your 블러프",
+    "title_ko": "거트샷부터 에어볼까지: 블러프 핸드 선택의 기술",
     "title_en": "From Gutshots to Airballs: Choosing Your Bluffs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "턴/리버",
@@ -5026,7 +5026,7 @@
   {
     "id": "crush-3-bet-pots-oop-in-cash-games",
     "slug": "crush-3-bet-pots-oop-in-cash-games",
-    "title_ko": "Crush 3벳 Pots OOP in 캐시 게임",
+    "title_ko": "캐시게임 3벳 팟 아웃포지션(OOP) 완전 정복 가이드",
     "title_en": "Crush 3-Bet Pots OOP in Cash Games",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "3벳 팟",
@@ -5058,7 +5058,7 @@
   {
     "id": "the-math-of-multistreet-bluffs",
     "slug": "the-math-of-multistreet-bluffs",
-    "title_ko": "The Math of Multi-Street 블러프",
+    "title_ko": "멀티 스트리트 블러프(Multi-Street Bluff)의 수학",
     "title_en": "The Math of Multi-Street Bluffs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "턴/리버",
@@ -5090,7 +5090,7 @@
   {
     "id": "the-mechanics-of-c-bet-sizing",
     "slug": "the-mechanics-of-c-bet-sizing",
-    "title_ko": "The Mechanics of C-bet Sizing",
+    "title_ko": "C-bet(컨티뉴에이션 벳) 사이징의 메커니즘과 원리",
     "title_en": "The Mechanics of C-Bet Sizing",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "플랍 전략",
@@ -5122,7 +5122,7 @@
   {
     "id": "poker-insurance-reducing-variance-or-wasting-money",
     "slug": "poker-insurance-reducing-variance-or-wasting-money",
-    "title_ko": "Poker Insurance: Reducing 분산(베리언스) or Wasting Money?",
+    "title_ko": "올인 보험(All-in Insurance): 분산 감소인가, 돈 낭비인가?",
     "title_en": "Poker Insurance: Reducing Variance or Wasting Money?",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -5154,7 +5154,7 @@
   {
     "id": "money-bubble-vs-final-table-bubble",
     "slug": "money-bubble-vs-final-table-bubble",
-    "title_ko": "Money 버블 vs 파이널 테이블 버블",
+    "title_ko": "머니 버블 vs 파이널 테이블 버블: 전략적 차이점 분석",
     "title_en": "Money Bubble vs Final Table Bubble",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -5186,7 +5186,7 @@
   {
     "id": "facing-3-bets-from-covering-stacks-at-the-final-table",
     "slug": "facing-3-bets-from-covering-stacks-at-the-final-table",
-    "title_ko": "Facing 3벳 From Covering Stacks at the 파이널 테이블",
+    "title_ko": "파이널 테이블에서 나를 커버하는 빅스택의 3벳에 대응하는 법",
     "title_en": "Facing 3-Bets From Covering Stacks at the Final Table",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "토너먼트/ICM",
@@ -5218,7 +5218,7 @@
   {
     "id": "poker-staking-essentials",
     "slug": "poker-staking-essentials",
-    "title_ko": "Poker Staking Essentials",
+    "title_ko": "포커 스테이킹(Staking) 기초와 계약 시 주의사항",
     "title_en": "Poker Staking Essentials",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -5250,7 +5250,7 @@
   {
     "id": "a-poker-players-guide-to-conquering-cognitive-biases-part-2",
     "slug": "a-poker-players-guide-to-conquering-cognitive-biases-part-2",
-    "title_ko": "A Poker Player’s Guide to Conquering Cognitive Biases – Part 2",
+    "title_ko": "포커 플레이어를 위한 인지 편향 극복 가이드 2편",
     "title_en": "A Poker Player’s Guide to Conquering Cognitive Biases – Part 2",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "익스플로잇",
@@ -5282,7 +5282,7 @@
   {
     "id": "live-cash-solutions-and-4000-new-scenarios-for-cash-mtt-formats",
     "slug": "live-cash-solutions-and-4000-new-scenarios-for-cash-mtt-formats",
-    "title_ko": "Live Cash Solutions and 4,000 New Scenarios for Cash & MTT Formats",
+    "title_ko": "라이브 캐시 솔루션 및 4,000개 신규 시나리오 업데이트",
     "title_en": "Live Cash Solutions and 4,000 New Scenarios for Cash & MTT Formats",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -5314,7 +5314,7 @@
   {
     "id": "the-5-levels-of-trainer-mastery",
     "slug": "the-5-levels-of-trainer-mastery",
-    "title_ko": "The 5 Levels of Trainer Mastery for 캐시 게임",
+    "title_ko": "캐시게임 트레이너 마스터를 위한 5단계 훈련법",
     "title_en": "The 5 Levels of Trainer Mastery for Cash Games",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "캐시/스트래들",
@@ -5346,7 +5346,7 @@
   {
     "id": "how-to-review-icm-preflop-ranges",
     "slug": "how-to-review-icm-preflop-ranges",
-    "title_ko": "공략법: Review ICM 프리플랍 레인지",
+    "title_ko": "ICM 프리플랍 레인지를 올바르게 복기하고 분석하는 법",
     "title_en": "How to Review ICM Preflop Ranges",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -5378,7 +5378,7 @@
   {
     "id": "calling-down-the-over-bluffed-lines-in-lower-limits",
     "slug": "calling-down-the-over-bluffed-lines-in-lower-limits",
-    "title_ko": "Calling Down Over-Bluffed Lines in Lower Limits",
+    "title_ko": "마이크로/로우 스테이크의 과도한 블러프 라인 캐칭하기",
     "title_en": "Calling Down Over-Bluffed Lines in Lower Limits",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "턴/리버",
@@ -5410,7 +5410,7 @@
   {
     "id": "a-poker-players-guide-to-conquering-cognitive-biases-part-1",
     "slug": "a-poker-players-guide-to-conquering-cognitive-biases-part-1",
-    "title_ko": "A Poker Player’s Guide to Conquering Cognitive Biases – Part 1",
+    "title_ko": "포커 플레이어를 위한 인지 편향 극복 가이드 1편",
     "title_en": "A Poker Player’s Guide to Conquering Cognitive Biases – Part 1",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "익스플로잇",
@@ -5442,7 +5442,7 @@
   {
     "id": "exploiting-cold-callers-who-stab-too-much",
     "slug": "exploiting-cold-callers-who-stab-too-much",
-    "title_ko": "익스플로잇: Cold Callers Who Stab Too Much",
+    "title_ko": "플랍 체크 후 지나치게 찌르는(Stab) 콜드 콜러 익스플로잇",
     "title_en": "Exploiting Cold Callers Who Stab Too Much",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "익스플로잇",
@@ -5474,7 +5474,7 @@
   {
     "id": "using-80-20-rule-in-poker",
     "slug": "using-80-20-rule-in-poker",
-    "title_ko": "Using the 80/20 Rule in Poker",
+    "title_ko": "포커 공부에 적용하는 파레토 법칙(80/20 법칙)",
     "title_en": "Using the 80/20 Rule in Poker",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -5506,7 +5506,7 @@
   {
     "id": "attacking-aggressive-opponents-when-they-check-back-flop",
     "slug": "attacking-aggressive-opponents-when-they-check-back-flop",
-    "title_ko": "Attacking Aggressive Opponents When They Check Back 플랍",
+    "title_ko": "어그레시브한 상대가 플랍을 체크 백했을 때 공격하는 법",
     "title_en": "Attacking Aggressive Opponents When They Check Back Flop",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "플랍 전략",
@@ -5538,7 +5538,7 @@
   {
     "id": "buying-the-showdown",
     "slug": "buying-the-showdown",
-    "title_ko": "Buying the Showdown",
+    "title_ko": "쇼다운 구매하기(Buying the Showdown): 씬 벳의 숨은 목적",
     "title_en": "Buying the Showdown",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -5570,7 +5570,7 @@
   {
     "id": "barreling-as-ip-cold-caller",
     "slug": "barreling-as-ip-cold-caller",
-    "title_ko": "Barreling as IP Cold Caller",
+    "title_ko": "인포지션(IP) 콜드 콜러로서 턴/리버 배럴링하기",
     "title_en": "Barreling as IP Cold Caller",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "턴/리버",
@@ -5602,7 +5602,7 @@
   {
     "id": "how-confirmation-bias-impacts-poker-study",
     "slug": "how-confirmation-bias-impacts-poker-study",
-    "title_ko": "How Confirmation Bias Impacts Poker Study",
+    "title_ko": "확증 편향이 포커 공부와 실력 향상을 방해하는 방식",
     "title_en": "How Confirmation Bias Impacts Poker Study",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -5634,7 +5634,7 @@
   {
     "id": "a-champions-guide-to-knockout-poker-formats",
     "slug": "a-champions-guide-to-knockout-poker-formats",
-    "title_ko": "A Champion’s Guide to Knockout Poker Formats",
+    "title_ko": "챔피언이 알려주는 녹아웃(Knockout) 포커 완벽 가이드",
     "title_en": "A Champion’s Guide to Knockout Poker Formats",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "PKO 바운티",
@@ -5666,7 +5666,7 @@
   {
     "id": "pushing-equity-with-small-bets",
     "slug": "pushing-equity-with-small-bets",
-    "title_ko": "Pushing 에퀴티 With Small Bets",
+    "title_ko": "작은 벳(스몰 사이징)으로 에퀴티를 실현하고 압박하는 법",
     "title_en": "Pushing Equity With Small Bets",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -5698,7 +5698,7 @@
   {
     "id": "turn-check-raise-heuristics",
     "slug": "turn-check-raise-heuristics",
-    "title_ko": "턴 체크-레이즈 Heuristics",
+    "title_ko": "턴 체크-레이즈 휴리스틱: 솔버의 턴 체크-레이즈 법칙",
     "title_en": "Turn Check-Raise Heuristics",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "턴/리버",
@@ -5730,7 +5730,7 @@
   {
     "id": "aggregate-flop-strategy-sb-c-betting-in-srp",
     "slug": "aggregate-flop-strategy-sb-c-betting-in-srp",
-    "title_ko": "Aggregate 플랍 Strategy: SB C-bet 전략 in SRP",
+    "title_ko": "싱글 레이즈드 팟(SRP) 스몰 블라인드 플랍 C-bet 종합 전략",
     "title_en": "Aggregate Flop Strategy: SB C-Betting in SRP",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "플랍 전략",
@@ -5762,7 +5762,7 @@
   {
     "id": "the-power-of-the-hypergeometric-bet",
     "slug": "the-power-of-the-hypergeometric-bet",
-    "title_ko": "The Power of the Hypergeometric Bet",
+    "title_ko": "하이퍼지오메트릭 벳(초기하학적 벳)의 위력과 수학",
     "title_en": "The Power of the Hypergeometric Bet",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "플랍 전략",
@@ -5794,7 +5794,7 @@
   {
     "id": "the-limits-of-nodelocking",
     "slug": "the-limits-of-nodelocking",
-    "title_ko": "The Limits of Nodelocking",
+    "title_ko": "노드락(Node-locking)의 한계와 현실적인 적용 주의점",
     "title_en": "The Limits of Nodelocking",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "익스플로잇",
@@ -5826,7 +5826,7 @@
   {
     "id": "limp-called-pot-as-bb",
     "slug": "limp-called-pot-as-bb",
-    "title_ko": "Limp-Called Pot as BB",
+    "title_ko": "빅블라인드(BB)에서 림프-콜된 팟을 운영하는 전략",
     "title_en": "Limp-Called Pot as BB",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -5858,7 +5858,7 @@
   {
     "id": "why-not-shove",
     "slug": "why-not-shove",
-    "title_ko": "Why Not Shove?",
+    "title_ko": "왜 올인하지 않을까? 딥스택에서 셔브를 아끼는 솔버의 이유",
     "title_en": "Why Not Shove?",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -5890,7 +5890,7 @@
   {
     "id": "what-we-can-learn-from-outlier-hands",
     "slug": "what-we-can-learn-from-outlier-hands",
-    "title_ko": "What We Can Learn From Outlier Hands",
+    "title_ko": "특이한 아웃라이어(Outlier) 핸드 분석에서 배우는 교훈",
     "title_en": "What We Can Learn From Outlier Hands",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -5922,7 +5922,7 @@
   {
     "id": "building-exploits-from-showdown",
     "slug": "building-exploits-from-showdown",
-    "title_ko": "Building Exploits From Showdown",
+    "title_ko": "쇼다운 정보로부터 맞춤형 익스플로잇 전략 구축하기",
     "title_en": "Building Exploits From Showdown",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "익스플로잇",
@@ -5954,7 +5954,7 @@
   {
     "id": "pioneering-poker-ai-research",
     "slug": "pioneering-poker-ai-research",
-    "title_ko": "Pioneering Poker AI Research",
+    "title_ko": "포커 AI 연구의 역사와 솔버 알고리즘의 최전선",
     "title_en": "Pioneering Poker AI Research",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -5986,7 +5986,7 @@
   {
     "id": "navigating-nasty-rivers-out-of-position",
     "slug": "navigating-nasty-rivers-out-of-position",
-    "title_ko": "Navigating Nasty Rivers 아웃포지션(OOP)",
+    "title_ko": "아웃포지션(OOP)에서 까다로운 리버 보드 헤쳐나가기",
     "title_en": "Navigating Nasty Rivers Out of Position",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "턴/리버",
@@ -6018,7 +6018,7 @@
   {
     "id": "crack-the-shell-of-nut-draw-strategy",
     "slug": "crack-the-shell-of-nut-draw-strategy",
-    "title_ko": "Crack the Shell of Nut Draw Strategy",
+    "title_ko": "넛 드로우(Nut Draw) 전략의 껍질을 깨부수다",
     "title_en": "Crack the Shell of Nut Draw Strategy",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -6050,7 +6050,7 @@
   {
     "id": "preflop-raise-sizing-examining-2-key-factors",
     "slug": "preflop-raise-sizing-examining-2-key-factors",
-    "title_ko": "프리플랍 Raise Sizing: Examining 2 Key Factors",
+    "title_ko": "프리플랍 오픈 사이징을 결정하는 2가지 핵심 팩터",
     "title_en": "Preflop Raise Sizing: Examining 2 Key Factors",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -6082,7 +6082,7 @@
   {
     "id": "how-to-handle-loose-passive-limpers",
     "slug": "how-to-handle-loose-passive-limpers",
-    "title_ko": "공략법: Handle Loose-Passive Limpers",
+    "title_ko": "루즈 패시브 림퍼(Limp-caller)들을 완벽히 요리하는 법",
     "title_en": "How to Handle Loose-Passive Limpers",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -6146,7 +6146,7 @@
   {
     "id": "an-introduction-to-spin-gos",
     "slug": "an-introduction-to-spin-gos",
-    "title_ko": "An Introduction to Spin & Gos",
+    "title_ko": "스핀앤고(Spin & Go) 입문: 3-핸디드 초고속 게임의 법칙",
     "title_en": "An Introduction to Spin & Gos",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -6178,7 +6178,7 @@
   {
     "id": "relationships-and-poker",
     "slug": "relationships-and-poker",
-    "title_ko": "Relationships and Poker",
+    "title_ko": "포커 플레이어의 인간관계와 건강한 삶의 균형",
     "title_en": "Relationships and Poker",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -6210,7 +6210,7 @@
   {
     "id": "do-multiple-sizes-matter",
     "slug": "do-multiple-sizes-matter",
-    "title_ko": "Do Multiple Sizes Matter?",
+    "title_ko": "멀티 사이징(다양한 벳 크기)은 실전에서 얼마나 중요할까?",
     "title_en": "Do Multiple Sizes Matter?",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -6242,7 +6242,7 @@
   {
     "id": "the-science-of-learning-applied-to-gto-wizard",
     "slug": "the-science-of-learning-applied-to-gto-wizard",
-    "title_ko": "The Science of Learning Applied to GTO Wizard",
+    "title_ko": "인지과학적 학습법으로 GTO Wizard 공부 효율 극대화하기",
     "title_en": "The Science of Learning Applied to GTO Wizard",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -6274,7 +6274,7 @@
   {
     "id": "check-raising-a-single-pair",
     "slug": "check-raising-a-single-pair",
-    "title_ko": "체크-레이즈 a Single Pair",
+    "title_ko": "원 페어(Single Pair)로 체크-레이즈를 감행해야 하는 스팟",
     "title_en": "Check-Raising a Single Pair",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -6306,7 +6306,7 @@
   {
     "id": "your-daily-dose-of-gto-is-here",
     "slug": "your-daily-dose-of-gto-is-here",
-    "title_ko": "Your Daily Dose of GTO is Here!",
+    "title_ko": "매일 꾸준히 실력을 키우는 데일리 GTO 트레이닝 루틴",
     "title_en": "Your Daily Dose of GTO is Here!",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -6338,7 +6338,7 @@
   {
     "id": "the-turn-probe-bet",
     "slug": "the-turn-probe-bet",
-    "title_ko": "The 턴 Probe Bet",
+    "title_ko": "턴 프로브 벳(Turn Probe Bet) 완벽 마스터 가이드",
     "title_en": "The Turn Probe Bet",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "턴/리버",
@@ -6370,7 +6370,7 @@
   {
     "id": "when-to-encourage-multiway-pots-in-pkos",
     "slug": "when-to-encourage-multiway-pots-in-pkos",
-    "title_ko": "언제 ~해야 하는가: Encourage 멀티웨이 Pots in PKOs",
+    "title_ko": "PKO 토너먼트에서 의도적으로 멀티웨이 팟을 유도해야 할 때",
     "title_en": "When to Encourage Multiway Pots in PKOs",
     "level": "[5차 전직/최종] 하이롤러 & 챔피언 (Lv.85~100)",
     "category": "PKO 바운티",
@@ -6434,7 +6434,7 @@
   {
     "id": "do-solvers-have-targets",
     "slug": "do-solvers-have-targets",
-    "title_ko": "Do 솔버 Have Targets?",
+    "title_ko": "솔버는 특정 타겟 핸드를 노리고 벳을 할까?",
     "title_en": "Do Solvers Have Targets?",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -6466,7 +6466,7 @@
   {
     "id": "disciplining-big-blind-in-limped-pots",
     "slug": "disciplining-big-blind-in-limped-pots",
-    "title_ko": "Disciplining 빅 블라인드(BB) in Limped Pots",
+    "title_ko": "림프 팟에서 빅블라인드(BB)의 무리한 플레이 참교육하기",
     "title_en": "Disciplining Big Blind in Limped Pots",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -6498,7 +6498,7 @@
   {
     "id": "id-rather-be-drawing",
     "slug": "id-rather-be-drawing",
-    "title_ko": "I’d Rather Be Drawing",
+    "title_ko": "메이드 핸드보다 드로우가 더 매력적인 보드와 스팟",
     "title_en": "I’d Rather Be Drawing",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -6530,7 +6530,7 @@
   {
     "id": "curious-case-of-open-limping-buttons",
     "slug": "curious-case-of-open-limping-buttons",
-    "title_ko": "The Curious Case of Open-Limping Buttons",
+    "title_ko": "버튼(BTN)에서 오픈 림프하는 기이한 플레이의 수학적 진실",
     "title_en": "The Curious Case of Open-Limping Buttons",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -6562,7 +6562,7 @@
   {
     "id": "cleaning-out-sticky-ip-callers",
     "slug": "cleaning-out-sticky-ip-callers",
-    "title_ko": "Cleaning Out Sticky IP Callers",
+    "title_ko": "인포지션(IP)에서 끈질기게 콜하는 끈적한 상대 청소하기",
     "title_en": "Cleaning Out Sticky IP Callers",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -6594,7 +6594,7 @@
   {
     "id": "defending-against-tiny-three-bets",
     "slug": "defending-against-tiny-three-bets",
-    "title_ko": "Defending Against Tiny 3벳",
+    "title_ko": "작은 크기의 3벳(Tiny 3-Bet)을 상대로 올바르게 방어하는 법",
     "title_en": "Defending Against Tiny 3-Bets",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "3벳 팟",
@@ -6626,7 +6626,7 @@
   {
     "id": "heads-up-exploiting-sbs-preflop-mistakes",
     "slug": "heads-up-exploiting-sbs-preflop-mistakes",
-    "title_ko": "헤즈업! 익스플로잇: SB's 프리플랍 Mistakes",
+    "title_ko": "헤즈업: 스몰블라인드(SB)의 프리플랍 실수를 익스플로잇하기",
     "title_en": "Heads up! Exploiting SB’s Preflop Mistakes",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "익스플로잇",
@@ -6658,7 +6658,7 @@
   {
     "id": "c-betting-as-the-oop-preflop-raiser",
     "slug": "c-betting-as-the-oop-preflop-raiser",
-    "title_ko": "C-bet 전략 As the OOP 프리플랍 Raiser",
+    "title_ko": "프리플랍 레이저로서 아웃포지션(OOP) C-bet 운영 전략",
     "title_en": "C-Betting As the OOP Preflop Raiser",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "플랍 전략",
@@ -6690,7 +6690,7 @@
   {
     "id": "overchoice-making-sense-of-multiple-sizings",
     "slug": "overchoice-making-sense-of-multiple-sizings",
-    "title_ko": "Overchoice: Making Sense of Multiple Sizings",
+    "title_ko": "선택 과잉의 덫: 복잡한 솔버 사이징을 단순화하는 법",
     "title_en": "Overchoice: Making Sense of Multiple Sizings",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -6722,7 +6722,7 @@
   {
     "id": "river-refinements-when-your-opponent-wont-check-raise",
     "slug": "river-refinements-when-your-opponent-wont-check-raise",
-    "title_ko": "리버 Refinements: When Your Opponent Won’t 체크-레이즈",
+    "title_ko": "리버 정밀 조정: 상대가 체크-레이즈를 하지 않을 때의 밸류 벳",
     "title_en": "River Refinements: When Your Opponent Won’t Check-Raise",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "턴/리버",
@@ -6754,7 +6754,7 @@
   {
     "id": "gto-wizard-2023-wrapup",
     "slug": "gto-wizard-2023-wrapup",
-    "title_ko": "GTO Wizard 2023 Wrapup",
+    "title_ko": "GTO Wizard 결산 및 향후 솔버 기술 로드맵",
     "title_en": "GTO Wizard 2023 Wrapup",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -6786,7 +6786,7 @@
   {
     "id": "turn-barreling-in-3-bet-pots",
     "slug": "turn-barreling-in-3-bet-pots",
-    "title_ko": "턴 Barreling in 3벳 Pots",
+    "title_ko": "3벳 팟에서 턴 연속 배럴링(Turn Barreling)의 원칙",
     "title_en": "Turn Barreling in 3-Bet Pots",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "3벳 팟",
@@ -6818,7 +6818,7 @@
   {
     "id": "the-right-way-to-think-about-protection",
     "slug": "the-right-way-to-think-about-protection",
-    "title_ko": "The Right Way To Think About Protection",
+    "title_ko": "에퀴티 프로텍션(Protection)을 올바르게 사고하는 법",
     "title_en": "The Right Way To Think About Protection",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -6850,7 +6850,7 @@
   {
     "id": "the-importance-of-board-coverage",
     "slug": "the-importance-of-board-coverage",
-    "title_ko": "The Importance of Board Coverage",
+    "title_ko": "보드 커버리지(Board Coverage)의 중요성과 레인지 균형",
     "title_en": "The Importance of Board Coverage",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -6882,7 +6882,7 @@
   {
     "id": "how-to-adjust-when-villain-has-no-bluffs",
     "slug": "how-to-adjust-when-villain-has-no-bluffs",
-    "title_ko": "공략법: Adjust When Villain Has No 블러프",
+    "title_ko": "상대 레인지에 블러프가 전혀 없을 때의 극단적 폴드 전략",
     "title_en": "How to Adjust When Villain Has No Bluffs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "턴/리버",
@@ -6914,7 +6914,7 @@
   {
     "id": "adjusting-on-later-streets-after-exploiting-flop",
     "slug": "adjusting-on-later-streets-after-exploiting-flop",
-    "title_ko": "Adjusting on Later Streets After 익스플로잇: 플랍",
+    "title_ko": "플랍에서 익스플로잇한 후 턴과 리버에서 전략을 수정하는 법",
     "title_en": "Adjusting on Later Streets After Exploiting Flop",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "플랍 전략",
@@ -6946,7 +6946,7 @@
   {
     "id": "customizable-raked-solutions-with-gto-wizard-ai",
     "slug": "customizable-raked-solutions-with-gto-wizard-ai",
-    "title_ko": "Customizable Raked Solutions With GTO Wizard AI",
+    "title_ko": "GTO Wizard AI를 활용한 커스텀 레이크 솔루션 구축",
     "title_en": "Customizable Raked Solutions With GTO Wizard AI",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "캐시/스트래들",
@@ -6978,7 +6978,7 @@
   {
     "id": "c-betting-ip-vs-passive-poker-players",
     "slug": "c-betting-ip-vs-passive-poker-players",
-    "title_ko": "C-bet 전략 IP vs Passive Poker Players",
+    "title_ko": "패시브한 상대를 만났을 때 인포지션(IP) C-bet 전략",
     "title_en": "C-Betting IP vs Passive Poker Players",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "플랍 전략",
@@ -7010,7 +7010,7 @@
   {
     "id": "c-betting-against-icm-preflop-ranges",
     "slug": "c-betting-against-icm-preflop-ranges",
-    "title_ko": "C-bet 전략 Against ICM 프리플랍 레인지",
+    "title_ko": "ICM 프리플랍 레인지를 상대로 한 C-bet 최적화 전략",
     "title_en": "C-Betting Against ICM Preflop Ranges",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -7042,7 +7042,7 @@
   {
     "id": "the-art-of-bluff-catching-2",
     "slug": "the-art-of-bluff-catching-2",
-    "title_ko": "완벽 가이드: 블러프 Catching",
+    "title_ko": "블러프 캐칭(Bluff Catching)의 미학: 영웅적인 콜의 기준",
     "title_en": "The Art of Bluff Catching",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "턴/리버",
@@ -7074,7 +7074,7 @@
   {
     "id": "exploiting-excessive-c-betting-by-ip",
     "slug": "exploiting-excessive-c-betting-by-ip",
-    "title_ko": "익스플로잇: Excessive C-bet 전략 by IP",
+    "title_ko": "인포지션(IP)의 과도한 C-bet을 카운터치고 응징하는 법",
     "title_en": "Exploiting Excessive C-Betting by IP",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "플랍 전략",
@@ -7106,7 +7106,7 @@
   {
     "id": "is-limping-pimping",
     "slug": "is-limping-pimping",
-    "title_ko": "Is Limping Pimping?",
+    "title_ko": "프리플랍 림프는 정말 항상 나쁜 플레이일까?",
     "title_en": "Is Limping Pimping?",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -7138,7 +7138,7 @@
   {
     "id": "exploiting-excessive-c-betting-by-oop",
     "slug": "exploiting-excessive-c-betting-by-oop",
-    "title_ko": "익스플로잇: Excessive C-bet 전략 by OOP",
+    "title_ko": "아웃포지션(OOP)의 무분별한 C-bet을 익스플로잇하는 법",
     "title_en": "Exploiting Excessive C-Betting by OOP",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "플랍 전략",
@@ -7170,7 +7170,7 @@
   {
     "id": "preflop-button-mastery-in-pkos",
     "slug": "preflop-button-mastery-in-pkos",
-    "title_ko": "프리플랍 버튼(BTN) Mastery in PKOs",
+    "title_ko": "PKO 토너먼트에서 버튼(BTN) 포지션 완전 정복",
     "title_en": "Preflop Button Mastery in PKOs",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
     "category": "PKO 바운티",
@@ -7202,7 +7202,7 @@
   {
     "id": "the-worst-turn-card",
     "slug": "the-worst-turn-card",
-    "title_ko": "The Worst 턴 Card",
+    "title_ko": "내 핸드와 레인지에 최악인 턴 카드가 떨어졌을 때의 대처법",
     "title_en": "The Worst Turn Card",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "턴/리버",
@@ -7234,7 +7234,7 @@
   {
     "id": "navigating-range-disadvantage-as-the-3-bettor",
     "slug": "navigating-range-disadvantage-as-the-3-bettor",
-    "title_ko": "Navigating 레인지 Disadvantage as the 3-Bettor",
+    "title_ko": "3베터로서 레인지 불리함(Disadvantage)에 직면했을 때",
     "title_en": "Navigating Range Disadvantage as the 3-Bettor",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "3벳 팟",
@@ -7266,7 +7266,7 @@
   {
     "id": "mastering-three-bet-pots-in-position-in-mtts",
     "slug": "mastering-three-bet-pots-in-position-in-mtts",
-    "title_ko": "마스터하기: 3벳 Pots 인포지션(IP) in MTTs",
+    "title_ko": "MTT에서 인포지션(IP) 3벳 팟 마스터하기",
     "title_en": "Mastering 3-Bet Pots In Position in MTTs",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "토너먼트/ICM",
@@ -7298,7 +7298,7 @@
   {
     "id": "mastering-three-bet-pots-out-of-position-in-mtts",
     "slug": "mastering-three-bet-pots-out-of-position-in-mtts",
-    "title_ko": "마스터하기: 3벳 Pots 아웃포지션(OOP) in MTTs",
+    "title_ko": "MTT에서 아웃포지션(OOP) 3벳 팟 마스터하기",
     "title_en": "Mastering 3-Bet Pots Out of Position in MTTs",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "토너먼트/ICM",
@@ -7330,7 +7330,7 @@
   {
     "id": "the-greatest-final-table-in-triton-history",
     "slug": "the-greatest-final-table-in-triton-history",
-    "title_ko": "The Greatest 파이널 테이블 in Triton History",
+    "title_ko": "트리톤(Triton) 역사상 가장 위대한 파이널 테이블 전략 분석",
     "title_en": "The Greatest Final Table in Triton History",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -7362,7 +7362,7 @@
   {
     "id": "mastering-thin-value-bets-in-checked-down-pots",
     "slug": "mastering-thin-value-bets-in-checked-down-pots",
-    "title_ko": "마스터하기: Thin 밸류 벳 in Checked-Down Pots",
+    "title_ko": "플랍/턴 체크 후 리버에서 씬 밸류 벳(Thin Value) 마스터하기",
     "title_en": "Mastering Thin Value Bets in Checked-Down Pots",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -7394,7 +7394,7 @@
   {
     "id": "introducing-gto-wizard-ai-heads-up-preflop-solver",
     "slug": "introducing-gto-wizard-ai-heads-up-preflop-solver",
-    "title_ko": "신규 공개: GTO Wizard AI 헤즈업 프리플랍 솔버",
+    "title_ko": "GTO Wizard AI 헤즈업 프리플랍 솔버 공개",
     "title_en": "Introducing GTO Wizard AI Heads Up Preflop Solver",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -7426,7 +7426,7 @@
   {
     "id": "maximizing-value-on-monotone-flops",
     "slug": "maximizing-value-on-monotone-flops",
-    "title_ko": "Maximizing Value on Monotone Flops",
+    "title_ko": "모노톤(Monotone, 한 가지 무늬) 플랍에서 밸류 극대화하기",
     "title_en": "Maximizing Value on Monotone Flops",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "플랍 전략",
@@ -7458,7 +7458,7 @@
   {
     "id": "how-to-defend-against-turn-donk-bets",
     "slug": "how-to-defend-against-turn-donk-bets",
-    "title_ko": "공략법: Defend Against 턴 Donk Bets",
+    "title_ko": "턴 동크 벳(Turn Donk Bet)을 맞았을 때 최적의 수비 전략",
     "title_en": "How to Defend Against Turn Donk Bets",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "턴/리버",
@@ -7490,7 +7490,7 @@
   {
     "id": "how-and-why-you-should-use-turn-donk-bets",
     "slug": "how-and-why-you-should-use-turn-donk-bets",
-    "title_ko": "How and Why You Should Use 턴 Donk Bets",
+    "title_ko": "턴 동크 벳을 사용해야 하는 이유와 실전 타겟",
     "title_en": "How and Why You Should Use Turn Donk Bets",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "턴/리버",
@@ -7522,7 +7522,7 @@
   {
     "id": "how-stack-sizes-change-your-range",
     "slug": "how-stack-sizes-change-your-range",
-    "title_ko": "How Stack Sizes Change Your 레인지",
+    "title_ko": "유효 스택 크기가 프리플랍/포스트플랍 레인지를 바꾸는 원리",
     "title_en": "How Stack Sizes Change Your Range",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -7554,7 +7554,7 @@
   {
     "id": "introducing-nodelocking",
     "slug": "introducing-nodelocking",
-    "title_ko": "신규 공개: Nodelocking",
+    "title_ko": "노드락(Nodelocking) 기능 소개: 상대의 릭을 직접 고정하여 익스플로잇하기",
     "title_en": "Introducing Nodelocking",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "익스플로잇",
@@ -7618,7 +7618,7 @@
   {
     "id": "should-you-ever-cold-call-a-3-bet",
     "slug": "should-you-ever-cold-call-a-3-bet",
-    "title_ko": "Should You Ever Cold Call a 3벳?",
+    "title_ko": "3벳에 콜드 콜(Cold-call)을 해도 되는 극소수의 예외 스팟",
     "title_en": "Should You Ever Cold Call a 3-Bet?",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "3벳 팟",
@@ -7650,7 +7650,7 @@
   {
     "id": "when-icm-breaks-down",
     "slug": "when-icm-breaks-down",
-    "title_ko": "When ICM Breaks Down",
+    "title_ko": "ICM 모델이 현실과 어긋나는 순간과 이를 보완하는 법",
     "title_en": "When ICM Breaks Down",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -7682,7 +7682,7 @@
   {
     "id": "when-is-it-correct-to-fold-aa-preflop",
     "slug": "when-is-it-correct-to-fold-aa-preflop",
-    "title_ko": "When Is It Correct To Fold AA 프리플랍?",
+    "title_ko": "프리플랍에서 포켓 에이스(AA)를 폴드하는 것이 정답인 극한의 상황",
     "title_en": "When Is It Correct To Fold AA Preflop?",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -7714,7 +7714,7 @@
   {
     "id": "oop-c-betting-vs-loose-cold-callers",
     "slug": "oop-c-betting-vs-loose-cold-callers",
-    "title_ko": "OOP C-bet 전략 vs Loose Cold-Callers",
+    "title_ko": "루즈한 콜드 콜러를 상대로 아웃포지션(OOP) C-bet 운영법",
     "title_en": "OOP C-Betting vs Loose Cold-Callers",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "플랍 전략",
@@ -7746,7 +7746,7 @@
   {
     "id": "towards-a-safer-poker-ecosystem",
     "slug": "towards-a-safer-poker-ecosystem",
-    "title_ko": "Towards a Safer Poker Ecosystem",
+    "title_ko": "더 안전하고 공정한 포커 생태계를 위한 솔버와 보안 기술",
     "title_en": "Towards a Safer Poker Ecosystem",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -7778,7 +7778,7 @@
   {
     "id": "short-stacked-play-in-mtts",
     "slug": "short-stacked-play-in-mtts",
-    "title_ko": "Short-Stacked Play in MTTs",
+    "title_ko": "MTT 숏스택(Short-stack) 플레이 생존 및 승리 가이드",
     "title_en": "Short-Stacked Play in MTTs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -7810,7 +7810,7 @@
   {
     "id": "when-to-ladder-in-tournaments",
     "slug": "when-to-ladder-in-tournaments",
-    "title_ko": "언제 ~해야 하는가: Ladder in 토너먼트",
+    "title_ko": "토너먼트에서 상금 래더링(Laddering)을 노려야 할 때",
     "title_en": "When to Ladder in Tournaments",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -7842,7 +7842,7 @@
   {
     "id": "how-payout-structures-impact-icm",
     "slug": "how-payout-structures-impact-icm",
-    "title_ko": "How Payout Structures Impact ICM",
+    "title_ko": "토너먼트 페이아웃 구조가 ICM 압박 강도에 미치는 영향",
     "title_en": "How Payout Structures Impact ICM",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -7874,7 +7874,7 @@
   {
     "id": "c-betting-ip-in-3-bet-pots",
     "slug": "c-betting-ip-in-3-bet-pots",
-    "title_ko": "C-bet 전략 IP in 3벳 Pots",
+    "title_ko": "3벳 팟 인포지션(IP) C-bet 전략과 보드별 빈도",
     "title_en": "C-Betting IP in 3-Bet Pots",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "3벳 팟",
@@ -7906,7 +7906,7 @@
   {
     "id": "c-betting-oop-in-3-bet-pots",
     "slug": "c-betting-oop-in-3-bet-pots",
-    "title_ko": "C-bet 전략 OOP in 3벳 Pots",
+    "title_ko": "3벳 팟 아웃포지션(OOP) C-bet 전략과 체크 레인지 구성",
     "title_en": "C-Betting OOP in 3-Bet Pots",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "3벳 팟",
@@ -7938,7 +7938,7 @@
   {
     "id": "dynamic-sizing-a-gto-breakthrough",
     "slug": "dynamic-sizing-a-gto-breakthrough",
-    "title_ko": "Dynamic Sizing: A GTO Breakthrough",
+    "title_ko": "다이내믹 사이징: GTO 솔버 연산 기술의 획기적 도약",
     "title_en": "Dynamic Sizing: A GTO Breakthrough",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -7970,7 +7970,7 @@
   {
     "id": "dynamic-sizing-benchmarks",
     "slug": "dynamic-sizing-benchmarks",
-    "title_ko": "Dynamic Sizing Benchmarks",
+    "title_ko": "다이내믹 사이징 벤치마크 및 EV 보존율 테스트 리포트",
     "title_en": "Dynamic Sizing Benchmarks",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "GTO 전략",
@@ -8002,7 +8002,7 @@
   {
     "id": "understanding-the-impact-of-field-size-on-icm-in-poker",
     "slug": "understanding-the-impact-of-field-size-on-icm-in-poker",
-    "title_ko": "Understanding the Impact Of Field Size on ICM in Poker",
+    "title_ko": "토너먼트 참가자 수(Field Size)가 ICM에 미치는 영향",
     "title_en": "Understanding the Impact Of Field Size on ICM in Poker",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -8034,7 +8034,7 @@
   {
     "id": "defending-vs-bb-check-raise-on-paired-flops",
     "slug": "defending-vs-bb-check-raise-on-paired-flops",
-    "title_ko": "Defending vs BB 체크-레이즈 on Paired Flops",
+    "title_ko": "페어 보드 플랍에서 빅블라인드(BB) 체크-레이즈 방어 전략",
     "title_en": "Defending vs BB Check-Raise on Paired Flops",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "솔버 이론",
@@ -8066,7 +8066,7 @@
   {
     "id": "mastering-pko-final-tables",
     "slug": "mastering-pko-final-tables",
-    "title_ko": "마스터하기: PKO Final Tables",
+    "title_ko": "PKO 토너먼트 파이널 테이블 완전 정복: 바운티와 ICM 결합",
     "title_en": "Mastering PKO Final Tables",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
     "category": "토너먼트/ICM",
@@ -8098,7 +8098,7 @@
   {
     "id": "how-to-upload-your-hand-histories",
     "slug": "how-to-upload-your-hand-histories",
-    "title_ko": "공략법: Upload Your Hand Histories",
+    "title_ko": "핸드 히스토리 업로드 및 자동 분석 기능 사용법",
     "title_en": "How to Upload Your Hand Histories",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -8130,7 +8130,7 @@
   {
     "id": "where-to-get-your-hand-histories",
     "slug": "where-to-get-your-hand-histories",
-    "title_ko": "Where to Get Your Hand Histories",
+    "title_ko": "주요 온라인 포커 룸에서 핸드 히스토리 추출하는 법",
     "title_en": "Where to Get Your Hand Histories",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -8162,7 +8162,7 @@
   {
     "id": "attacking-paired-flops-from-the-bb",
     "slug": "attacking-paired-flops-from-the-bb",
-    "title_ko": "Attacking Paired Flops From the BB",
+    "title_ko": "빅블라인드(BB)에서 페어 플랍을 공격하는 체크-레이즈 전략",
     "title_en": "Attacking Paired Flops From the BB",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -8194,7 +8194,7 @@
   {
     "id": "kk-vs-qq-vs-jj-at-wsop-main-event",
     "slug": "kk-vs-qq-vs-jj-at-wsop-main-event",
-    "title_ko": "KK vs QQ vs JJ at WSOP Main Event",
+    "title_ko": "WSOP 메인 이벤트 실전 분석: KK vs QQ vs JJ 프리플랍 삼파전",
     "title_en": "KK vs QQ vs JJ at WSOP Main Event",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -8226,7 +8226,7 @@
   {
     "id": "responding-to-bb-squeezes",
     "slug": "responding-to-bb-squeezes",
-    "title_ko": "Responding to BB Squeezes",
+    "title_ko": "빅블라인드(BB)의 강력한 스퀴즈에 올바르게 대처하는 법",
     "title_en": "Responding to BB Squeezes",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "3벳 팟",
@@ -8258,7 +8258,7 @@
   {
     "id": "crushing-a-top-hunl-poker-bot",
     "slug": "crushing-a-top-hunl-poker-bot",
-    "title_ko": "정복하기: a Top HUNL Poker Bot",
+    "title_ko": "최정상급 HUNL 포커 봇을 무너뜨린 프로들의 솔버 익스플로잇",
     "title_en": "Crushing a Top HUNL Poker Bot",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -8290,7 +8290,7 @@
   {
     "id": "gto-wizard-ai-explained",
     "slug": "gto-wizard-ai-explained",
-    "title_ko": "GTO Wizard AI Explained",
+    "title_ko": "GTO Wizard AI의 내부 작동 원리와 신경망 연산 기술",
     "title_en": "GTO Wizard AI Explained",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -8322,7 +8322,7 @@
   {
     "id": "introducing-gto-wizard-ai",
     "slug": "introducing-gto-wizard-ai",
-    "title_ko": "신규 공개: GTO Wizard AI",
+    "title_ko": "차세대 실시간 연산 GTO Wizard AI 정식 출시",
     "title_en": "Introducing GTO Wizard AI",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -8354,7 +8354,7 @@
   {
     "id": "gto-wizard-ai-benchmarks",
     "slug": "gto-wizard-ai-benchmarks",
-    "title_ko": "GTO Wizard AI Benchmarks",
+    "title_ko": "GTO Wizard AI 연산 속도 및 정확도 벤치마크",
     "title_en": "GTO Wizard AI Benchmarks",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "솔버 이론",
@@ -8386,7 +8386,7 @@
   {
     "id": "table-management-in-pkos",
     "slug": "table-management-in-pkos",
-    "title_ko": "Table Management in PKOs",
+    "title_ko": "PKO 토너먼트 멀티테이블 운영 및 타겟 우선순위 관리",
     "title_en": "Table Management in PKOs",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
     "category": "PKO 바운티",
@@ -8418,7 +8418,7 @@
   {
     "id": "overcalling-from-the-bb",
     "slug": "overcalling-from-the-bb",
-    "title_ko": "Overcalling From the BB",
+    "title_ko": "빅블라인드(BB)에서 멀티웨이 오버콜(Overcall) 레인지 구성",
     "title_en": "Overcalling From the BB",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -8450,7 +8450,7 @@
   {
     "id": "understanding-which-mistakes-cost-you-the-most-money",
     "slug": "understanding-which-mistakes-cost-you-the-most-money",
-    "title_ko": "가장 큰 돈을 잃게 만드는 치명적 실수 분석",
+    "title_ko": "가장 큰 돈을 잃게 만드는 치명적 포커 실수 분석",
     "title_en": "Understanding Which Mistakes Cost You the Most Money",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "토너먼트/ICM",
@@ -8482,7 +8482,7 @@
   {
     "id": "overbetting-the-flop-in-cash-games",
     "slug": "overbetting-the-flop-in-cash-games",
-    "title_ko": "오버벳 전략 the 플랍 in 캐시 게임",
+    "title_ko": "캐시게임 플랍 오버벳의 정석: 너츠 어드밴티지 활용법",
     "title_en": "Overbetting the Flop in Cash Games",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "플랍 전략",
@@ -8514,7 +8514,7 @@
   {
     "id": "using-new-skills-at-the-poker-table",
     "slug": "using-new-skills-at-the-poker-table",
-    "title_ko": "Using New Skills at the Poker Table",
+    "title_ko": "새로 배운 GTO 이론을 실전 테이블에 안전하게 적용하는 법",
     "title_en": "Using New Skills at the Poker Table",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -8546,7 +8546,7 @@
   {
     "id": "flatting-ace-x-hands-shortstacked",
     "slug": "flatting-ace-x-hands-shortstacked",
-    "title_ko": "Flatting Ace-X Hands Short Stacked",
+    "title_ko": "숏스택에서 Ax 핸드로 3벳 대신 플랫 콜을 해야 하는 스팟",
     "title_en": "Flatting Ace-X Hands Short Stacked",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -8578,7 +8578,7 @@
   {
     "id": "playing-limped-pots-as-the-bb-in-mtts",
     "slug": "playing-limped-pots-as-the-bb-in-mtts",
-    "title_ko": "Playing Limped Pots as the BB in MTTs",
+    "title_ko": "MTT 빅블라인드(BB)에서 림프 팟을 마스터하는 법",
     "title_en": "Playing Limped Pots as the BB in MTTs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -8610,7 +8610,7 @@
   {
     "id": "the-absurd-game-theory-of-chopped-boards",
     "slug": "the-absurd-game-theory-of-chopped-boards",
-    "title_ko": "The Absurd Game Theory of Chopped Boards",
+    "title_ko": "찹 보드(Chopped Board, 무승부 보드)의 기이한 게임 이론",
     "title_en": "The Absurd Game Theory of Chopped Boards",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -8642,7 +8642,7 @@
   {
     "id": "playing-limped-pots-as-sb-in-mtts",
     "slug": "playing-limped-pots-as-sb-in-mtts",
-    "title_ko": "Playing Limped Pots as the SB in MTTs",
+    "title_ko": "MTT 스몰블라인드(SB)에서 림프 팟을 운영하는 법",
     "title_en": "Playing Limped Pots as the SB in MTTs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -8674,7 +8674,7 @@
   {
     "id": "simplified-solutions-and-a-new-interface",
     "slug": "simplified-solutions-and-a-new-interface",
-    "title_ko": "Simplified Solutions and a New Interface!",
+    "title_ko": "단순화된 솔루션 및 직관적인 신규 UI 안내",
     "title_en": "Simplified Solutions and a New Interface!",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -8706,7 +8706,7 @@
   {
     "id": "the-art-of-learning-poker",
     "slug": "the-art-of-learning-poker",
-    "title_ko": "완벽 가이드: Learning Poker",
+    "title_ko": "포커 공부의 예술: 뇌 과학을 활용한 학습 효율 극대화",
     "title_en": "The Art of Learning Poker",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -8738,7 +8738,7 @@
   {
     "id": "is-donk-betting-for-donkeys",
     "slug": "is-donk-betting-for-donkeys",
-    "title_ko": "Is Donk Betting for Donkeys?",
+    "title_ko": "동크 벳은 정말 멍청한 플레이일까? 솔버가 밝힌 진실",
     "title_en": "Is Donk Betting for Donkeys?",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -8770,7 +8770,7 @@
   {
     "id": "delayed-c-betting",
     "slug": "delayed-c-betting",
-    "title_ko": "Delayed C-bet 전략",
+    "title_ko": "딜레이드 C-bet(Delayed C-Bet): 턴으로 공격을 늦추는 위력",
     "title_en": "Delayed C-Betting",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "플랍 전략",
@@ -8802,7 +8802,7 @@
   {
     "id": "probe-betting",
     "slug": "probe-betting",
-    "title_ko": "Probe Betting",
+    "title_ko": "프로브 벳(Probe Bet): 상대가 체크했을 때 빈틈을 찌르는 법",
     "title_en": "Probe Betting",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -8834,7 +8834,7 @@
   {
     "id": "icm-and-blind-battles-the-big-blind",
     "slug": "icm-and-blind-battles-the-big-blind",
-    "title_ko": "ICM and Blind Battles: The 빅 블라인드(BB)",
+    "title_ko": "ICM과 블라인드 전쟁: 빅블라인드(BB) 관점의 방어와 공격",
     "title_en": "ICM and Blind Battles: The Big Blind",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -8866,7 +8866,7 @@
   {
     "id": "icm-and-blind-battles-the-small-blind",
     "slug": "icm-and-blind-battles-the-small-blind",
-    "title_ko": "ICM and Blind Battles: The 스몰 블라인드(SB)",
+    "title_ko": "ICM과 블라인드 전쟁: 스몰블라인드(SB) 관점의 오픈과 압박",
     "title_en": "ICM and Blind Battles: The Small Blind",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -8898,7 +8898,7 @@
   {
     "id": "the-initial-bettors-advantage",
     "slug": "the-initial-bettors-advantage",
-    "title_ko": "The Initial Bettor’s Advantage",
+    "title_ko": "이니셜 베터(Initial Bettor)가 가지는 수학적 우위와 주도권",
     "title_en": "The Initial Bettor’s Advantage",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "익스플로잇",
@@ -8930,7 +8930,7 @@
   {
     "id": "mastering-the-chiplead-the-scalpel-and-the-sledgehammer",
     "slug": "mastering-the-chiplead-the-scalpel-and-the-sledgehammer",
-    "title_ko": "마스터하기: the Chiplead: The Scalpel and the Sledgehammer",
+    "title_ko": "칩 리더 마스터하기: 메스처럼 정교하고 해머처럼 묵직한 압박",
     "title_en": "Mastering the Chiplead: The Scalpel and the Sledgehammer",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -8962,7 +8962,7 @@
   {
     "id": "flop-heuristics-ip-c-betting-in-cash-games",
     "slug": "flop-heuristics-ip-c-betting-in-cash-games",
-    "title_ko": "플랍 Heuristics: IP C-bet 전략 in 캐시 게임",
+    "title_ko": "캐시게임 플랍 휴리스틱: 인포지션(IP) C-bet 종합 지침",
     "title_en": "Flop Heuristics: IP C-Betting in Cash Games",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "플랍 전략",
@@ -8994,7 +8994,7 @@
   {
     "id": "how-icm-impacts-restealing-from-the-blinds",
     "slug": "how-icm-impacts-restealing-from-the-blinds",
-    "title_ko": "How ICM Impacts Restealing From the Blinds",
+    "title_ko": "ICM이 블라인드에서의 리스틸(Resteal) 전략에 미치는 영향",
     "title_en": "How ICM Impacts Restealing From the Blinds",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -9026,7 +9026,7 @@
   {
     "id": "the-icm-benefits-of-late-registration-in-poker-tournaments",
     "slug": "the-icm-benefits-of-late-registration-in-poker-tournaments",
-    "title_ko": "The ICM Benefits of Late Registration in Poker 토너먼트",
+    "title_ko": "포커 토너먼트에서 레이트 레지가 제공하는 ICM적 이점",
     "title_en": "The ICM Benefits of Late Registration in Poker Tournaments",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -9058,7 +9058,7 @@
   {
     "id": "flop-heuristics-oop-c-betting-in-mtts",
     "slug": "flop-heuristics-oop-c-betting-in-mtts",
-    "title_ko": "플랍 Heuristics:  OOP C-bet 전략 in MTTs",
+    "title_ko": "MTT 플랍 휴리스틱: 아웃포지션(OOP) C-bet 종합 지침",
     "title_en": "Flop Heuristics:  OOP C-Betting in MTTs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -9090,7 +9090,7 @@
   {
     "id": "counterintuitive-calls",
     "slug": "counterintuitive-calls",
-    "title_ko": "Counterintuitive Calls",
+    "title_ko": "직관에 반하지만 수학적으로 정답인 기적의 콜들",
     "title_en": "Counterintuitive Calls",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -9122,7 +9122,7 @@
   {
     "id": "how-to-negotiate-final-table-deals",
     "slug": "how-to-negotiate-final-table-deals",
-    "title_ko": "공략법: Negotiate 파이널 테이블 Deals",
+    "title_ko": "파이널 테이블 딜(ICM Chop) 협상 전략과 주의사항",
     "title_en": "How to Negotiate Final Table Deals",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -9154,7 +9154,7 @@
   {
     "id": "how-does-icm-impact-pko-strategy",
     "slug": "how-does-icm-impact-pko-strategy",
-    "title_ko": "How Does ICM Impact PKO Strategy?",
+    "title_ko": "ICM은 PKO 바운티 토너먼트 전략을 어떻게 바꿀까?",
     "title_en": "How Does ICM Impact PKO Strategy?",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
     "category": "토너먼트/ICM",
@@ -9186,7 +9186,7 @@
   {
     "id": "understanding-blockers-in-poker",
     "slug": "understanding-blockers-in-poker",
-    "title_ko": "Understanding 블로커 in Poker",
+    "title_ko": "포커에서의 블로커(Blocker) 개념 완벽 이해하기",
     "title_en": "Understanding Blockers in Poker",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "턴/리버",
@@ -9218,7 +9218,7 @@
   {
     "id": "flop-heuristics-ip-cold-caller-in-mtts",
     "slug": "flop-heuristics-ip-cold-caller-in-mtts",
-    "title_ko": "플랍 Heuristics: IP Cold Caller in MTTs",
+    "title_ko": "MTT 플랍 휴리스틱: 인포지션(IP) 콜드 콜러 플레이 지침",
     "title_en": "Flop Heuristics: IP Cold Caller in MTTs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -9250,7 +9250,7 @@
   {
     "id": "flop-heuristics-ip-c-betting-in-mtts",
     "slug": "flop-heuristics-ip-c-betting-in-mtts",
-    "title_ko": "플랍 Heuristics: IP C-bet 전략 in MTTs",
+    "title_ko": "MTT 플랍 휴리스틱: 인포지션(IP) C-bet 종합 지침",
     "title_en": "Flop Heuristics: IP C-Betting in MTTs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -9282,7 +9282,7 @@
   {
     "id": "flop-heuristics-for-defending-the-blinds-in-mtts",
     "slug": "flop-heuristics-for-defending-the-blinds-in-mtts",
-    "title_ko": "플랍 Heuristics for Defending the Blinds in MTTs",
+    "title_ko": "MTT 플랍 휴리스틱: 블라인드 방어(Defending) 핵심 지침",
     "title_en": "Flop Heuristics for Defending the Blinds in MTTs",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -9314,7 +9314,7 @@
   {
     "id": "multiway-strategy-in-progressive-knockout-tournaments",
     "slug": "multiway-strategy-in-progressive-knockout-tournaments",
-    "title_ko": "멀티웨이 strategy in Progressive Knockout 토너먼트",
+    "title_ko": "PKO 토너먼트에서의 멀티웨이 팟 생존 및 바운티 획득 전략",
     "title_en": "Multiway strategy in Progressive Knockout Tournaments",
     "level": "[5차 전직/최종] 하이롤러 & 챔피언 (Lv.85~100)",
     "category": "토너먼트/ICM",
@@ -9346,7 +9346,7 @@
   {
     "id": "how-to-calculate-raises-in-poker",
     "slug": "how-to-calculate-raises-in-poker",
-    "title_ko": "공략법: Calculate Raises in Poker",
+    "title_ko": "포커 레이즈 및 팟 사이즈 계산 공식 완벽 정리",
     "title_en": "How to Calculate Raises in Poker",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -9378,7 +9378,7 @@
   {
     "id": "new-spins-solutions-study-plans-and-ev-comparison",
     "slug": "new-spins-solutions-study-plans-and-ev-comparison",
-    "title_ko": "New Spins Solutions, Study Plans & EV Comparison",
+    "title_ko": "스핀앤고(Spin & Go) 신규 솔루션 및 스터디 플랜 안내",
     "title_en": "New Spins Solutions, Study Plans & EV Comparison",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -9410,7 +9410,7 @@
   {
     "id": "principles-of-river-play",
     "slug": "principles-of-river-play",
-    "title_ko": "Principles of 리버 Play",
+    "title_ko": "리버 플레이의 기본 원칙: 극단적인 밸류와 블러프의 양극화",
     "title_en": "Principles of River Play",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "턴/리버",
@@ -9442,7 +9442,7 @@
   {
     "id": "exploitative-dynamics",
     "slug": "exploitative-dynamics",
-    "title_ko": "Exploitative Dynamics",
+    "title_ko": "익스플로잇 다이내믹스: 상대방의 성향에 맞춰 균형을 깨는 법",
     "title_en": "Exploitative Dynamics",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "익스플로잇",
@@ -9474,7 +9474,7 @@
   {
     "id": "how-icm-impacts-postflop-strategy",
     "slug": "how-icm-impacts-postflop-strategy",
-    "title_ko": "How ICM Impacts 포스트플랍 Strategy",
+    "title_ko": "ICM이 포스트플랍 전략 전반에 미치는 심층 분석",
     "title_en": "How ICM Impacts Postflop Strategy",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -9506,7 +9506,7 @@
   {
     "id": "10-tips-multiway-pots-in-poker",
     "slug": "10-tips-multiway-pots-in-poker",
-    "title_ko": "10 Tips for 멀티웨이 Pots in Poker",
+    "title_ko": "포커 멀티웨이 팟을 정복하는 10가지 핵심 팁",
     "title_en": "10 Tips for Multiway Pots in Poker",
     "level": "[5차 전직/최종] 하이롤러 & 챔피언 (Lv.85~100)",
     "category": "토너먼트/ICM",
@@ -9538,7 +9538,7 @@
   {
     "id": "what-is-the-bubble-factor-in-poker-tournaments",
     "slug": "what-is-the-bubble-factor-in-poker-tournaments",
-    "title_ko": "이해하기: the 버블 Factor in Poker 토너먼트?",
+    "title_ko": "토너먼트의 핵심: 버블 팩터(Bubble Factor)란 무엇인가?",
     "title_en": "What Is the Bubble Factor in Poker Tournaments?",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -9570,7 +9570,7 @@
   {
     "id": "the-theory-of-progressive-knockout-tournaments",
     "slug": "the-theory-of-progressive-knockout-tournaments",
-    "title_ko": "The Theory of Progressive Knockout 토너먼트",
+    "title_ko": "PKO(프로그레시브 녹아웃) 토너먼트의 수학적 이론",
     "title_en": "The Theory of Progressive Knockout Tournaments",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "토너먼트/ICM",
@@ -9602,7 +9602,7 @@
   {
     "id": "how-to-analyze-turn-textures-in-poker",
     "slug": "how-to-analyze-turn-textures-in-poker",
-    "title_ko": "공략법: Analyze 턴 Textures in Poker",
+    "title_ko": "턴 보드 텍스처를 분석하고 레인지 우위를 파악하는 법",
     "title_en": "How to Analyze Turn Textures in Poker",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "플랍 전략",
@@ -9634,7 +9634,7 @@
   {
     "id": "principles-of-turn-strategy",
     "slug": "principles-of-turn-strategy",
-    "title_ko": "Principles of 턴 Strategy",
+    "title_ko": "턴 전략의 기본 원칙: 블랭크와 액션 카드의 이해",
     "title_en": "Principles of Turn Strategy",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
     "category": "턴/리버",
@@ -9666,7 +9666,7 @@
   {
     "id": "poker-strategies-tournaments-vs-cash-games",
     "slug": "poker-strategies-tournaments-vs-cash-games",
-    "title_ko": "Poker Strategies: 토너먼트 vs. 캐시 게임",
+    "title_ko": "포커 전략 비교: 토너먼트와 캐시게임의 결정적 차이",
     "title_en": "Poker Strategies: Tournaments vs. Cash Games",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -9698,7 +9698,7 @@
   {
     "id": "how-solvers-work",
     "slug": "how-solvers-work",
-    "title_ko": "How 솔버 Work",
+    "title_ko": "솔버는 어떻게 작동하는가? CFR 알고리즘과 내쉬 균형 연산",
     "title_en": "How Solvers Work",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -9730,7 +9730,7 @@
   {
     "id": "the-most-powerful-play-in-poker",
     "slug": "the-most-powerful-play-in-poker",
-    "title_ko": "The Most Powerful Play in Poker",
+    "title_ko": "포커에서 가장 강력한 무기: 체크-레이즈와 오버벳",
     "title_en": "The Most Powerful Play in Poker",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -9762,7 +9762,7 @@
   {
     "id": "pko-solutions-and-new-dashboard",
     "slug": "pko-solutions-and-new-dashboard",
-    "title_ko": "PKO Solutions & New Dashboard",
+    "title_ko": "PKO 솔루션 탑재 및 대시보드 리뉴얼 가이드",
     "title_en": "PKO Solutions & New Dashboard",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
     "category": "PKO 바운티",
@@ -9794,7 +9794,7 @@
   {
     "id": "when-does-icm-become-significant-in-mtts",
     "slug": "when-does-icm-become-significant-in-mtts",
-    "title_ko": "When does ICM become significant in MTTs?",
+    "title_ko": "MTT에서 ICM 압박은 정확히 언제부터 시작되는가?",
     "title_en": "When does ICM become significant in MTTs?",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -9826,7 +9826,7 @@
   {
     "id": "how-to-study-gto-solutions",
     "slug": "how-to-study-gto-solutions",
-    "title_ko": "공략법: Study GTO Solutions",
+    "title_ko": "GTO 솔버 솔루션을 가장 효과적으로 공부하는 로드맵",
     "title_en": "How to Study GTO Solutions",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -9858,7 +9858,7 @@
   {
     "id": "principles-of-gto",
     "slug": "principles-of-gto",
-    "title_ko": "Principles of GTO",
+    "title_ko": "GTO(게임 이론 최적화)의 4대 핵심 원칙",
     "title_en": "Principles of GTO",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -9954,7 +9954,7 @@
   {
     "id": "reasons-for-value-betting-in-poker",
     "slug": "reasons-for-value-betting-in-poker",
-    "title_ko": "Reasons for Value Betting in Poker",
+    "title_ko": "밸류 벳을 해야 하는 진짜 이유와 잘못된 상식",
     "title_en": "Reasons for Value Betting in Poker",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -9986,7 +9986,7 @@
   {
     "id": "the-science-of-poker-performance",
     "slug": "the-science-of-poker-performance",
-    "title_ko": "The Science of Poker Performance",
+    "title_ko": "포커 퍼포먼스의 과학: 수면, 식단, 뇌 가소성과 멘탈",
     "title_en": "The Science of Poker Performance",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -10050,7 +10050,7 @@
   {
     "id": "drill-management-and-new-blocker-scores",
     "slug": "drill-management-and-new-blocker-scores",
-    "title_ko": "New 블로커 Scores & Drill Management and ICM Solutions",
+    "title_ko": "신규 블로커 점수 시스템 및 드릴 훈련 관리법",
     "title_en": "New Blocker Scores & Drill Management and ICM Solutions",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -10082,7 +10082,7 @@
   {
     "id": "pot-geometry",
     "slug": "pot-geometry",
-    "title_ko": "Pot Geometry",
+    "title_ko": "팟 지오메트리(Pot Geometry): 리버 올인을 설계하는 벳 사이징의 기하학",
     "title_en": "Pot Geometry",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -10146,7 +10146,7 @@
   {
     "id": "stack-to-pot-ratio",
     "slug": "stack-to-pot-ratio",
-    "title_ko": "Stack-to-Pot Ratio",
+    "title_ko": "SPR(스택 대비 팟 비율): 포스트플랍 올인 결정을 지배하는 핵심 공식",
     "title_en": "Stack-to-Pot Ratio",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -10210,7 +10210,7 @@
   {
     "id": "how-to-study-analyzed-hands",
     "slug": "how-to-study-analyzed-hands",
-    "title_ko": "공략법: Study Analyzed Hands",
+    "title_ko": "분석된 핸드를 복기하며 솔버의 생각을 읽는 법",
     "title_en": "How to Study Analyzed Hands",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -10242,7 +10242,7 @@
   {
     "id": "thousands-of-new-solutions-and-interface-updates",
     "slug": "thousands-of-new-solutions-and-interface-updates",
-    "title_ko": "Thousands of New Solutions & Interface Updates",
+    "title_ko": "수천 개의 신규 솔루션 및 인터페이스 개편 안내",
     "title_en": "Thousands of New Solutions & Interface Updates",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "업데이트/소식",
@@ -10274,7 +10274,7 @@
   {
     "id": "analyzed-hands",
     "slug": "analyzed-hands",
-    "title_ko": "Analyzed Hands",
+    "title_ko": "핸드 분석 기능 완벽 가이드: 릭 탐색과 솔루션 대조",
     "title_en": "Analyzed Hands",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -10306,7 +10306,7 @@
   {
     "id": "how-to-get-your-hand-histories",
     "slug": "how-to-get-your-hand-histories",
-    "title_ko": "공략법: Get Your Hand Histories",
+    "title_ko": "온라인 포커 사이트별 핸드 히스토리 수집 및 추출 가이드",
     "title_en": "How to Get Your Hand Histories",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -10338,7 +10338,7 @@
   {
     "id": "upload-hands",
     "slug": "upload-hands",
-    "title_ko": "Upload Hands",
+    "title_ko": "핸드 업로드 기능 가이드: 대량 핸드 자동 임포트",
     "title_en": "Upload Hands",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -10370,7 +10370,7 @@
   {
     "id": "analyze-mode",
     "slug": "analyze-mode",
-    "title_ko": "Analyze Mode",
+    "title_ko": "분석 모드(Analyze Mode) 활용법: 포스트플랍 핸드 정밀 검진",
     "title_en": "Analyze Mode",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -10402,7 +10402,7 @@
   {
     "id": "the-three-laws-of-indifference",
     "slug": "the-three-laws-of-indifference",
-    "title_ko": "The Three Laws of Indifference",
+    "title_ko": "인디퍼런스(무차별 원칙)의 3법칙: 상대 블러프를 0 EV로 만드는 법",
     "title_en": "The Three Laws of Indifference",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -10434,7 +10434,7 @@
   {
     "id": "variance-and-bankroll-management",
     "slug": "variance-and-bankroll-management",
-    "title_ko": "분산(베리언스) and 뱅크롤 관리",
+    "title_ko": "분산(베리언스)의 통계학적 진실과 파산 방지 뱅크롤 관리",
     "title_en": "Variance and Bankroll Management",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -10466,7 +10466,7 @@
   {
     "id": "how-to-become-a-gto-wizard",
     "slug": "how-to-become-a-gto-wizard",
-    "title_ko": "공략법: Become a GTO Wizard",
+    "title_ko": "포커 마스터가 되는 길: 솔버를 실전 무기로 바꾸는 훈련법",
     "title_en": "How to Become a GTO Wizard",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -10498,7 +10498,7 @@
   {
     "id": "poker-subsets-and-abstractions",
     "slug": "poker-subsets-and-abstractions",
-    "title_ko": "Poker Subsets and Abstractions",
+    "title_ko": "플랍 서브셋(Subset)과 추상화: 1,755개 보드를 25개로 압축해 공부하기",
     "title_en": "Poker Subsets and Abstractions",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -10530,7 +10530,7 @@
   {
     "id": "gto-wizard-themes-winners",
     "slug": "gto-wizard-themes-winners",
-    "title_ko": "GTO Wizard Themes Competition Winners",
+    "title_ko": "GTO Wizard 커스텀 테마 콘테스트 수상작 안내",
     "title_en": "GTO Wizard Themes Competition Winners",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -10562,7 +10562,7 @@
   {
     "id": "train-like-a-pro",
     "slug": "train-like-a-pro",
-    "title_ko": "Train Like a Pro",
+    "title_ko": "프로처럼 훈련하라: 매일 100개 퀴즈로 뇌에 GTO 회로 만들기",
     "title_en": "Train Like a Pro",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -10594,7 +10594,7 @@
   {
     "id": "multitabling-new-solutions",
     "slug": "multitabling-new-solutions",
-    "title_ko": "Multi-Tabling & New solutions",
+    "title_ko": "멀티테이블 플레이어들을 위한 신규 솔루션 업데이트",
     "title_en": "Multi-Tabling & New solutions",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -10626,7 +10626,7 @@
   {
     "id": "mathematical-misconceptions-in-poker",
     "slug": "mathematical-misconceptions-in-poker",
-    "title_ko": "포커 플레이어들이 흔히 범하는 수학적 오해",
+    "title_ko": "포커 플레이어들이 흔히 범하는 치명적인 수학적 오해",
     "title_en": "Mathematical Misconceptions in Poker",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "수학/기초",
@@ -10658,7 +10658,7 @@
   {
     "id": "how-to-solve-toy-games",
     "slug": "how-to-solve-toy-games",
-    "title_ko": "공략법: Solve Toy Games",
+    "title_ko": "토이 게임(Toy Game)으로 배우는 게임 이론의 본질",
     "title_en": "How to Solve Toy Games",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "솔버 이론",
@@ -10690,7 +10690,7 @@
   {
     "id": "the-value-of-fold-equity-experiment",
     "slug": "the-value-of-fold-equity-experiment",
-    "title_ko": "폴드 에퀴티(Fold Equity)의 실제 가치 실험",
+    "title_ko": "폴드 에퀴티(Fold Equity)의 실제 가치와 블러프 실험",
     "title_en": "The Value of Fold Equity – Experiment",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "수학/기초",
@@ -10786,7 +10786,7 @@
   {
     "id": "does-your-range-affect-your-strategy",
     "slug": "does-your-range-affect-your-strategy",
-    "title_ko": "Does Your 레인지 Affect Your Strategy?",
+    "title_ko": "레인지 구성이 나의 모든 스트리트 전략에 미치는 영향",
     "title_en": "Does Your Range Affect Your Strategy?",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -10850,7 +10850,7 @@
   {
     "id": "icm-basics",
     "slug": "icm-basics",
-    "title_ko": "ICM Basics",
+    "title_ko": "ICM 기초: 토너먼트 칩의 현금 가치를 계산하는 원리",
     "title_en": "ICM Basics",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -10914,7 +10914,7 @@
   {
     "id": "icm-mtt-9max-cash-solutions-great-improvements",
     "slug": "icm-mtt-9max-cash-solutions-great-improvements",
-    "title_ko": "ICM MTT, 9Max Cash Solutions & Great Improvements",
+    "title_ko": "ICM MTT 및 9맥스 캐시 솔루션 대규모 업데이트",
     "title_en": "ICM MTT, 9Max Cash Solutions & Great Improvements",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
     "category": "토너먼트/ICM",
@@ -10946,7 +10946,7 @@
   {
     "id": "range-morphology",
     "slug": "range-morphology",
-    "title_ko": "레인지 Morphology",
+    "title_ko": "레인지 모폴로지: 보드에 따라 레인지가 변형되는 원리",
     "title_en": "Range Morphology",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -11010,7 +11010,7 @@
   {
     "id": "why-doesnt-my-solution-match-gto-wizard",
     "slug": "why-doesnt-my-solution-match-gto-wizard",
-    "title_ko": "Why Doesn’t My Solution Match GTO Wizard?",
+    "title_ko": "내 솔버 결과가 GTO Wizard와 다른 이유: 노드 설정과 차이점",
     "title_en": "Why Doesn’t My Solution Match GTO Wizard?",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -11042,7 +11042,7 @@
   {
     "id": "understanding-nash-distance",
     "slug": "understanding-nash-distance",
-    "title_ko": "Understanding Nash Distance",
+    "title_ko": "내쉬 거리(Nash Distance)의 이해: 익스플로잇 가능성 측정법",
     "title_en": "Understanding Nash Distance",
     "level": "[5차 전직/최종] 하이롤러 & 챔피언 (Lv.85~100)",
     "category": "솔버 이론",
@@ -11074,7 +11074,7 @@
   {
     "id": "combinatorics-poker-puzzle",
     "slug": "combinatorics-poker-puzzle",
-    "title_ko": "Combinatorics Poker Puzzle",
+    "title_ko": "포커 콤비나토리얼 퍼즐: 콤보 계산 실전 퀴즈",
     "title_en": "Combinatorics Poker Puzzle",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -11106,7 +11106,7 @@
   {
     "id": "the-10-most-important-concepts-for-new-poker-players",
     "slug": "the-10-most-important-concepts-for-new-poker-players",
-    "title_ko": "The 10 Most Important Concepts for New Poker Players",
+    "title_ko": "포커 입문자가 가장 먼저 마스터해야 할 10대 핵심 개념",
     "title_en": "The 10 Most Important Concepts for New Poker Players",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -11202,7 +11202,7 @@
   {
     "id": "new-solutions-filter-trainer-improvements",
     "slug": "new-solutions-filter-trainer-improvements",
-    "title_ko": "New Solutions Filter + Trainer Improvements",
+    "title_ko": "신규 솔루션 필터 및 트레이너 개선 업데이트",
     "title_en": "New Solutions Filter + Trainer Improvements",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "솔버 이론",
@@ -11234,7 +11234,7 @@
   {
     "id": "gto-wizard-in-japan",
     "slug": "gto-wizard-in-japan",
-    "title_ko": "GTO Wizard in Japan",
+    "title_ko": "GTO Wizard 글로벌 리포트: 일본 포커 씬의 급성장",
     "title_en": "GTO Wizard in Japan",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -11266,7 +11266,7 @@
   {
     "id": "8max-cash-game-straddle-ante",
     "slug": "8max-cash-game-straddle-ante",
-    "title_ko": "8Max 캐시 게임 스트래들 + 앤티 Is Here!",
+    "title_ko": "8맥스 캐시게임 스트래들+앤티 솔루션 공식 출시",
     "title_en": "8Max Cash Game Straddle + Ante Is Here!",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "캐시/스트래들",
@@ -11298,7 +11298,7 @@
   {
     "id": "6-reasons-why-you-should-use-gto-wizard",
     "slug": "6-reasons-why-you-should-use-gto-wizard",
-    "title_ko": "6 Reasons Why You Should Use GTO Wizard",
+    "title_ko": "GTO Wizard로 포커를 공부해야 하는 6가지 이유",
     "title_en": "6 Reasons Why You Should Use GTO Wizard",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -11330,7 +11330,7 @@
   {
     "id": "6-grunde-warum-du-gto-wizard-nutzen-solltest",
     "slug": "6-grunde-warum-du-gto-wizard-nutzen-solltest",
-    "title_ko": "6 Gründe Warum Du GTO Wizard Nutzen Solltest",
+    "title_ko": "GTO 솔버를 활용한 효율적인 포커 공부법 6가지 핵심",
     "title_en": "6 Gründe Warum Du GTO Wizard Nutzen Solltest",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -11362,7 +11362,7 @@
   {
     "id": "mtt-postflop-solutions-and-breakdown-view",
     "slug": "mtt-postflop-solutions-and-breakdown-view",
-    "title_ko": "MTT 포스트플랍 Solutions, New Breakdown View & Many Improvements!",
+    "title_ko": "MTT 포스트플랍 솔루션 및 브레이크다운 뷰 업데이트",
     "title_en": "MTT Postflop Solutions, New Breakdown View & Many Improvements!",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -11394,7 +11394,7 @@
   {
     "id": "range-builder-improvements-200bb-solutions-ipoker-support-more",
     "slug": "range-builder-improvements-200bb-solutions-ipoker-support-more",
-    "title_ko": "레인지 Builder Improvements, 200BB Solutions, iPoker Support & More!",
+    "title_ko": "레인지 빌더 개선, 200BB 딥스택 솔루션 및 신규 룸 지원",
     "title_en": "Range Builder Improvements, 200BB Solutions, iPoker Support & More!",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
     "category": "GTO 전략",
@@ -11426,7 +11426,7 @@
   {
     "id": "new-cash-game-mtt-solutions-aggregated-reports-and-new-solutions-for-hh-analyzer",
     "slug": "new-cash-game-mtt-solutions-aggregated-reports-and-new-solutions-for-hh-analyzer",
-    "title_ko": "New 캐시 게임 & MTT Solutions, Aggregated Reports and New Solutions for HH Analyzer!",
+    "title_ko": "신규 캐시/MTT 솔루션 및 집계 리포트 기능 안내",
     "title_en": "New Cash Game & MTT Solutions, Aggregated Reports and New Solutions for HH Analyzer!",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -11458,7 +11458,7 @@
   {
     "id": "releasing-many-improvements-gto-wizard-is-now-multilungual",
     "slug": "releasing-many-improvements-gto-wizard-is-now-multilungual",
-    "title_ko": "Many Improvements & GTO Wizard Is Now Multilungual!",
+    "title_ko": "다국어 지원 및 시스템 성능 최적화 업데이트",
     "title_en": "Many Improvements & GTO Wizard Is Now Multilungual!",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -11490,7 +11490,7 @@
   {
     "id": "introducing-mtt-spin-go-and-hu-sng-postflop-solutions-for-free",
     "slug": "introducing-mtt-spin-go-and-hu-sng-postflop-solutions-for-free",
-    "title_ko": "MTT, Spin & Go and HU SnG 포스트플랍 Solutions",
+    "title_ko": "MTT, 스핀앤고, 헤즈업 SnG 포스트플랍 솔루션 안내",
     "title_en": "MTT, Spin & Go and HU SnG Postflop Solutions",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "토너먼트/ICM",
@@ -11522,7 +11522,7 @@
   {
     "id": "the-best-solutions-we-ever-had-and-other-improvements",
     "slug": "the-best-solutions-we-ever-had-and-other-improvements",
-    "title_ko": "The Best Solutions We Ever Had and Other Improvements!",
+    "title_ko": "역대 최고 정밀도의 신규 솔루션 및 엔진 최적화 안내",
     "title_en": "The Best Solutions We Ever Had and Other Improvements!",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "수학/기초",
@@ -11554,7 +11554,7 @@
   {
     "id": "new-solutions-aggregation-reports-and-other-improvements",
     "slug": "new-solutions-aggregation-reports-and-other-improvements",
-    "title_ko": "New solutions, Aggregation reports and other improvements!",
+    "title_ko": "신규 솔루션 및 어그리게이션 리포트 기능 개선",
     "title_en": "New solutions, Aggregation reports and other improvements!",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -11586,7 +11586,7 @@
   {
     "id": "another-update-many-improvements",
     "slug": "another-update-many-improvements",
-    "title_ko": "New update – Folder upload, 프리플랍 shortcuts and more!",
+    "title_ko": "폴더별 업로드, 프리플랍 단축키 등 편의 기능 업데이트",
     "title_en": "New update – Folder upload, Preflop shortcuts and more!",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "업데이트/소식",
@@ -11618,7 +11618,7 @@
   {
     "id": "status-and-info-about-our-solutions",
     "slug": "status-and-info-about-our-solutions",
-    "title_ko": "Status and Info About Our Solutions",
+    "title_ko": "GTO Wizard 솔루션 라이브러리 구성 현황 및 데이터 안내",
     "title_en": "Status and Info About Our Solutions",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -11650,7 +11650,7 @@
   {
     "id": "files-upload-premium-tier-and-more-a-major-update-is-here-2",
     "slug": "files-upload-premium-tier-and-more-a-major-update-is-here-2",
-    "title_ko": "Files Upload, Premium Tier, and Free 레인지! A Major Update Is Here",
+    "title_ko": "파일 업로드 기능, 프리미엄 티어 및 무료 레인지 업데이트",
     "title_en": "Files Upload, Premium Tier, and Free Ranges! A Major Update Is Here",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "업데이트/소식",
@@ -11682,7 +11682,7 @@
   {
     "id": "what-the-future-holds-for-gto-wizard",
     "slug": "what-the-future-holds-for-gto-wizard",
-    "title_ko": "What the Future Holds for GTO Wizard?",
+    "title_ko": "GTO Wizard가 그리는 포커 솔버의 미래 비전",
     "title_en": "What the Future Holds for GTO Wizard?",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -11714,7 +11714,7 @@
   {
     "id": "all-you-need-to-know-about-our-solutions",
     "slug": "all-you-need-to-know-about-our-solutions",
-    "title_ko": "All You Need To Know About Our Solutions",
+    "title_ko": "솔루션 라이브러리에 대해 알아야 할 모든 것",
     "title_en": "All You Need To Know About Our Solutions",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -11746,7 +11746,7 @@
   {
     "id": "suported-sites-and-formats-for-hh-analyzer",
     "slug": "suported-sites-and-formats-for-hh-analyzer",
-    "title_ko": "Supported Sites and Formats for HH Analyzer",
+    "title_ko": "핸드 히스토리 분석기 지원 포커 룸 및 파일 형식 안내",
     "title_en": "Supported Sites and Formats for HH Analyzer",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
     "category": "GTO 전략",
@@ -11778,7 +11778,7 @@
   {
     "id": "hand-history-analyzer-is-here-patch-notes",
     "slug": "hand-history-analyzer-is-here-patch-notes",
-    "title_ko": "Hand History Analyzer Is Here!",
+    "title_ko": "핸드 히스토리 분석기 정식 런칭 및 패치 노트",
     "title_en": "Hand History Analyzer Is Here!",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
     "category": "업데이트/소식",
