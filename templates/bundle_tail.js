@@ -979,8 +979,13 @@ var app = window.app = {
       roadmap.load();
     } else if (viewId === 'articles') {
       if (window.reader) {
-        reader.autoSelectUserLevel();
+        if (!reader.skipDefaultResetOnce) {
+          reader.activeCategory = 'all';
+          reader.autoSelectUserLevel();
+        }
+        reader.skipDefaultResetOnce = false;
         reader.loadArticles();
+        if (reader.applyCollapseUI) reader.applyCollapseUI();
       }
     } else if (viewId === 'glossary') {
       glossary.load();
@@ -1368,6 +1373,10 @@ const reader = {
   readTimer: null,
   cumTimer: null,
   secondsRemaining: 45,
+  isMasterCollapsed: localStorage.getItem('poker_filter_master_collapsed') === 'true',
+  isCategoryCollapsed: localStorage.getItem('poker_filter_cat_collapsed') === 'true',
+  isLevelCollapsed: localStorage.getItem('poker_filter_lvl_collapsed') === 'true',
+  skipDefaultResetOnce: false,
 
   isPloArticle(a) {
     if (!a) return false;
@@ -1375,6 +1384,79 @@ const reader = {
     if (id === 'plo-just-changed-forever' || id === 'how-gto-wizard-solved-plo' || id === 'plo-upgrades-custom-hu-solving-postflop-icm-nodelocking-more') return true;
     const text = `${id} ${a.title_ko || ''} ${a.title || ''} ${a.category || ''}`.toLowerCase();
     return /\bplo\b|omaha|오마하/.test(text);
+  },
+
+  toggleMasterFilters() {
+    this.isMasterCollapsed = !this.isMasterCollapsed;
+    localStorage.setItem('poker_filter_master_collapsed', this.isMasterCollapsed ? 'true' : 'false');
+    this.applyCollapseUI();
+    if (window.app && app.playAudioEffect) app.playAudioEffect('click');
+  },
+
+  toggleCategoryFilter() {
+    this.isCategoryCollapsed = !this.isCategoryCollapsed;
+    localStorage.setItem('poker_filter_cat_collapsed', this.isCategoryCollapsed ? 'true' : 'false');
+    this.applyCollapseUI();
+    if (window.app && app.playAudioEffect) app.playAudioEffect('click');
+  },
+
+  toggleLevelFilter() {
+    this.isLevelCollapsed = !this.isLevelCollapsed;
+    localStorage.setItem('poker_filter_lvl_collapsed', this.isLevelCollapsed ? 'true' : 'false');
+    this.applyCollapseUI();
+    if (window.app && app.playAudioEffect) app.playAudioEffect('click');
+  },
+
+  applyCollapseUI() {
+    // 1. Master filter body
+    const masterBody = document.getElementById('library-filters-body');
+    const masterArrow = document.getElementById('filters-master-arrow');
+    if (masterBody) masterBody.style.display = this.isMasterCollapsed ? 'none' : 'flex';
+    if (masterArrow) masterArrow.innerText = this.isMasterCollapsed ? '▼ 필터 펼치기' : '▲ 필터 접기';
+
+    // 2. Category section
+    const catCont = document.getElementById('article-category-filters-container');
+    const catArrow = document.getElementById('category-filter-arrow');
+    if (catCont) catCont.style.display = this.isCategoryCollapsed ? 'none' : 'block';
+    if (catArrow) catArrow.innerText = this.isCategoryCollapsed ? '▼ 주제 펼치기' : '▲ 주제 접기';
+
+    // 3. Level section
+    const lvlCont = document.getElementById('article-level-filters-container');
+    const lvlArrow = document.getElementById('level-filter-arrow');
+    if (lvlCont) lvlCont.style.display = this.isLevelCollapsed ? 'none' : 'block';
+    if (lvlArrow) lvlArrow.innerText = this.isLevelCollapsed ? '▼ 난이도 펼치기' : '▲ 난이도 접기';
+  },
+
+  updateSummaryChips() {
+    const catChip = document.getElementById('filter-summary-cat');
+    const lvlChip = document.getElementById('filter-summary-lvl');
+
+    const catName = this.activeCategory === 'all' ? '📂 전체 주제' : `📂 ${this.activeCategory}`;
+    if (catChip) catChip.innerText = catName;
+
+    const userLvl = (window.app && app.userState) ? (app.getLevelInfo(app.userState.xp).level || 1) : 1;
+    let myTarget = 'Level 1';
+    if (userLvl >= 85) myTarget = 'Level 6';
+    else if (userLvl >= 65) myTarget = 'Level 5';
+    else if (userLvl >= 45) myTarget = 'Level 4';
+    else if (userLvl >= 25) myTarget = 'Level 3';
+    else if (userLvl >= 10) myTarget = 'Level 2';
+
+    const levelMeta = {
+      'Level 1': 'Lv.1 동네 피쉬',
+      'Level 2': 'Lv.2 펍 레귤러',
+      'Level 3': 'Lv.3 마이크로',
+      'Level 4': 'Lv.4 로우스테이크',
+      'Level 5': 'Lv.5 미드스테이크',
+      'Level 6': 'Lv.6 하이롤러'
+    };
+
+    let lvlText = '⚡ 전체 난이도';
+    if (this.activeLevel !== 'all' && levelMeta[this.activeLevel]) {
+      const isMyLvl = (this.activeLevel === myTarget);
+      lvlText = `⚡ ${levelMeta[this.activeLevel]}${isMyLvl ? ' 🌟(내 레벨)' : ''}`;
+    }
+    if (lvlChip) lvlChip.innerText = lvlText;
   },
 
   autoSelectUserLevel() {
@@ -1392,9 +1474,10 @@ const reader = {
   },
 
   loadArticles() {
-    if (!this.activeLevel || this.activeLevel === 'all') {
+    if (!this.activeLevel) {
       this.autoSelectUserLevel();
     }
+    this.applyCollapseUI();
     this.updateFilterPillsUI();
     this.renderArticleCards();
   },
@@ -1407,6 +1490,7 @@ const reader = {
   },
 
   filterCategory(cat) {
+    this.skipDefaultResetOnce = true;
     this.activeCategory = cat;
     this.displayLimit = 24;
 
@@ -1427,6 +1511,7 @@ const reader = {
   },
 
   filterLevel(lvl) {
+    this.skipDefaultResetOnce = true;
     this.activeLevel = lvl;
     this.displayLimit = 24;
 
@@ -1443,16 +1528,57 @@ const reader = {
     this.renderArticleCards();
   },
 
-  resetFilters() {
+  toggleUnlockedOnly(forceVal) {
+    if (typeof forceVal === 'boolean') {
+      this.unlockedOnly = forceVal;
+    } else {
+      this.unlockedOnly = !this.unlockedOnly;
+    }
+    const btn = document.getElementById('filter-unlocked-btn');
+    const textEl = document.getElementById('unlocked-only-text');
+    const iconEl = document.getElementById('unlocked-only-icon');
+    if (btn) {
+      if (this.unlockedOnly) {
+        btn.classList.add('active');
+        if (textEl) textEl.innerText = '내 레벨 해금 글만 보는 중';
+        if (iconEl) iconEl.innerText = '🔒필터ON';
+      } else {
+        btn.classList.remove('active');
+        if (textEl) textEl.innerText = '내 레벨 해금 글만 보기';
+        if (iconEl) iconEl.innerText = '🔓';
+      }
+    }
+    this.displayLimit = 24;
+    this.renderArticleCards();
+    if (window.app && app.playAudioEffect) app.playAudioEffect('click');
+  },
+
+  resetToDefault() {
     this.activeCategory = 'all';
     this.autoSelectUserLevel();
     this.searchQuery = '';
     const input = document.getElementById('article-search-input');
     if (input) input.value = '';
+    this.unlockedOnly = false;
+    const unlBtn = document.getElementById('filter-unlocked-btn');
+    if (unlBtn) {
+      unlBtn.classList.remove('active');
+      const unlText = document.getElementById('unlocked-only-text');
+      if (unlText) unlText.innerText = '내 레벨 해금 글만 보기';
+      const unlIcon = document.getElementById('unlocked-only-icon');
+      if (unlIcon) unlIcon.innerText = '🔓';
+    }
     this.displayLimit = 24;
     this.updateFilterPillsUI();
     this.renderArticleCards();
     if (window.app && app.playAudioEffect) app.playAudioEffect('click');
+    if (window.characterManager && characterManager.showToast) {
+      characterManager.showToast('🎯 [전체 주제 + 내 레벨 난이도] 기본값으로 재설정되었습니다.');
+    }
+  },
+
+  resetFilters() {
+    this.resetToDefault();
   },
 
   updateFilterPillsUI() {
@@ -1476,8 +1602,15 @@ const reader = {
       }
     });
 
-    // 3. Dynamically update Level pill counts and Lock badges based on active category & user level
+    // 3. Dynamically update Level pill counts, Lock badges & "내 레벨" tag based on active category & user level
     const userLvl = app.getLevelInfo(app.userState.xp).level;
+    let target = 'Level 1';
+    if (userLvl >= 85) target = 'Level 6';
+    else if (userLvl >= 65) target = 'Level 5';
+    else if (userLvl >= 45) target = 'Level 4';
+    else if (userLvl >= 25) target = 'Level 3';
+    else if (userLvl >= 10) target = 'Level 2';
+
     const isPloCat = this.activeCategory === '외전: PLO 오마하';
     const levelMeta = {
       'Level 1': { title: 'Lv.1 동네 피쉬', req: 1, tierNum: 1 },
@@ -1500,6 +1633,7 @@ const reader = {
       } else if (levelMeta[l]) {
         const meta = levelMeta[l];
         const isLocked = meta.req > userLvl;
+        const isMyLevel = (l === target);
         const cnt = this.articles.filter(a => {
           if (isPloCat) {
             return this.isPloArticle(a) && (a.tier_num === meta.tierNum || a.tier_category === l || (a.level && a.level.startsWith(l)));
@@ -1508,10 +1642,12 @@ const reader = {
             (this.activeCategory === 'all' || a.category === this.activeCategory) &&
             (a.tier_num === meta.tierNum || a.tier_category === l || (a.level && a.level.startsWith(l)));
         }).length;
-        pill.innerText = `${isLocked ? '🔒 ' : '🔓 '}${meta.title} (${cnt})`;
+        pill.innerHTML = `${isLocked ? '🔒 ' : '🔓 '}${meta.title} (${cnt})${isMyLevel ? ' <span class="my-lvl-tag">🌟내 레벨</span>' : ''}`;
         pill.style.opacity = (cnt === 0) ? '0.45' : '1';
       }
     });
+
+    this.updateSummaryChips();
   },
 
   loadMore() {
@@ -1556,6 +1692,10 @@ const reader = {
       } else {
         countLabelEl.innerText = `총 366편 중 ${totalCount}편 일치 (${slice.length}편)`;
       }
+    }
+    const countChip = document.getElementById('filter-summary-count');
+    if (countChip) {
+      countChip.innerText = `${totalCount}편`;
     }
 
     if (totalCount === 0) {

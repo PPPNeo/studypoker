@@ -2023,6 +2023,194 @@ body.theme-light .btn-roadmap-toggle:hover {
   color: #2563eb;
 }
 
+/* 🎯 Library Collapsible Filter Panel Styles */
+.library-filter-panel {
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-color);
+  border-radius: 14px;
+  padding: 1rem 1.15rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s ease;
+  box-sizing: border-box;
+}
+
+body.theme-light .library-filter-panel {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.filter-summary-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 2.5px 8.5px;
+  border-radius: 6px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  white-space: nowrap;
+  background: rgba(59, 130, 246, 0.12);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+body.theme-light .filter-summary-chip {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-color: #93c5fd;
+}
+
+.filter-summary-chip.lvl-chip {
+  background: rgba(245, 158, 11, 0.14);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+body.theme-light .filter-summary-chip.lvl-chip {
+  background: #fef3c7;
+  color: #b45309;
+  border-color: #fcd34d;
+}
+
+.filter-summary-chip.count-chip {
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+body.theme-light .filter-summary-chip.count-chip {
+  background: #ecfdf5;
+  color: #047857;
+  border-color: #a7f3d0;
+}
+
+.btn-filter-toggle {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  color: var(--text-main);
+  padding: 0.35rem 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  white-space: nowrap;
+}
+
+.btn-filter-toggle:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+  background: rgba(37, 99, 235, 0.08);
+}
+
+body.theme-light .btn-filter-toggle {
+  background: #ffffff;
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+
+body.theme-light .btn-filter-toggle:hover {
+  background: #eff6ff;
+  border-color: #2563eb;
+  color: #2563eb;
+}
+
+.btn-filter-reset {
+  background: transparent;
+  border: 1px dashed var(--border-color);
+  color: var(--text-dim);
+  padding: 0.32rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  white-space: nowrap;
+}
+
+.btn-filter-reset:hover {
+  border-color: #f59e0b;
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.08);
+}
+
+body.theme-light .btn-filter-reset {
+  border-color: #cbd5e1;
+  color: #64748b;
+}
+
+body.theme-light .btn-filter-reset:hover {
+  border-color: #d97706;
+  color: #d97706;
+  background: #fffbeb;
+}
+
+.btn-section-toggle {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  padding: 0.22rem 0.65rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  white-space: nowrap;
+}
+
+.btn-section-toggle:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.08);
+}
+
+body.theme-light .btn-section-toggle {
+  border-color: #cbd5e1;
+  color: #475569;
+}
+
+body.theme-light .btn-section-toggle:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+  background: #f8fafc;
+}
+
+.my-lvl-tag {
+  background: rgba(245, 158, 11, 0.22);
+  color: #fbbf24;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 4px;
+  margin-left: 4px;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  display: inline-block;
+  vertical-align: middle;
+}
+
+body.theme-light .my-lvl-tag {
+  background: #fef3c7;
+  color: #b45309;
+  border-color: #f59e0b;
+}
+
+.filter-pill.active .my-lvl-tag {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
 .char-bio-text {
   font-size: 0.92rem;
   color: var(--text-muted);
@@ -3604,44 +3792,103 @@ body.authenticated #auth-gate-screen {
           oninput="reader.searchArticles(this.value)">
       </div>
 
-      <!-- Category Filter Bar -->
-      <div class="filter-bar" style="margin-bottom: 0.75rem;">
-        <div class="filter-pills" id="article-category-filters">
-          <button class="filter-pill active" data-cat="all" onclick="reader.filterCategory('all')">전체 주제 (366)</button>
-          <button class="filter-pill" data-cat="GTO 전략" onclick="reader.filterCategory('GTO 전략')">GTO 전략 (102)</button>
-          <button class="filter-pill" data-cat="토너먼트/ICM" onclick="reader.filterCategory('토너먼트/ICM')">토너먼트/ICM (101)</button>
-          <button class="filter-pill" data-cat="턴/리버" onclick="reader.filterCategory('턴/리버')">턴/리버 (28)</button>
-          <button class="filter-pill" data-cat="솔버 이론" onclick="reader.filterCategory('솔버 이론')">솔버 이론 (27)</button>
-          <button class="filter-pill" data-cat="익스플로잇" onclick="reader.filterCategory('익스플로잇')">익스플로잇 (25)</button>
-          <button class="filter-pill" data-cat="플랍 전략" onclick="reader.filterCategory('플랍 전략')">플랍 전략 (20)</button>
-          <button class="filter-pill" data-cat="수학/기초" onclick="reader.filterCategory('수학/기초')">수학/기초 (16)</button>
-          <button class="filter-pill" data-cat="PKO 바운티" onclick="reader.filterCategory('PKO 바운티')">PKO 바운티 (15)</button>
-          <button class="filter-pill" data-cat="3벳 팟" onclick="reader.filterCategory('3벳 팟')">3벳 팟 (14)</button>
-          <button class="filter-pill" data-cat="캐시/스트래들" onclick="reader.filterCategory('캐시/스트래들')">캐시/스트래들 (14)</button>
-          <button class="filter-pill" data-cat="업데이트/소식" onclick="reader.filterCategory('업데이트/소식')">업데이트/소식 (4)</button>
-          <button class="filter-pill filter-pill-plo" data-cat="외전: PLO 오마하" onclick="reader.filterCategory('외전: PLO 오마하')">🦉 외전: PLO 오마하 (3)</button>
-        </div>
-      </div>
-
-      <!-- Level Filter Bar (6 Progressive RPG Tiers) -->
-      <div class="filter-bar" style="margin-bottom: 1.5rem; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
-        <div class="filter-pills" id="article-level-filters">
-          <span style="font-size: 0.85rem; color: var(--text-muted); align-self: center; margin-right: 0.4rem; font-weight: 600;">난이도:</span>
-          <button class="filter-pill active" data-lvl="all" onclick="reader.filterLevel('all')">전체 난이도 (366)</button>
-          <button class="filter-pill" data-lvl="Level 1" onclick="reader.filterLevel('Level 1')">Lv.1 동네 피쉬 (33)</button>
-          <button class="filter-pill" data-lvl="Level 2" onclick="reader.filterLevel('Level 2')">Lv.2 펍 레귤러 (201)</button>
-          <button class="filter-pill" data-lvl="Level 3" onclick="reader.filterLevel('Level 3')">Lv.3 마이크로 (47)</button>
-          <button class="filter-pill" data-lvl="Level 4" onclick="reader.filterLevel('Level 4')">Lv.4 로우스테이크 (65)</button>
-          <button class="filter-pill" data-lvl="Level 5" onclick="reader.filterLevel('Level 5')">Lv.5 미드스테이크 (15)</button>
-          <button class="filter-pill" data-lvl="Level 6" onclick="reader.filterLevel('Level 6')">Lv.6 하이롤러 (8)</button>
-        </div>
-        <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
-          <button class="filter-pill" id="filter-unlocked-btn" onclick="reader.toggleUnlockedOnly()" style="border: 1.5px solid #3b82f6; font-weight: 700; white-space: nowrap;">
-            <span id="unlocked-only-icon">🔓</span> <span id="unlocked-only-text">내 레벨 해금 글만 보기</span>
-          </button>
-          <div class="article-count-label" id="article-count-label" style="color: var(--text-dim); font-size: 0.85rem; word-break: keep-all;">
-            총 369편
+      <!-- 🎯 Library Filter Panel (접고 펼칠 수 있는 도서관 필터 박스) -->
+      <div class="library-filter-panel" id="library-filter-panel">
+        
+        <!-- 1. Master Control Header: Title, Active Badges, Reset & Collapse Buttons -->
+        <div class="library-filter-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.65rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+            <div style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); display: inline-flex; align-items: center; gap: 0.35rem;">
+              <span>🎯</span> 필터 탐색기
+            </div>
+            <!-- Dynamic Chips Showing Current Filter State -->
+            <div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap;">
+              <span class="filter-summary-chip cat-chip" id="filter-summary-cat">📂 전체 주제</span>
+              <span class="filter-summary-chip lvl-chip" id="filter-summary-lvl">⚡ Lv.1 (내 레벨)</span>
+              <span class="filter-summary-chip count-chip" id="filter-summary-count">33편</span>
+            </div>
           </div>
+
+          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+            <button onclick="reader.resetToDefault()" class="btn-filter-reset" title="기본값 (전체 주제 + 내 레벨 난이도)으로 되돌리기">
+              <span>🔄</span> 기본값 리셋
+            </button>
+            <button id="btn-toggle-filters-master" onclick="reader.toggleMasterFilters()" class="btn-filter-toggle" title="필터 패널 접기/펼치기">
+              <span id="filters-master-arrow">▲ 필터 접기</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Master Collapsible Body: Categories + Levels -->
+        <div id="library-filters-body" style="margin-top: 0.85rem; display: flex; flex-direction: column; gap: 0.85rem;">
+          
+          <!-- Section A: 📂 주제별 카테고리 -->
+          <div class="filter-section-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem;">
+              <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.86rem; font-weight: 800; color: var(--text-main);">
+                <span>📂</span> 주제별 카테고리
+                <span style="font-size: 0.74rem; color: var(--text-dim); font-weight: 600;">(13개 주제)</span>
+              </div>
+              <button id="btn-toggle-category-filter" onclick="reader.toggleCategoryFilter()" class="btn-section-toggle" title="주제 카테고리 접기/펼치기">
+                <span id="category-filter-arrow">▲ 주제 접기</span>
+              </button>
+            </div>
+            <div id="article-category-filters-container">
+              <div class="filter-pills" id="article-category-filters">
+                <button class="filter-pill active" data-cat="all" onclick="reader.filterCategory('all')">전체 주제 (366)</button>
+                <button class="filter-pill" data-cat="GTO 전략" onclick="reader.filterCategory('GTO 전략')">GTO 전략 (102)</button>
+                <button class="filter-pill" data-cat="토너먼트/ICM" onclick="reader.filterCategory('토너먼트/ICM')">토너먼트/ICM (101)</button>
+                <button class="filter-pill" data-cat="턴/리버" onclick="reader.filterCategory('턴/리버')">턴/리버 (28)</button>
+                <button class="filter-pill" data-cat="솔버 이론" onclick="reader.filterCategory('솔버 이론')">솔버 이론 (27)</button>
+                <button class="filter-pill" data-cat="익스플로잇" onclick="reader.filterCategory('익스플로잇')">익스플로잇 (25)</button>
+                <button class="filter-pill" data-cat="플랍 전략" onclick="reader.filterCategory('플랍 전략')">플랍 전략 (20)</button>
+                <button class="filter-pill" data-cat="수학/기초" onclick="reader.filterCategory('수학/기초')">수학/기초 (16)</button>
+                <button class="filter-pill" data-cat="PKO 바운티" onclick="reader.filterCategory('PKO 바운티')">PKO 바운티 (15)</button>
+                <button class="filter-pill" data-cat="3벳 팟" onclick="reader.filterCategory('3벳 팟')">3벳 팟 (14)</button>
+                <button class="filter-pill" data-cat="캐시/스트래들" onclick="reader.filterCategory('캐시/스트래들')">캐시/스트래들 (14)</button>
+                <button class="filter-pill" data-cat="업데이트/소식" onclick="reader.filterCategory('업데이트/소식')">업데이트/소식 (4)</button>
+                <button class="filter-pill filter-pill-plo" data-cat="외전: PLO 오마하" onclick="reader.filterCategory('외전: PLO 오마하')">🦉 외전: PLO 오마하 (3)</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div style="height: 1px; background: var(--border-color); opacity: 0.6;"></div>
+
+          <!-- Section B: ⚡ 난이도 및 커리어 티어 -->
+          <div class="filter-section-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem;">
+              <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.86rem; font-weight: 800; color: var(--text-main);">
+                <span>⚡</span> 난이도 및 전직 티어
+                <span style="font-size: 0.74rem; color: var(--text-dim); font-weight: 600;">(6개 RPG 티어)</span>
+              </div>
+              <button id="btn-toggle-level-filter" onclick="reader.toggleLevelFilter()" class="btn-section-toggle" title="난이도 필터 접기/펼치기">
+                <span id="level-filter-arrow">▲ 난이도 접기</span>
+              </button>
+            </div>
+            <div id="article-level-filters-container">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+                <div class="filter-pills" id="article-level-filters">
+                  <button class="filter-pill active" data-lvl="all" onclick="reader.filterLevel('all')">전체 난이도 (366)</button>
+                  <button class="filter-pill" data-lvl="Level 1" onclick="reader.filterLevel('Level 1')">Lv.1 동네 피쉬 (33)</button>
+                  <button class="filter-pill" data-lvl="Level 2" onclick="reader.filterLevel('Level 2')">Lv.2 펍 레귤러 (201)</button>
+                  <button class="filter-pill" data-lvl="Level 3" onclick="reader.filterLevel('Level 3')">Lv.3 마이크로 (47)</button>
+                  <button class="filter-pill" data-lvl="Level 4" onclick="reader.filterLevel('Level 4')">Lv.4 로우스테이크 (65)</button>
+                  <button class="filter-pill" data-lvl="Level 5" onclick="reader.filterLevel('Level 5')">Lv.5 미드스테이크 (15)</button>
+                  <button class="filter-pill" data-lvl="Level 6" onclick="reader.filterLevel('Level 6')">Lv.6 하이롤러 (8)</button>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
+                  <button class="filter-pill" id="filter-unlocked-btn" onclick="reader.toggleUnlockedOnly()" style="border: 1.5px solid #3b82f6; font-weight: 700; white-space: nowrap;">
+                    <span id="unlocked-only-icon">🔓</span> <span id="unlocked-only-text">내 레벨 해금 글만 보기</span>
+                  </button>
+                  <div class="article-count-label" id="article-count-label" style="color: var(--text-dim); font-size: 0.85rem; word-break: keep-all; font-weight: 700;">
+                    총 369편
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -22424,8 +22671,13 @@ var app = window.app = {
       roadmap.load();
     } else if (viewId === 'articles') {
       if (window.reader) {
-        reader.autoSelectUserLevel();
+        if (!reader.skipDefaultResetOnce) {
+          reader.activeCategory = 'all';
+          reader.autoSelectUserLevel();
+        }
+        reader.skipDefaultResetOnce = false;
         reader.loadArticles();
+        if (reader.applyCollapseUI) reader.applyCollapseUI();
       }
     } else if (viewId === 'glossary') {
       glossary.load();
@@ -22813,6 +23065,10 @@ const reader = {
   readTimer: null,
   cumTimer: null,
   secondsRemaining: 45,
+  isMasterCollapsed: localStorage.getItem('poker_filter_master_collapsed') === 'true',
+  isCategoryCollapsed: localStorage.getItem('poker_filter_cat_collapsed') === 'true',
+  isLevelCollapsed: localStorage.getItem('poker_filter_lvl_collapsed') === 'true',
+  skipDefaultResetOnce: false,
 
   isPloArticle(a) {
     if (!a) return false;
@@ -22820,6 +23076,79 @@ const reader = {
     if (id === 'plo-just-changed-forever' || id === 'how-gto-wizard-solved-plo' || id === 'plo-upgrades-custom-hu-solving-postflop-icm-nodelocking-more') return true;
     const text = `${id} ${a.title_ko || ''} ${a.title || ''} ${a.category || ''}`.toLowerCase();
     return /\bplo\b|omaha|오마하/.test(text);
+  },
+
+  toggleMasterFilters() {
+    this.isMasterCollapsed = !this.isMasterCollapsed;
+    localStorage.setItem('poker_filter_master_collapsed', this.isMasterCollapsed ? 'true' : 'false');
+    this.applyCollapseUI();
+    if (window.app && app.playAudioEffect) app.playAudioEffect('click');
+  },
+
+  toggleCategoryFilter() {
+    this.isCategoryCollapsed = !this.isCategoryCollapsed;
+    localStorage.setItem('poker_filter_cat_collapsed', this.isCategoryCollapsed ? 'true' : 'false');
+    this.applyCollapseUI();
+    if (window.app && app.playAudioEffect) app.playAudioEffect('click');
+  },
+
+  toggleLevelFilter() {
+    this.isLevelCollapsed = !this.isLevelCollapsed;
+    localStorage.setItem('poker_filter_lvl_collapsed', this.isLevelCollapsed ? 'true' : 'false');
+    this.applyCollapseUI();
+    if (window.app && app.playAudioEffect) app.playAudioEffect('click');
+  },
+
+  applyCollapseUI() {
+    // 1. Master filter body
+    const masterBody = document.getElementById('library-filters-body');
+    const masterArrow = document.getElementById('filters-master-arrow');
+    if (masterBody) masterBody.style.display = this.isMasterCollapsed ? 'none' : 'flex';
+    if (masterArrow) masterArrow.innerText = this.isMasterCollapsed ? '▼ 필터 펼치기' : '▲ 필터 접기';
+
+    // 2. Category section
+    const catCont = document.getElementById('article-category-filters-container');
+    const catArrow = document.getElementById('category-filter-arrow');
+    if (catCont) catCont.style.display = this.isCategoryCollapsed ? 'none' : 'block';
+    if (catArrow) catArrow.innerText = this.isCategoryCollapsed ? '▼ 주제 펼치기' : '▲ 주제 접기';
+
+    // 3. Level section
+    const lvlCont = document.getElementById('article-level-filters-container');
+    const lvlArrow = document.getElementById('level-filter-arrow');
+    if (lvlCont) lvlCont.style.display = this.isLevelCollapsed ? 'none' : 'block';
+    if (lvlArrow) lvlArrow.innerText = this.isLevelCollapsed ? '▼ 난이도 펼치기' : '▲ 난이도 접기';
+  },
+
+  updateSummaryChips() {
+    const catChip = document.getElementById('filter-summary-cat');
+    const lvlChip = document.getElementById('filter-summary-lvl');
+
+    const catName = this.activeCategory === 'all' ? '📂 전체 주제' : `📂 ${this.activeCategory}`;
+    if (catChip) catChip.innerText = catName;
+
+    const userLvl = (window.app && app.userState) ? (app.getLevelInfo(app.userState.xp).level || 1) : 1;
+    let myTarget = 'Level 1';
+    if (userLvl >= 85) myTarget = 'Level 6';
+    else if (userLvl >= 65) myTarget = 'Level 5';
+    else if (userLvl >= 45) myTarget = 'Level 4';
+    else if (userLvl >= 25) myTarget = 'Level 3';
+    else if (userLvl >= 10) myTarget = 'Level 2';
+
+    const levelMeta = {
+      'Level 1': 'Lv.1 동네 피쉬',
+      'Level 2': 'Lv.2 펍 레귤러',
+      'Level 3': 'Lv.3 마이크로',
+      'Level 4': 'Lv.4 로우스테이크',
+      'Level 5': 'Lv.5 미드스테이크',
+      'Level 6': 'Lv.6 하이롤러'
+    };
+
+    let lvlText = '⚡ 전체 난이도';
+    if (this.activeLevel !== 'all' && levelMeta[this.activeLevel]) {
+      const isMyLvl = (this.activeLevel === myTarget);
+      lvlText = `⚡ ${levelMeta[this.activeLevel]}${isMyLvl ? ' 🌟(내 레벨)' : ''}`;
+    }
+    if (lvlChip) lvlChip.innerText = lvlText;
   },
 
   autoSelectUserLevel() {
@@ -22837,9 +23166,10 @@ const reader = {
   },
 
   loadArticles() {
-    if (!this.activeLevel || this.activeLevel === 'all') {
+    if (!this.activeLevel) {
       this.autoSelectUserLevel();
     }
+    this.applyCollapseUI();
     this.updateFilterPillsUI();
     this.renderArticleCards();
   },
@@ -22852,6 +23182,7 @@ const reader = {
   },
 
   filterCategory(cat) {
+    this.skipDefaultResetOnce = true;
     this.activeCategory = cat;
     this.displayLimit = 24;
 
@@ -22872,6 +23203,7 @@ const reader = {
   },
 
   filterLevel(lvl) {
+    this.skipDefaultResetOnce = true;
     this.activeLevel = lvl;
     this.displayLimit = 24;
 
@@ -22888,16 +23220,57 @@ const reader = {
     this.renderArticleCards();
   },
 
-  resetFilters() {
+  toggleUnlockedOnly(forceVal) {
+    if (typeof forceVal === 'boolean') {
+      this.unlockedOnly = forceVal;
+    } else {
+      this.unlockedOnly = !this.unlockedOnly;
+    }
+    const btn = document.getElementById('filter-unlocked-btn');
+    const textEl = document.getElementById('unlocked-only-text');
+    const iconEl = document.getElementById('unlocked-only-icon');
+    if (btn) {
+      if (this.unlockedOnly) {
+        btn.classList.add('active');
+        if (textEl) textEl.innerText = '내 레벨 해금 글만 보는 중';
+        if (iconEl) iconEl.innerText = '🔒필터ON';
+      } else {
+        btn.classList.remove('active');
+        if (textEl) textEl.innerText = '내 레벨 해금 글만 보기';
+        if (iconEl) iconEl.innerText = '🔓';
+      }
+    }
+    this.displayLimit = 24;
+    this.renderArticleCards();
+    if (window.app && app.playAudioEffect) app.playAudioEffect('click');
+  },
+
+  resetToDefault() {
     this.activeCategory = 'all';
     this.autoSelectUserLevel();
     this.searchQuery = '';
     const input = document.getElementById('article-search-input');
     if (input) input.value = '';
+    this.unlockedOnly = false;
+    const unlBtn = document.getElementById('filter-unlocked-btn');
+    if (unlBtn) {
+      unlBtn.classList.remove('active');
+      const unlText = document.getElementById('unlocked-only-text');
+      if (unlText) unlText.innerText = '내 레벨 해금 글만 보기';
+      const unlIcon = document.getElementById('unlocked-only-icon');
+      if (unlIcon) unlIcon.innerText = '🔓';
+    }
     this.displayLimit = 24;
     this.updateFilterPillsUI();
     this.renderArticleCards();
     if (window.app && app.playAudioEffect) app.playAudioEffect('click');
+    if (window.characterManager && characterManager.showToast) {
+      characterManager.showToast('🎯 [전체 주제 + 내 레벨 난이도] 기본값으로 재설정되었습니다.');
+    }
+  },
+
+  resetFilters() {
+    this.resetToDefault();
   },
 
   updateFilterPillsUI() {
@@ -22921,8 +23294,15 @@ const reader = {
       }
     });
 
-    // 3. Dynamically update Level pill counts and Lock badges based on active category & user level
+    // 3. Dynamically update Level pill counts, Lock badges & "내 레벨" tag based on active category & user level
     const userLvl = app.getLevelInfo(app.userState.xp).level;
+    let target = 'Level 1';
+    if (userLvl >= 85) target = 'Level 6';
+    else if (userLvl >= 65) target = 'Level 5';
+    else if (userLvl >= 45) target = 'Level 4';
+    else if (userLvl >= 25) target = 'Level 3';
+    else if (userLvl >= 10) target = 'Level 2';
+
     const isPloCat = this.activeCategory === '외전: PLO 오마하';
     const levelMeta = {
       'Level 1': { title: 'Lv.1 동네 피쉬', req: 1, tierNum: 1 },
@@ -22945,6 +23325,7 @@ const reader = {
       } else if (levelMeta[l]) {
         const meta = levelMeta[l];
         const isLocked = meta.req > userLvl;
+        const isMyLevel = (l === target);
         const cnt = this.articles.filter(a => {
           if (isPloCat) {
             return this.isPloArticle(a) && (a.tier_num === meta.tierNum || a.tier_category === l || (a.level && a.level.startsWith(l)));
@@ -22953,10 +23334,12 @@ const reader = {
             (this.activeCategory === 'all' || a.category === this.activeCategory) &&
             (a.tier_num === meta.tierNum || a.tier_category === l || (a.level && a.level.startsWith(l)));
         }).length;
-        pill.innerText = `${isLocked ? '🔒 ' : '🔓 '}${meta.title} (${cnt})`;
+        pill.innerHTML = `${isLocked ? '🔒 ' : '🔓 '}${meta.title} (${cnt})${isMyLevel ? ' <span class="my-lvl-tag">🌟내 레벨</span>' : ''}`;
         pill.style.opacity = (cnt === 0) ? '0.45' : '1';
       }
     });
+
+    this.updateSummaryChips();
   },
 
   loadMore() {
@@ -23001,6 +23384,10 @@ const reader = {
       } else {
         countLabelEl.innerText = `총 366편 중 ${totalCount}편 일치 (${slice.length}편)`;
       }
+    }
+    const countChip = document.getElementById('filter-summary-count');
+    if (countChip) {
+      countChip.innerText = `${totalCount}편`;
     }
 
     if (totalCount === 0) {
