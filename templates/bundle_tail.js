@@ -902,8 +902,14 @@ var characterManager = window.characterManager = {
       toast.className = 'poker-toast';
       document.body.appendChild(toast);
     }
-    toast.innerHTML = msg;
-    toast.style.display = 'flex';
+    toast.innerHTML = `<div class="poker-toast-body">${msg}</div>`;
+    toast.style.display = 'block';
+    
+    // 연속 호출 시 애니메이션 재시작을 위한 리셋
+    toast.style.animation = 'none';
+    void toast.offsetHeight;
+    toast.style.animation = '';
+
     clearTimeout(this._toastTimer);
     this._toastTimer = setTimeout(() => {
       if (toast) toast.style.display = 'none';
@@ -5187,8 +5193,18 @@ const titleManager = window.titleManager = {
     }
     this.render();
     if (window.app && app.playAudioEffect) app.playAudioEffect('correct');
-    const cleanName = titleFull.replace(/^[\p{Emoji}\s]+/u, '').trim() || titleFull;
-    characterManager.showToast(`✨ 대표 칭호가 <strong>[${cleanName}]</strong>(으)로 변경되었습니다!`);
+    const match = titleFull.match(/^([\p{Emoji}\u200d\uFE0F\s]+)?(.*)$/u);
+    const icon = (match && match[1]) ? match[1].trim() : '🎖️';
+    const cleanName = (match && match[2]) ? match[2].trim() : titleFull;
+
+    characterManager.showToast(`
+      <div class="toast-title-change-box">
+        <div class="toast-title-badge-header">✨ 대표 칭호 변경</div>
+        <div class="toast-title-change-text">
+          ${icon ? `<span class="toast-title-icon">${icon}</span> ` : ''}<span class="toast-title-highlight">[${cleanName}]</span>(으)로 변경되었습니다!
+        </div>
+      </div>
+    `);
   },
 
   openModal(onlyUnlocked = true) {
