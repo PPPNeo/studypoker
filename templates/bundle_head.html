@@ -3046,6 +3046,119 @@ body.theme-light .article-card.read-completed {
   background: #fbfdfc !important;
 }
 
+/* 🎯 퀘스트 연동 자동 진행 배너 & 버튼 */
+.reader-next-quest-banner {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(37, 99, 235, 0.18));
+  border: 2px solid #3b82f6;
+  border-radius: 14px;
+  padding: 1.5rem 1.25rem;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.2);
+  animation: toastSlideIn 0.35s ease;
+}
+.reader-next-quest-banner.is-quiz {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.22));
+  border-color: #f59e0b;
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.25);
+}
+.reader-next-quest-banner.is-done {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.14), rgba(5, 150, 105, 0.22));
+  border-color: #10b981;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.25);
+}
+body.theme-light .reader-next-quest-banner {
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  border-color: #3b82f6;
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
+}
+body.theme-light .reader-next-quest-banner.is-quiz {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border-color: #f59e0b;
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.2);
+}
+body.theme-light .reader-next-quest-banner.is-done {
+  background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+  border-color: #10b981;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
+}
+.next-quest-header-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 3px 12px;
+  border-radius: 12px;
+  background: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+  margin-bottom: 0.65rem;
+}
+.reader-next-quest-banner.is-quiz .next-quest-header-pill {
+  background: #f59e0b;
+  color: #000000;
+  box-shadow: 0 2px 6px rgba(245, 158, 11, 0.35);
+}
+.reader-next-quest-banner.is-done .next-quest-header-pill {
+  background: #10b981;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.35);
+}
+.next-quest-title-text {
+  font-size: 1.18rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 0.35rem;
+  line-height: 1.4;
+  word-break: keep-all;
+}
+.next-quest-sub-text {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 1.15rem;
+  line-height: 1.5;
+  word-break: keep-all;
+}
+.btn-next-quest-cta {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #ffffff !important;
+  font-size: 1rem;
+  font-weight: 800;
+  padding: 0.85rem 2.2rem;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  word-break: keep-all;
+  text-decoration: none;
+}
+.btn-next-quest-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.55);
+  filter: brightness(1.1);
+}
+.reader-next-quest-banner.is-quiz .btn-next-quest-cta {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #000000 !important;
+  box-shadow: 0 6px 18px rgba(245, 158, 11, 0.4);
+}
+.reader-next-quest-banner.is-quiz .btn-next-quest-cta:hover {
+  box-shadow: 0 8px 25px rgba(245, 158, 11, 0.55);
+}
+.reader-next-quest-banner.is-done .btn-next-quest-cta {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #ffffff !important;
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.4);
+}
+.reader-next-quest-banner.is-done .btn-next-quest-cta:hover {
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.55);
+}
+
 /* 퀘스트 모달 라이트모드 고대비 규칙 */
 .quest-rule-notice {
   background: rgba(59, 130, 246, 0.08);
@@ -4509,6 +4622,7 @@ body.authenticated #auth-gate-screen {
             <button class="btn-primary" id="btn-complete-article" style="width: 100%; font-size: 0.85rem;" onclick="reader.markCompleted()">
               ✓ 완독 완료 (+50 XP)
             </button>
+            <div id="sidebar-next-quest-container" style="display: none; margin-top: 0.75rem;"></div>
           </div>
         </aside>
 
@@ -4560,6 +4674,7 @@ body.authenticated #auth-gate-screen {
             <button class="btn-primary" id="btn-bottom-complete-article" style="padding: 0.9rem 2.5rem; font-size: 1.05rem; font-weight: 800; border-radius: 30px; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.35); transition: all 0.2s ease;" onclick="reader.markCompleted()">
               ⏱️ 아티클 정독 중... (45초 후 완독 가능)
             </button>
+            <div id="reader-next-quest-container" style="display: none; margin-top: 1.75rem; padding-top: 1.5rem; border-top: 1.5px dashed var(--border-color);"></div>
           </div>
         </article>
       </div>
@@ -4614,6 +4729,7 @@ body.authenticated #auth-gate-screen {
             <div class="feedback-status" id="feedback-status-title"></div>
             <div class="feedback-concept" id="feedback-concept-tag"></div>
             <div class="feedback-text" id="feedback-explanation-text"></div>
+            <div id="trainer-next-quest-container" style="display: none; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1.5px dashed var(--border-color);"></div>
           </div>
         </div>
       </div>

@@ -1828,22 +1828,28 @@ const reader = {
     const btnBottom = document.getElementById('btn-bottom-complete-article');
     const bottomDesc = document.getElementById('bottom-complete-desc');
     const bottomIcon = document.getElementById('bottom-complete-icon');
+    const bottomTitle = document.getElementById('bottom-complete-title');
+    const bottomNext = document.getElementById('reader-next-quest-container');
+    const sidebarNext = document.getElementById('sidebar-next-quest-container');
 
     if (isCompleted) {
       if (btnSidebar) {
-        btnSidebar.innerText = '✓ 이미 완독 완료한 아티클';
+        btnSidebar.innerText = '✓ 완독 완료 (+50 XP 완료)';
         btnSidebar.disabled = true;
-        btnSidebar.style.opacity = '0.6';
-        btnSidebar.style.cursor = 'not-allowed';
+        btnSidebar.style.opacity = '0.7';
+        btnSidebar.style.cursor = 'default';
       }
       if (btnBottom) {
-        btnBottom.innerText = '✓ 이미 완독 완료한 아티클 (+50 XP 획득 완료)';
+        btnBottom.innerText = '✓ 아티클 정독 완료 (+50 XP 획득 완료)';
         btnBottom.disabled = true;
-        btnBottom.style.opacity = '0.6';
-        btnBottom.style.cursor = 'not-allowed';
+        btnBottom.style.opacity = '0.75';
+        btnBottom.style.cursor = 'default';
       }
-      if (bottomIcon) bottomIcon.innerText = '✅';
-      if (bottomDesc) bottomDesc.innerHTML = '이미 정독을 완료하여 경험치(50 XP)를 획득한 아티클입니다.';
+      if (bottomIcon) bottomIcon.innerText = '🎉';
+      if (bottomTitle) bottomTitle.innerText = '아티클 정독 완료!';
+      if (bottomDesc) bottomDesc.innerHTML = '성공적으로 정독을 완료하여 <strong>+50 XP</strong>를 획득하셨습니다! 아래 다음 퀘스트로 바로 이어가세요.';
+      
+      this.renderNextQuestBanner();
     } else if (secondsRemaining > 0) {
       if (btnSidebar) {
         btnSidebar.innerText = `⏱️ 정독 중... (${secondsRemaining}초)`;
@@ -1858,7 +1864,10 @@ const reader = {
         btnBottom.style.cursor = 'wait';
       }
       if (bottomIcon) bottomIcon.innerText = '📖';
-      if (bottomDesc) bottomDesc.innerHTML = `본문을 최소 45초 이상 꼼꼼히 정독하고 아래 완료 버튼을 직접 눌러야 정독이 인정되며 <strong>+50 XP</strong>를 획득합니다. (남은 시간: ${secondsRemaining}초)`;
+      if (bottomTitle) bottomTitle.innerText = '아티클 정독 완료 인증';
+      if (bottomDesc) bottomDesc.innerHTML = `본문을 꼼꼼히 정독하고 아래 완료 버튼을 직접 눌러야 정독이 인정되며 <strong>+50 XP</strong>를 획득합니다. (남은 시간: ${secondsRemaining}초)`;
+      if (bottomNext) bottomNext.style.display = 'none';
+      if (sidebarNext) sidebarNext.style.display = 'none';
     } else {
       if (btnSidebar) {
         btnSidebar.innerText = '✓ 정독 완료 (+50 XP)';
@@ -1873,7 +1882,61 @@ const reader = {
         btnBottom.style.cursor = 'pointer';
       }
       if (bottomIcon) bottomIcon.innerText = '🎉';
-      if (bottomDesc) bottomDesc.innerHTML = '🎉 <strong>45초 정독 시간 충족!</strong> 아래 버튼을 직접 클릭해야 정독이 완료되고 경험치가 지급됩니다.';
+      if (bottomTitle) bottomTitle.innerText = '정독 완료 준비 완료!';
+      if (bottomDesc) bottomDesc.innerHTML = '🎉 <strong>정독 시간 충족!</strong> 아래 버튼을 직접 클릭해야 정독이 완료되고 경험치가 지급됩니다.';
+      if (bottomNext) bottomNext.style.display = 'none';
+      if (sidebarNext) sidebarNext.style.display = 'none';
+    }
+  },
+
+  renderNextQuestBanner() {
+    const bottomContainer = document.getElementById('reader-next-quest-container');
+    const sidebarContainer = document.getElementById('sidebar-next-quest-container');
+    if (!this.currentArticle || !window.questManager) return;
+
+    const nextStep = questManager.getNextQuestStep(this.currentArticle.id || this.currentArticle.slug, null);
+    if (!nextStep) return;
+
+    this.currentNextQuest = nextStep;
+    const isQuiz = (nextStep.type === 'quiz');
+    const isDone = (nextStep.type === 'roadmap' || nextStep.type === 'exam');
+
+    if (bottomContainer) {
+      let icon = '📖';
+      if (isQuiz) icon = '🎯';
+      else if (nextStep.type === 'matrix') icon = '📊';
+      else if (nextStep.type === 'exam') icon = '⚡';
+      else if (nextStep.type === 'roadmap') icon = '🗺️';
+
+      bottomContainer.innerHTML = `
+        <div class="reader-next-quest-banner ${isQuiz ? 'is-quiz' : ''} ${isDone ? 'is-done' : ''}">
+          <div class="next-quest-header-pill">
+            <span>${icon}</span>
+            <span>${nextStep.badgeText}</span>
+          </div>
+          <div class="next-quest-title-text">
+            ${nextStep.title ? `<strong>${nextStep.title}</strong>` : nextStep.btnText}
+          </div>
+          <p class="next-quest-sub-text">
+            ${nextStep.subText}
+          </p>
+          <button class="btn-next-quest-cta" onclick="questManager.executeNextQuest(reader.currentNextQuest)">
+            <span>${icon}</span>
+            <span>${nextStep.btnText}</span>
+          </button>
+        </div>
+      `;
+      bottomContainer.style.display = 'block';
+    }
+
+    if (sidebarContainer) {
+      sidebarContainer.innerHTML = `
+        <button class="btn-primary" onclick="questManager.executeNextQuest(reader.currentNextQuest)" 
+          style="width: 100%; font-size: 0.8rem; font-weight: 800; padding: 0.55rem 0.75rem; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.35rem; ${isQuiz ? 'background: linear-gradient(135deg, #f59e0b, #d97706); color: #000;' : (isDone ? 'background: linear-gradient(135deg, #10b981, #059669); color: #fff;' : 'background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #fff;')} box-shadow: 0 4px 12px rgba(0,0,0,0.25);">
+          ${isQuiz ? '🎯 다음 퀴즈 풀기 ➔' : (isDone ? '🗺️ 퀘스트 확인 ➔' : '📖 다음 퀘스트 ➔')}
+        </button>
+      `;
+      sidebarContainer.style.display = 'block';
     }
   },
 
@@ -2259,8 +2322,20 @@ const reader = {
     
     this.updateCompletionUI(true, 0);
     this.updateReaderStatusBanner();
-
     this.renderArticleCards();
+
+    // 대시보드 및 로드맵/퀘스트 실시간 갱신
+    if (window.characterManager && characterManager.renderDashboard) characterManager.renderDashboard();
+    if (window.questManager && questManager.render) questManager.render();
+    if (window.roadmap && roadmap.load) roadmap.load();
+
+    // 완독 후 다음 퀘스트 배너가 한눈에 보이도록 부드럽게 스크롤
+    const nextBanner = document.getElementById('reader-next-quest-container');
+    if (nextBanner) {
+      setTimeout(() => {
+        nextBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 200);
+    }
   },
 
   checkPloTitleUnlock() {
@@ -2429,6 +2504,8 @@ const trainer = {
 
     const feedbackBox = document.getElementById('trainer-feedback-box');
     feedbackBox.style.display = 'none';
+    const trainerNext = document.getElementById('trainer-next-quest-container');
+    if (trainerNext) trainerNext.style.display = 'none';
 
     const questionEl = document.getElementById('trainer-question-text');
     const optGrid = document.getElementById('trainer-options-grid');
@@ -2530,12 +2607,55 @@ const trainer = {
     explanationText.innerText = q.explanation;
     feedbackBox.style.display = 'block';
 
+    // 🎯 퀘스트 연동: 다음 퀴즈 또는 퀘스트 단계 버튼 렌더링
+    const trainerNext = document.getElementById('trainer-next-quest-container');
+    if (trainerNext && window.questManager) {
+      const nextStep = questManager.getNextQuestStep(null, q.id);
+      if (nextStep) {
+        trainer.currentNextQuest = nextStep;
+        const isQuiz = (nextStep.type === 'quiz');
+        const isDone = (nextStep.type === 'roadmap' || nextStep.type === 'exam' || nextStep.type === 'matrix');
+        let icon = '🎯';
+        if (nextStep.type === 'article') icon = '📖';
+        else if (nextStep.type === 'matrix') icon = '📊';
+        else if (nextStep.type === 'exam') icon = '⚡';
+        else if (nextStep.type === 'roadmap') icon = '🗺️';
+
+        trainerNext.innerHTML = `
+          <div style="background: ${isQuiz ? 'rgba(245, 158, 11, 0.12)' : (isDone ? 'rgba(16, 185, 129, 0.12)' : 'rgba(59, 130, 246, 0.12)')}; border: 1.5px solid ${isQuiz ? '#f59e0b' : (isDone ? '#10b981' : '#3b82f6')}; border-radius: 12px; padding: 1.15rem 1rem; text-align: center; margin-top: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+            <div style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; font-weight: 800; padding: 2px 10px; border-radius: 10px; background: ${isQuiz ? '#f59e0b' : (isDone ? '#10b981' : '#2563eb')}; color: ${isQuiz ? '#000' : '#fff'}; margin-bottom: 0.5rem;">
+              <span>${icon}</span>
+              <span>${nextStep.badgeText}</span>
+            </div>
+            <div style="font-size: 1rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.35rem; word-break: keep-all;">
+              ${nextStep.title ? `<strong>${nextStep.title}</strong>` : nextStep.btnText}
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.85rem; word-break: keep-all;">
+              ${nextStep.subText}
+            </p>
+            <button class="btn-primary" onclick="questManager.executeNextQuest(trainer.currentNextQuest)" style="padding: 0.7rem 1.8rem; font-size: 0.92rem; font-weight: 800; border-radius: 25px; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 0.45rem; ${isQuiz ? 'background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);' : (isDone ? 'background: linear-gradient(135deg, #10b981, #059669); color: #fff; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);' : 'background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #fff; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);')}">
+              <span>${icon}</span>
+              <span>${nextStep.btnText}</span>
+            </button>
+          </div>
+        `;
+        trainerNext.style.display = 'block';
+      } else {
+        trainerNext.style.display = 'none';
+      }
+    }
+
     if (isCorrect) {
       if (!alreadyCompleted) {
         if (!app.userState.completed_quizzes) app.userState.completed_quizzes = [];
         app.userState.completed_quizzes.push(q.id);
         app.addXP(xpGained, 'quiz');
         characterManager.showToast('🎯 스팟 퀴즈 첫 정답 달성! (+50 XP 획득)');
+
+        // 대시보드 및 로드맵/퀘스트 실시간 갱신
+        if (window.characterManager && characterManager.renderDashboard) characterManager.renderDashboard();
+        if (window.questManager && questManager.render) questManager.render();
+        if (window.roadmap && roadmap.load) roadmap.load();
       }
       app.playAudioEffect('correct');
     } else {
@@ -3577,6 +3697,172 @@ var questManager = window.questManager = {
   closeModal() {
     const modal = document.getElementById('quest-modal-overlay');
     if (modal) modal.style.display = 'none';
+  },
+
+  getNextQuestStep(currentArticleId = null, currentQuizId = null) {
+    const u = app.userState;
+    if (!u) return null;
+    const lvlInfo = app.getLevelInfo(u.xp);
+    const curLvl = lvlInfo.level;
+    const missions = app.getCurriculumForLevel(curLvl);
+    const reqArticles = missions.requiredArticles || [];
+    const reqQuizzes = missions.requiredQuizzes || [];
+    
+    // 1. 아티클 화면에서 다음 단계 조회
+    if (currentArticleId) {
+      const curIdx = reqArticles.findIndex(a => (a.id === currentArticleId || a.slug === currentArticleId));
+      
+      // 현재 아티클이 이번 레벨 퀘스트인 경우
+      if (curIdx !== -1) {
+        // 현재 아티클 다음 순서 미완독 아티클 탐색
+        for (let i = curIdx + 1; i < reqArticles.length; i++) {
+          const a = reqArticles[i];
+          if (!(u.completed_articles || []).includes(a.id || a.slug)) {
+            const title = a.title_ko || a.title || a.id;
+            return {
+              type: 'article',
+              id: a.id || a.slug,
+              title: title,
+              level: curLvl,
+              badgeText: `다음 퀘스트 아티클 (${i + 1}/${reqArticles.length})`,
+              btnText: `📖 다음 퀘스트 아티클 바로가기: ${title} ➔`,
+              subText: `연속 학습으로 Lv.${curLvl} 퀘스트를 완수하고 승급에 도전하세요!`
+            };
+          }
+        }
+        // 혹시 앞 순서에서 건너뛴 미완독 아티클이 있는 경우
+        for (let i = 0; i < curIdx; i++) {
+          const a = reqArticles[i];
+          if (!(u.completed_articles || []).includes(a.id || a.slug)) {
+            const title = a.title_ko || a.title || a.id;
+            return {
+              type: 'article',
+              id: a.id || a.slug,
+              title: title,
+              level: curLvl,
+              badgeText: `미완독 퀘스트 아티클 (${i + 1}/${reqArticles.length})`,
+              btnText: `📖 건너뛴 퀘스트 아티클 이어보기: ${title} ➔`,
+              subText: `Lv.${curLvl} 필수 퀘스트 트리를 순서대로 마스터하세요!`
+            };
+          }
+        }
+      } else {
+        // 퀘스트 외 일반 아티클 열람 중인 경우: 현재 레벨 퀘스트 첫 번째 미완독 아티클 추천
+        const uncompletedArt = reqArticles.find(a => !(u.completed_articles || []).includes(a.id || a.slug));
+        if (uncompletedArt) {
+          const idx = reqArticles.indexOf(uncompletedArt);
+          const title = uncompletedArt.title_ko || uncompletedArt.title || uncompletedArt.id;
+          return {
+            type: 'article',
+            id: uncompletedArt.id || uncompletedArt.slug,
+            title: title,
+            level: curLvl,
+            badgeText: `내 레벨 필수 퀘스트 (${idx + 1}/${reqArticles.length})`,
+            btnText: `🎯 현재 레벨 퀘스트 아티클: ${title} ➔`,
+            subText: `Lv.${curLvl} 승급을 위한 필수 추천 아티클입니다.`
+          };
+        }
+      }
+      
+      // 이번 레벨 필수 아티클을 모두 완독했음 -> 이제 퀴즈 퀘스트로 매끄럽게 연결!
+      const uncompletedQuiz = reqQuizzes.find(q => !(u.completed_quizzes || []).includes(q.id));
+      if (uncompletedQuiz) {
+        const qIdx = reqQuizzes.indexOf(uncompletedQuiz);
+        return {
+          type: 'quiz',
+          id: uncompletedQuiz.id,
+          title: uncompletedQuiz.title,
+          level: curLvl,
+          badgeText: `🏆 필수 아티클 완독 달성! • 다음 미션: 실전 퀴즈 (${qIdx + 1}/${reqQuizzes.length})`,
+          btnText: `🎯 실전 스팟 퀴즈 풀러 가기: ${uncompletedQuiz.title} ➔`,
+          subText: '방금 아티클에서 배운 핵심 GTO 이론을 실전 스팟 퀴즈로 바로 검증해보세요!'
+        };
+      }
+    }
+    
+    // 2. 퀴즈 화면에서 다음 단계 조회
+    if (currentQuizId) {
+      const curQIdx = reqQuizzes.findIndex(q => q.id === currentQuizId);
+      if (curQIdx !== -1) {
+        for (let i = curQIdx + 1; i < reqQuizzes.length; i++) {
+          const q = reqQuizzes[i];
+          if (!(u.completed_quizzes || []).includes(q.id)) {
+            return {
+              type: 'quiz',
+              id: q.id,
+              title: q.title,
+              level: curLvl,
+              badgeText: `다음 퀘스트 퀴즈 (${i + 1}/${reqQuizzes.length})`,
+              btnText: `🎯 다음 퀴즈 풀기: ${q.title} ➔`,
+              subText: `실전 감각을 끌어올리고 +50 XP를 추가로 획득하세요!`
+            };
+          }
+        }
+      }
+      const uncompletedQuiz = reqQuizzes.find(q => !(u.completed_quizzes || []).includes(q.id));
+      if (uncompletedQuiz) {
+        const qIdx = reqQuizzes.indexOf(uncompletedQuiz);
+        return {
+          type: 'quiz',
+          id: uncompletedQuiz.id,
+          title: uncompletedQuiz.title,
+          level: curLvl,
+          badgeText: `미완료 퀘스트 퀴즈 (${qIdx + 1}/${reqQuizzes.length})`,
+          btnText: `🎯 다음 퀴즈 풀기: ${uncompletedQuiz.title} ➔`,
+          subText: `Lv.${curLvl} 필수 퀴즈를 모두 통과하세요!`
+        };
+      }
+    }
+    
+    // 3. 이번 레벨 아티클과 퀴즈를 모두 완료한 경우
+    const targetRanges = Math.min(13, Math.max(2, Math.ceil(curLvl * 0.2)));
+    const exploredRangesCount = (u.explored_ranges || []).length;
+    if (exploredRangesCount < targetRanges) {
+      return {
+        type: 'matrix',
+        badgeText: '다음 미션: 13x13 레인지 탐색',
+        btnText: `📊 13x13 매트릭스 레인지 탐색하기 (${exploredRangesCount}/${targetRanges}개) ➔`,
+        subText: '포지션별 프리플랍 핸드 매트릭스를 탐색하여 경험치를 획득하세요.'
+      };
+    }
+    
+    if (lvlInfo.needsExam) {
+      const examTier = (typeof PROMOTION_TIERS !== 'undefined' && PROMOTION_TIERS[lvlInfo.needsExam]) ? PROMOTION_TIERS[lvlInfo.needsExam] : null;
+      return {
+        type: 'exam',
+        examTierId: lvlInfo.needsExam,
+        badgeText: '⚡ 승급 전직 심사 시험 자격 획득!',
+        btnText: `📝 ${examTier ? examTier.name : '승급'} 심사 시험 응시하기 ➔`,
+        subText: '모든 미션을 완수하셨습니다! 승급 시험을 치르고 새로운 칭호를 획득하세요.'
+      };
+    }
+
+    return {
+      type: 'roadmap',
+      badgeText: `🎉 Lv.${curLvl} 모든 퀘스트 마스터 달성!`,
+      btnText: '🗺️ 성장 로드맵 & 다음 레벨 확인하기 ➔',
+      subText: '축하합니다! 현재 레벨 퀘스트를 모두 완수하셨습니다.'
+    };
+  },
+
+  executeNextQuest(nextStep) {
+    if (!nextStep) return;
+    if (window.app && app.playAudioEffect) app.playAudioEffect('click');
+    if (nextStep.type === 'article') {
+      reader.openArticle(nextStep.id);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (nextStep.type === 'quiz') {
+      trainer.openQuizById(nextStep.id);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (nextStep.type === 'matrix') {
+      app.navigate('matrix');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (nextStep.type === 'exam') {
+      promotionManager.openExamModal(nextStep.examTierId);
+    } else {
+      app.navigate('roadmap');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   },
 
   render() {
