@@ -4236,6 +4236,51 @@ var rankingManager = window.rankingManager = {
     };
   },
 
+  showTitleInfo(titleId) {
+    if (!window.titleManager || !titleManager.TITLES) return;
+    const titleObj = titleManager.TITLES.find(t => t.id === titleId);
+    if (!titleObj) return;
+
+    const all = this.getAllPlayers();
+    const p1 = all[0];
+    const isP1Me = p1 && p1.isMe;
+
+    if (window.app && app.playAudioEffect) app.playAudioEffect('click');
+
+    if (isP1Me) {
+      // 1위가 나인 경우: 즉시 대표 칭호로 변경하고 상세 안내
+      titleManager.equipTitle(`${titleObj.icon} ${titleObj.name}`);
+      characterManager.showToast(`
+        <div style="text-align: left; line-height: 1.4;">
+          <div style="font-size: 0.95rem; font-weight: 800; color: #fbbf24; margin-bottom: 3px;">
+            ${titleObj.icon} ${titleObj.name} <span style="font-size: 0.72rem; color: #10b981; font-weight: 700; margin-left: 4px;">[대표 칭호 장착!]</span>
+          </div>
+          <div style="font-size: 0.78rem; color: var(--text-muted);">
+            ${titleObj.desc}
+          </div>
+          <div style="font-size: 0.72rem; color: #38bdf8; margin-top: 4px;">
+            조건: ${titleObj.req}
+          </div>
+        </div>
+      `);
+    } else {
+      // 1위가 다른 플레이어인 경우: 해당 칭호 정보 상세 안내
+      characterManager.showToast(`
+        <div style="text-align: left; line-height: 1.4;">
+          <div style="font-size: 0.95rem; font-weight: 800; color: #fbbf24; margin-bottom: 3px;">
+            ${titleObj.icon} ${titleObj.name}
+          </div>
+          <div style="font-size: 0.78rem; color: var(--text-muted);">
+            ${titleObj.desc}
+          </div>
+          <div style="font-size: 0.72rem; color: #38bdf8; margin-top: 4px;">
+            조건: ${titleObj.req}
+          </div>
+        </div>
+      `);
+    }
+  },
+
   render() {
     const all = this.getAllPlayers();
     const me = all.find(p => p.isMe);
@@ -4249,7 +4294,7 @@ var rankingManager = window.rankingManager = {
       btnScrollToMe.innerHTML = `📍 내 위치 (#${myRank}위)`;
     }
 
-    // 1. Horizontal 1위 챔피언 스포트라이트 배너 렌더링 (가로 와이드형 & 풍성하고 빈틈없는 레이아웃)
+    // 1. Horizontal 1위 챔피언 스포트라이트 배너 렌더링 (빈 공간 없는 꽉 찬 그리드 & 뱃지 아이콘 쇼케이스)
     const championSpotlight = document.getElementById('ranking-champion-spotlight');
     if (championSpotlight) {
       if (all.length > 0) {
@@ -4258,80 +4303,67 @@ var rankingManager = window.rankingManager = {
         const unlockedTitles = tInfo.unlockedTitles || [];
         const equippedTitle = tInfo.equippedTitle;
 
-        // 모은 칭호들 뱃지 HTML 생성
+        // 모은 칭호들 뱃지 HTML 생성 (아이콘만 깔끔하게 표시! 클릭 시 어떤 칭호인지 토스트 안내)
         const titlesHtml = unlockedTitles.map(t => `
-          <span class="champ-unlocked-badge ${t.isEquipped ? 'equipped' : ''}" 
-                title="${t.name} • ${t.desc} (획득 완료)"
-                ${p1.isMe ? `onclick="titleManager.equipTitle('${t.icon} ${t.name}')" style="cursor: pointer;"` : ''}>
-            <span>${t.icon}</span> ${t.name}
+          <span class="mini-title-badge ${t.isEquipped ? 'equipped' : ''}" 
+                title="${t.name} • ${t.desc} (클릭 시 칭호 정보 확인)"
+                onclick="rankingManager.showTitleInfo('${t.id}')">
+            ${t.icon}
           </span>
         `).join('');
 
         championSpotlight.innerHTML = `
           <div class="champion-spotlight-banner">
-            <!-- Row 1: Profile & Core Identity + Stats -->
-            <div class="champ-top-row">
-              <div class="champ-profile-group">
-                <div class="champ-avatar-box">
-                  <div class="champ-avatar-circle">
-                    ${p1.avatar}
-                  </div>
-                  <span class="champ-crown" title="시즌 챔피언">👑</span>
+            <!-- 1. Header: Avatar + Identity -->
+            <div class="champ-header-row">
+              <div class="champ-avatar-box">
+                <div class="champ-avatar-circle">
+                  ${p1.avatar}
                 </div>
-                <div>
-                  <div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.25rem;">
-                    <span style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; font-weight: 900; font-size: 0.74rem; padding: 2px 8px; border-radius: 10px; box-shadow: 0 2px 6px rgba(245, 158, 11, 0.35);">
-                      🥇 1위 • 시즌 챔피언
-                    </span>
-                    ${p1.isMe ? '<span class="rank-me-tag">나 (MY RANK)</span>' : ''}
-                  </div>
-                  <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                    <strong style="font-size: 1.18rem; color: var(--text-main); font-weight: 900; letter-spacing: -0.01em;">${p1.name}</strong>
-                    ${p1.kakao_nickname ? `<span class="rank-kakao-tag" title="카카오톡 단톡방 닉네임">💬 ${p1.kakao_nickname}</span>` : ''}
-                    <span class="rank-badge ${p1.badgeClass}" style="font-size: 0.72rem; padding: 2px 7px;">${p1.tierBadge}</span>
-                  </div>
-                </div>
+                <span class="champ-crown" title="시즌 챔피언">👑</span>
               </div>
-
-              <!-- Stats group -->
-              <div class="champ-stats-row">
-                <div class="champ-stat-box" style="border-color: rgba(245, 158, 11, 0.35);">
-                  <div style="font-size: 0.68rem; color: var(--text-dim);">누적 획득 경험치</div>
-                  <div style="font-size: 1.15rem; font-weight: 900; color: var(--accent-gold); white-space: nowrap;">
-                    ${p1.xp.toLocaleString()} <span style="font-size: 0.76rem; font-weight: 700;">XP</span>
-                  </div>
+              <div class="champ-identity-col">
+                <div class="champ-badge-line">
+                  <span class="champ-crown-tag">🥇 1위 • 시즌 챔피언</span>
+                  ${p1.isMe ? '<span class="rank-me-tag">나 (MY RANK)</span>' : ''}
                 </div>
-                <div class="champ-stat-box" style="border-color: rgba(59, 130, 246, 0.35); background: rgba(59, 130, 246, 0.08);">
-                  <div style="font-size: 0.68rem; color: var(--text-muted);">현재 레벨</div>
-                  <div style="font-size: 1.1rem; font-weight: 900; color: var(--accent-blue-title);">Lv.${p1.level}</div>
-                </div>
-                <div class="champ-stat-box col-hide-mobile" style="border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.08);">
-                  <div style="font-size: 0.68rem; color: var(--text-muted);">마스터 기록</div>
-                  <div style="font-size: 0.88rem; font-weight: 800; color: #10b981;">📖 ${p1.articles}편 • 🎯 ${p1.quizzes}개</div>
+                <div class="champ-name-line">
+                  <strong class="champ-player-name">${p1.name}</strong>
+                  ${p1.kakao_nickname ? `<span class="rank-kakao-tag" title="카카오톡 단톡방 닉네임">💬 ${p1.kakao_nickname}</span>` : ''}
+                  <span class="rank-badge ${p1.badgeClass}">${p1.tierBadge}</span>
                 </div>
               </div>
             </div>
 
-            <!-- Row 2: Play Style & Representative Title & Recognition -->
-            <div class="champ-mid-row">
-              <span class="champ-style-pill" title="1위 챔피언의 플레이 스타일">
-                ⚡ ${p1.style} 플레이 스타일
-              </span>
-              <span class="champ-title-pill-equipped" title="1위 챔피언이 장착 중인 대표 칭호">
-                🎖️ 대표칭호: ${equippedTitle}
-              </span>
-              <span style="font-size: 0.74rem; color: var(--text-dim); margin-left: auto;" class="col-hide-mobile">
-                👑 시즌 최고 득점 챔피언
-              </span>
+            <!-- 2. 3-Column Stats Grid (100% 꽉 찬 균등 그리드: 공백 완벽 제거!) -->
+            <div class="champ-stats-grid">
+              <div class="champ-stat-card">
+                <div class="champ-stat-label">누적 획득 경험치</div>
+                <div class="champ-stat-value gold">${p1.xp.toLocaleString()} <span style="font-size:0.7rem;">XP</span></div>
+              </div>
+              <div class="champ-stat-card">
+                <div class="champ-stat-label">현재 레벨</div>
+                <div class="champ-stat-value blue">Lv.${p1.level}</div>
+              </div>
+              <div class="champ-stat-card">
+                <div class="champ-stat-label">플레이 스타일</div>
+                <div class="champ-stat-value cyan">⚡ ${p1.style}</div>
+              </div>
             </div>
 
-            <!-- Row 3: Collected Titles Showcase (모은 칭호들) -->
-            <div class="champ-bottom-row">
+            <!-- 3. Representative Title Bar (가로 100% 꽉 채우는 대표칭호 영역) -->
+            <div class="champ-rep-title-bar" ${p1.isMe ? 'onclick="titleManager.openModal()"' : ''} title="${p1.isMe ? '대표 칭호 도감 열기 (클릭)' : '1위 챔피언의 대표 칭호'}">
+              <span class="champ-rep-label">🎖️ 대표칭호 :</span>
+              <strong class="champ-rep-text">${equippedTitle}</strong>
+            </div>
+
+            <!-- 4. Collected Titles Showcase (뱃지들만 놓고 클릭 시 정보 표기!) -->
+            <div class="champ-titles-section">
               <div class="champ-titles-header">
-                <span>🏅 챔피언 보유 칭호 (${unlockedTitles.length}개)</span>
-                ${p1.isMe ? '<span style="font-size: 0.68rem; color: var(--text-dim); font-weight: normal; margin-left: auto;">(클릭하여 대표 칭호 즉시 교체)</span>' : ''}
+                <span class="champ-titles-label">🏅 챔피언 보유 칭호 (${unlockedTitles.length}개)</span>
+                <span class="champ-titles-hint">${p1.isMe ? '(뱃지 클릭 시 즉시 대표 칭호 교체)' : '(뱃지 클릭 시 칭호 정보 확인)'}</span>
               </div>
-              <div class="champ-titles-flow">
+              <div class="champ-mini-badges-row">
                 ${titlesHtml || '<span style="font-size: 0.75rem; color: var(--text-dim);">보유 칭호가 없습니다.</span>'}
               </div>
             </div>
