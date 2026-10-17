@@ -171,8 +171,8 @@ def process_all_articles():
             img_srcs = re.findall(r'<img[^>]+src=[\'"]([^\'"]+)[\'"]', body)
             chart_htmls = [
                 f'<div class="article-chart-wrapper" style="margin: 1.75rem 0; text-align: center;">\n'
-                f'  <img src="{src}" alt="{heading_text} 차트" style="max-width: 100%; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 4px 16px rgba(0,0,0,0.3);" loading="lazy">\n'
-                f'  <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.5rem; font-weight: 600;">📊 {heading_text} - GTO Wizard 솔버 시뮬레이션</div>\n'
+                f'  <img src="{src}" alt="{heading_text} 솔버 분석" style="max-width: 100%; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 4px 16px rgba(0,0,0,0.3);" loading="lazy">\n'
+                f'  <div class="article-chart-caption" style="font-size: 0.84rem; color: var(--text-muted); margin-top: 0.55rem; font-weight: 600; line-height: 1.45; word-break: keep-all;">📊 {heading_text} 솔버 분석</div>\n'
                 f'</div>'
                 for src in img_srcs
             ]
