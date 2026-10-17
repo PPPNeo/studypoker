@@ -1772,15 +1772,19 @@ body.theme-light .korean-summary-box ul li {
   color: #fbbf24;
   font-size: 0.78rem;
   font-weight: 800;
-  padding: 3px 9px;
-  border-radius: 6px;
+  padding: 0 10px;
+  height: 28px;
+  min-height: 28px;
+  border-radius: 14px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
+  justify-content: center;
+  gap: 0.3rem;
   transition: all 0.2s ease;
   white-space: nowrap;
   word-break: keep-all;
+  box-sizing: border-box;
 }
 .char-title-pill:hover {
   transform: translateY(-1px);
@@ -1801,20 +1805,24 @@ body.theme-light .char-title-pill {
 }
 
 .char-my-titles-label {
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   font-weight: 800;
   color: var(--text-muted);
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
-  padding: 2px 7px;
-  border-radius: 6px;
+  padding: 0 8px;
+  height: 28px;
+  min-height: 28px;
+  border-radius: 14px;
   white-space: nowrap;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.25rem;
   cursor: pointer;
   transition: all 0.2s ease;
   user-select: none;
+  box-sizing: border-box;
 }
 .char-my-titles-label:hover {
   border-color: #f59e0b;
@@ -1940,15 +1948,26 @@ body.theme-light .mini-title-badge.equipped {
 .char-style-tag {
   font-size: 0.78rem;
   font-weight: 800;
-  padding: 3px 9px;
-  border-radius: 12px;
+  padding: 0 10px;
+  height: 28px;
+  min-height: 28px;
+  box-sizing: border-box;
+  border-radius: 14px;
   background: rgba(168, 85, 247, 0.12);
   color: #7e22ce;
   border: 1px solid rgba(168, 85, 247, 0.4);
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.25rem;
   white-space: nowrap;
+  line-height: normal;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.char-style-tag:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
 }
 body:not(.theme-light) .char-style-tag {
   background: rgba(168, 85, 247, 0.2);
@@ -1959,15 +1978,26 @@ body:not(.theme-light) .char-style-tag {
 .char-tier-badge {
   font-size: 0.8rem;
   font-weight: 800;
-  padding: 3px 9px;
-  border-radius: 12px;
+  padding: 0 10px;
+  height: 28px;
+  min-height: 28px;
+  box-sizing: border-box;
+  border-radius: 14px;
   background: rgba(14, 165, 233, 0.12);
   color: #0369a1;
   border: 1.5px solid #0284c7;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.3rem;
   white-space: nowrap;
+  line-height: normal;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.char-tier-badge:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
 }
 body:not(.theme-light) .char-tier-badge {
   background: rgba(14, 165, 233, 0.2);
@@ -1978,18 +2008,23 @@ body:not(.theme-light) .char-tier-badge {
 .char-rank-badge {
   font-size: 0.8rem;
   font-weight: 800;
-  padding: 3px 9px;
-  border-radius: 12px;
+  padding: 0 10px;
+  height: 28px;
+  min-height: 28px;
+  box-sizing: border-box;
+  border-radius: 14px;
   background: linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(217, 119, 6, 0.24));
   border: 1.5px solid #f59e0b;
   color: #92400e;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.3rem;
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 2px 6px rgba(245, 158, 11, 0.2);
   white-space: nowrap;
+  line-height: normal;
 }
 .char-rank-badge:hover {
   transform: translateY(-1px);
@@ -2004,14 +2039,25 @@ body:not(.theme-light) .char-rank-badge {
   background: rgba(250, 204, 21, 0.16);
   color: #854d0e;
   border: 1px solid rgba(234, 179, 8, 0.5);
-  padding: 2px 8px;
+  padding: 0 8px;
+  height: 24px;
+  min-height: 24px;
+  box-sizing: border-box;
   border-radius: 12px;
   font-size: 0.75rem;
   font-weight: 800;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.25rem;
   white-space: nowrap;
+  line-height: normal;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.char-kakao-tag:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
 }
 body:not(.theme-light) .char-kakao-tag {
   background: rgba(250, 204, 21, 0.12);
@@ -2068,24 +2114,36 @@ body:not(.theme-light) .char-kakao-tag {
   background: linear-gradient(135deg, #059669, #047857) !important;
   color: #ffffff !important;
   border: 1px solid #065f46 !important;
-  padding: 3px 9px;
-  border-radius: 12px;
-  font-size: 0.76rem;
+  padding: 0 10px;
+  height: 28px;
+  min-height: 28px;
+  box-sizing: border-box;
+  border-radius: 14px;
+  font-size: 0.78rem;
   font-weight: 800;
+  font-family: inherit;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
+  justify-content: center;
+  gap: 0.3rem;
   box-shadow: 0 2px 6px rgba(5, 150, 105, 0.3);
   transition: all 0.2s ease;
   white-space: nowrap;
-  line-height: 1.25;
+  line-height: normal;
+  vertical-align: middle;
 }
 .btn-character-stats:hover,
 .btn-character-stats.active {
   filter: brightness(1.1);
   transform: translateY(-1px);
   box-shadow: 0 4px 10px rgba(5, 150, 105, 0.4);
+}
+#stats-toggle-arrow {
+  font-size: 0.65rem;
+  margin-left: 2px;
+  display: inline-block;
+  line-height: 1;
 }
 
 .btn-character-coach {
