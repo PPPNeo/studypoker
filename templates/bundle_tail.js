@@ -4768,15 +4768,15 @@ var rankingManager = window.rankingManager = {
               </div>
             </td>
             <td style="padding: 0.65rem 0.85rem;">
-              <div style="display: flex; align-items: center; gap: 0.55rem;">
-                <span style="font-size: 1.45rem; flex-shrink: 0; line-height: 1; ${p.isMe ? 'filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.6));' : ''}">${p.avatar}</span>
-                <div style="min-width: 0;">
-                  <div class="rank-player-row">
-                    <strong class="rank-player-name">${p.name}</strong>
-                    ${p.kakao_nickname ? `<span class="rank-kakao-tag" title="카카오톡 단톡방 닉네임">💬 ${p.kakao_nickname}</span>` : ''}
-                    ${p.isMe ? '<span class="rank-me-tag">나</span>' : ''}
-                  </div>
-                  <div class="rank-player-sub">${p.style} 스타일</div>
+              <div style="display: flex; flex-direction: column; gap: 0.25rem; min-width: 0;">
+                <div class="rank-player-row">
+                  <span style="font-size: 1.25rem; flex-shrink: 0; line-height: 1; ${p.isMe ? 'filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.6));' : ''}">${p.avatar}</span>
+                  <strong class="rank-player-name">${p.name}</strong>
+                  ${p.isMe ? '<span class="rank-me-tag">나</span>' : ''}
+                </div>
+                <div class="rank-player-sub-row">
+                  ${p.kakao_nickname ? `<span class="rank-kakao-tag" title="카카오톡 단톡방 닉네임">💬 ${p.kakao_nickname}</span>` : ''}
+                  <span class="rank-player-sub">${p.style} 스타일</span>
                 </div>
               </div>
             </td>

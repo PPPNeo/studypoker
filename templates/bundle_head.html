@@ -4071,13 +4071,19 @@ body.theme-light .ranking-row-me:hover td {
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  flex-wrap: wrap;
+  line-height: 1.25;
 }
 .rank-player-name {
   color: var(--text-main);
   font-size: 0.93rem;
   font-weight: 800;
   word-break: keep-all;
+}
+.rank-player-sub-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  line-height: 1.2;
 }
 .rank-kakao-tag {
   font-size: 0.72rem;
@@ -4112,8 +4118,8 @@ body:not(.theme-light) .rank-kakao-tag {
 .rank-player-sub {
   font-size: 0.73rem;
   color: var(--text-dim);
-  margin-top: 1px;
   word-break: keep-all;
+  white-space: nowrap;
 }
 @keyframes pulseMe {
   0% { transform: scale(1); }
