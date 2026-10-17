@@ -2214,23 +2214,95 @@ const reader = {
 
     const q = relatedQuizzes[0];
     quizContainer.style.display = 'block';
+
+    const boardCardsHtml = (q.board && q.board.length > 0)
+      ? q.board.map(c => this.createCardHtml(c)).join('')
+      : '<div style="color: #94a3b8; font-size: 0.9rem; font-style: italic; padding: 0.5rem 0;">[Preflop - 프리플랍 단계 (보드 카드 없음)]</div>';
+
+    const heroCardsHtml = (q.hero_hand && q.hero_hand.length > 0)
+      ? q.hero_hand.map(c => this.createCardHtml(c)).join('')
+      : '';
+
     quizContainer.innerHTML = `
-      <div style="background: var(--bg-surface); border: 1px solid #3b82f6; border-radius: 12px; padding: 1.5rem;">
-        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-          <span style="font-size: 1.3rem;">🎯</span>
-          <h3 style="font-size: 1.15rem; font-weight: 800; color: #93c5fd;">아티클 체크업 퀴즈</h3>
+      <div style="background: var(--bg-surface); border: 1.5px solid #3b82f6; border-radius: 14px; padding: 1.5rem; box-shadow: 0 8px 24px rgba(0,0,0,0.15);">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 1.3rem;">🎯</span>
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: #93c5fd;">아티클 체크업 퀴즈</h3>
+          </div>
+          <span style="font-size: 0.85rem; font-weight: 700; background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid #3b82f6; border-radius: 20px; padding: 2px 10px;">
+            ${q.level || 'Checkup'}
+          </span>
         </div>
-        <p style="font-size: 0.95rem; margin-bottom: 1rem; color: var(--text-main);">${q.situation}</p>
-        <div style="font-size: 1.05rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-main);">${q.question}</div>
+
+        <!-- 미니 포커 테이블 (보드 & 핸드 & 팟/포지션 정보) -->
+        <div class="reader-quiz-felt">
+          <div class="reader-quiz-meta">
+            <span class="reader-quiz-badge pot">🪙 POT: ${q.pot || 'N/A'}</span>
+            <span class="reader-quiz-badge hero">👤 HERO: ${q.hero_position || 'Hero'}</span>
+            <span class="reader-quiz-badge matchup">⚔️ 상대: ${q.villain_position || 'Villain'}</span>
+            <span class="reader-quiz-badge">📊 유효스택: ${q.effective_stack || '100 BB'}</span>
+          </div>
+
+          <!-- 커뮤니티 보드 카드 -->
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 0.4rem; width: 100%;">
+            <span style="font-size: 0.78rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em;">Community Board</span>
+            <div class="reader-cards-row">${boardCardsHtml}</div>
+          </div>
+
+          <!-- 히어로 핸드 -->
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 0.4rem; width: 100%;">
+            <span style="font-size: 0.78rem; font-weight: 700; color: #6ee7b7; text-transform: uppercase; letter-spacing: 0.05em;">Hero Hand (${q.hero_position || 'Hero'})</span>
+            <div class="reader-cards-row">${heroCardsHtml}</div>
+          </div>
+        </div>
+
+        ${q.action_history ? `
+          <div class="quiz-action-history">
+            <span style="font-size: 1.1rem;">📜</span>
+            <div><strong>액션 진행:</strong> ${q.action_history}</div>
+          </div>
+        ` : ''}
+
+        <div class="quiz-situation">${q.situation}</div>
+        <div class="quiz-question">${q.question}</div>
         
         <div class="quiz-options-grid" id="embedded-quiz-options">
           ${q.options.map((opt, i) => `
             <button class="quiz-opt-btn" onclick="reader.handleEmbeddedAnswer('${q.id}', ${i})">
               <span>${opt.label}</span>
+              <span style="font-size: 0.85rem; color: var(--text-dim); font-weight: 500;">선택</span>
             </button>
           `).join('')}
         </div>
-        <div id="embedded-quiz-feedback" style="display: none; margin-top: 1rem; padding: 1rem; background: var(--bg-surface); border-radius: 8px;"></div>
+        <div id="embedded-quiz-feedback" style="display: none; margin-top: 1.25rem; padding: 1.25rem; background: var(--bg-card); border: 1px solid #3b82f6; border-radius: 10px;"></div>
+      </div>
+    `;
+  },
+
+  createCardHtml(cardStr) {
+    if (!cardStr) return '';
+    const rank = cardStr.slice(0, -1);
+    const suit = cardStr.slice(-1);
+    
+    let suitClass = 'card-suit-spade';
+    if (suit === '♥' || suit === '♦') {
+      suitClass = (suit === '♥') ? 'card-suit-heart' : 'card-suit-diamond';
+    } else if (suit === '♣') {
+      suitClass = 'card-suit-club';
+    }
+
+    return `
+      <div class="poker-card ${suitClass}">
+        <div class="card-top">
+          <span class="card-rank">${rank}</span>
+          <span style="font-size: 0.8rem;">${suit}</span>
+        </div>
+        <div class="card-center-suit">${suit}</div>
+        <div class="card-bottom">
+          <span class="card-rank">${rank}</span>
+          <span style="font-size: 0.8rem;">${suit}</span>
+        </div>
       </div>
     `;
   },
@@ -2499,6 +2571,16 @@ const trainer = {
 
     document.getElementById('trainer-hero-label').innerText = 
       `HERO (${q.hero_position}) • Effective Stack: ${q.effective_stack}`;
+
+    const actionHistEl = document.getElementById('trainer-action-history');
+    if (actionHistEl) {
+      if (q.action_history) {
+        actionHistEl.style.display = 'flex';
+        actionHistEl.innerHTML = `<span style="font-size: 1.1rem;">📜</span> <div><strong>액션 진행:</strong> ${q.action_history}</div>`;
+      } else {
+        actionHistEl.style.display = 'none';
+      }
+    }
 
     document.getElementById('trainer-situation-desc').innerText = q.situation;
 

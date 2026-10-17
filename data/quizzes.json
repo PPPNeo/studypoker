@@ -5,7 +5,7 @@
     "title": "미시시피 스트래들 게임: 림퍼를 응징하는 아이솔레이션",
     "category": "캐시/스트래들",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
-    "situation": "스트래들+앤티 게임. 앞에서 2명이 림프했습니다. 당신은 BTN입니다.",
+    "situation": "스트래들+앤티(2bb) 캐시 게임. MP와 CO 2명이 2bb로 연속 림프했습니다. 당신은 BTN에서 A♠ J♠ 프리미엄 수티드 브로드웨이를 쥐고 있습니다. (팟: 7.5 BB)",
     "street": "Preflop",
     "pot": "6.5 BB",
     "effective_stack": "150 BB",
@@ -16,8 +16,8 @@
       "J♠"
     ],
     "board": [],
-    "action_history": "스트래들 2bb ➔ MP 림프 2bb ➔ CO 림프 2bb ➔ BTN 차례.",
-    "question": "데드 머니가 팟에 가득합니다. 당신의 프리플랍 액션은?",
+    "action_history": "Preflop: 스트래들 2bb ➔ MP 림프 2bb ➔ CO 림프 2bb ➔ BTN 차례.",
+    "question": "팟에 림퍼들의 데드 머니가 많이 쌓여 있습니다. BTN에서 A♠J♠를 쥔 당신의 최적 프리플랍 액션은?",
     "options": [
       {
         "label": "같이 2bb 오버림프 (Overlimp)",
@@ -50,7 +50,7 @@
     "title": "로우 커넥티드 보드에서의 첵-콜 vs 폴드",
     "category": "플랍 전략",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
-    "situation": "당신은 BB에서 88로 UTG의 오픈을 콜했습니다. 플랍은 6-5-4입니다.",
+    "situation": "당신은 BB에서 8♥ 8♦로 UTG의 2.5bb 오픈 레이즈에 콜했습니다. 플랍에 6♠ 5♦ 4♣ (로우 커넥티드 보드)가 깔렸고, 당신의 체크에 UTG가 33% 팟(1.8bb) C-bet을 베팅했습니다. (팟: 7.3 BB)",
     "street": "Flop",
     "pot": "5.5 BB",
     "effective_stack": "97.5 BB",
@@ -65,8 +65,8 @@
       "5♦",
       "4♣"
     ],
-    "action_history": "Preflop: UTG 오픈 2.5bb ➔ BB 콜. Flop: 6♠ 5♦ 4♣. BB 체크 ➔ UTG 33% 벳.",
-    "question": "오버페어와 거트샷 드로우가 있습니다. UTG 벳에 대한 올바른 대응은?",
+    "action_history": "Preflop: UTG 오픈 2.5bb ➔ BB 콜. Flop (6♠ 5♦ 4♣): BB 체크 ➔ UTG 33% 팟 벳(1.8bb).",
+    "question": "오버페어(88)와 거트샷 스트레이트 드로우를 보유하고 있습니다. 로우 커넥티드 플랍에서 UTG의 33% 팟 C-bet에 대한 올바른 대응은?",
     "options": [
       {
         "label": "폴드 (Fold)",
@@ -99,7 +99,7 @@
     "title": "스퀴즈(Squeeze) 스팟: 루즈한 오픈과 콜 응징",
     "category": "3벳 팟",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
-    "situation": "CO가 2.5bb로 오픈하고 BTN이 콜했습니다. 당신은 BB에서 AKs를 받았습니다.",
+    "situation": "유효스택 100bb 게임. CO가 2.5bb로 오픈하고 BTN이 2.5bb 플랫 콜을 했습니다. 당신은 BB에서 프리미엄 몬스터 A♠ K♠를 받았습니다. (팟: 6.5 BB)",
     "street": "Preflop",
     "pot": "6.5 BB",
     "effective_stack": "100 BB",
@@ -110,8 +110,8 @@
       "K♠"
     ],
     "board": [],
-    "action_history": "CO 오픈 2.5bb ➔ BTN 콜 2.5bb ➔ BB 차례.",
-    "question": "블라인드에서 스퀴즈 찬스입니다. 권장 사이징은?",
+    "action_history": "Preflop: CO 오픈 2.5bb ➔ BTN 콜 2.5bb ➔ SB 폴드 ➔ BB 차례.",
+    "question": "블라인드에서 데드 머니를 적극적으로 회수하고 포지션 불리함을 상쇄해야 합니다. BB에서 A♠K♠ 스퀴즈 3벳의 권장 사이징은?",
     "options": [
       {
         "label": "단순 콜 (Call 1.5 BB)",
@@ -144,7 +144,7 @@
     "title": "토너먼트 15bb 숏스택에서의 리스틸(Resteal) 셔브",
     "category": "토너먼트/ICM",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
-    "situation": "토너먼트 중반. 당신은 BB에 15bb 스택이 있고, CO가 2.2bb로 오픈했습니다.",
+    "situation": "토너먼트 중반. 15bb 숏스택인 당신은 BB에 위치해 있으며, CO가 2.2bb로 오픈 레이즈하고 SB는 폴드했습니다. 당신의 손패는 휠 에이스 블로커를 가진 A♥ 5♥입니다. (팟: 3.7 BB)",
     "street": "Preflop",
     "pot": "3.7 BB",
     "effective_stack": "15 BB",
@@ -155,8 +155,8 @@
       "5♥"
     ],
     "board": [],
-    "action_history": "CO 오픈 2.2bb ➔ SB 폴드 ➔ BB 차례.",
-    "question": "A5 수티드입니다. 15bb 스택으로 어떻게 플레이해야 할까요?",
+    "action_history": "Preflop: CO 오픈 2.2bb ➔ BTN/SB 폴드 ➔ BB 차례.",
+    "question": "A5 수티드로 15bb 숏스택 국면입니다. CO의 2.2bb 오픈을 상대로 가장 높은 기댓값(+EV)을 창출하는 액션은?",
     "options": [
       {
         "label": "단순 콜 (Call 1.2 BB)",
@@ -189,7 +189,7 @@
     "title": "페어드 보드(Paired Board)에서의 1/4팟 극소형 벳",
     "category": "플랍 전략",
     "level": "[입문] 동네 피쉬 (Lv.1~9)",
-    "situation": "CO vs BB 싱글 레이즈드 팟. 플랍에 잭 페어가 깔렸습니다.",
+    "situation": "당신은 CO에서 A♥ K♠로 2.5bb 오픈했고 BB가 콜했습니다. 플랍에 J♦ J♣ 4♠ (페어드 드라이 보드)가 깔렸고, BB가 체크했습니다. (팟: 5.5 BB)",
     "street": "Flop",
     "pot": "5.5 BB",
     "effective_stack": "97.5 BB",
@@ -204,8 +204,8 @@
       "J♣",
       "4♠"
     ],
-    "action_history": "Preflop: CO 오픈 2.5bb ➔ BB 콜. Flop: J♦ J♣ 4♠. BB 체크.",
-    "question": "미스된 AK 하이입니다. 페어드 보드에서 BB의 체크를 상대로 어떻게 해야 할까요?",
+    "action_history": "Preflop: CO 오픈 2.5bb ➔ BB 콜. Flop (J♦ J♣ 4♠): BB 체크 ➔ CO 차례.",
+    "question": "보드를 미스한 A-K 하이지만, 페어드 보드에서 공격자 레인지 우위가 압도적입니다. BB 체크에 대한 CO의 올바른 플랍 C-bet 사이징은?",
     "options": [
       {
         "label": "체크 백 (Check)",
@@ -238,7 +238,7 @@
     "title": "3벳 팟 플랍 C-bet 사이징: A-하이 보드",
     "category": "플랍 전략",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
-    "situation": "당신은 BTN에서 CO의 2.5bb 오픈에 7.5bb로 3벳했고, CO가 콜했습니다. (헤즈업)",
+    "situation": "당신은 BTN에서 K♠ K♦로 CO의 2.5bb 오픈에 7.5bb로 3벳했고 CO가 콜했습니다. 플랍에 A♣ 8♦ 3♠ (A-하이 드라이 보드)가 깔렸고 CO가 체크했습니다. (팟: 16.5 BB)",
     "street": "Flop",
     "pot": "16.5 BB",
     "effective_stack": "92.5 BB",
@@ -253,8 +253,8 @@
       "8♦",
       "3♠"
     ],
-    "action_history": "Preflop: CO 오픈 2.5bb ➔ BTN 3-bet 7.5bb ➔ CO 콜. Flop: A♣ 8♦ 3♠. CO 체크.",
-    "question": "CO의 체크를 받았습니다. BTN인 당신의 GTO 최선의 액션은?",
+    "action_history": "Preflop: CO 오픈 2.5bb ➔ BTN 3벳 7.5bb ➔ CO 콜. Flop (A♣ 8♦ 3♠): CO 체크 ➔ BTN 차례.",
+    "question": "3벳 팟에서 A가 보드에 깔린 상태로 K-K 세컨페어를 쥐고 있습니다. CO의 체크에 대한 BTN의 GTO 솔버 권장 액션은?",
     "options": [
       {
         "label": "체크 백 (Check)",
@@ -293,7 +293,7 @@
     "title": "BvB (블라인드 vs 블라인드) SB의 림프-레이즈 전략",
     "category": "GTO 전략",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
-    "situation": "SB vs BB 헤즈업. SB에서 1bb 림프를 댔더니 BB가 3.5bb로 아이솔레이션 레이즈를 쳤습니다.",
+    "situation": "스택 100bb BvB(블라인드 대 블라인드) 상황. 당신은 SB에서 최강 몬스터 A♠ A♦를 들고 1bb 림프로 슬로우플레이 트랩을 놓았고, 어그레시브한 BB가 3.5bb로 아이솔레이션 레이즈를 쳤습니다. (팟: 4.5 BB)",
     "street": "Preflop",
     "pot": "4.5 BB",
     "effective_stack": "99 BB",
@@ -304,8 +304,8 @@
       "A♦"
     ],
     "board": [],
-    "action_history": "SB 림프 1bb ➔ BB 레이즈 3.5bb.",
-    "question": "AA를 들고 슬로우플레이 중이었습니다. BB의 레이즈에 당신의 반응은?",
+    "action_history": "Preflop: SB 1bb 림프 ➔ BB 3.5bb 아이솔레이션 레이즈 ➔ SB 차례.",
+    "question": "AA 트랩이 완벽히 적중했습니다. BB의 3.5bb 레이즈에 직면한 SB의 다음 최적 행동은?",
     "options": [
       {
         "label": "콜하고 플랍을 본다 (Trap Call)",
@@ -338,7 +338,7 @@
     "title": "웻 보드에서의 프로텍션 벳: 진정한 목적은?",
     "category": "플랍 전략",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
-    "situation": "BTN vs BB 싱글 레이즈드 팟. 웻(Wet)하고 다이내믹한 플랍입니다.",
+    "situation": "당신은 BTN에서 J♠ J♥로 2.5bb 오픈 레이즈했고 BB가 콜했습니다. 플랍에 T♠ 9♦ 4♣ (웻하고 다이내믹한 커넥티드 보드)가 깔렸고 BB가 체크했습니다. (팟: 5.5 BB)",
     "street": "Flop",
     "pot": "5.5 BB",
     "effective_stack": "97 BB",
@@ -353,8 +353,8 @@
       "9♦",
       "4♣"
     ],
-    "action_history": "Preflop: BTN 오픈 2.5bb ➔ BB 콜. Flop: T♠ 9♦ 4♣. BB 체크.",
-    "question": "오버페어를 쥐고 있지만 보드에 스트레이트 드로우가 가득합니다. 당신의 선택은?",
+    "action_history": "Preflop: BTN 오픈 2.5bb ➔ BB 콜. Flop (T♠ 9♦ 4♣): BB 체크 ➔ BTN 차례.",
+    "question": "오버페어(JJ)를 쥐고 있지만 보드에 수많은 스트레이트 드로우가 열려 있습니다. 에퀴티 보호(Protection)를 위한 BB 체크 상대 최적 C-bet 사이징은?",
     "options": [
       {
         "label": "체크 백하고 턴 카드를 본다 (Pot Control)",
@@ -387,7 +387,7 @@
     "title": "모노톤 플랍에서의 C-bet: 플러시 완성 보드",
     "category": "플랍 전략",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
-    "situation": "당신은 BTN에서 오픈했고, BB가 콜했습니다. 플랍에 스페이드 3장이 깔렸습니다.",
+    "situation": "당신은 BTN에서 2.5bb로 오픈하고 BB가 콜했습니다. 플랍에 K♠ 8♠ 3♠ (모노톤 플러시 완성 보드)가 깔렸고 BB가 체크했습니다. 당신의 손패는 A♠ Q♦ (A스페이드 넛 플러시 드로우 + 오버카드)입니다. (팟: 5.5 BB)",
     "street": "Flop",
     "pot": "5.5 BB",
     "effective_stack": "97.5 BB",
@@ -402,8 +402,8 @@
       "8♠",
       "3♠"
     ],
-    "action_history": "Preflop: BTN 오픈 2.5bb ➔ BB 콜. Flop: K♠ 8♠ 3♠. BB 체크.",
-    "question": "너트 플러시 드로우와 오버카드를 가졌습니다. BTN인 당신의 최적 액션은?",
+    "action_history": "Preflop: BTN 오픈 2.5bb ➔ BB 콜. Flop (K♠ 8♠ 3♠): BB 체크 ➔ BTN 차례.",
+    "question": "보드 전체가 플러시로 연결된 모노톤 플랍입니다. 넛 플러시 블로커(A♠)를 보유한 BTN의 올바른 플랍 액션은?",
     "options": [
       {
         "label": "체크 백 (Check behind)",
@@ -436,7 +436,7 @@
     "title": "BB 방어 후 플랍 첵-레이즈 블러프 핸드 선정",
     "category": "플랍 전략",
     "level": "[1차 전직] 펍 레귤러 (Lv.10~24)",
-    "situation": "당신은 BB에서 BTN의 2.5bb 오픈을 96s로 방어했습니다.",
+    "situation": "당신은 BB에서 9♠ 6♠로 BTN의 2.5bb 오픈을 방어 콜했습니다. 플랍에 8♠ 7♦ 2♣가 깔렸고, 당신의 체크에 BTN이 33% 팟(1.8bb) C-bet을 베팅했습니다. (팟: 7.3 BB)",
     "street": "Flop",
     "pot": "5.5 BB",
     "effective_stack": "97.5 BB",
@@ -451,8 +451,8 @@
       "7♦",
       "2♣"
     ],
-    "action_history": "Preflop: BTN 오픈 2.5bb ➔ BB 콜. Flop: 8♠ 7♦ 2♣. BB 체크 ➔ BTN 33% C-bet(1.8bb).",
-    "question": "양차(OESD) + 백도어 플러시 드로우입니다. 당신의 최선의 액션은?",
+    "action_history": "Preflop: BTN 오픈 2.5bb ➔ BB 콜. Flop (8♠ 7♦ 2♣): BB 체크 ➔ BTN 33% 벳(1.8bb) ➔ BB 차례.",
+    "question": "양차 스트레이트 드로우(OESD)와 백도어 플러시 드로우를 쥐고 있습니다. BTN의 33% C-bet에 대한 BB의 최선의 세미 블러프 액션은?",
     "options": [
       {
         "label": "단순 콜 (Call 1.8 BB)",
@@ -485,7 +485,7 @@
     "title": "턴 카드가 페어되었을 때의 첵백 팟 컨트롤",
     "category": "턴/리버",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
-    "situation": "플랍에 A탑페어를 맞추고 벳했으나, 턴에 A가 한 장 더 떨어졌습니다.",
+    "situation": "당신은 BTN에서 A♦ T♠로 오픈했고 BB가 콜했습니다. A♠ Q♦ 6♣ 플랍에서 당신의 33% C-bet에 BB가 콜했습니다. 턴에 A♥가 떨어져 트립스가 완성되었고, BB가 체크했습니다. (팟: 11.5 BB)",
     "street": "Turn",
     "pot": "11.5 BB",
     "effective_stack": "90 BB",
@@ -501,8 +501,8 @@
       "6♣",
       "A♥"
     ],
-    "action_history": "Flop: A♠ Q♦ 6♣. BTN 33% 벳 ➔ BB 콜. Turn: A♥. BB 체크.",
-    "question": "트립스를 맞췄습니다. 턴에서 계속 베팅해야 할까요?",
+    "action_history": "Flop (A♠ Q♦ 6♣): BTN 33% 벳 ➔ BB 콜. Turn (A♥): BB 체크 ➔ BTN 차례.",
+    "question": "A 세 장 트립스를 맞췄으나 턴 카드로 인해 상대의 컨티뉴 레인지가 심하게 캡되었습니다. BB 체크에 대한 BTN의 올바른 턴 액션은?",
     "options": [
       {
         "label": "체크 백 (Check behind)",
@@ -535,7 +535,7 @@
     "title": "4벳 팟에서의 숏 SPR 올인 커밋",
     "category": "3벳 팟",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
-    "situation": "4벳 팟. 플랍에 팟이 45bb이고 유효 스택은 55bb(SPR 1.2)입니다.",
+    "situation": "4벳 팟. BTN이 3벳하자 당신은 SB에서 A♠ A♣로 22bb 4벳을 감행했고 BTN이 콜했습니다. 플랍에 Q♠ 7♦ 2♣ (드라이 보드)가 깔렸고, 현재 팟은 45bb, 남은 유효 스택은 55bb(SPR 1.2)입니다.",
     "street": "Flop",
     "pot": "45 BB",
     "effective_stack": "55 BB",
@@ -550,8 +550,8 @@
       "7♦",
       "2♣"
     ],
-    "action_history": "BTN 3벳 ➔ SB 4벳 22bb ➔ BTN 콜. Flop: Q♠ 7♦ 2♣.",
-    "question": "스택 대비 팟 비율(SPR)이 1.2로 매우 낮습니다. 당신의 플랍 액션은?",
+    "action_history": "Preflop: BTN 3벳 ➔ SB 4벳 22bb ➔ BTN 콜. Flop (Q♠ 7♦ 2♣): SB 차례 (팟 45bb, 잔여스택 55bb).",
+    "question": "오버페어(AA)를 쥐고 있고 스택 대비 팟 비율(SPR)이 1.2로 매우 낮아 팟 커밋 상태입니다. 아웃포지션(OOP) SB의 플랍 최적 액션은?",
     "options": [
       {
         "label": "체크-트랩 (Check to Trap)",
@@ -584,7 +584,7 @@
     "title": "턴 프로브 벳(Probe Bet): 상대가 플랍을 첵백했을 때",
     "category": "턴/리버",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
-    "situation": "BTN이 유리한 K-하이 플랍에서 C-bet을 치지 않고 첵백했습니다. 턴 카드가 떨어졌습니다.",
+    "situation": "당신은 BB에서 8♠ 8♥로 BTN의 2.5bb 오픈을 콜했습니다. K♠ 9♦ 4♣ 플랍에서 당신이 체크하자 BTN이 C-bet을 치지 않고 첵백했습니다. 턴에 3♥ 블랭크 카드가 떨어졌습니다. (팟: 5.5 BB)",
     "street": "Turn",
     "pot": "5.5 BB",
     "effective_stack": "95 BB",
@@ -600,8 +600,8 @@
       "4♣",
       "3♥"
     ],
-    "action_history": "Flop: K♠ 9♦ 4♣. BB 체크 ➔ BTN 첵백. Turn: 3♥. BB 차례.",
-    "question": "BTN의 레인지는 캡되었습니다. 88을 쥔 BB의 올바른 액션은?",
+    "action_history": "Flop (K♠ 9♦ 4♣): BB 체크 ➔ BTN 첵백. Turn (3♥): BB 차례.",
+    "question": "BTN이 유리한 K-하이 플랍에서 C-bet을 포기하여 레인지가 캡(Capped)되었습니다. 88을 쥔 BB의 턴 프로브 벳(Probe Bet) 액션은?",
     "options": [
       {
         "label": "다시 체크 (Check)",
@@ -628,7 +628,7 @@
     "title": "OOP에서의 에퀴티 실현(EQR)과 첵-콜",
     "category": "레인지 수학",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
-    "situation": "당신은 BB에서 BTN의 오픈에 K9 수티드로 콜했습니다.",
+    "situation": "당신은 BB에서 K♥ 9♥로 BTN의 2.5bb 오픈에 콜했습니다. 플랍에 9♠ 5♦ 2♣ (드라이한 투톤 9-하이 보드)가 깔렸고, 당신의 체크에 BTN이 넓은 레인지로 33% 팟(1.8bb) C-bet을 베팅했습니다. (팟: 7.3 BB)",
     "street": "Flop",
     "pot": "5.5 BB",
     "effective_stack": "97.5 BB",
@@ -643,8 +643,8 @@
       "5♦",
       "2♣"
     ],
-    "action_history": "Preflop: BTN 오픈 2.5bb ➔ BB 콜. Flop: 9♠ 5♦ 2♣. BB 체크 ➔ BTN 33% 벳(1.8bb).",
-    "question": "탑페어 좋은 키커를 맞췄습니다. 아웃포지션(OOP)인 당신의 행동은?",
+    "action_history": "Preflop: BTN 오픈 2.5bb ➔ BB 콜. Flop (9♠ 5♦ 2♣): BB 체크 ➔ BTN 33% 벳(1.8bb) ➔ BB 차례.",
+    "question": "K9 탑페어 좋은 키커를 맞췄습니다. BTN의 33% 팟 C-bet에 직면한 아웃포지션(OOP) 당신의 에퀴티 실현(EQR)을 위한 최선의 행동은?",
     "options": [
       {
         "label": "폴드 (Fold)",
@@ -677,7 +677,7 @@
     "title": "턴 블랭크 카드에서의 2nd 배럴 타이밍",
     "category": "턴/리버",
     "level": "[2차 전직] 마이크로 그라인더 (Lv.25~44)",
-    "situation": "당신은 BTN에서 QJs로 오픈, 플랍 C-bet 후 BB가 콜. 턴에 블랭크 카드가 떨어졌습니다.",
+    "situation": "당신은 BTN에서 Q♠ J♠로 오픈했고 BB가 콜했습니다. K♠ 7♦ 2♣ 플랍에서 당신의 33% C-bet에 BB가 콜했습니다. 턴에 언커넥티드 블랭크 4♥가 떨어졌고 BB가 체크했습니다. (팟: 11.5 BB)",
     "street": "Turn",
     "pot": "11.5 BB",
     "effective_stack": "90 BB",
@@ -693,8 +693,8 @@
       "2♣",
       "4♥"
     ],
-    "action_history": "Flop: K♠ 7♦ 2♣. BTN 33% 벳 ➔ BB 콜. Turn: 4♥. BB 체크.",
-    "question": "아무것도 맞지 않았지만 거트샷 드로우(T 아웃츠)가 있습니다. 턴 행동은?",
+    "action_history": "Flop (K♠ 7♦ 2♣): BTN 33% 벳 ➔ BB 콜. Turn (4♥): BB 체크 ➔ BTN 차례.",
+    "question": "아직 페어는 없지만 거트샷 스트레이트 드로우(10 아웃츠)와 오버카드를 보유하고 있습니다. 턴 블랭크 카드에서 BTN의 최적 2nd 배럴 액션은?",
     "options": [
       {
         "label": "체크 백하고 포기 (Check behind)",
@@ -727,7 +727,7 @@
     "title": "PKO 바운티 스팟: 숏스택 올인에 콜해야 할까?",
     "category": "PKO 바운티",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
-    "situation": "PKO 바운티 토너먼트. 10bb 숏스택이 올인했습니다. 당신은 칩으로 커버하고 있습니다.",
+    "situation": "PKO(프로그레시브 녹아웃) 토너먼트. 50bb 스택인 당신은 BB에 있고, SB의 10bb 숏스택이 10bb 올인 셔브를 감행했습니다. 당신의 손패는 Q♥ T♥ 수티드 브로드웨이입니다. (팟: 11.5 BB)",
     "street": "Preflop",
     "pot": "13.5 BB",
     "effective_stack": "10 BB",
@@ -738,8 +738,8 @@
       "T♥"
     ],
     "board": [],
-    "action_history": "SB 10 BB 올인 ➔ BB 차례.",
-    "question": "상대의 목에 걸린 바운티가 상당합니다. 당신의 결정은?",
+    "action_history": "Preflop: 모두 폴드 ➔ SB 10bb 올인 셔브 ➔ BB 차례.",
+    "question": "상대 스택을 완전히 커버하고 있으며 머리에 걸린 현금 바운티 가치가 상당합니다. QTs를 쥔 BB의 올바른 올인 방어 결정은?",
     "options": [
       {
         "label": "폴드 (Fold)",
@@ -766,7 +766,7 @@
     "title": "리버 블러프 선정: 완벽한 블로커 활용법",
     "category": "고급 전략",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
-    "situation": "당신은 CO에서 오픈, BB가 콜. 플랍/턴/리버 모두 배럴을 날리는 상황입니다.",
+    "situation": "당신은 CO에서 A♠ T♦로 오픈했고 BB가 콜했습니다. Q♠ J♦ 4♣ 플랍과 2♠ 턴에서 당신이 연속 배럴을 치고 BB가 모두 첵-콜했습니다. 리버에 8♥가 떨어졌고 BB가 다시 체크했습니다. (팟: 32 BB)",
     "street": "River",
     "pot": "38 BB",
     "effective_stack": "62 BB",
@@ -783,8 +783,8 @@
       "A♠",
       "T♦"
     ],
-    "action_history": "CO 오픈 ➔ BB 콜. Flop(Q♠ J♦ 4♣): CO C-bet ➔ BB 콜. Turn(2♠): CO 2nd 배럴 ➔ BB 콜. River(8♥): BB 체크.",
-    "question": "미스된 거트샷 드로우입니다. 쇼다운 밸류가 없는 이 핸드로 리버 트리플 배럴 블러프를 쳐야 할까요?",
+    "action_history": "Flop (Q♠ J♦ 4♣): CO C-bet ➔ BB 콜. Turn (2♠): CO 2nd 배럴 ➔ BB 콜. River (8♥): BB 체크 ➔ CO 차례.",
+    "question": "스트레이트 드로우가 미스되어 쇼다운 밸류가 없습니다. 하지만 상대의 넛 스트레이트(T9)를 완벽히 차단(Block)하고 있습니다. 리버 트리플 배럴 블러프를 날려야 할까요?",
     "options": [
       {
         "label": "체크하고 쇼다운 포기 (Check)",
@@ -817,7 +817,7 @@
     "title": "리버 씬 밸류 벳(Thin Value Bet): 첵백 vs 작은 벳",
     "category": "턴/리버",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
-    "situation": "리버까지 체크로 진행되었습니다. 당신은 A하이를 쥐고 있습니다.",
+    "situation": "당신은 BTN에서 A♠ 6♠를 들고 있습니다. A♣ T♦ 3♠ 플랍과 7♥ 턴 모두 양 플레이어 체크로 진행되었고, 리버에 2♦가 떨어지자 BB가 다시 체크했습니다. (팟: 12 BB)",
     "street": "River",
     "pot": "12 BB",
     "effective_stack": "85 BB",
@@ -834,8 +834,8 @@
       "7♥",
       "2♦"
     ],
-    "action_history": "Flop: 양자 체크. Turn: 양자 체크. River: BB 체크.",
-    "question": "약한 A 탑페어입니다. 쇼다운을 그냥 볼까요, 아니면 베팅할까요?",
+    "action_history": "Flop (A♣ T♦ 3♠): 양자 체크. Turn (7♥): 양자 체크. River (2♦): BB 체크 ➔ BTN 차례.",
+    "question": "약한 키커의 A 탑페어(A6)입니다. 상대의 첵-다운 레인지를 상대로 쇼다운 첵백을 할까요, 아니면 씬 밸류 벳(Thin Value Bet)을 칠까요?",
     "options": [
       {
         "label": "체크 백 (Check behind for Showdown)",
@@ -862,7 +862,7 @@
     "title": "파이널 테이블 버블에서의 ICM 리스크 프리미엄",
     "category": "토너먼트/ICM",
     "level": "[3차 전직] 로우스테이크 크러셔 (Lv.45~64)",
-    "situation": "토너먼트 파이널 테이블 직전 버블(머니점프 극심). 숏스택 2명이 탈락 직전입니다.",
+    "situation": "토너먼트 파이널 테이블 직전 버블(머니점프 극심). 3등 스택인 당신은 BB(38bb)에 있고, 뒤에 5bb, 7bb 초단 숏스택 2명이 탈락 직전입니다. SB의 압도적 칩리더(85bb)가 BB를 향해 38bb 올인 셔브를 했습니다. 당신의 손패는 프리미엄 A♠ K♦입니다. (팟: 40.5 BB)",
     "street": "Preflop",
     "pot": "4.5 BB",
     "effective_stack": "38 BB",
@@ -873,8 +873,8 @@
       "K♦"
     ],
     "board": [],
-    "action_history": "모두 폴드 ➔ SB 칩리더가 BB를 향해 38 BB 올인 셔브!",
-    "question": "순수 칩 EV로는 AKs는 압도적 콜입니다. 그러나 ICM 상황에서 당신의 선택은?",
+    "action_history": "Preflop: 모두 폴드 ➔ SB 칩리더 85bb가 BB를 향해 38bb 올인 셔브! ➔ BB 차례.",
+    "question": "순수 칩EV 기준으로는 AKs는 압도적 스냅 콜 핸드입니다. 그러나 숏스택 탈락이 임박한 극단적인 파이널 테이블 ICM 상황에서 당신의 선택은?",
     "options": [
       {
         "label": "스냅 콜 (Call All-in)",
@@ -901,7 +901,7 @@
     "title": "리버 오버벳(150% Pot) 너츠 밸류 추출",
     "category": "턴/리버",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
-    "situation": "리버에 K이 떨어지며 넛 스트레이트를 완성했습니다. 상대 레인지는 캡(Capped)되어 있습니다.",
+    "situation": "당신은 BTN에서 J♣ 9♣를 들고 T♠ 8♦ 4♣ 플랍과 2♠ 턴에 연속 베팅했고 BB가 모두 체크-콜했습니다. 리버에 K♥가 떨어지며 넛 스트레이트를 완성했고 BB가 체크했습니다. (팟: 32 BB)",
     "street": "River",
     "pot": "32 BB",
     "effective_stack": "68 BB",
@@ -918,8 +918,8 @@
       "2♠",
       "K♥"
     ],
-    "action_history": "Flop/Turn 베팅에 BB 연속 체크-콜. River: K♥. BB 체크.",
-    "question": "절대적 넛(Nut) 핸드입니다. 리버 사이징을 어떻게 가져가야 할까요?",
+    "action_history": "Flop (T♠ 8♦ 4♣): BTN 벳 ➔ BB 콜. Turn (2♠): BTN 벳 ➔ BB 콜. River (K♥): BB 체크 ➔ BTN 차례.",
+    "question": "보드에 J9 외에는 더 높은 패가 없는 절대적 너츠 핸드입니다. 상대의 캡된 레인지를 상대로 극대화된 밸류를 뽑아내기 위한 리버 사이징은?",
     "options": [
       {
         "label": "하프 팟 벳 (16 BB)",
@@ -952,7 +952,7 @@
     "title": "리버 블러프 캐칭: 언블로커를 활용한 히어로 콜",
     "category": "턴/리버",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
-    "situation": "상대가 트리플 배럴 올인을 날렸습니다. 당신은 미들페어를 들고 있습니다.",
+    "situation": "당신은 BB에서 T♥ 9♥로 BTN의 오픈을 방어했습니다. K♦ T♠ 5♣ 2♦ 8♠ 보드에서 플랍과 턴에 이어, 리버에서 BTN이 40bb 올인 트리플 배럴을 날렸습니다. (팟: 55 BB, 남은스택 40 BB)",
     "street": "River",
     "pot": "55 BB",
     "effective_stack": "40 BB (올인 상태)",
@@ -969,8 +969,8 @@
       "T♥",
       "9♥"
     ],
-    "action_history": "Flop/Turn/River 모두 BTN이 베팅하고 BB가 콜. River에서 BTN 40bb 올인.",
-    "question": "세컨페어입니다. 미스된 드로우가 많은 보드에서 당신의 결정은?",
+    "action_history": "Flop (K♦ T♠ 5♣): BTN 벳 ➔ BB 콜. Turn (2♦): BTN 벳 ➔ BB 콜. River (8♠): BTN 40bb 올인 셔브 ➔ BB 차례.",
+    "question": "보드에 수많은 플러시/스트레이트 드로우가 미스되었습니다. 당신의 T9h는 다이아몬드(♦)를 한 장도 차단하지 않아 상대의 블러프 가능성을 온전히 열어둡니다. 세컨페어로 히어로 콜을 해야 할까요?",
     "options": [
       {
         "label": "안전하게 폴드 (Fold)",
@@ -997,7 +997,7 @@
     "title": "딥스택(200bb) 셋 오버 셋 방어와 팟 오즈",
     "category": "캐시/스트래들",
     "level": "[4차 전직] 미드스테이크 프로 (Lv.65~84)",
-    "situation": "200bb 딥스택 캐시게임. 리버에 상대가 150bb 오버벳 올인을 날렸습니다.",
+    "situation": "유효스택 200bb 딥스택 캐시게임. 당신은 BTN에서 7♠ 7♣로 미들 셋을 맞췄습니다. K♠ 7♦ 2♣ T♠ 3♥ 보드에서 플랍과 턴의 거대한 레이즈 공방 후, 리버에 팟이 95bb인 상태에서 BB가 150bb 오버벳 올인 잼을 던졌습니다.",
     "street": "River",
     "pot": "95 BB",
     "effective_stack": "150 BB (올인 상태)",
@@ -1014,8 +1014,8 @@
       "T♠",
       "3♥"
     ],
-    "action_history": "플랍/턴 거대한 레이즈 공방 후 River(3♥)에서 BB가 150bb 오버벳 올인 잼!",
-    "question": "미들 세트(77)입니다. 200bb 딥스택에서 상대의 올인에 콜해야 할까요?",
+    "action_history": "Flop (K♠ 7♦ 2♣): 레이즈 공방 ➔ Turn (T♠): 벳/콜 ➔ River (3♥): BB 150bb 오버벳 올인 잼 ➔ BTN 차례.",
+    "question": "미들 세트(77)를 쥐고 있습니다. 200bb 딥스택에서 상대의 셋 오버 셋(KK/TT) 공포를 이겨내고 오버벳 올인에 콜해야 할까요?",
     "options": [
       {
         "label": "콜 (Call All-in)",
@@ -1042,7 +1042,7 @@
     "title": "3웨이(3-Way) 팟에서의 넛 플러시 체크 트랩",
     "category": "솔버 이론",
     "level": "[5차 전직/최종] 하이롤러 & 챔피언 (Lv.85~100)",
-    "situation": "당신은 BTN이고, 플랍에 3명이 들어와 플러시가 플랍되었습니다.",
+    "situation": "당신은 BTN에서 K♠ Q♠로 2.5bb 오픈 레이즈했고, SB와 BB가 모두 콜하여 3웨이 팟이 되었습니다. 플랍에 A♠ 9♠ 4♠가 떨어지며 플랍 2등 플러시를 완성했습니다. 앞서 SB와 BB가 모두 체크했습니다. (팟: 8.5 BB)",
     "street": "Flop",
     "pot": "8.5 BB",
     "effective_stack": "95 BB",
@@ -1057,8 +1057,8 @@
       "9♠",
       "4♠"
     ],
-    "action_history": "Preflop: BTN 오픈 ➔ SB 콜, BB 콜. Flop: A♠ 9♠ 4♠. SB 체크, BB 체크.",
-    "question": "두 명의 체크를 받았습니다. 2등 플러시를 쥔 당신의 선택은?",
+    "action_history": "Preflop: BTN 오픈 2.5bb ➔ SB 콜, BB 콜. Flop (A♠ 9♠ 4♠): SB 체크, BB 체크 ➔ BTN 차례.",
+    "question": "두 명의 수비자가 체크했습니다. 3웨이 팟에서 2등 플러시를 쥔 당신의 플랍 최적 액션은?",
     "options": [
       {
         "label": "체크 백 (Check behind)",
@@ -1091,7 +1091,7 @@
     "title": "다이내믹 턴에서의 첵-레이즈 세미 블러프",
     "category": "턴/리버",
     "level": "[5차 전직/최종] 하이롤러 & 챔피언 (Lv.85~100)",
-    "situation": "플랍 첵콜 후 턴에 텐이 떨어지며 양차 스트레이트 + 플러시 드로우가 완성되었습니다.",
+    "situation": "당신은 BB에서 9♠ 7♠로 BTN의 2.5bb 오픈을 방어했습니다. J♠ 8♦ 3♣ 플랍에서 BTN의 33% C-bet에 콜했고, 턴에 T♠가 떨어지며 스트레이트 완성 및 넛 플러시 드로우까지 추가되었습니다. 당신의 체크에 BTN이 66% 팟(12bb) 2nd 배럴을 쳤습니다. (팟: 18 BB)",
     "street": "Turn",
     "pot": "18 BB",
     "effective_stack": "75 BB",
@@ -1107,8 +1107,8 @@
       "3♣",
       "T♠"
     ],
-    "action_history": "Flop: J♠ 8♦ 3♣. BTN 33% 벳 ➔ BB 콜. Turn: T♠. BB 체크 ➔ BTN 66% 벳(12bb).",
-    "question": "괴물급 콤보 드로우입니다. 당신의 턴 액션은?",
+    "action_history": "Flop (J♠ 8♦ 3♣): BTN 33% 벳 ➔ BB 콜. Turn (T♠): BB 체크 ➔ BTN 66% 벳(12bb) ➔ BB 차례.",
+    "question": "이미 스트레이트가 완성되었고 턴 넛 플러시 드로우까지 장착한 괴물급 콤보 핸드입니다. BTN의 12bb 배럴에 직면한 BB의 최적 액션은?",
     "options": [
       {
         "label": "단순 콜 (Call 12 BB)",
@@ -1135,7 +1135,7 @@
     "title": "리버 미스된 플러시 드로우로 언블락 블러프 시도",
     "category": "턴/리버",
     "level": "[5차 전직/최종] 하이롤러 & 챔피언 (Lv.85~100)",
-    "situation": "당신은 CO에서 QJ로 플랍 플러시 드로우 C-bet, 턴 배럴. 리버에 플러시가 미스되었습니다.",
+    "situation": "당신은 CO에서 Q♠ J♦로 오픈했습니다. A♠ 8♦ 2♠ 플랍과 7♣ 턴에서 배럴을 날렸고 BB가 연속 첵-콜했습니다. 리버에 K♦가 떨어지며 플러시 드로우가 완전히 미스되었고, BB가 체크했습니다. (팟: 36 BB)",
     "street": "River",
     "pot": "36 BB",
     "effective_stack": "64 BB",
@@ -1152,8 +1152,8 @@
       "7♣",
       "K♦"
     ],
-    "action_history": "Flop: A♠ 8♦ 2♠. CO 벳 ➔ BB 콜. Turn: 7♣. CO 벳 ➔ BB 콜. River: K♦. BB 체크.",
-    "question": "아무것도 맞지 않았습니다. 리버 트리플 배럴 블러프를 날려야 할까요?",
+    "action_history": "Flop (A♠ 8♦ 2♠): CO C-bet ➔ BB 콜. Turn (7♣): CO 2nd 배럴 ➔ BB 콜. River (K♦): BB 체크 ➔ CO 차례.",
+    "question": "아무것도 맞지 않은 순수 Q-하이 에어(Air)입니다. 그러나 리버에 떨어진 K은 공격자 레인지에 매우 유리한 카드입니다. 70% 팟 트리플 배럴 블러프를 날려야 할까요, 체크 포기해야 할까요?",
     "options": [
       {
         "label": "체크하고 쇼다운 포기 (Check)",
