@@ -2068,17 +2068,18 @@ body:not(.theme-light) .char-kakao-tag {
   background: linear-gradient(135deg, #059669, #047857) !important;
   color: #ffffff !important;
   border: 1px solid #065f46 !important;
-  padding: 0.48rem 0.85rem;
-  border-radius: 8px;
-  font-size: 0.82rem;
+  padding: 3px 9px;
+  border-radius: 12px;
+  font-size: 0.76rem;
   font-weight: 800;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.25rem;
   box-shadow: 0 2px 6px rgba(5, 150, 105, 0.3);
   transition: all 0.2s ease;
   white-space: nowrap;
+  line-height: 1.25;
 }
 .btn-character-stats:hover,
 .btn-character-stats.active {
@@ -4055,9 +4056,12 @@ body.authenticated #auth-gate-screen {
                     <span class="char-tier-badge" id="dash-char-tier" onclick="guidebookManager.openModal()" title="레벨 및 6구간 전직 가이드북 (클릭)">Lv.1 동네 피쉬 🐟</span>
                     <span class="char-rank-badge" id="dash-char-rank" onclick="app.navigate('ranking')" title="전체 랭킹보드 바로가기 (클릭)">🏆 실시간 랭킹: #1위</span>
                   </div>
-                  <!-- Row 2: Playstyle -->
+                  <!-- Row 2: Playstyle & 4대 능력치 버튼 -->
                   <div class="char-badge-row">
                     <span class="char-style-tag" id="dash-char-style" onclick="characterManager.openModal()" title="플레이 스타일 변경 (클릭)">⚡ TAG 스타일</span>
+                    <button class="btn-character-stats" id="btn-toggle-stats" onclick="characterManager.toggleStats()" title="4대 핵심 능력치 접기/펼치기">
+                      <span>📊</span> 4대 능력치 <span id="stats-toggle-arrow">▼</span>
+                    </button>
                   </div>
                   <!-- Row 3: Equipped Representative Title (내 스타일 아래에 배치하여 글자 짤림 방지) -->
                   <div class="char-badge-row">
@@ -4095,9 +4099,6 @@ body.authenticated #auth-gate-screen {
               </button>
               <button class="btn-character-coach" onclick="aiCoach.open()" title="GTO 핸드 분석 & 포커 전략 AI 코치와 대화">
                 <span>🤖</span> AI 코치 대화
-              </button>
-              <button class="btn-character-stats" id="btn-toggle-stats" onclick="characterManager.toggleStats()" title="4대 핵심 능력치 접기/펼치기">
-                <span>📊</span> 4대 능력치 <span id="stats-toggle-arrow">▼</span>
               </button>
             </div>
 
