@@ -3172,6 +3172,11 @@ const glossary = {
   searchQuery: '',
 
   load() {
+    this.terms = (window.DB && DB.glossary) ? DB.glossary : this.terms;
+    const allBtn = document.getElementById('glossary-filter-all') || document.querySelector('#glossary-category-filters .filter-pill');
+    if (allBtn) {
+      allBtn.innerText = `전체 용어 (${Object.keys(this.terms).length})`;
+    }
     this.filterTerms(this.searchQuery);
   },
 

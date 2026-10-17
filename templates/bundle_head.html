@@ -4721,7 +4721,7 @@ body.authenticated #auth-gate-screen {
       </div>
 
       <div style="margin-bottom: 1rem;">
-        <input type="text" id="glossary-search-input" placeholder="🔍 용어 검색 (예: EV, 에퀴티, 블로커, MDF, ICM, SPR, 오버벳, 3벳...)" 
+        <input type="text" id="glossary-search-input" placeholder="🔍 용어 검색 (예: 프리플랍, 플랍, 턴, 리버, UTG, 버튼, 블라인드, EV, MDF, 3벳...)" 
           style="width: 100%; background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 12px; padding: 0.85rem 1.25rem; color: var(--text-main); outline: none; font-size: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.06);"
           oninput="glossary.filterTerms(this.value)">
       </div>
@@ -4729,7 +4729,7 @@ body.authenticated #auth-gate-screen {
       <!-- Glossary Category Filter Bar -->
       <div class="filter-bar" style="margin-bottom: 1.5rem;">
         <div class="filter-pills" id="glossary-category-filters">
-          <button class="filter-pill active" onclick="glossary.setCategory('all')">전체 용어 (67)</button>
+          <button class="filter-pill active" id="glossary-filter-all" onclick="glossary.setCategory('all')">전체 용어 (92)</button>
           <button class="filter-pill" onclick="glossary.setCategory('수학/기초')">수학/기초</button>
           <button class="filter-pill" onclick="glossary.setCategory('GTO 이론')">GTO 이론</button>
           <button class="filter-pill" onclick="glossary.setCategory('베팅/사이징')">베팅/사이징</button>
