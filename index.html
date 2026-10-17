@@ -22744,6 +22744,12 @@ if (typeof DB !== 'undefined') {
   window.DB = DB;
 }
 
+// Global Supabase Cloud Config
+var SUPABASE_CONFIG = window.SUPABASE_CONFIG = {
+  url: 'https://fjlxlvozbrtigsmlbury.supabase.co',
+  key: 'sb_publishable_Wd1XDhi2nWMYib7M_2tS0A_Fxt-FtO_'
+};
+
 // Global Auth Manager reference
 var authManager;
 
@@ -27167,16 +27173,18 @@ var rankingManager = window.rankingManager = {
 
   async fetchCloudPlayers() {
     try {
-      if (!window.SUPABASE_CONFIG) return;
-      const res = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/poker_users?select=id,game_nickname,kakao_nickname,avatar,playstyle,level,xp,completed_articles,completed_quizzes,promotions_passed&order=level.desc,xp.desc&limit=100`, {
+      const cfg = window.SUPABASE_CONFIG || (typeof SUPABASE_CONFIG !== 'undefined' ? SUPABASE_CONFIG : null);
+      if (!cfg || !cfg.url || !cfg.key) return;
+      const res = await fetch(`${cfg.url}/rest/v1/poker_users?select=id,game_nickname,kakao_nickname,avatar,playstyle,level,xp,completed_articles,completed_quizzes,promotions_passed&order=level.desc,xp.desc&limit=100`, {
         headers: {
-          'apikey': SUPABASE_CONFIG.key,
-          'Authorization': 'Bearer ' + SUPABASE_CONFIG.key
+          'apikey': cfg.key,
+          'Authorization': 'Bearer ' + cfg.key
         }
       });
       if (res.ok) {
         const data = await res.json();
-        this.cloudPlayers = data || [];
+        const testAccounts = ['비번자유테스트', '이메일없는유저', '이메일있는유저'];
+        this.cloudPlayers = (data || []).filter(p => p && p.game_nickname && !testAccounts.includes(p.game_nickname));
         this.render();
         if (window.characterManager && characterManager.renderDashboard) {
           characterManager.renderDashboard();
@@ -27262,9 +27270,12 @@ var rankingManager = window.rankingManager = {
       badgeClass: lvlInfo.tier.badgeClass
     };
 
-    // 실시간 클라우드 회원 목록 변환 (실제 가입된 회원만 포함)
+    // 실시간 클라우드 회원 목록 변환 (실제 가입된 회원만 포함, 테스트용 계정 제외)
+    const testAccounts = ['비번자유테스트', '이메일없는유저', '이메일있는유저'];
     const cloudMembers = (this.cloudPlayers || [])
       .filter(p => {
+        if (!p || !p.game_nickname) return false;
+        if (testAccounts.includes(p.game_nickname)) return false;
         if (auth && p.id === auth.id) return false;
         if (p.game_nickname === me.name) return false;
         return true;
@@ -28514,10 +28525,12 @@ const titleManager = window.titleManager = {
 // ==========================================
 // 🔐 Supabase Cloud Authentication & Multi-Device Sync Manager
 // ==========================================
-const SUPABASE_CONFIG = {
-  url: 'https://fjlxlvozbrtigsmlbury.supabase.co',
-  key: 'sb_publishable_Wd1XDhi2nWMYib7M_2tS0A_Fxt-FtO_'
-};
+if (!window.SUPABASE_CONFIG) {
+  window.SUPABASE_CONFIG = SUPABASE_CONFIG = {
+    url: 'https://fjlxlvozbrtigsmlbury.supabase.co',
+    key: 'sb_publishable_Wd1XDhi2nWMYib7M_2tS0A_Fxt-FtO_'
+  };
+}
 
 authManager = window.authManager = {
   gateMode: 'login', // 'login', 'signup', 'forgot'
